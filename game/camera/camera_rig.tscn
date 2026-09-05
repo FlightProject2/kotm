@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/camera/camera_rig.gd" id="1"]
+
+[node name="CameraRig" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Shoulder" type="Node3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Arm" type="SpringArm3D" parent="Pivot/Shoulder"]
+collision_mask = 32
+spring_length = 2.4
+margin = 0.08
+
+[node name="Camera3D" type="Camera3D" parent="Pivot/Shoulder/Arm"]
+current = true
+fov = 72.0
+near = 0.05
+far = 2500.0

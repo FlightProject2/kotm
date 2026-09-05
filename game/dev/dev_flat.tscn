@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://game/dev/dev_flat.gd" id="1"]
+
+[sub_resource type="BoxShape3D" id="floor_shape"]
+size = Vector3(200, 1, 200)
+
+[sub_resource type="BoxMesh" id="floor_mesh"]
+size = Vector3(200, 1, 200)
+
+[sub_resource type="BoxShape3D" id="wall_shape"]
+size = Vector3(6, 3, 0.4)
+
+[sub_resource type="BoxMesh" id="wall_mesh"]
+size = Vector3(6, 3, 0.4)
+
+[node name="DevFlat" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.82, -0.4, 0.41, 0, 0.71, 0.7, -0.57, -0.57, 0.58, 0, 20, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 1
+
+[node name="Shape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("floor_shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("floor_mesh")
+
+[node name="Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+collision_layer = 33
+
+[node name="Shape" type="CollisionShape3D" parent="Wall"]
+shape = SubResource("wall_shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Wall"]
+mesh = SubResource("wall_mesh")
+
+[node name="Wall2" type="StaticBody3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6, 1.5, 0)
+collision_layer = 33
+
+[node name="Shape" type="CollisionShape3D" parent="Wall2"]
+shape = SubResource("wall_shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Wall2"]
+mesh = SubResource("wall_mesh")
