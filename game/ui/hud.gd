@@ -27,6 +27,7 @@ var zone_box: PanelContainer
 var banner_label: Label
 var feed: VBoxContainer
 var weapon_label: Label
+var weapon_icon: TextureRect
 var ammo_label: Label
 var hp_bar: ProgressBar
 var hp_num: Label
@@ -145,20 +146,21 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	# top-left remain
 	var remain_box := HBoxContainer.new()
 	remain_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	remain_label = _label("150", _font(oswald, 40, 700), 40, RED)
-	var remain_word := _label("REMAIN", _font(oswald, 16, 500), 16)
+	remain_box.add_theme_constant_override("separation", 8)
+	remain_label = _label("150", _font(oswald, 64, 800), 64, RED)
+	remain_label.add_theme_constant_override("shadow_offset_x", 2)
+	remain_label.add_theme_constant_override("shadow_offset_y", 3)
+	var remain_word := _label("REMAIN", _font(oswald, 22, 600), 22)
 	remain_word.size_flags_vertical = Control.SIZE_SHRINK_END
 	remain_box.add_child(remain_label)
 	remain_box.add_child(remain_word)
-	_place(remain_box, Control.PRESET_TOP_LEFT, 18, 10)
-	var hint := _label("[M] Map   [T] First person   [C] Crouch   [H]/[J] Bandage / Medkit   [F] Pick up", _font(barlow, 12), 12, INK_DIM)
-	_place(hint, Control.PRESET_TOP_LEFT, 18, 64)
+	_place(remain_box, Control.PRESET_TOP_LEFT, 22, 6)
 	# compass
 	compass = Control.new()
-	compass.custom_minimum_size = Vector2(420, 34)
+	compass.custom_minimum_size = Vector2(520, 36)
 	compass.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	compass.draw.connect(_draw_compass)
-	_place(compass, Control.PRESET_CENTER_TOP, -210, 10, 420, 34)
+	_place(compass, Control.PRESET_CENTER_TOP, -260, 8, 520, 36)
 	# top-right zone box + feed
 	var tr := VBoxContainer.new()
 	tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -181,9 +183,10 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	tr.position = Vector2(-360, 10)
 	# centre banner
 	var bp := _panel(Color(0.09, 0.09, 0.11, 0.85))
-	banner_label = _label("", _font(barlow_semi, 20), 20)
+	banner_label = _label("", _font(barlow_semi, 24), 24)
+	banner_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	bp.add_child(banner_label)
-	_place(bp, Control.PRESET_CENTER_TOP, -200, 150, 400, 40)
+	_place(bp, Control.PRESET_CENTER_TOP, -260, 150, 520, 46)
 	bp.name = "BannerPanel"
 	bp.modulate.a = 0.0
 	# reticle + hitmarker
@@ -205,35 +208,47 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	var bc := VBoxContainer.new()
 	bc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bc.alignment = BoxContainer.ALIGNMENT_END
-	weapon_label = _label("FISTS", _font(oswald, 12, 400), 12, INK_DIM)
+	weapon_label = _label("FISTS", _font(oswald, 16, 600), 16, INK_DIM)
 	weapon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	ammo_label = _label("", _font(oswald, 30, 700), 30)
+	var ammo_row := HBoxContainer.new()
+	ammo_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ammo_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	ammo_row.add_theme_constant_override("separation", 14)
+	weapon_icon = TextureRect.new()
+	weapon_icon.custom_minimum_size = Vector2(112, 48)
+	weapon_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	weapon_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	weapon_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ammo_label = _label("", _font(oswald, 44, 700), 44)
 	ammo_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	bc.add_child(weapon_label); bc.add_child(ammo_label)
+	ammo_row.add_child(weapon_icon); ammo_row.add_child(ammo_label)
+	bc.add_child(weapon_label); bc.add_child(ammo_row)
 	var hp_row := HBoxContainer.new()
 	hp_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var plus := _label("+", _font(oswald, 22, 700), 22)
-	bleed_label = _label("BLEEDING", _font(oswald, 11, 500), 11, RED)
+	var plus := _label("+", _font(oswald, 26, 800), 26)
+	bleed_label = _label("BLEEDING", _font(oswald, 13, 600), 13, RED)
 	bleed_label.visible = false
 	hp_bar = ProgressBar.new()
-	hp_bar.custom_minimum_size = Vector2(400, 16)
+	hp_bar.custom_minimum_size = Vector2(460, 20)
 	hp_bar.show_percentage = false
 	hp_bar.max_value = 100
 	hp_bar.value = 100
-	var bg := StyleBoxFlat.new(); bg.bg_color = Color(0, 0, 0, 0.65); bg.border_width_top = 1; bg.border_width_bottom = 1; bg.border_width_left = 1; bg.border_width_right = 1; bg.border_color = Color(1, 1, 1, 0.18)
-	var fg := StyleBoxFlat.new(); fg.bg_color = Color("b8121f")
+	var bg := StyleBoxFlat.new(); bg.bg_color = Color(0, 0, 0, 0.7); bg.set_border_width_all(1); bg.border_color = Color(1, 1, 1, 0.25); bg.set_corner_radius_all(3)
+	var fg := StyleBoxFlat.new(); fg.bg_color = Color("c8102e"); fg.set_corner_radius_all(2)
 	hp_bar.add_theme_stylebox_override("background", bg)
 	hp_bar.add_theme_stylebox_override("fill", fg)
-	hp_num = _label("100", _font(oswald, 18, 600), 18)
+	hp_num = _label("100", _font(oswald, 24, 700), 24)
 	hp_row.add_child(bleed_label); hp_row.add_child(plus); hp_row.add_child(hp_bar); hp_row.add_child(hp_num)
 	bc.add_child(hp_row)
-	status_label = _label("", _font(barlow, 12), 12, INK_DIM)
+	status_label = _label("", _font(barlow_semi, 14), 14, INK_DIM)
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	bc.add_child(status_label)
-	_place(bc, Control.PRESET_CENTER_BOTTOM, -250, -110, 500, 100)
+	_place(bc, Control.PRESET_CENTER_BOTTOM, -280, -150, 560, 140)
 	# gear bottom-left
-	gear_label = _label("", _font(oswald, 13, 400), 13, INK_DIM)
-	_place(gear_label, Control.PRESET_BOTTOM_LEFT, 18, -70)
+	var gear_panel := _panel(PANEL)
+	gear_label = _label("", _font(oswald, 15, 500), 15, INK)
+	gear_panel.add_child(gear_label)
+	_place(gear_panel, Control.PRESET_BOTTOM_LEFT, 22, -96)
 	popups = VBoxContainer.new()
 	popups.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	popups.alignment = BoxContainer.ALIGNMENT_END
@@ -246,7 +261,7 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	add_child(icon_cache)
 	for i in 6:
 		var tile := _panel(PANEL)
-		tile.custom_minimum_size = Vector2(104, 78)
+		tile.custom_minimum_size = Vector2(110, 84)
 		var v := VBoxContainer.new()
 		v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		v.add_theme_constant_override("separation", 0)
@@ -272,7 +287,7 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 		hot_names.append(nm)
 		hot_icons.append(icon)
 		hot_ammo.append(ammo)
-	_place(hotbar, Control.PRESET_BOTTOM_RIGHT, -18 - 6 * 108, -96)
+	_place(hotbar, Control.PRESET_BOTTOM_RIGHT, -22 - 6 * 114, -104)
 	# map screen
 	map_screen = Control.new()
 	map_screen.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -296,7 +311,7 @@ func _shader_rect(code: String) -> ColorRect:
 # ---------- events ----------
 func _on_kill_feed(killer: String, victim: String, weapon: String, headshot: bool) -> void:
 	var p := _panel(PANEL, RED)
-	var l := _label("%s  [%s]%s  %s" % [killer, weapon, "  ✦" if headshot else "", victim], _font(barlow, 13), 13)
+	var l := _label("%s  [%s]%s  %s" % [killer, weapon, "  HEADSHOT" if headshot else "", victim], _font(barlow_semi, 15), 15)
 	p.add_child(l)
 	p.size_flags_horizontal = Control.SIZE_SHRINK_END
 	feed.add_child(p)
@@ -444,6 +459,7 @@ func _process(dt: float) -> void:
 	var def := character.combat.current_def()
 	var id := character.inventory.current_id()
 	weapon_label.text = String(def.get("name", "Fists")).to_upper()
+	weapon_icon.texture = icon_cache.get_icon(id) if id != "" and id != "fists" else null
 	if def.has("magSize"):
 		ammo_label.text = "%d / %d" % [int(character.inventory.mags.get(id, 0)), int(character.inventory.ammo.get(def["ammo"], 0))]
 	else:
@@ -461,7 +477,7 @@ func _process(dt: float) -> void:
 	var armor_txt := "—"
 	if h.has_armor():
 		armor_txt = "%s  %d%%" % [ItemCatalog.get_item(h.armor_id).get("name", h.armor_id), int(h.armor_dur / h.armor_max * 100.0)]
-	gear_label.text = "HELMET  %s\nARMOR  %s\nBANDAGE [H]  %d    MEDKIT [J]  %d" % [
+	gear_label.text = "HELMET   %s\nARMOR    %s\n[H] BANDAGE  %d     [J] MEDKIT  %d" % [
 		ItemCatalog.get_item(h.helmet_id).get("name", "—") if h.has_helmet() else "—", armor_txt,
 		int(character.inventory.meds.get("bandage", 0)), int(character.inventory.meds.get("first_aid_kit", 0))]
 	for i in hot_tiles.size():

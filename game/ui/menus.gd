@@ -283,6 +283,17 @@ void fragment() {
 	bg.material = m
 	return bg
 
+## A fixed-size, centre-anchored host for the 3D preview (a plain Control gives the
+## SubViewportContainer no size on its own, so the rect is set explicitly).
+func _stage(anchor_x: float, anchor_y: float, x: float, y: float, w: float, h: float) -> Control:
+	var st := Control.new()
+	st.anchor_left = anchor_x; st.anchor_right = anchor_x
+	st.anchor_top = anchor_y; st.anchor_bottom = anchor_y
+	st.offset_left = x; st.offset_top = y; st.offset_right = x + w; st.offset_bottom = y + h
+	st.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	st.set_meta("stage_size", Vector2(w, h))
+	return st
+
 func _spacer(h: float) -> Control:
 	var c := Control.new()
 	c.custom_minimum_size = Vector2(0, h)
@@ -373,11 +384,7 @@ func _build_main() -> Control:
 	wallet_labels["name"] = name_lab
 	top.add_child(name_lab)
 	# centre: character stage
-	var stage := Control.new()
-	stage.set_anchors_preset(Control.PRESET_CENTER)
-	stage.position = Vector2(-330 + 130, -430)
-	stage.size = Vector2(640, 900)
-	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var stage := _stage(0.5, 0.5, -200, -430, 640, 900)
 	s.add_child(stage)
 	preview_slots["main"] = stage
 	# right: dailies + stats
@@ -479,11 +486,7 @@ func _build_customize() -> Control:
 	s.set_anchors_preset(Control.PRESET_FULL_RECT)
 	s.add_child(_backdrop(1.0, false))
 	# character on top, centred
-	var stage := Control.new()
-	stage.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	stage.position = Vector2(-220, -40)
-	stage.size = Vector2(440, 470)
-	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var stage := _stage(0.5, 0.0, -220, -30, 440, 470)
 	s.add_child(stage)
 	preview_slots["customize"] = stage
 	var title := _label("CUSTOMIZE", 34, INK, 700)
@@ -731,11 +734,7 @@ func _build_market() -> Control:
 	market_cards.size = Vector2(760, 700)
 	market_cards.add_theme_constant_override("separation", 14)
 	s.add_child(market_cards)
-	var stage := Control.new()
-	stage.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	stage.position = Vector2(-620, 60)
-	stage.size = Vector2(560, 800)
-	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var stage := _stage(1.0, 0.0, -620, 60, 560, 800)
 	s.add_child(stage)
 	preview_slots["market"] = stage
 	# crate opening overlay
@@ -1112,7 +1111,11 @@ func show_screen(name: String) -> void:
 				preview.get_parent().remove_child(preview)
 			if slot:
 				slot.add_child(preview)
-				preview.set_anchors_preset(Control.PRESET_FULL_RECT)
+		if slot:
+			var sz: Vector2 = slot.get_meta("stage_size", Vector2(520, 720))
+			preview.position = Vector2.ZERO
+			preview.custom_minimum_size = sz
+			preview.size = sz
 		preview.visible = slot != null
 		if slot:
 			preview.set_loadout(loadout)
