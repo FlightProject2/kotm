@@ -1,0 +1,11 @@
+{
+  "$schema_note": "Default PC control scheme per docs/game-plan/04. All rebindable.",
+  "movement": { "forward": "W", "back": "S", "left": "A", "right": "D", "sprint": "LShift", "jump": "Space", "crouch": "C", "prone": "Z", "freeLook": "LAlt" },
+  "combat": { "fire": "Mouse1", "aim": "Mouse2", "reload": "R", "cycleThrowable": "G", "underhandThrow": "Mouse4", "toggleFirstPerson": "T", "toggleFireMode": "B" },
+  "hotbar": { "slot1_melee": "1", "slot2": "2", "slot3": "3", "slot4": "4", "slot5": "5", "slot6_throwable": "6", "holster": "same slot key again" },
+  "interaction": { "interact": "F", "lootList": "F (hold)", "inventory": "Tab", "map": "M", "emoteWheel": "X", "useAirdropTicket": "inventory context" },
+  "vehicle": { "accelerate": "W", "brakeReverse": "S", "steer": "A/D", "handbrake": "Space", "horn": "H", "siren": "N", "seat1to4": "1-4", "exit": "F" },
+  "voice": { "proximityPushToTalk": "V", "teamPushToTalk": "B", "muteProximity": "Alt+M", "muteTargetedPlayer": "Ctrl+T" },
+  "ui": { "scoreboard": "Tab (lobby)", "closeMenus": "Esc", "moreInfo": "I (in inventory)" },
+  "mouse": { "hipSensitivity": 0.5, "adsSensitivityMult": 0.8, "scopeSensitivityMult": 0.35, "invertY": false }
+}

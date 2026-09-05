@@ -1,0 +1,39 @@
+{
+  "$schema_note": "Loot node classes and weighted item rolls per docs/game-plan/07. Each node rolls itemsMin..itemsMax items; each roll picks by weight. Seeded by match id.",
+  "targetCounts": { "weapons": 2200, "helmets": 650, "laminatedArmor": 350, "backpacks": 600, "ammoStacks": 4500, "medical": 1600, "vehicles": 40, "airdropTickets": 12 },
+  "nodeClasses": {
+    "residential": { "itemsMin": 0, "itemsMax": 2, "emptyChance": 0.35, "rolls": {
+      "r380": 8, "m9": 7, "m1911": 3, "shotgun_12g": 3, "hellfire": 2, "ar15": 1, "combat_knife": 3, "wrench": 3, "machete": 2, "hatchet": 2,
+      "ammo_9mm": 8, "ammo_380": 8, "ammo_45acp": 5, "ammo_shells": 4, "ammo_223": 3,
+      "bandage": 10, "first_aid_kit": 3, "motorcycle_helmet": 5, "school_backpack": 5, "framed_backpack": 2,
+      "cloth": 4, "duct_tape": 2, "clothing_cosmetic": 3, "shoes_random": 2 } },
+    "commercial": { "itemsMin": 0, "itemsMax": 2, "emptyChance": 0.3, "rolls": {
+      "m9": 6, "m1911": 4, "shotgun_12g": 4, "hellfire": 4, "ar15": 3, "ak47": 1, "recurve_bow": 2, "machete": 2,
+      "ammo_9mm": 6, "ammo_45acp": 6, "ammo_shells": 5, "ammo_223": 5, "ammo_762": 2, "arrow": 3,
+      "bandage": 8, "field_bandage": 2, "first_aid_kit": 4, "motorcycle_helmet": 4, "laminated_armor": 1, "framed_backpack": 3,
+      "smoke_grenade": 2, "gas_grenade": 1, "ethanol": 2, "empty_bottle": 2, "rubbing_alcohol": 2 } },
+    "industrial": { "itemsMin": 0, "itemsMax": 2, "emptyChance": 0.3, "rolls": {
+      "shotgun_12g": 3, "hellfire": 3, "ar15": 3, "ak47": 2, "crowbar": 3, "wrench": 3, "hatchet": 2,
+      "ammo_shells": 4, "ammo_223": 5, "ammo_762": 4, "ammo_45acp": 3,
+      "metal_scrap": 6, "metal_sheet": 4, "duct_tape": 5, "gunpowder": 2, "gas_can": 4, "vehicle_repair_kit": 2,
+      "motorcycle_helmet": 3, "laminated_armor": 2, "framed_backpack": 2, "military_backpack": 1, "molotov": 2, "frag_grenade": 1 } },
+    "police": { "itemsMin": 1, "itemsMax": 2, "emptyChance": 0.1, "guarantees": ["rifle_random"], "rolls": {
+      "m9": 5, "shotgun_12g": 5, "ar15": 6, "ak47": 3, "ammo_9mm": 6, "ammo_shells": 6, "ammo_223": 8, "ammo_762": 4,
+      "tactical_helmet": 4, "motorcycle_helmet": 3, "laminated_armor": 4, "first_aid_kit": 4, "gas_grenade": 2, "smoke_grenade": 2, "frag_grenade": 1 } },
+    "military": { "itemsMin": 1, "itemsMax": 2, "emptyChance": 0.1, "guarantees": ["hunting_rifle"], "rolls": {
+      "ar15": 6, "ak47": 5, "hunting_rifle": 2, "magnum44": 1, "ammo_223": 8, "ammo_762": 6, "ammo_308": 5, "ammo_44": 2,
+      "tactical_helmet": 5, "laminated_armor": 5, "military_backpack": 4, "first_aid_kit": 5, "frag_grenade": 3, "airdrop_ticket": 1, "scope2x": 2, "reflex": 2 } },
+    "hunting": { "itemsMin": 0, "itemsMax": 2, "emptyChance": 0.25, "rolls": {
+      "hunting_rifle": 3, "recurve_bow": 5, "arrow": 8, "ammo_308": 6, "machete": 3, "hatchet": 3, "combat_knife": 3, "wood_stick": 4, "bandage": 4, "work_boots": 2, "military_boots": 1 } },
+    "vehicle_trunk": { "itemsMin": 0, "itemsMax": 2, "emptyChance": 0.4, "rolls": {
+      "gas_can": 6, "vehicle_repair_kit": 3, "bandage": 4, "first_aid_kit": 2, "ammo_random": 6, "weapon_random_common": 3, "duct_tape": 2 } },
+    "airdrop": { "itemsMin": 8, "itemsMax": 8, "emptyChance": 0, "fixed": ["rifle_random", "hunting_rifle", "tactical_helmet", "laminated_armor", "first_aid_kit", "first_aid_kit", "ammo_for_each", "rare_random"] }
+  },
+  "poiGuarantees": {
+    "police_station": { "rifle_random": 1 },
+    "military_camp": { "hunting_rifle": 1 },
+    "city_block": { "helmet_random": 2 }
+  },
+  "vehicleSpawn": { "fuelFullChance": 0.4, "fuelPartialChance": 0.5, "fuelPartialRange": [0.2, 0.6], "fuelEmptyChance": 0.1 },
+  "despawn": { "deathBagSec": 300, "droppedItemSec": 600, "helmetPropSec": 30 }
+}

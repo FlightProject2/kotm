@@ -1,0 +1,22 @@
+{
+  "$schema_note": "Safe zone and gas schedule per docs/game-plan/09. Times in seconds from match start (parachute spawn).",
+  "mapHalfSizeM": 4000,
+  "outOfBoundsDps": 5,
+  "revealBannerAtSec": 180,
+  "revealBannerCountdownSec": 30,
+  "firstCircleShownAtSec": 210,
+  "phases": [
+    { "phase": 1, "radiusM": 2000, "warningSec": 90,  "closeSec": 150, "dps": 0.5 },
+    { "phase": 2, "radiusM": 1200, "warningSec": 60,  "closeSec": 120, "dps": 1 },
+    { "phase": 3, "radiusM": 700,  "warningSec": 60,  "closeSec": 90,  "dps": 2 },
+    { "phase": 4, "radiusM": 400,  "warningSec": 45,  "closeSec": 75,  "dps": 3 },
+    { "phase": 5, "radiusM": 220,  "warningSec": 45,  "closeSec": 60,  "dps": 5 },
+    { "phase": 6, "radiusM": 110,  "warningSec": 30,  "closeSec": 45,  "dps": 7 },
+    { "phase": 7, "radiusM": 45,   "warningSec": 30,  "closeSec": 45,  "dps": 10 },
+    { "phase": 8, "radiusM": 0,    "warningSec": 0,   "closeSec": 60,  "dps": 15 }
+  ],
+  "circleSelection": { "nextInsidePrevious": true, "maxWaterFraction": 0.4, "borderMarginM": 200 },
+  "remainingToasts": [50, 25, 10, 5, 2],
+  "airdrop": { "ticketsPerMatch": 12, "dropDelaySec": 60, "smokeVisibleM": 1000,
+    "crateContents": ["rifle_random", "hunting_rifle", "tactical_helmet", "laminated_armor", "first_aid_kit x2", "ammo_for_each", "rare_random"] }
+}

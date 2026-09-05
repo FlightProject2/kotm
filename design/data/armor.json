@@ -1,0 +1,32 @@
+{
+  "$schema_note": "Protective gear per docs/game-plan/06. Helmets are single-hit; body armor is a durability pool.",
+  "helmets": [
+    { "id": "motorcycle_helmet", "name": "Motorcycle Helmet", "wearerTakesFraction": 0.45, "rarity": "common", "weight": 15, "protects": ["head"] },
+    { "id": "tactical_helmet", "name": "Tactical Helmet", "wearerTakesFraction": 0.25, "rarity": "rare", "weight": 20, "protects": ["head"] },
+    { "id": "makeshift_helmet", "name": "Makeshift Helmet", "wearerTakesFraction": 0.60, "rarity": "crafted", "weight": 12, "protects": ["head"] }
+  ],
+  "bodyArmor": [
+    { "id": "laminated_armor", "name": "Laminated Tactical Body Armor", "absorbFraction": 0.80, "durability": 90, "rarity": "rare", "weight": 40, "protects": ["upperTorso", "lowerTorso"] },
+    { "id": "makeshift_armor", "name": "Makeshift Plated Armor", "absorbFraction": 0.60, "durability": 45, "rarity": "crafted", "weight": 35, "protects": ["upperTorso", "lowerTorso"] }
+  ],
+  "shoes": [
+    { "id": "barefoot", "name": "Barefoot", "footstepNoiseMult": 0.6, "fallDamageThresholdM": 3, "sprintSpeedMult": 0.95, "lowerLegDamageMult": 1.0 },
+    { "id": "conveys", "name": "Conveys", "footstepNoiseMult": 1.0, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0, "default": true },
+    { "id": "running_shoes", "name": "Running Shoes", "footstepNoiseMult": 0.85, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0 },
+    { "id": "work_boots", "name": "Work Boots", "footstepNoiseMult": 1.2, "fallDamageThresholdM": 6, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0, "kickBonusDamage": 5 },
+    { "id": "military_boots", "name": "Military Boots", "footstepNoiseMult": 1.1, "fallDamageThresholdM": 7, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 0.9 }
+  ],
+  "backpacks": [
+    { "id": "none", "name": "Pockets", "capacity": 400 },
+    { "id": "school_backpack", "name": "School Backpack", "capacity": 700, "rarity": "common", "weight": 0 },
+    { "id": "framed_backpack", "name": "Framed Backpack", "capacity": 900, "rarity": "uncommon", "weight": 0 },
+    { "id": "military_backpack", "name": "Military Backpack", "capacity": 1200, "rarity": "rare", "weight": 0 }
+  ],
+  "medical": [
+    { "id": "bandage", "name": "Bandage", "heal": 15, "healOverSec": 10, "useSec": 2.0, "stopsBleeding": true, "canWalk": true, "weight": 3 },
+    { "id": "field_bandage", "name": "Field Bandage", "heal": 30, "healOverSec": 10, "useSec": 2.5, "stopsBleeding": true, "canWalk": true, "weight": 4 },
+    { "id": "first_aid_kit", "name": "First Aid Kit", "heal": 100, "healOverSec": 20, "useSec": 4.0, "stopsBleeding": true, "canWalk": false, "weight": 15 }
+  ],
+  "bleeding": { "damagePerTick": 1, "tickSec": 2, "maxStacks": 1 },
+  "fallDamage": { "safeM": 4, "lethalM": 15 }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema_note": "Vehicle stats per docs/game-plan/08. Speeds in km/h, HP pool, fuel in litres, consumption L/km at full throttle.",
+  "vehicles": [
+    { "id": "offroader", "name": "Off-Roader", "seats": 4, "topSpeedKmh": 110, "accel0to60Sec": 6.0, "hp": 1200, "fuelL": 100, "consumptionLPerKm": 1.0,
+      "gripTarmac": 0.9, "gripDirt": 0.6, "trunkCapacity": 600, "gloveboxCapacity": 100, "passengersCanShoot": true, "driverCanShoot": false, "spawnWeight": 35 },
+    { "id": "police_car", "name": "Police Car", "seats": 4, "topSpeedKmh": 145, "accel0to60Sec": 4.5, "hp": 900, "fuelL": 80, "consumptionLPerKm": 1.1,
+      "gripTarmac": 1.0, "gripDirt": 0.4, "trunkCapacity": 600, "gloveboxCapacity": 100, "passengersCanShoot": true, "driverCanShoot": false, "siren": true, "spawnWeight": 25 },
+    { "id": "pickup_truck", "name": "Pickup Truck", "seats": 4, "topSpeedKmh": 120, "accel0to60Sec": 5.5, "hp": 1500, "fuelL": 120, "consumptionLPerKm": 1.2,
+      "gripTarmac": 0.85, "gripDirt": 0.65, "trunkCapacity": 800, "gloveboxCapacity": 100, "passengersCanShoot": true, "bedSeats": 2, "bedSeatsShoot360": true, "driverCanShoot": false, "spawnWeight": 20 },
+    { "id": "atv", "name": "ATV", "seats": 2, "topSpeedKmh": 95, "accel0to60Sec": 4.0, "hp": 500, "fuelL": 40, "consumptionLPerKm": 0.7,
+      "gripTarmac": 0.8, "gripDirt": 0.8, "trunkCapacity": 200, "gloveboxCapacity": 0, "passengersCanShoot": true, "driverCanShoot": false, "spawnWeight": 20 }
+  ],
+  "shared": {
+    "tireHp": 50, "poppedTireSpeedMult": 0.6, "bulletDamageMult": 0.5, "smokeAtHpFraction": 0.25, "burnBeforeExplodeSec": 5,
+    "explosionDamage": 100, "explosionInnerRadiusM": 5, "explosionOuterRadiusM": 12,
+    "runOverLethalKmh": 35, "exitSec": 0.8, "enterSec": 0.8, "selfRightAfterSec": 3,
+    "refuelCanSec": 5, "refuelPumpSec": 10, "repairKitSec": 8, "repairKitHpFraction": 0.5,
+    "engineAudibleM": 400, "hornAudibleM": 300, "sirenAudibleM": 300, "explosionAudibleM": 800
+  },
+  "spawn": { "perMatch": 40, "locations": ["garage", "roadside", "farm", "poi_lot", "gas_station"], "neverIn": ["lobby", "airfield"] }
+}
