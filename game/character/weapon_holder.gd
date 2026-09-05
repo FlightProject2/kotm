@@ -18,6 +18,7 @@ const TINTS := {"ak47": Color(0.45, 0.3, 0.18), "r380": Color(0.6, 0.6, 0.62), "
 
 var mount: Node3D
 var current_id: String = ""
+var character: Node
 
 func _ready() -> void:
 	mount = Node3D.new()
@@ -53,6 +54,10 @@ func set_weapon(weapon_id: String, weapon_class: String) -> void:
 	model.position = -Vector3(0, 0, -(aabb.position.z + aabb.size.z * 0.3)) * s if aabb.size.z >= aabb.size.x else Vector3(0, 0, 0)
 	if TINTS.has(weapon_id):
 		_tint(model, TINTS[weapon_id])
+	if character and character.get("cosmetics") != null:
+		var skins: Dictionary = character.cosmetics.get("weapons", {})
+		if skins.has(weapon_id):
+			SkinSystem.apply_to_weapon(model, SkinSystem.weapon_skin(String(skins[weapon_id])))
 
 static func _merged_aabb(n: Node) -> AABB:
 	var out := AABB()

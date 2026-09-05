@@ -21,7 +21,7 @@ tonemap_mode = 2
 ssao_enabled = false
 fog_enabled = true
 fog_light_color = Color(0.7, 0.78, 0.88, 1)
-fog_density = 0.0009
+fog_density = 0.00035
 fog_sky_affect = 0.3
 volumetric_fog_enabled = false
 

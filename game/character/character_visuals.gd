@@ -10,6 +10,9 @@ var weapon_holder: WeaponHolder
 var helmet_mesh: MeshInstance3D
 var armor_mesh: MeshInstance3D
 var anim: AnimationDriver
+var hat: Node3D
+var mask: Node3D
+var canopy: Node3D
 
 func _ready() -> void:
 	character = get_parent() as Character
@@ -17,12 +20,16 @@ func _ready() -> void:
 	if skels.is_empty():
 		return
 	skeleton = skels[0]
+	if character.cosmetics.is_empty():
+		character.cosmetics = SkinSystem.default_loadout()
+	SkinSystem.apply_to_character(self, character.cosmetics)
 	aim_spine = AimSpineModifier.new()
 	aim_spine.name = "AimSpine"
 	skeleton.add_child(aim_spine)
 	weapon_holder = WeaponHolder.new()
 	weapon_holder.name = "HandR"
 	weapon_holder.bone_name = "hand.r"
+	weapon_holder.character = character
 	skeleton.add_child(weapon_holder)
 	var head_mount := BoneAttachment3D.new()
 	head_mount.name = "HeadMount"
@@ -34,6 +41,14 @@ func _ready() -> void:
 	helmet_mesh.position = Vector3(0, 0.06, 0)
 	helmet_mesh.visible = false
 	head_mount.add_child(helmet_mesh)
+	var att := SkinSystem.build_attachments(character.cosmetics)
+	if att["hat"]:
+		hat = att["hat"]
+		hat.position = Vector3(0, 0.04, 0.0)
+		head_mount.add_child(hat)
+	if att["mask"]:
+		mask = att["mask"]
+		head_mount.add_child(mask)
 	var chest_mount := BoneAttachment3D.new()
 	chest_mount.name = "ChestMount"
 	chest_mount.bone_name = "spine_02"
@@ -44,6 +59,9 @@ func _ready() -> void:
 	armor_mesh.position = Vector3(0, 0.12, 0)
 	armor_mesh.visible = false
 	chest_mount.add_child(armor_mesh)
+	if att["back"]:
+		chest_mount.add_child(att["back"])
+	_build_canopy()
 	anim = AnimationDriver.new()
 	anim.name = "Anim"
 	character.add_child.call_deferred(anim)
@@ -56,6 +74,10 @@ func _process(_dt: float) -> void:
 	scale.y = lerpf(scale.y, target_scale, 0.3)
 	if aim_spine:
 		aim_spine.pitch = character.pitch
+	if canopy:
+		canopy.visible = character.mode == Character.Mode.PARACHUTE
+	if hat:
+		hat.visible = not character.health.has_helmet()
 	if helmet_mesh:
 		helmet_mesh.visible = character.health.has_helmet()
 		if character.health.has_helmet():
@@ -65,6 +87,38 @@ func _process(_dt: float) -> void:
 		armor_mesh.visible = character.health.has_armor()
 		if character.health.has_armor():
 			_set_color(armor_mesh, Color(0.3, 0.36, 0.17) if character.health.armor_id == "laminated_armor" else Color(0.4, 0.4, 0.42))
+
+func _build_canopy() -> void:
+	canopy = Node3D.new()
+	canopy.name = "Parachute"
+	var mi := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 2.4
+	sm.height = 1.3
+	sm.is_hemisphere = true
+	mi.mesh = sm
+	var m := StandardMaterial3D.new()
+	m.albedo_color = SkinSystem.parachute_color(character.cosmetics)
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.roughness = 0.9
+	mi.material_override = m
+	mi.position.y = 4.2
+	canopy.add_child(mi)
+	var lines := MeshInstance3D.new()
+	var im := ImmediateMesh.new()
+	im.surface_begin(Mesh.PRIMITIVE_LINES)
+	for corner in [Vector3(-1.6, 4.2, -1.6), Vector3(1.6, 4.2, -1.6), Vector3(-1.6, 4.2, 1.6), Vector3(1.6, 4.2, 1.6)]:
+		im.surface_add_vertex(Vector3(0, 1.5, 0))
+		im.surface_add_vertex(corner)
+	im.surface_end()
+	lines.mesh = im
+	var lm := StandardMaterial3D.new()
+	lm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	lm.albedo_color = Color(0.15, 0.15, 0.15)
+	lines.material_override = lm
+	canopy.add_child(lines)
+	canopy.visible = false
+	add_child(canopy)
 
 static func _set_color(mi: MeshInstance3D, c: Color) -> void:
 	var m := mi.material_override as StandardMaterial3D

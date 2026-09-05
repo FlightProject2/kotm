@@ -3,7 +3,7 @@ extends RefCounted
 ## Fallback terrain: a HeightMapShape3D collider from the heightmap plus a coarse visual
 ## mesh. Used headless and if Terrain3D is unavailable.
 
-const VISUAL_STEP := 8
+const VISUAL_STEP := 4
 
 static func build(world: World) -> Node3D:
 	var root := Node3D.new()

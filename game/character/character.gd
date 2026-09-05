@@ -24,6 +24,7 @@ var crouching: bool = false
 var stun: float = 0.0
 var health: HealthState = HealthState.new()
 var inventory: Inventory = Inventory.new()
+var cosmetics: Dictionary = {}
 var kills: int = 0
 var damage_dealt: float = 0.0
 var last_hit_by: Character

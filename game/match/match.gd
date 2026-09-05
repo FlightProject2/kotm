@@ -70,6 +70,7 @@ func _spawn_character(display_name: String, is_bot: bool, pos: Vector3, yaw: flo
 	ch.character_id = _next_id
 	_next_id += 1
 	ch.world = world
+	ch.cosmetics = SkinSystem.random_loadout(rng_bots) if is_bot else Settings.cosmetics.duplicate(true)
 	ch.name = "C%03d_%s" % [ch.character_id, display_name.validate_node_name()]
 	world.characters.add_child(ch)
 	ch.motor.start_parachute(pos, yaw)
