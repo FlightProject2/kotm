@@ -10,6 +10,7 @@ var pivot: Node3D
 var mannequin: Node3D
 var skeleton: Skeleton3D
 var hand_mount: BoneAttachment3D
+var arm_pose: ArmPoseModifier
 var gun_mount: Node3D
 var cam: Camera3D
 var loadout: Dictionary = {}
@@ -117,6 +118,9 @@ func rebuild() -> void:
 		skeleton.add_child(chest)
 		if att["back"]:
 			chest.add_child(att["back"])
+		arm_pose = ArmPoseModifier.new()
+		arm_pose.aim_dir = Vector3(0.15, -0.3, 1.0)
+		skeleton.add_child(arm_pose)
 		hand_mount = BoneAttachment3D.new()
 		hand_mount.bone_name = "hand.r"
 		skeleton.add_child(hand_mount)
@@ -146,6 +150,8 @@ func _mount_gun() -> void:
 	gun_mount.add_child(model)
 	var wclass := String(ItemCatalog.get_item(weapon_id).get("class", "rifle"))
 	WeaponHolder.fit_model(model, wclass)
+	if arm_pose:
+		arm_pose.weapon_class = wclass
 	if WeaponHolder.TINTS.has(weapon_id):
 		WeaponHolder._tint(model, WeaponHolder.TINTS[weapon_id])
 	var skins: Dictionary = loadout.get("weapons", {})
@@ -157,7 +163,7 @@ func _align_gun() -> void:
 		return
 	# The mannequin faces +Z in its own space; point the barrel (-Z of the mount) that way, a
 	# little downward like a relaxed low-ready.
-	var fwd := (pivot.global_transform.basis * Vector3(0.15, -0.35, 1.0)).normalized()
+	var fwd := (pivot.global_transform.basis * Vector3(0.15, -0.3, 1.0)).normalized()
 	var origin := hand_mount.global_transform.origin + hand_mount.global_transform.basis * Vector3(0, -0.02, 0)
 	gun_mount.global_transform = Transform3D(Basis.looking_at(fwd, Vector3.UP), origin)
 

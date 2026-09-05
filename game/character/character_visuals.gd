@@ -6,6 +6,7 @@ extends Node3D
 var character: Character
 var skeleton: Skeleton3D
 var aim_spine: AimSpineModifier
+var arm_pose: ArmPoseModifier
 var weapon_holder: WeaponHolder
 var helmet_mesh: MeshInstance3D
 var armor_mesh: MeshInstance3D
@@ -26,6 +27,9 @@ func _ready() -> void:
 	aim_spine = AimSpineModifier.new()
 	aim_spine.name = "AimSpine"
 	skeleton.add_child(aim_spine)
+	arm_pose = ArmPoseModifier.new()
+	arm_pose.name = "ArmPose"
+	skeleton.add_child(arm_pose)
 	weapon_holder = WeaponHolder.new()
 	weapon_holder.name = "HandR"
 	weapon_holder.bone_name = "hand.r"
@@ -78,6 +82,12 @@ func _process(dt: float) -> void:
 	scale.y = lerpf(scale.y, target_scale, 1.0 - exp(-14.0 * dt))
 	if aim_spine:
 		aim_spine.pitch = character.pitch
+	if arm_pose and skeleton:
+		# arms only hold the gun on foot; the parachute and melee keep the clip's arms
+		arm_pose.weapon_class = "" if character.mode == Character.Mode.PARACHUTE else _held_class
+		var aim: Vector3 = character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else \
+			Vector3(-sin(character.yaw) * cos(character.pitch), sin(character.pitch), -cos(character.yaw) * cos(character.pitch))
+		arm_pose.aim_dir = skeleton.global_transform.basis.inverse() * aim
 	if canopy:
 		canopy.visible = character.mode == Character.Mode.PARACHUTE
 	if hat:
@@ -135,7 +145,10 @@ func play_melee() -> void:
 	if anim:
 		anim.play_melee()
 
+var _held_class: String = ""
+
 func show_weapon(weapon_id: String, weapon_class: String) -> void:
+	_held_class = weapon_class if weapon_id != "" else ""
 	if weapon_holder:
 		weapon_holder.set_weapon(weapon_id, weapon_class)
 	if anim:

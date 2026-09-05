@@ -113,19 +113,106 @@ static func recipe_material(recipe: Dictionary, roughness := 0.85, tri_scale := 
 	return make_material(String(recipe.get("color", recipe.get("base", "#888888"))), String(recipe.get("pattern", "solid")), String(recipe.get("accent", "")), roughness, tri_scale)
 
 # ---------- characters ----------
-## Recolours the mannequin: chest item -> 'Azul' (body suit), legs item -> 'Blanco' (accents).
+const SHIRT_MIN_Y := 0.98    ## waist: body-suit faces above this become the shirt
+const SHOE_MAX_Y := 0.12     ## ankle: faces below this become shoes
+static var _split_cache: Dictionary = {}   # source mesh RID -> split ArrayMesh
+
+## The mannequin is one body suit ('Azul'). Split that surface by height into shirt / pants /
+## shoes surfaces (skin weights preserved) so clothes read as clothes. Cached and shared.
+static func split_body_mesh(src: Mesh) -> ArrayMesh:
+	var key := src.get_rid()
+	if _split_cache.has(key):
+		return _split_cache[key]
+	var out := ArrayMesh.new()
+	var azul := -1
+	for i in src.get_surface_count():
+		var mat := src.surface_get_material(i)
+		if mat and mat.resource_name == "Azul" and azul < 0:
+			azul = i
+	if azul < 0:
+		_split_cache[key] = src
+		return src
+	# keep every other surface as it is (same indices) and append the split parts
+	var parts := {"shirt": SurfaceTool.new(), "pants": SurfaceTool.new(), "shoes": SurfaceTool.new()}
+	var mdt := MeshDataTool.new()
+	if mdt.create_from_surface(src, azul) != OK:
+		_split_cache[key] = src
+		return src
+	var arrays := src.surface_get_arrays(azul)
+	var vcount: int = arrays[Mesh.ARRAY_VERTEX].size()
+	var bones_per := 4
+	if arrays[Mesh.ARRAY_BONES] != null and vcount > 0:
+		bones_per = int(arrays[Mesh.ARRAY_BONES].size() / vcount)
+	for name in parts:
+		var st: SurfaceTool = parts[name]
+		st.set_skin_weight_count(SurfaceTool.SKIN_8_WEIGHTS if bones_per == 8 else SurfaceTool.SKIN_4_WEIGHTS)
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var counts := {"shirt": 0, "pants": 0, "shoes": 0}
+	for f in mdt.get_face_count():
+		var idx := [mdt.get_face_vertex(f, 0), mdt.get_face_vertex(f, 1), mdt.get_face_vertex(f, 2)]
+		var y := 0.0
+		for vi in idx:
+			y += mdt.get_vertex(vi).y
+		y /= 3.0
+		var part := "shirt" if y >= SHIRT_MIN_Y else ("shoes" if y < SHOE_MAX_Y else "pants")
+		var st: SurfaceTool = parts[part]
+		counts[part] += 1
+		for vi in idx:
+			st.set_normal(mdt.get_vertex_normal(vi))
+			st.set_uv(mdt.get_vertex_uv(vi))
+			st.set_bones(mdt.get_vertex_bones(vi))
+			st.set_weights(mdt.get_vertex_weights(vi))
+			st.add_vertex(mdt.get_vertex(vi))
+	var azul_mat := src.surface_get_material(azul)
+	for i in src.get_surface_count():
+		var arr: Array = src.surface_get_arrays(i) if i != azul else []
+		if i == azul:
+			# shirt takes the original slot so surface indices of the others stay stable
+			var st: SurfaceTool = parts["shirt"]
+			st.index()
+			out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, st.commit_to_arrays())
+			out.surface_set_name(out.get_surface_count() - 1, "shirt")
+			out.surface_set_material(out.get_surface_count() - 1, azul_mat)
+		else:
+			out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+			out.surface_set_name(out.get_surface_count() - 1, src.surface_get_name(i))
+			out.surface_set_material(out.get_surface_count() - 1, src.surface_get_material(i))
+	for name in ["pants", "shoes"]:
+		if counts[name] == 0:
+			continue
+		var st: SurfaceTool = parts[name]
+		st.index()
+		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, st.commit_to_arrays())
+		out.surface_set_name(out.get_surface_count() - 1, name)
+		out.surface_set_material(out.get_surface_count() - 1, azul_mat)
+	_split_cache[key] = out
+	return out
+
+## Dresses the mannequin: shirt surface <- chest item, pants (+ 'Blanco' accents) <- legs item,
+## shoes <- feet item, gloves tint the hands' accent when present.
 static func apply_to_character(vis: Node3D, loadout: Dictionary) -> void:
 	var chest := item(String(loadout.get("chest", "")))
 	var legs := item(String(loadout.get("legs", "")))
+	var feet := item(String(loadout.get("feet", "")))
 	for m in vis.find_children("*", "MeshInstance3D", true, false):
 		var mi := m as MeshInstance3D
 		if mi.mesh == null or mi.get_parent_node_3d() == null:
 			continue
+		if mi.skin != null or mi.get_parent() is Skeleton3D:
+			mi.mesh = split_body_mesh(mi.mesh)
 		for i in mi.mesh.get_surface_count():
 			var mat := mi.mesh.surface_get_material(i)
 			var mname := mat.resource_name if mat else ""
-			if mname == "Azul" and not chest.is_empty():
-				mi.set_surface_override_material(i, recipe_material(chest["recipe"], 0.9, 2.5))
+			var sname: String = mi.mesh.surface_get_name(i)
+			if sname == "shirt" or (mname == "Azul" and sname != "pants" and sname != "shoes"):
+				if not chest.is_empty():
+					mi.set_surface_override_material(i, recipe_material(chest["recipe"], 0.9, 2.5))
+			elif sname == "pants":
+				if not legs.is_empty():
+					mi.set_surface_override_material(i, recipe_material(legs["recipe"], 0.9, 2.5))
+			elif sname == "shoes":
+				if not feet.is_empty():
+					mi.set_surface_override_material(i, recipe_material(feet["recipe"], 0.7, 4.0))
 			elif mname == "Blanco" and not legs.is_empty():
 				mi.set_surface_override_material(i, recipe_material(legs["recipe"], 0.9, 2.5))
 
