@@ -38,6 +38,7 @@ var gas_timer: float = 0.0
 @onready var collision: CollisionShape3D = $Collision
 @onready var visual: Node3D = $Visual
 @onready var combat: CharacterCombat = $Combat
+@onready var interaction: CharacterInteraction = $Interaction
 
 var cfg: Dictionary = DataLib.movement()
 
@@ -88,6 +89,7 @@ func _physics_process(dt: float) -> void:
 	pitch = input.pitch
 	motor.simulate(dt)
 	combat.tick(dt)
+	interaction.tick()
 	_tick_heal(dt)
 	prev_input = input.duplicate_input()
 

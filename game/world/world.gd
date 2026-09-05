@@ -8,6 +8,7 @@ var height_field: HeightField
 var terrain: Node3D
 var backend_name: String = ""
 var colormap: Image
+var loot_registry: LootRegistry
 
 @onready var buildings: Node3D = $Buildings
 @onready var trees: Node3D = $Trees
@@ -46,6 +47,9 @@ func setup(mode: String = "auto", map_layout: MapLayout = null) -> void:
 	var fx := HitFx.new()
 	fx.name = "HitFx"
 	add_child(fx)
+	loot_registry = LootRegistry.new()
+	loot_registry.name = "LootRegistry"
+	loot.add_child(loot_registry)
 
 func height_at(x: float, z: float) -> float:
 	return height_field.height_at(x, z)

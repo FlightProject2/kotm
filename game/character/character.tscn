@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://game/character/character.gd" id="1"]
 [ext_resource type="Script" path="res://game/character/character_motor.gd" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://game/character/character_visuals.gd" id="4"]
 [ext_resource type="Script" path="res://game/character/hitbox_rig.gd" id="5"]
 [ext_resource type="Script" path="res://game/character/character_combat.gd" id="6"]
+[ext_resource type="Script" path="res://game/character/character_interaction.gd" id="7"]
 
 [sub_resource type="CapsuleShape3D" id="capsule"]
 radius = 0.35
@@ -27,6 +28,9 @@ script = ExtResource("2")
 
 [node name="Combat" type="Node" parent="."]
 script = ExtResource("6")
+
+[node name="Interaction" type="Node" parent="."]
+script = ExtResource("7")
 
 [node name="Visual" type="Node3D" parent="."]
 script = ExtResource("4")

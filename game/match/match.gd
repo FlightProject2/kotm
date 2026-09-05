@@ -22,6 +22,8 @@ var is_over: bool = false
 var kills_total: int = 0
 var shots_total: int = 0
 var landed_count: int = 0
+var loot_count: int = 0
+var loot_stats: Dictionary = {}
 var rng_spawn := RandomNumberGenerator.new()
 var rng_loot := RandomNumberGenerator.new()
 var rng_zone := RandomNumberGenerator.new()
@@ -37,6 +39,8 @@ func start(p_seed: int, p_world: World, p_preset: Dictionary, bot_count: int, wi
 	rng_loot.seed = p_seed + 1
 	rng_zone.seed = p_seed + 2
 	rng_bots.seed = p_seed + 3
+	loot_stats = LootSpawner.generate(world, world.loot_registry, rng_loot, preset)
+	loot_count = int(loot_stats["total"])
 	var total := bot_count + (1 if with_player else 0)
 	var spawns: Array = SpawnSelector.pick(total, world.height_field, preset, rng_spawn)
 	var i := 0
@@ -81,6 +85,7 @@ func _process(dt: float) -> void:
 
 func _on_character_died(killer: Character, how: String, headshot: bool, victim: Character) -> void:
 	alive_count -= 1
+	CharacterInteraction.drop_bag(victim, world.loot_registry)
 	if killer:
 		killer.kills += 1
 		kills_total += 1
@@ -116,4 +121,5 @@ func alive_characters() -> Array[Character]:
 
 func summary() -> Dictionary:
 	return {"ok": true, "seed": match_seed, "time": snappedf(match_time, 0.1), "alive": alive_count,
-		"landed": landed_count, "kills": kills_total, "shots": shots_total}
+		"landed": landed_count, "kills": kills_total, "shots": ProjectileSystem.instance.shots_fired if ProjectileSystem.instance else 0,
+		"loot": loot_stats, "loot_left": world.loot_registry.count()}
