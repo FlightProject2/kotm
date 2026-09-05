@@ -19,7 +19,7 @@ func _run() -> void:
 		if filter != "" and not f.contains(filter):
 			continue
 		var script: GDScript = load(f)
-		if script == null:
+		if script == null or not script.can_instantiate():
 			push_error("cannot load test script " + f)
 			failed += 1
 			continue

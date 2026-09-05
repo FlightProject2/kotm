@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://game/character/character.gd" id="1"]
 [ext_resource type="Script" path="res://game/character/character_motor.gd" id="2"]
 [ext_resource type="PackedScene" path="res://assets/characters/mannequiny/mannequiny-0.3.0.glb" id="3"]
+[ext_resource type="Script" path="res://game/character/character_visuals.gd" id="4"]
+[ext_resource type="Script" path="res://game/character/hitbox_rig.gd" id="5"]
 
 [sub_resource type="CapsuleShape3D" id="capsule"]
 radius = 0.35
@@ -23,5 +25,10 @@ shape = SubResource("capsule")
 script = ExtResource("2")
 
 [node name="Visual" type="Node3D" parent="."]
+script = ExtResource("4")
 
 [node name="Mannequin" parent="Visual" instance=ExtResource("3")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="Hitboxes" type="Node" parent="."]
+script = ExtResource("5")
