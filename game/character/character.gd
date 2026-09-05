@@ -68,7 +68,7 @@ func forward() -> Vector3:
 
 func right() -> Vector3:
 	var f := forward()
-	return Vector3(f.z, 0, -f.x)
+	return Vector3(-f.z, 0, f.x)   # facing -Z gives +X, Godot's right
 
 ## Local player / bot entry point. On a client this will become an RPC to the server.
 func submit_input(i: CharacterInput) -> void:

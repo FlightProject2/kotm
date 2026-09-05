@@ -42,6 +42,9 @@ func test_sprint_walk_crouch_speeds() -> void:
 	assert_true(ch.crouching)
 	assert_near((ch.collision.shape as CapsuleShape3D).height, 1.2, 0.001, "crouch capsule")
 	assert_true(ch.forward().dot(Vector3(ch.velocity.x, 0, ch.velocity.z).normalized()) > 0.99, "moves along facing")
+	await _drive(ch, 60, func(i: CharacterInput) -> void: i.move = Vector2(1, 0))
+	assert_true(ch.velocity.x > 2.0 and absf(ch.velocity.z) < 0.5, "D strafes to +X when facing -Z (vel %s)" % ch.velocity)
+	assert_true(ch.right().is_equal_approx(Vector3(1, 0, 0)), "right() is +X when facing -Z")
 	ch.queue_free(); f.queue_free()
 	await settle(1)
 
