@@ -25,6 +25,8 @@ func _run() -> void:
 	_save("hit_armor", _clank(0.16, 1800.0, 900.0))
 	_save("armor_break", _clank(0.3, 1400.0, 500.0))
 	_save("helmet_pop", _helmet(rng))
+	_save("helmet_ding", _ding())
+	_save("death_grunt", _grunt(rng))
 	_save("kill", _sting([880.0, 1320.0], 0.1, 0.3))
 	_save("headshot", _sting([1320.0, 1760.0], 0.08, 0.25))
 	_save("pickup", _blip(600.0, 900.0, 0.13))
@@ -131,6 +133,41 @@ func _crack(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	for i in n:
 		var t := float(i) / RATE
 		out[i] = rng.randf_range(-1, 1) * _env(t, 0.0005, 0.012) * 0.8
+	return out
+
+## Bright metallic "DING": inharmonic partials of a struck steel shell, fast attack, ringing tail.
+func _ding() -> PackedFloat32Array:
+	var length := 0.55
+	var n := int(RATE * length)
+	var out := PackedFloat32Array()
+	out.resize(n)
+	var partials := [[2350.0, 1.0, 0.16], [3720.0, 0.55, 0.11], [5210.0, 0.35, 0.08], [1180.0, 0.25, 0.22], [7400.0, 0.18, 0.05]]
+	for i in n:
+		var t := float(i) / RATE
+		var v := 0.0
+		for p in partials:
+			v += sin(TAU * float(p[0]) * t) * float(p[1]) * _env(t, 0.002, float(p[2]))
+		out[i] = clampf(v * 0.45, -1.0, 1.0)
+	return out
+
+## Short "ugh": a voiced grunt, pitch dropping from 190 to 110 Hz with breathy noise and a formant.
+func _grunt(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var length := 0.42
+	var n := int(RATE * length)
+	var raw := PackedFloat32Array()
+	raw.resize(n)
+	var phase := 0.0
+	for i in n:
+		var t := float(i) / RATE
+		var f0 := lerpf(190.0, 110.0, minf(1.0, t / 0.35))
+		phase += TAU * f0 / RATE
+		var voiced := (sin(phase) + 0.5 * sin(2.0 * phase) + 0.25 * sin(3.0 * phase)) * 0.6
+		var noise := rng.randf_range(-1.0, 1.0) * 0.35
+		var env := _env(t, 0.03, 0.14) * (1.0 - smoothstep(0.3, 0.42, t))
+		raw[i] = (voiced + noise) * env
+	var out := _lowpass(raw, 900.0)
+	for i in n:
+		out[i] = clampf(out[i] * 1.6, -1.0, 1.0)
 	return out
 
 func _save(name: String, samples: PackedFloat32Array) -> void:

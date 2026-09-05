@@ -147,7 +147,12 @@ func _process_debug(dt: float) -> void:
 	if _debug_t >= 5.0 and match_node and match_node.local_player and OS.has_feature("web"):
 		_debug_t = 0.0
 		var p := match_node.local_player
-		print("KOTM: player pos=%s yaw=%.2f mode=%d mouse_mode=%d hp=%.0f" % [p.global_position.round(), p.yaw, p.mode, Input.mouse_mode, p.health.hp])
+		print("KOTM: player pos=%s yaw=%.2f mode=%d mouse_mode=%d hp=%.0f fps=%d vel=%s floor=%s" % [p.global_position.round(), p.yaw, p.mode, Input.mouse_mode, p.health.hp, Engine.get_frames_per_second(), p.velocity.round(), p.is_on_floor()])
+		var tv := world.get_node_or_null("Terrain/MeshTerrain/Visual") if world else null
+		if tv == null and world:
+			tv = world.find_child("Visual", true, false)
+		if tv:
+			print("KOTM: terrain visual visible=%s in_tree=%s aabb=%s mat=%s" % [tv.visible, tv.is_visible_in_tree(), tv.get_aabb(), tv.material_override])
 
 static func _parse_args(list: PackedStringArray) -> Dictionary:
 	var out := {}

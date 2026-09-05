@@ -40,6 +40,14 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		backend_name = "mesh"
 	add_child(terrain)
 	move_child(terrain, 0)
+	if "--env=plain" in OS.get_cmdline_user_args():
+		# render debugging: no fog, flat ambient, linear tonemap
+		var env: Environment = $Env.environment
+		env.fog_enabled = false
+		env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		env.ambient_light_color = Color(0.6, 0.6, 0.65)
+		print("World: plain environment")
 	var ps := ProjectileSystem.new()
 	ps.name = "ProjectileSystem"
 	ps.world = self

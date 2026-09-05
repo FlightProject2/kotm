@@ -7,6 +7,7 @@ var character: Character
 var skeleton: Skeleton3D
 var aim_spine: AimSpineModifier
 var arm_pose: ArmPoseModifier
+var crouch_pose: CrouchPoseModifier
 var weapon_holder: WeaponHolder
 var helmet_mesh: MeshInstance3D
 var armor_mesh: MeshInstance3D
@@ -24,6 +25,9 @@ func _ready() -> void:
 	if character.cosmetics.is_empty():
 		character.cosmetics = SkinSystem.default_loadout()
 	SkinSystem.apply_to_character(self, character.cosmetics)
+	crouch_pose = CrouchPoseModifier.new()
+	crouch_pose.name = "CrouchPose"
+	skeleton.add_child(crouch_pose)
 	aim_spine = AimSpineModifier.new()
 	aim_spine.name = "AimSpine"
 	skeleton.add_child(aim_spine)
@@ -78,8 +82,8 @@ func _physics_process(_dt: float) -> void:
 func _process(dt: float) -> void:
 	if character == null:
 		return
-	var target_scale := 0.67 if character.crouching else 1.0
-	scale.y = lerpf(scale.y, target_scale, 1.0 - exp(-14.0 * dt))
+	if crouch_pose:
+		crouch_pose.crouching = character.crouching and character.mode == Character.Mode.GROUND
 	if aim_spine:
 		aim_spine.pitch = character.pitch
 	if arm_pose and skeleton:

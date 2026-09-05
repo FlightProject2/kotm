@@ -54,7 +54,26 @@ static func _visual(world: World) -> MeshInstance3D:
 	var mi := MeshInstance3D.new()
 	mi.name = "Visual"
 	mi.mesh = st.commit()
-	mi.material_override = make_material()
+	var mode := "shader"
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--terrain-mat="):
+			mode = a.substr(14)
+	match mode:
+		"standard":
+			var sm := StandardMaterial3D.new()
+			sm.vertex_color_use_as_albedo = true
+			sm.roughness = 1.0
+			mi.material_override = sm
+		"flat":
+			var fm := StandardMaterial3D.new()
+			fm.albedo_color = Color(0.35, 0.5, 0.2)
+			fm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			mi.material_override = fm
+		"none":
+			pass
+		_:
+			mi.material_override = make_material()
+	print("MeshTerrain: visual verts=%d aabb=%s material=%s" % [mi.mesh.surface_get_array_len(0), mi.mesh.get_aabb(), mode])
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return mi
 

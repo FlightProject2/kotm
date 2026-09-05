@@ -83,9 +83,8 @@ func _start_render(weapon_id: String) -> void:
 	var scale := minf(1.0, (ICON_LENGTH * 0.9) / length)
 	mount.scale = Vector3.ONE * scale
 	mount.position = Vector3(-centre_x * scale, -muzzle.y * scale * 0.5, 0)
-	cam.position = Vector3(0, 0, 3)
-	cam.look_at(Vector3.ZERO, Vector3.UP)
 	add_child(vp)
+	cam.look_at_from_position(Vector3(0, 0, 3), Vector3.ZERO, Vector3.UP)
 	_pending[weapon_id] = vp
 	_frames_left[weapon_id] = 3
 

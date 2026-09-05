@@ -38,9 +38,8 @@ func _ready() -> void:
 	cam = Camera3D.new()
 	cam.environment = env
 	cam.fov = 32.0
-	cam.position = Vector3(0, 1.05, 4.4)
-	cam.look_at(Vector3(0, 0.95, 0), Vector3.UP)
 	viewport.add_child(cam)
+	cam.look_at_from_position(Vector3(0, 1.05, 4.4), Vector3(0, 0.95, 0), Vector3.UP)
 	var key := DirectionalLight3D.new()
 	key.light_energy = 1.7
 	key.light_color = Color(1.0, 0.95, 0.88)

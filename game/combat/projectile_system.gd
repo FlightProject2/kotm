@@ -105,7 +105,7 @@ func _impact(p: Proj, hit: Dictionary) -> void:
 			Events.hit_confirmed.emit(r.kind, r.killed)
 		if victim.is_local():
 			Events.damaged.emit(r.damage, (p.shooter.global_position - victim.global_position).normalized() if is_instance_valid(p.shooter) else Vector3.ZERO, r.kind)
-		Net.fx_all("hit_fx", [p.pos, normal, "armor" if r.kind == DamageModel.KIND_ARMOR or r.kind == DamageModel.KIND_ARMOR_BREAK else ("helmet" if r.kind == DamageModel.KIND_HELMET_POP else "flesh")])
+		Net.fx_all("hit_fx", [p.pos, normal, "armor" if r.kind == DamageModel.KIND_ARMOR or r.kind == DamageModel.KIND_ARMOR_BREAK else ("helmet" if r.kind == DamageModel.KIND_HELMET_POP or r.helmet_destroyed else "flesh")])
 		if r.helmet_destroyed:
 			Net.fx_all("helmet_pop", [victim.global_position + Vector3(0, 1.6, 0), "helmet"])
 	else:

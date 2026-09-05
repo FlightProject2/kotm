@@ -120,6 +120,7 @@ func _die(killer: Character, how: String, headshot: bool) -> void:
 	var rig := get_node_or_null("Hitboxes") as HitboxRig
 	if rig:
 		rig.set_enabled(false)
+	Events.hit_fx.emit(global_position + Vector3(0, 1.2, 0), Vector3.UP, "death")
 	died.emit(killer, how, headshot)
 
 func start_heal(med_id: String) -> bool:

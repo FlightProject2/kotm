@@ -87,7 +87,8 @@ func _on_hit_fx(pos: Vector3, _n: Vector3, kind: String) -> void:
 	match kind:
 		"flesh": play_at("hit_flesh", pos, 0.8)
 		"armor": play_at("hit_armor", pos, 0.8)
-		"helmet": pass
+		"helmet": play_at("helmet_ding", pos, 1.0, 0.03)
+		"death": play_at("death_grunt", pos, 1.0, 0.08)
 		_: play_at("crack", pos, 0.25, 0.2)
 
 func _on_hit_confirmed(kind: String, killed: bool) -> void:
@@ -96,7 +97,7 @@ func _on_hit_confirmed(kind: String, killed: bool) -> void:
 		return
 	match kind:
 		"armor", "armor_break": play_ui("hit_armor", -8.0)
-		"helmet_pop": play_ui("helmet_pop", -6.0)
+		"helmet_pop", "helmet": play_ui("helmet_ding", -4.0)
 		_: play_ui("hit_flesh", -8.0)
 
 func _process(_dt: float) -> void:
