@@ -1,21 +1,23 @@
 extends Node
-## Entry point: main menu -> match; or headless simulation with --sim (see README).
+## Entry point: menus -> match -> end screen -> menus; or headless simulation with --sim (README).
 
 const WORLD_SCENE := preload("res://game/world/world.tscn")
 const CAMERA_SCENE := preload("res://game/camera/camera_rig.tscn")
 const HUD_SCRIPT := preload("res://game/ui/hud.gd")
+const MENUS_SCRIPT := preload("res://game/ui/menus.gd")
 
 var args: Dictionary = {}
 var world: World
 var match_node: Match
 var camera_rig: CameraRig
 var hud: HUD
+var menus: Menus
 var sim: bool = false
 var sim_seconds: float = 60.0
 var preset: Dictionary
-
-@onready var menu: Control = $Menus/MainMenu
-@onready var status_label: Label = $Menus/MainMenu/Status
+var paused: bool = false
+var in_match: bool = false
+var _debug_t: float = 0.0
 
 func _ready() -> void:
 	args = _parse_args(OS.get_cmdline_user_args())
@@ -23,14 +25,21 @@ func _ready() -> void:
 	sim = args.has("sim")
 	if sim:
 		sim_seconds = float(args.get("sim-seconds", 60))
-		menu.visible = false
 		start_match(int(args.get("seed", 1)), int(args.get("bots", preset["botCount"])), not args.has("no-player"), str(args.get("terrain", "auto")))
-	else:
-		menu.visible = true
-		$Menus/MainMenu/Play.pressed.connect(_on_play)
+		return
+	menus = MENUS_SCRIPT.new()
+	menus.name = "Menus"
+	add_child(menus)
+	menus.play_pressed.connect(_on_play)
+	menus.resume_pressed.connect(func() -> void: _set_paused(false))
+	menus.quit_to_menu_pressed.connect(_quit_to_menu)
+	menus.quit_game_pressed.connect(func() -> void: get_tree().quit())
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_play() -> void:
-	menu.visible = false
+	if in_match:
+		_end_match()
+	menus.hide_all()
 	start_match(randi(), int(preset["botCount"]), true, str(args.get("terrain", "auto")))
 
 func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String) -> void:
@@ -59,7 +68,24 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 		if not sim:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			hud.show_banner("Parachute in. Click in the game to lock the mouse; Esc pauses.")
+	in_match = true
+	paused = false
 	print("KOTM: match started seed=%d bots=%d terrain=%s" % [p_seed, bots, world.backend_name])
+
+## Tears the current match down (world, match, camera, HUD) so a new one can start clean.
+func _end_match() -> void:
+	in_match = false
+	paused = false
+	for n in [hud, camera_rig, match_node, world]:
+		if n and is_instance_valid(n):
+			n.queue_free()
+	hud = null; camera_rig = null; match_node = null; world = null
+
+func _quit_to_menu() -> void:
+	_end_match()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	menus.main_status.text = ""
+	menus.show_screen("main")
 
 func _process(dt: float) -> void:
 	if sim and match_node and match_node.match_time >= sim_seconds:
@@ -79,19 +105,26 @@ func _on_match_ended(won: bool, placement: int, killer_name: String, weapon: Str
 		_print_summary_and_quit()
 		return
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if hud:
-		hud.visible = false
-	menu.visible = true
-	status_label.text = ("KING OF THE MOUNTAIN" if won else "You placed #%d" % placement) + (" · killed by %s (%s)" % [killer_name, weapon] if not won and killer_name != "" else "")
-
-var paused: bool = false
-var _debug_t: float = 0.0
+	var src := match_node.local_player.get_node_or_null("Input") if match_node and match_node.local_player else null
+	if src:
+		src.enabled = false
+	if camera_rig:
+		camera_rig.look_enabled = false
+	var p := match_node.local_player if match_node else null
+	var stats := {
+		"kills": p.kills if p else 0, "damage": p.damage_dealt if p else 0.0,
+		"time": match_node.match_time if match_node else 0.0, "players": match_node.characters.size() if match_node else 0,
+	}
+	menus.show_end(won, placement, killer_name, weapon, headshot, stats)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if match_node == null or sim or match_node.is_over:
 		return
 	if event.is_action_pressed("pause"):
-		_set_paused(not paused)
+		if paused and menus.current == "settings":
+			menus.show_screen("pause")
+		else:
+			_set_paused(not paused)
 	elif event is InputEventMouseButton and event.pressed and not paused and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		# Browsers only grant pointer lock from a click inside the canvas.
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -104,8 +137,10 @@ func _set_paused(on: bool) -> void:
 		src.enabled = not on
 	if camera_rig:
 		camera_rig.look_enabled = not on
-	if hud:
-		hud.show_banner("Paused. Press Esc to resume." if on else "Click in the game to lock the mouse.")
+	if on:
+		menus.show_screen("pause")
+	else:
+		menus.hide_all()
 
 func _process_debug(dt: float) -> void:
 	_debug_t += dt

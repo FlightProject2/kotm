@@ -16,6 +16,7 @@ config/icon="res://icon.svg"
 Settings="*res://game/autoload/settings.gd"
 Events="*res://game/autoload/events.gd"
 Net="*res://game/autoload/net.gd"
+AudioManager="*res://game/audio/audio_manager.gd"
 
 [debug]
 
