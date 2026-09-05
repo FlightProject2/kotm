@@ -6,8 +6,19 @@ point per player (no bus, no plane), projectile bullets with visible trails and 
 helmets that crack, body armor that soaks, vehicles that drift, toxic gas that closes in, and the
 last player standing crowned **King of the Mountain**.
 
-This repository currently holds the **game plan** (design + technical blueprint) that the
-implementation will be built from. No engine code yet.
+This repository holds the **game plan** (design + technical blueprint) and a **browser prototype**
+used to playtest the plan's numbers before any engine work.
+
+## Play the prototype
+
+Open `prototype/index.html` in Chrome or Edge. That is the whole install: it is one HTML file that
+loads Three.js from a CDN, so it needs an internet connection but no Node, no build step, and no
+server. Click **Play**, and the game grabs the mouse.
+
+It is a single-player Phase 1 feel test on a 1.2 km map against 30 bots: random-point parachute
+spawn, projectile bullets with per-gun drop and tracers, helmet pop, laminated armor, bleeding,
+loot and death bags, and a compressed 6-minute gas schedule. Shapes are placeholders; the numbers
+come from `design/data`.
 
 ## Document index
 
