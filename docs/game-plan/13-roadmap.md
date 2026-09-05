@@ -10,8 +10,19 @@ Terrain3D and mesh backends, shared character body with motor/camera/input, rand
 spawns and match flow, bone-driven hitboxes and visuals, weapons/projectiles/tracers/hit effects,
 seeded loot with pickups and death bags, the gas zone, the HUD, the bot AI, kit-assembled building
 prefabs with props and trees, the cosmetic skin system, placeholder audio, and a web export served
-from `gh-pages`. Backlog (M1.5): prone, navmesh bots, doors, vehicles, retargeted animations,
-host/join multiplayer, Customize/Inventory screens, real gun and character models.
+from `gh-pages`.
+
+Second pass (feel and presentation): snappy movement (linear accel/decel, air momentum, jump
+buffer + coyote time, same-tick input, physics interpolation), muzzle-accurate shooting (auto-fitted
+gun models with a Muzzle marker, aim-tracking mount, flash), a two-hand IK armed pose with torso
+twist, the body suit split into shirt/pants/shoes so clothes read, a procedural terrain material
+(grass, dirt roads, gravel rail bed, rock, snow), warmer lighting with ACES, hotbar tiles that render
+the gun model with mag/reserve, the full menu set (main with live character preview, Customize,
+Settings, Pause, End), building prefabs merged to one mesh each (4284 -> 84 instances), and a
+distance-based animation LOD for bots.
+
+Backlog (M1.5): prone, navmesh bots, doors, vehicles, retargeted animations (walk/aim/crouch),
+host/join multiplayer, Inventory screen, higher-detail gun and character models, grass.
 
 ## Phase 0 – Pre-production (4 weeks)
 

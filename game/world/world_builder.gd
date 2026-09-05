@@ -28,6 +28,7 @@ static func build(world: World) -> Dictionary:
 		var node: Node3D
 		if scene:
 			node = scene.instantiate()
+			merge_meshes(node, id)
 			stats["buildings"] += 1
 		else:
 			node = _placeholder(id)
@@ -46,6 +47,72 @@ static func build(world: World) -> Dictionary:
 	_wrecks(world, rng, stats)
 	_farm_fences(world, rng, stats)
 	return stats
+
+static var _merged_cache: Dictionary = {}   # prefab id -> {mesh: ArrayMesh, xf: Transform3D}
+
+## A prefab is ~50 kit pieces, each its own draw call (x shadow splits). Merge every mesh piece
+## into one ArrayMesh with a surface per material so a building costs a handful of draw calls.
+## Collision shapes and LootNodes are untouched. The merged mesh is cached per prefab id.
+static func merge_meshes(node: Node3D, id: String) -> void:
+	var pieces: Array = []
+	for m in node.find_children("*", "MeshInstance3D", true, false):
+		var mi := m as MeshInstance3D
+		if mi.mesh == null:
+			continue
+		pieces.append(mi)
+	if pieces.is_empty():
+		return
+	var merged: ArrayMesh = null
+	if _merged_cache.has(id):
+		merged = _merged_cache[id]
+	else:
+		var groups: Dictionary = {}    # "material_rid|format" -> [SurfaceTool, Material]
+		var order: Array = []
+		for mi in pieces:
+			var xf: Transform3D = _relative_transform(mi, node)
+			for si in mi.mesh.get_surface_count():
+				var mat: Material = mi.get_active_material(si)
+				var key := "%s|%s" % [mat.get_rid() if mat else "none", _format_key(mi.mesh, si)]
+				if not groups.has(key):
+					var st := SurfaceTool.new()
+					st.begin(Mesh.PRIMITIVE_TRIANGLES)
+					groups[key] = [st, mat]
+					order.append(key)
+				var st: SurfaceTool = groups[key][0]
+				st.append_from(mi.mesh, si, xf)
+		merged = ArrayMesh.new()
+		for key in order:
+			var st: SurfaceTool = groups[key][0]
+			st.commit(merged)
+			var mat: Material = groups[key][1]
+			if mat:
+				merged.surface_set_material(merged.get_surface_count() - 1, mat)
+		_merged_cache[id] = merged
+	for mi in pieces:
+		mi.get_parent().remove_child(mi)
+		mi.queue_free()
+	var out := MeshInstance3D.new()
+	out.name = "MergedMesh"
+	out.mesh = merged
+	out.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	node.add_child(out)
+
+## Which vertex arrays a surface carries (surfaces with different layouts must not be merged).
+static func _format_key(mesh: Mesh, si: int) -> String:
+	var arrays := mesh.surface_get_arrays(si)
+	var key := ""
+	for i in arrays.size():
+		key += "1" if arrays[i] != null else "0"
+	return key
+
+static func _relative_transform(n: Node3D, ancestor: Node3D) -> Transform3D:
+	var xf := Transform3D.IDENTITY
+	var cur: Node = n
+	while cur != null and cur != ancestor:
+		if cur is Node3D:
+			xf = (cur as Node3D).transform * xf
+		cur = cur.get_parent()
+	return xf
 
 static func _placeholder(id: String) -> Node3D:
 	var body := StaticBody3D.new()

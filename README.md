@@ -19,9 +19,12 @@ at:
 
     https://flightproject2.github.io/kotm/
 
-Click **PLAY (SOLO)**, and the game captures the mouse. Esc releases it. The browser build uses the
-fallback mesh terrain (Terrain3D has no web binary), runs single-threaded, and is a first playable,
-not the target performance. Chrome or Edge on a desktop is recommended.
+Click **PLAY SOLO**, then click once in the game to lock the mouse. Esc opens the pause menu.
+**CUSTOMIZE** picks clothes, hats and weapon skins with a live preview; **SETTINGS** has mouse
+sensitivity, invert Y, volume and first-person default. The browser build uses the fallback mesh
+terrain (Terrain3D has no web binary), runs single-threaded, and renders at 0.85 scale with smaller
+shadows. Chrome or Edge on a desktop is recommended. After a new build is published, hard-refresh
+(Ctrl+F5) so the browser drops the cached copy.
 
 ### In Godot (the real thing)
 
@@ -44,7 +47,7 @@ Esc release the mouse. Under the parachute: W dives, S flares, mouse steers.
 
 ```
 tools/ci/setup_godot.sh                 # downloads the pinned Godot 4.6.3 Linux binary
-tools/ci/test.sh                        # import + 39 unit/scene tests + TTK parity with tools/ttk.py
+tools/ci/test.sh                        # import + 46 unit/scene tests + TTK parity with tools/ttk.py
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path . res://game/main/main.tscn -- --sim --seed=7 --bots=30 --sim-seconds=240 --no-player
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
 ```
