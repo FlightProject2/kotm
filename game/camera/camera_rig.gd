@@ -13,6 +13,7 @@ var aiming: bool = false
 var scoped: bool = false
 var recoil_pitch: float = 0.0
 var recoil_yaw: float = 0.0
+var look_enabled: bool = true
 var cfg: Dictionary = DataLib.movement()["camera"]
 
 @onready var pivot: Node3D = $Pivot
@@ -28,7 +29,7 @@ func _ready() -> void:
 		first_person = Settings.first_person_default
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and look_enabled and (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or Input.mouse_mode == Input.MOUSE_MODE_VISIBLE):
 		var sens: float = Settings.mouse_sensitivity if Settings else 0.0022
 		if scoped:
 			sens *= float(cfg["scopeSensMult"])

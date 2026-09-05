@@ -9,15 +9,22 @@ var tick: int = 0
 var enabled: bool = true
 
 func _physics_process(_dt: float) -> void:
-	if character == null or camera_rig == null or not enabled:
+	if character == null or camera_rig == null:
+		return
+	if not enabled:
+		var idle := CharacterInput.new()
+		idle.yaw = character.yaw
+		idle.pitch = character.pitch
+		idle.aim_dir = character.forward()
+		idle.set_button(CharacterInput.B_CROUCH, crouch_toggle)
+		character.submit_input(idle)
 		return
 	if Input.is_action_just_pressed("crouch"):
 		crouch_toggle = not crouch_toggle
 	var i := CharacterInput.new()
 	tick += 1
 	i.tick = tick
-	var captured := Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
-	if captured:
+	if enabled:
 		i.move = Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_back", "move_forward"))
 		i.set_button(CharacterInput.B_SPRINT, Input.is_action_pressed("sprint"))
 		i.set_button(CharacterInput.B_JUMP, Input.is_action_pressed("jump"))

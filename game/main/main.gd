@@ -58,11 +58,14 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 		hud.bind(match_node, camera_rig, world)
 		if not sim:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			hud.show_banner("Parachute in. Click in the game to lock the mouse; Esc pauses.")
 	print("KOTM: match started seed=%d bots=%d terrain=%s" % [p_seed, bots, world.backend_name])
 
-func _process(_dt: float) -> void:
+func _process(dt: float) -> void:
 	if sim and match_node and match_node.match_time >= sim_seconds:
 		_print_summary_and_quit()
+	elif not sim:
+		_process_debug(dt)
 
 func _print_summary_and_quit() -> void:
 	var s := match_node.summary()
@@ -81,9 +84,35 @@ func _on_match_ended(won: bool, placement: int, killer_name: String, weapon: Str
 	menu.visible = true
 	status_label.text = ("KING OF THE MOUNTAIN" if won else "You placed #%d" % placement) + (" · killed by %s (%s)" % [killer_name, weapon] if not won and killer_name != "" else "")
 
+var paused: bool = false
+var _debug_t: float = 0.0
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and match_node and not sim:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
+	if match_node == null or sim or match_node.is_over:
+		return
+	if event.is_action_pressed("pause"):
+		_set_paused(not paused)
+	elif event is InputEventMouseButton and event.pressed and not paused and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		# Browsers only grant pointer lock from a click inside the canvas.
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _set_paused(on: bool) -> void:
+	paused = on
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if on else Input.MOUSE_MODE_CAPTURED
+	var src := match_node.local_player.get_node_or_null("Input") if match_node and match_node.local_player else null
+	if src:
+		src.enabled = not on
+	if camera_rig:
+		camera_rig.look_enabled = not on
+	if hud:
+		hud.show_banner("Paused. Press Esc to resume." if on else "Click in the game to lock the mouse.")
+
+func _process_debug(dt: float) -> void:
+	_debug_t += dt
+	if _debug_t >= 5.0 and match_node and match_node.local_player and OS.has_feature("web"):
+		_debug_t = 0.0
+		var p := match_node.local_player
+		print("KOTM: player pos=%s yaw=%.2f mode=%d mouse_mode=%d hp=%.0f" % [p.global_position.round(), p.yaw, p.mode, Input.mouse_mode, p.health.hp])
 
 static func _parse_args(list: PackedStringArray) -> Dictionary:
 	var out := {}
