@@ -1,0 +1,3 @@
+Kenney game assets (https://kenney.nl), vendored from the GLB mirror https://github.com/shorepine/kenney
+License: Creative Commons Zero (CC0 1.0). No attribution required; we credit Kenney anyway in ATTRIBUTION.md.
+Kits used: Weapon Pack, Building Kit, Nature Kit, Car Kit, Survival Kit, Retro Urban Kit.
