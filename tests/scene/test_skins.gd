@@ -30,7 +30,10 @@ func test_apply_to_character_and_weapon() -> void:
 	assert_true(vis.canopy != null, "parachute canopy exists")
 	ch.inventory.give_weapon("ar15")
 	await settle(2)
-	var model := vis.weapon_holder.mount.get_child(0) as Node3D
+	var model: Node3D = null
+	for c in vis.weapon_holder.mount.get_children():
+		if c != vis.weapon_holder.muzzle and c != vis.weapon_holder.flash:
+			model = c
 	assert_true(model != null, "gun model mounted")
 	var skinned := false
 	for m in model.find_children("*", "MeshInstance3D", true, false):

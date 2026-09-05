@@ -36,6 +36,9 @@ var gear_label: Label
 var hotbar: HBoxContainer
 var hot_tiles: Array[PanelContainer] = []
 var hot_names: Array[Label] = []
+var hot_icons: Array[TextureRect] = []
+var hot_ammo: Array[Label] = []
+var icon_cache: WeaponIconCache
 var popups: VBoxContainer
 var prompt: PanelContainer
 var prompt_label: Label
@@ -239,20 +242,37 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	hotbar = HBoxContainer.new()
 	hotbar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hotbar.add_theme_constant_override("separation", 4)
+	icon_cache = WeaponIconCache.new()
+	add_child(icon_cache)
 	for i in 6:
 		var tile := _panel(PANEL)
-		tile.custom_minimum_size = Vector2(60, 46)
+		tile.custom_minimum_size = Vector2(104, 78)
 		var v := VBoxContainer.new()
+		v.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		v.add_theme_constant_override("separation", 0)
+		var top := HBoxContainer.new()
+		top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var num := _label(str(i + 1), _font(oswald, 12, 700), 12, RED)
-		num.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var ammo := _label("", _font(oswald, 11, 400), 11, INK_DIM)
+		ammo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		ammo.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		top.add_child(num); top.add_child(ammo)
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(84, 36)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		var nm := _label("", _font(oswald, 11, 400), 11, INK_DIM)
 		nm.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		v.add_child(num); v.add_child(nm)
+		v.add_child(top); v.add_child(icon); v.add_child(nm)
 		tile.add_child(v)
 		hotbar.add_child(tile)
 		hot_tiles.append(tile)
 		hot_names.append(nm)
-	_place(hotbar, Control.PRESET_BOTTOM_RIGHT, -18 - 6 * 64, -68)
+		hot_icons.append(icon)
+		hot_ammo.append(ammo)
+	_place(hotbar, Control.PRESET_BOTTOM_RIGHT, -18 - 6 * 108, -96)
 	# map screen
 	map_screen = Control.new()
 	map_screen.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -448,10 +468,25 @@ func _process(dt: float) -> void:
 		var tile := hot_tiles[i]
 		var nm: Label = hot_names[i]
 		var sid: String = character.inventory.slots[i]
-		nm.text = String(ItemCatalog.get_item(sid).get("name", "")).replace("12-Gauge ", "").to_upper() if sid != "" else ""
+		var item := ItemCatalog.get_item(sid) if sid != "" else {}
+		nm.text = String(item.get("name", "")).replace("12-Gauge ", "").to_upper() if sid != "" else ""
+		var icon := hot_icons[i]
+		icon.texture = icon_cache.get_icon(sid) if sid != "" else null
+		icon.modulate = Color(1, 1, 1, 1) if i == character.inventory.cur else Color(0.75, 0.75, 0.75, 0.85)
+		var ammo_lbl := hot_ammo[i]
+		if sid != "" and item.get("kind", "") == "weapon" and item.get("class", "") != "melee":
+			var mag := int(character.inventory.mags.get(sid, 0))
+			var ammo_id := String(item.get("def", {}).get("ammo", ""))
+			var reserve := int(character.inventory.ammo.get(ammo_id, 0))
+			ammo_lbl.text = "%d/%d" % [mag, reserve]
+		elif sid != "" and item.get("kind", "") == "throwable":
+			ammo_lbl.text = "x%d" % int(character.inventory.throwables.get(sid, 1))
+		else:
+			ammo_lbl.text = ""
 		var sb: StyleBoxFlat = tile.get_theme_stylebox("panel")
-		sb.border_width_bottom = 2 if i == character.inventory.cur else 0
+		sb.border_width_bottom = 3 if i == character.inventory.cur else 0
 		sb.border_color = RED
+		sb.bg_color = Color(0.09, 0.09, 0.11, 0.86) if i == character.inventory.cur else PANEL
 	# prompt
 	var near := character.interaction.nearest
 	if near != null and character.mode != Character.Mode.PARACHUTE:

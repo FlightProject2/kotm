@@ -1,7 +1,9 @@
 class_name MeshTerrainBackend
 extends RefCounted
-## Fallback terrain: a HeightMapShape3D collider from the heightmap plus a coarse visual
-## mesh. Used headless and if Terrain3D is unavailable.
+## Fallback terrain: a HeightMapShape3D collider from the heightmap plus a textured visual mesh.
+## Used headless, on the web build (Terrain3D has no wasm binary) and if Terrain3D fails.
+## The material is fully procedural: a generated noise texture drives grass patches, dirt on
+## roads (from the baked colour map carried in vertex colours), rock on slopes and snow on top.
 
 const VISUAL_STEP := 4
 
@@ -52,8 +54,92 @@ static func _visual(world: World) -> MeshInstance3D:
 	var mi := MeshInstance3D.new()
 	mi.name = "Visual"
 	mi.mesh = st.commit()
-	var m := StandardMaterial3D.new()
-	m.vertex_color_use_as_albedo = true
-	m.roughness = 1.0
-	mi.material_override = m
+	mi.material_override = make_material()
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return mi
+
+static var _noise_tex: ImageTexture
+
+static func noise_texture() -> ImageTexture:
+	if _noise_tex:
+		return _noise_tex
+	var n := 256
+	var img := Image.create_empty(n, n, true, Image.FORMAT_RGB8)
+	var a := FastNoiseLite.new(); a.seed = 11; a.frequency = 0.02; a.fractal_octaves = 3
+	var b := FastNoiseLite.new(); b.seed = 23; b.frequency = 0.07; b.fractal_octaves = 4
+	var c := FastNoiseLite.new(); c.seed = 37; c.noise_type = FastNoiseLite.TYPE_CELLULAR; c.frequency = 0.12
+	for y in n:
+		for x in n:
+			img.set_pixel(x, y, Color((a.get_noise_2d(x, y) + 1.0) * 0.5, (b.get_noise_2d(x, y) + 1.0) * 0.5, (c.get_noise_2d(x, y) + 1.0) * 0.5))
+	img.generate_mipmaps()
+	_noise_tex = ImageTexture.create_from_image(img)
+	return _noise_tex
+
+static func make_material() -> ShaderMaterial:
+	var sh := Shader.new()
+	sh.code = """
+shader_type spatial;
+render_mode cull_back, diffuse_lambert, specular_disabled;
+
+uniform sampler2D noise_tex : filter_linear_mipmap, repeat_enable;
+uniform float macro_scale = 0.012;
+uniform float detail_scale = 0.28;
+uniform vec3 grass_a : source_color = vec3(0.33, 0.47, 0.19);
+uniform vec3 grass_b : source_color = vec3(0.52, 0.58, 0.25);
+uniform vec3 grass_dry : source_color = vec3(0.62, 0.58, 0.30);
+uniform vec3 dirt : source_color = vec3(0.47, 0.37, 0.25);
+uniform vec3 gravel : source_color = vec3(0.55, 0.53, 0.49);
+uniform vec3 rock : source_color = vec3(0.47, 0.45, 0.43);
+uniform vec3 snow : source_color = vec3(0.93, 0.94, 0.97);
+uniform float snow_start = 116.0;
+uniform float snow_full = 130.0;
+
+varying vec3 v_world;
+varying vec3 v_normal;
+varying vec4 v_color;
+
+void vertex() {
+	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_normal = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	v_color = COLOR;
+}
+
+void fragment() {
+	vec2 uv = v_world.xz;
+	float dist = length(v_world - CAMERA_POSITION_WORLD);
+	float detail_fade = 1.0 - smoothstep(120.0, 400.0, dist);
+	vec3 macro = texture(noise_tex, uv * macro_scale).rgb;
+	vec3 det = texture(noise_tex, uv * detail_scale).rgb;
+	vec3 fine = texture(noise_tex, uv * detail_scale * 3.3).rgb;
+	float slope = 1.0 - clamp(v_normal.y, 0.0, 1.0);
+
+	// grass: patches from the macro noise, blades from the detail cells
+	vec3 grass = mix(grass_a, grass_b, macro.r);
+	grass = mix(grass, grass_dry, smoothstep(0.62, 0.8, macro.g));
+	float blades = mix(1.0, 0.72 + 0.56 * det.b, detail_fade);
+	grass *= blades * (0.9 + 0.2 * fine.g * detail_fade);
+
+	// roads from the baked colour map (brown = dirt road, neutral grey = rail bed)
+	vec3 tint = v_color.rgb;
+	float roadness = clamp((tint.r - tint.g) * 7.0 + 0.45, 0.0, 1.0);
+	float grey = 1.0 - clamp((abs(tint.r - tint.g) + abs(tint.g - tint.b)) * 12.0, 0.0, 1.0);
+	float railness = grey * step(0.35, tint.r) * (1.0 - roadness);
+	vec3 dirt_col = dirt * (0.8 + 0.4 * det.r) * (0.92 + 0.16 * fine.r);
+	vec3 col = mix(grass, dirt_col, roadness);
+	col = mix(col, gravel * (0.85 + 0.3 * det.g), railness * 0.8);
+
+	// rock on slopes, snow on the peak
+	float rockness = smoothstep(0.22, 0.48, slope + (det.r - 0.5) * 0.12);
+	vec3 rock_col = rock * (0.75 + 0.5 * det.g) * (0.9 + 0.2 * fine.b);
+	col = mix(col, rock_col, rockness);
+	float snowness = smoothstep(snow_start, snow_full, v_world.y + (macro.b - 0.5) * 10.0) * (1.0 - smoothstep(0.35, 0.6, slope));
+	col = mix(col, snow * (0.94 + 0.06 * det.b), snowness);
+
+	ALBEDO = col;
+	ROUGHNESS = mix(0.95, 0.8, snowness);
+}
+"""
+	var mat := ShaderMaterial.new()
+	mat.shader = sh
+	mat.set_shader_parameter("noise_tex", noise_texture())
+	return mat
