@@ -66,12 +66,15 @@ func _ready() -> void:
 	anim.name = "Anim"
 	character.add_child.call_deferred(anim)
 
-func _process(_dt: float) -> void:
+func _physics_process(_dt: float) -> void:
+	if character:
+		rotation.y = character.yaw
+
+func _process(dt: float) -> void:
 	if character == null:
 		return
-	rotation.y = character.yaw
 	var target_scale := 0.67 if character.crouching else 1.0
-	scale.y = lerpf(scale.y, target_scale, 0.3)
+	scale.y = lerpf(scale.y, target_scale, 1.0 - exp(-14.0 * dt))
 	if aim_spine:
 		aim_spine.pitch = character.pitch
 	if canopy:

@@ -89,3 +89,61 @@ func test_input_roundtrip() -> void:
 	assert_eq(j.tick, 12345); assert_eq(j.buttons, i.buttons); assert_eq(j.slot, 3); assert_eq(j.use_med, 2)
 	assert_near(j.yaw, 1.25, 1e-6); assert_true(j.aim_dir.distance_to(i.aim_dir) < 1e-6)
 	assert_true(i.pack().size() <= 40, "packed input is small")
+
+func test_ground_accel_stop_and_jump_buffer() -> void:
+	var f := _floor()
+	await add_to_tree(f)
+	var ch := _spawn(Vector3(0, 0.1, 0))
+	while not ch.is_on_floor():
+		await tree.physics_frame
+	var ticks := 0
+	while Vector2(ch.velocity.x, ch.velocity.z).length() < 0.95 * 6.5 and ticks < 60:
+		var i := CharacterInput.new(); i.move = Vector2(0, 1); i.set_button(CharacterInput.B_SPRINT, true)
+		ch.submit_input(i)
+		await tree.physics_frame
+		ticks += 1
+	assert_between(ticks, 1, 8, "sprint reaches 95%% in <= 8 ticks (got %d)" % ticks)
+	ticks = 0
+	while Vector2(ch.velocity.x, ch.velocity.z).length() > 0.05 * 6.5 and ticks < 60:
+		ch.submit_input(CharacterInput.new())
+		await tree.physics_frame
+		ticks += 1
+	assert_between(ticks, 1, 8, "stops in <= 8 ticks (got %d)" % ticks)
+	# jump pressed 4 ticks before landing still jumps (buffer)
+	var i := CharacterInput.new(); i.set_button(CharacterInput.B_JUMP, true)
+	ch.submit_input(i); await tree.physics_frame
+	ch.submit_input(CharacterInput.new()); await tree.physics_frame
+	var air := 0
+	while not ch.is_on_floor() and air < 100:
+		if air == 32:
+			var j := CharacterInput.new(); j.set_button(CharacterInput.B_JUMP, true)
+			ch.submit_input(j)
+		else:
+			ch.submit_input(CharacterInput.new())
+		await tree.physics_frame
+		air += 1
+	await tree.physics_frame
+	await tree.physics_frame
+	assert_true(ch.velocity.y > 3.0 or not ch.is_on_floor(), "buffered jump fired on landing (vy %.2f, floor %s)" % [ch.velocity.y, ch.is_on_floor()])
+	ch.queue_free(); f.queue_free()
+	await settle(1)
+
+func test_air_keeps_momentum() -> void:
+	var f := _floor()
+	await add_to_tree(f)
+	var ch := _spawn(Vector3(0, 0.1, 0))
+	while not ch.is_on_floor():
+		await tree.physics_frame
+	await _drive(ch, 30, func(i: CharacterInput) -> void: i.move = Vector2(0, 1); i.set_button(CharacterInput.B_SPRINT, true))
+	var i := CharacterInput.new(); i.move = Vector2(0, 1); i.set_button(CharacterInput.B_SPRINT, true); i.set_button(CharacterInput.B_JUMP, true)
+	ch.submit_input(i); await tree.physics_frame
+	var v0 := Vector2(ch.velocity.x, ch.velocity.z).length()
+	var n := 0
+	while not ch.is_on_floor() and n < 100:
+		ch.submit_input(CharacterInput.new())
+		await tree.physics_frame
+		n += 1
+	var v1 := Vector2(ch.velocity.x, ch.velocity.z).length()
+	assert_true(v1 > v0 * 0.9, "momentum kept in the air with no keys (%.2f -> %.2f)" % [v0, v1])
+	ch.queue_free(); f.queue_free()
+	await settle(1)

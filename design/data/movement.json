@@ -1,14 +1,61 @@
 {
   "$schema_note": "Character locomotion, parachute and camera tuning for the Godot build (docs/game-plan/02 and 04).",
-  "walkSpeed": 3.5, "sprintSpeed": 6.5, "crouchSpeed": 2.0, "proneSpeed": 1.0,
-  "jumpVelocity": 6.8, "gravity": 20.0, "groundAccel": 12.0, "airAccel": 3.0,
-  "capsuleRadius": 0.35, "standHeight": 1.8, "crouchHeight": 1.2, "landingStunSec": 0.6,
-  "fallDamage": { "safeM": 4.0, "lethalM": 15.0 },
-  "parachute": { "forwardSpeed": 12.0, "forwardDescent": 9.0, "neutralSpeed": 8.0, "neutralDescent": 6.0,
-                 "flareSpeed": 4.0, "flareDescent": 4.0, "turnRateRad": 1.0, "horizontalLerp": 1.5, "detachHeightM": 1.5 },
-  "camera": { "pivotOffset": -0.2, "armThirdPerson": 2.4, "armAim": 1.3, "armParachute": 6.0,
-              "shoulder": 0.4, "shoulderAim": 0.45, "fov": 72.0, "fovAim": 55.0, "fovScope": 16.0,
-              "aimSensMult": 0.8, "scopeSensMult": 0.35, "terrainClamp": 0.5, "recoilToCamera": 0.6, "pitchLimitDeg": 70.0 },
-  "spread": { "movingMult": 1.5, "airborneMult": 2.0 },
-  "melee": { "reachM": 2.0, "arcDeg": 180.0 }
+  "walkSpeed": 3.5,
+  "sprintSpeed": 6.5,
+  "crouchSpeed": 2.0,
+  "proneSpeed": 1.0,
+  "jumpVelocity": 6.8,
+  "gravity": 20.0,
+  "groundAccel": 60.0,
+  "airAccel": 5.0,
+  "capsuleRadius": 0.35,
+  "standHeight": 1.8,
+  "crouchHeight": 1.2,
+  "landingStunSec": 0.6,
+  "fallDamage": {
+    "safeM": 4.0,
+    "lethalM": 15.0
+  },
+  "parachute": {
+    "forwardSpeed": 12.0,
+    "forwardDescent": 9.0,
+    "neutralSpeed": 8.0,
+    "neutralDescent": 6.0,
+    "flareSpeed": 4.0,
+    "flareDescent": 4.0,
+    "turnRateRad": 1.0,
+    "horizontalLerp": 1.5,
+    "detachHeightM": 1.5
+  },
+  "camera": {
+    "pivotOffset": -0.2,
+    "armThirdPerson": 2.4,
+    "armAim": 1.3,
+    "armParachute": 6.0,
+    "shoulder": 0.4,
+    "shoulderAim": 0.45,
+    "fov": 72.0,
+    "fovAim": 55.0,
+    "fovScope": 16.0,
+    "aimSensMult": 0.8,
+    "scopeSensMult": 0.35,
+    "terrainClamp": 0.5,
+    "recoilToCamera": 0.6,
+    "pitchLimitDeg": 70.0,
+    "mouseSensitivity": 0.0022,
+    "armSmoothing": 18.0,
+    "fovSmoothing": 14.0,
+    "freeLookReturn": 10.0
+  },
+  "spread": {
+    "movingMult": 1.5,
+    "airborneMult": 2.0
+  },
+  "melee": {
+    "reachM": 2.0,
+    "arcDeg": 180.0
+  },
+  "groundDecel": 70.0,
+  "jumpBufferSec": 0.12,
+  "coyoteSec": 0.1
 }

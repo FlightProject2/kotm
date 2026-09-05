@@ -22,6 +22,7 @@ var cfg: Dictionary = DataLib.movement()["camera"]
 @onready var camera: Camera3D = $Pivot/Shoulder/Arm/Camera3D
 
 func _ready() -> void:
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF   # moved in _process from the interpolated target
 	arm.collision_mask = 32   # camera_blockers
 	arm.margin = 0.08
 	camera.fov = float(cfg["fov"])
@@ -30,7 +31,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and look_enabled and (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or Input.mouse_mode == Input.MOUSE_MODE_VISIBLE):
-		var sens: float = Settings.mouse_sensitivity if Settings else 0.0022
+		var sens: float = Settings.mouse_sensitivity if Settings else float(cfg.get("mouseSensitivity", 0.0022))
 		if scoped:
 			sens *= float(cfg["scopeSensMult"])
 		elif aiming:
@@ -77,7 +78,7 @@ func aim_direction(ch: Character) -> Vector3:
 		var t := ch.world.height_field.segment_hit(from, point, 2.0)
 		if t > 0.0:
 			point = from.lerp(point, t)
-	var muzzle := ch.eye_position() + ch.right() * 0.28 - Vector3(0, 0.3, 0)
+	var muzzle: Vector3 = ch.combat.muzzle_position() if is_instance_valid(ch.combat) else (ch.eye_position() + ch.right() * 0.28 - Vector3(0, 0.3, 0))
 	var d := point - muzzle
 	if d.length() < 1.5:
 		return dir
@@ -88,14 +89,17 @@ static func _is_own_hitbox(collider: Object, ch: Character) -> bool:
 
 var _bound: Character
 
-func _process(_dt: float) -> void:
+static func _decay(a: float, b: float, k: float, dt: float) -> float:
+	return lerpf(a, b, 1.0 - exp(-k * dt))
+
+func _process(dt: float) -> void:
 	if target == null or not is_instance_valid(target):
 		return
 	if _bound != target:
 		_bound = target
 		target.fired.connect(kick)
 	if not Input.is_action_pressed("free_look"):
-		free_look_yaw = lerpf(free_look_yaw, 0.0, 0.25)
+		free_look_yaw = _decay(free_look_yaw, 0.0, float(cfg.get("freeLookReturn", 10.0)), dt)
 	aiming = target.input.pressed(CharacterInput.B_AIM) and target.mode != Character.Mode.PARACHUTE
 	scoped = aiming and target.has_method("current_weapon_scoped") and target.current_weapon_scoped()
 	var chute := target.mode == Character.Mode.PARACHUTE
@@ -110,12 +114,13 @@ func _process(_dt: float) -> void:
 	else:
 		length = float(cfg["armThirdPerson"])
 	var side := 0.0 if fp else (float(cfg["shoulderAim"]) if aiming else float(cfg["shoulder"]))
-	global_position = target.global_position + Vector3(0, target.height() + float(cfg["pivotOffset"]), 0)
+	var origin: Vector3 = target.get_global_transform_interpolated().origin if get_tree().physics_interpolation else target.global_position
+	global_position = origin + Vector3(0, target.height() + float(cfg["pivotOffset"]), 0)
 	rotation = Vector3(pitch, yaw + free_look_yaw, 0)
 	shoulder.position.x = side
-	arm.spring_length = lerpf(arm.spring_length, length, 0.35)
+	arm.spring_length = _decay(arm.spring_length, length, float(cfg.get("armSmoothing", 18.0)), dt)
 	var fov := float(cfg["fovScope"]) if scoped else (float(cfg["fovAim"]) if aiming else float(cfg["fov"]))
-	camera.fov = lerpf(camera.fov, fov, 0.35)
+	camera.fov = _decay(camera.fov, fov, float(cfg.get("fovSmoothing", 14.0)), dt)
 	# keep the camera above the terrain
 	if target.world:
 		var min_y := target.world.height_at(camera.global_position.x, camera.global_position.z) + float(cfg["terrainClamp"])

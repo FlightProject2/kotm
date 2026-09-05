@@ -9,6 +9,8 @@ var pcfg: Dictionary
 var _prev_vy: float = 0.0
 var _was_on_floor: bool = false
 var _fall_start_y: float = 0.0
+var _jump_buffer_t: float = 0.0
+var _coyote_t: float = 0.0
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -31,7 +33,8 @@ func _ground_air(dt: float) -> void:
 	if want_crouch != c.crouching:
 		set_crouch(want_crouch)
 	var aiming := inp.pressed(CharacterInput.B_AIM)
-	var can_sprint := inp.pressed(CharacterInput.B_SPRINT) and not aiming and not c.crouching and not c.healing_blocks_sprint() and inp.move.y > 0.1
+	var forward_ish: bool = inp.move.y > 0.1 and inp.move.y >= absf(inp.move.x)
+	var can_sprint := inp.pressed(CharacterInput.B_SPRINT) and not aiming and not c.crouching and not c.healing_blocks_sprint() and forward_ish
 	var speed: float
 	if c.stun > 0.0 or c.healing_blocks_movement():
 		speed = 0.0
@@ -41,23 +44,38 @@ func _ground_air(dt: float) -> void:
 		speed = float(cfg["sprintSpeed"])
 	else:
 		speed = float(cfg["walkSpeed"])
-	var wish := f * inp.move.y + r * inp.move.x
-	if wish.length_squared() > 0.0:
-		wish = wish.normalized() * speed
+	var wish_dir := f * inp.move.y + r * inp.move.x
+	var has_wish: bool = wish_dir.length_squared() > 0.0001 and speed > 0.0
+	var wish := wish_dir.normalized() * speed if has_wish else Vector3.ZERO
 	var on_floor := c.is_on_floor()
-	var accel := float(cfg["groundAccel"]) if on_floor else float(cfg["airAccel"])
-	var k := minf(1.0, accel * dt)
-	c.velocity.x = lerpf(c.velocity.x, wish.x, k)
-	c.velocity.z = lerpf(c.velocity.z, wish.z, k)
-	if inp.pressed(CharacterInput.B_JUMP) and not c.prev_input.pressed(CharacterInput.B_JUMP) and on_floor and c.stun <= 0.0:
+	var planar := Vector3(c.velocity.x, 0.0, c.velocity.z)
+	if on_floor:
+		# Linear, tick-rate independent: full speed in ~0.1 s, stop in ~0.1 s (H1Z1 snappiness).
+		var rate: float = float(cfg["groundAccel"]) if has_wish else float(cfg["groundDecel"])
+		planar = planar.move_toward(wish, rate * dt)
+	elif has_wish:
+		# Air: steer a little, never brake, never exceed sprint speed.
+		planar = planar.move_toward(wish, float(cfg["airAccel"]) * dt)
+		var cap := float(cfg["sprintSpeed"])
+		if planar.length_squared() > cap * cap:
+			planar = planar.normalized() * cap
+	c.velocity.x = planar.x
+	c.velocity.z = planar.z
+	# Jump with input buffer and coyote time.
+	if inp.pressed(CharacterInput.B_JUMP) and not c.prev_input.pressed(CharacterInput.B_JUMP):
+		_jump_buffer_t = float(cfg["jumpBufferSec"])
+	else:
+		_jump_buffer_t = maxf(0.0, _jump_buffer_t - dt)
+	_coyote_t = float(cfg["coyoteSec"]) if on_floor else maxf(0.0, _coyote_t - dt)
+	if _jump_buffer_t > 0.0 and (on_floor or _coyote_t > 0.0) and c.stun <= 0.0 and c.velocity.y <= 0.5:
 		c.velocity.y = float(cfg["jumpVelocity"])
+		_jump_buffer_t = 0.0
+		_coyote_t = 0.0
 		if c.crouching:
 			set_crouch(false)
 		on_floor = false
 	if not on_floor:
 		c.velocity.y -= float(cfg["gravity"]) * dt
-	if not _was_on_floor and on_floor:
-		pass
 	if _was_on_floor and not on_floor:
 		_fall_start_y = c.global_position.y
 	_prev_vy = c.velocity.y
@@ -136,3 +154,7 @@ func start_parachute(pos: Vector3, yaw: float) -> void:
 	c.velocity = Vector3.ZERO
 	c.mode = Character.Mode.PARACHUTE
 	_was_on_floor = false
+	_jump_buffer_t = 0.0
+	_coyote_t = 0.0
+	if c.is_inside_tree():
+		c.reset_physics_interpolation()

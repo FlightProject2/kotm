@@ -8,6 +8,9 @@ var crouch_toggle: bool = false
 var tick: int = 0
 var enabled: bool = true
 
+func _ready() -> void:
+	process_physics_priority = -1   # before Character consumes the input in the same tick
+
 func _physics_process(_dt: float) -> void:
 	if character == null or camera_rig == null:
 		return
@@ -27,8 +30,8 @@ func _physics_process(_dt: float) -> void:
 	if enabled:
 		i.move = Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_back", "move_forward"))
 		i.set_button(CharacterInput.B_SPRINT, Input.is_action_pressed("sprint"))
-		i.set_button(CharacterInput.B_JUMP, Input.is_action_pressed("jump"))
-		i.set_button(CharacterInput.B_FIRE, Input.is_action_pressed("fire"))
+		i.set_button(CharacterInput.B_JUMP, Input.is_action_pressed("jump") or Input.is_action_just_pressed("jump"))
+		i.set_button(CharacterInput.B_FIRE, Input.is_action_pressed("fire") or Input.is_action_just_pressed("fire"))
 		i.set_button(CharacterInput.B_AIM, Input.is_action_pressed("aim"))
 		i.set_button(CharacterInput.B_RELOAD, Input.is_action_pressed("reload"))
 		i.set_button(CharacterInput.B_INTERACT, Input.is_action_just_pressed("interact"))

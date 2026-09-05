@@ -30,6 +30,7 @@ const LOOT_SEARCH := 90.0
 const WANDER := 40.0
 
 func _ready() -> void:
+	process_physics_priority = -1
 	c = get_parent() as Character
 	if rng == null:
 		rng = RandomNumberGenerator.new()
