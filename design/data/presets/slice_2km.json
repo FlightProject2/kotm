@@ -1,0 +1,22 @@
+{
+  "id": "slice_2km",
+  "$schema_note": "Match preset for the 2 x 2 km test slice: compressed gas schedule (prototype radii x 1.667) for ~6 minute matches.",
+  "mapHalfSizeM": 1000, "borderMarginM": 67,
+  "spawnAltitudeM": 220, "spawnMinSpacingM": 130, "spawnRelaxAfterTries": 20, "spawnRelaxPerTryM": 5,
+  "spawnMaxSlopeDeg": 45, "spawnMaxHeightM": 110,
+  "botCount": 30, "lootScatterCount": 200,
+  "zone": {
+    "revealBannerAtSec": 45, "revealBannerCountdownSec": 15, "firstCircleShownAtSec": 60,
+    "firstCircleSampleRadiusM": 630, "outOfBoundsDps": 5,
+    "phases": [
+      { "phase": 1, "radiusM": 700, "warningSec": 25, "closeSec": 40, "dps": 0.5 },
+      { "phase": 2, "radiusM": 420, "warningSec": 20, "closeSec": 35, "dps": 1 },
+      { "phase": 3, "radiusM": 230, "warningSec": 20, "closeSec": 30, "dps": 2 },
+      { "phase": 4, "radiusM": 130, "warningSec": 15, "closeSec": 25, "dps": 3 },
+      { "phase": 5, "radiusM": 70,  "warningSec": 15, "closeSec": 20, "dps": 5 },
+      { "phase": 6, "radiusM": 25,  "warningSec": 10, "closeSec": 20, "dps": 7 },
+      { "phase": 7, "radiusM": 0,   "warningSec": 0,  "closeSec": 30, "dps": 10 }
+    ],
+    "remainingToasts": [25, 10, 5, 2]
+  }
+}

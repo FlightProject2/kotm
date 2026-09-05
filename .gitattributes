@@ -1,0 +1,13 @@
+*.glb binary
+*.gltf binary
+*.fbx binary
+*.obj binary
+*.exr binary
+*.res binary
+*.png binary
+*.ttf binary
+*.wav binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.wasm binary

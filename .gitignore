@@ -1,0 +1,4 @@
+.godot/
+scratch/
+*.tmp
+__pycache__/
