@@ -18,6 +18,7 @@ var build_stats: Dictionary = {}
 @onready var trees: Node3D = $Trees
 @onready var props: Node3D = $Props
 @onready var loot: Node3D = $Loot
+var vehicles: Node3D
 @onready var projectiles: Node = $Projectiles
 @onready var zone_root: Node3D = $Zone
 @onready var characters: Node3D = $Characters
@@ -40,6 +41,9 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		backend_name = "mesh"
 	add_child(terrain)
 	move_child(terrain, 0)
+	vehicles = Node3D.new()
+	vehicles.name = "Vehicles"
+	add_child(vehicles)
 	if "--env=plain" in OS.get_cmdline_user_args():
 		# render debugging: no fog, flat ambient, linear tonemap
 		var env: Environment = $Env.environment

@@ -108,5 +108,8 @@ func _impact(p: Proj, hit: Dictionary) -> void:
 		Net.fx_all("hit_fx", [p.pos, normal, "armor" if r.kind == DamageModel.KIND_ARMOR or r.kind == DamageModel.KIND_ARMOR_BREAK else ("helmet" if r.kind == DamageModel.KIND_HELMET_POP or r.helmet_destroyed else "flesh")])
 		if r.helmet_destroyed:
 			Net.fx_all("helmet_pop", [victim.global_position + Vector3(0, 1.6, 0), "helmet"])
+	elif collider is Vehicle:
+		(collider as Vehicle).apply_damage(float(p.def.get("bodyDamage", 20)) * 0.6, p.shooter)
+		Net.fx_all("hit_fx", [p.pos, normal, "armor"])
 	else:
 		Net.fx_all("hit_fx", [p.pos, normal, "world"])

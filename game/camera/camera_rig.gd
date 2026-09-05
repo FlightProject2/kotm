@@ -107,6 +107,8 @@ func _process(dt: float) -> void:
 	var length: float
 	if chute:
 		length = float(cfg["armParachute"])
+	elif target.in_vehicle():
+		length = float(cfg.get("armVehicle", 5.5))
 	elif fp:
 		length = 0.0
 	elif aiming:
@@ -127,7 +129,7 @@ func _process(dt: float) -> void:
 		if camera.global_position.y < min_y:
 			camera.global_position.y = min_y
 	# hide the local body in first person / scope via the visual layer
-	target.visual.visible = not fp
+	target.visual.visible = not fp and not target.in_vehicle()
 
 func is_first_person_view() -> bool:
 	return (first_person or scoped) and target != null and target.mode != Character.Mode.PARACHUTE

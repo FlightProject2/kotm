@@ -21,3 +21,4 @@ signal hit_fx(position: Vector3, normal: Vector3, kind: String)
 signal helmet_pop(position: Vector3, helmet_id: String)
 signal gunshot(position: Vector3, weapon_id: String, shooter_id: int)
 signal local_character_changed(character: Node)
+signal local_stat(kind: String, amount: float)   # progression: kill, headshot, damage, pickup, drive

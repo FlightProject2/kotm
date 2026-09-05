@@ -489,9 +489,15 @@ func _process(dt: float) -> void:
 		sb.bg_color = Color(0.09, 0.09, 0.11, 0.86) if i == character.inventory.cur else PANEL
 	# prompt
 	var near := character.interaction.nearest
-	if near != null and character.mode != Character.Mode.PARACHUTE:
+	if character.in_vehicle():
+		prompt.visible = true
+		prompt_label.text = "%d km/h   ·   F  Exit %s" % [int(absf(character.vehicle.speed) * 3.6), character.vehicle.display_name()]
+	elif near != null and character.mode != Character.Mode.PARACHUTE:
 		prompt.visible = true
 		prompt_label.text = ("F  Loot " if near.item["kind"] == "bag" else "F  Pick up ") + LootTables.display_name(near.item)
+	elif character.interaction.nearest_vehicle != null:
+		prompt.visible = true
+		prompt_label.text = "F  Drive " + character.interaction.nearest_vehicle.display_name()
 	else:
 		prompt.visible = false
 	# zone box

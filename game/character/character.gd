@@ -34,6 +34,7 @@ var heal_amount: float = 0.0
 var heal_rate: float = 0.0
 var bleed_timer: float = 0.0
 var gas_timer: float = 0.0
+var vehicle: Vehicle = null
 
 @onready var motor: CharacterMotor = $Motor
 @onready var collision: CollisionShape3D = $Collision
@@ -88,8 +89,17 @@ func _physics_process(dt: float) -> void:
 		return
 	yaw = input.yaw
 	pitch = input.pitch
-	motor.simulate(dt)
-	combat.tick(dt)
+	if vehicle != null and is_instance_valid(vehicle):
+		var before := vehicle.global_position
+		vehicle.drive(dt, input)
+		if is_local():
+			Events.local_stat.emit("drive", vehicle.global_position.distance_to(before))
+		global_position = vehicle.seat_global()
+		velocity = vehicle.velocity
+		yaw = input.yaw
+	else:
+		motor.simulate(dt)
+		combat.tick(dt)
 	interaction.tick()
 	_tick_heal(dt)
 	prev_input = input.duplicate_input()
@@ -97,8 +107,13 @@ func _physics_process(dt: float) -> void:
 # ---- health helpers (authority) ----
 func apply_hit(result: DamageModel.HitResult, from: Character, weapon_name := "") -> void:
 	if from:
-		from.damage_dealt += minf(result.damage, health.hp + result.damage)
+		var dealt := minf(result.damage, health.hp + result.damage)
+		from.damage_dealt += dealt
 		last_hit_by = from
+		if from.is_local():
+			Events.local_stat.emit("damage", dealt)
+			if result.headshot:
+				Events.local_stat.emit("headshot", 1.0)
 	heal_timer = 0.0
 	heal_pending = {}
 	if result.killed:
@@ -113,7 +128,35 @@ func take_plain_damage(amount: float, from: Character, how: String) -> void:
 	if health.apply_damage(amount):
 		_die(from, how, false)
 
+func in_vehicle() -> bool:
+	return vehicle != null and is_instance_valid(vehicle)
+
+func enter_vehicle(v: Vehicle) -> bool:
+	if v == null or not v.can_enter() or mode != Mode.GROUND:
+		return false
+	vehicle = v
+	v.enter(self)
+	set_collision_layer_value(2, false)   # players layer off: the car's body does the pushing
+	collision.disabled = true
+	crouching = false
+	return true
+
+func leave_vehicle() -> void:
+	if not in_vehicle():
+		return
+	var out := vehicle.exit()
+	vehicle = null
+	collision.disabled = false
+	set_collision_layer_value(2, alive())
+	global_position = out
+	velocity = Vector3.ZERO
+	mode = Mode.GROUND
+
 func _die(killer: Character, how: String, headshot: bool) -> void:
+	if in_vehicle():
+		var v := vehicle
+		vehicle = null
+		v.driver = null
 	health.alive = false
 	set_collision_layer_value(2, false)
 	visual.visible = false

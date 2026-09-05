@@ -30,52 +30,79 @@ static func build(world: World) -> Node3D:
 	root.add_child(_visual(world))
 	return root
 
-static func _visual(world: World) -> MeshInstance3D:
+const CHUNK_QUADS := 32   ## quads per chunk side (x VISUAL_STEP m); 2048 m -> 16 x 16 chunks
+
+## The visual is chunked so the renderer can frustum-cull most of it (one 263k-vertex surface is
+## always fully drawn) and so no single buffer gets huge on WebGL.
+static func _visual(world: World) -> Node3D:
 	var hf := world.height_field
 	var n := int(hf.size / VISUAL_STEP)
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var cm := world.colormap
-	for j in range(n + 1):
-		for i in range(n + 1):
-			var px := mini(i * VISUAL_STEP, hf.size - 1)
-			var pz := mini(j * VISUAL_STEP, hf.size - 1)
-			var x := px * hf.spacing - hf.half
-			var z := pz * hf.spacing - hf.half
-			var c := cm.get_pixel(px, pz) if cm else Color(0.5, 0.6, 0.35)
-			st.set_color(c)
-			st.set_normal(hf.normal_at(x, z))
-			st.add_vertex(Vector3(x, hf.raw(px, pz), z))
-	for j in n:
-		for i in n:
-			var a := j * (n + 1) + i
-			st.add_index(a); st.add_index(a + n + 1); st.add_index(a + 1)
-			st.add_index(a + 1); st.add_index(a + n + 1); st.add_index(a + n + 2)
-	var mi := MeshInstance3D.new()
-	mi.name = "Visual"
-	mi.mesh = st.commit()
+	var root := Node3D.new()
+	root.name = "Visual"
+	var mat := _pick_material()
+	var chunks := int(ceil(float(n) / CHUNK_QUADS))
+	for cj in chunks:
+		for ci in chunks:
+			var i0 := ci * CHUNK_QUADS
+			var j0 := cj * CHUNK_QUADS
+			var i1 := mini(i0 + CHUNK_QUADS, n)
+			var j1 := mini(j0 + CHUNK_QUADS, n)
+			var w := i1 - i0
+			var h := j1 - j0
+			if w <= 0 or h <= 0:
+				continue
+			var st := SurfaceTool.new()
+			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			for j in range(j0, j1 + 1):
+				for i in range(i0, i1 + 1):
+					var px := mini(i * VISUAL_STEP, hf.size - 1)
+					var pz := mini(j * VISUAL_STEP, hf.size - 1)
+					var x := px * hf.spacing - hf.half
+					var z := pz * hf.spacing - hf.half
+					var c := cm.get_pixel(px, pz) if cm else Color(0.5, 0.6, 0.35)
+					st.set_color(c)
+					st.set_normal(hf.normal_at(x, z))
+					st.set_uv(Vector2(x, z) * 0.05)
+					st.add_vertex(Vector3(x, hf.raw(px, pz), z))
+			var stride := w + 1
+			for j in h:
+				for i in w:
+					var a := j * stride + i
+					st.add_index(a); st.add_index(a + stride); st.add_index(a + 1)
+					st.add_index(a + 1); st.add_index(a + stride); st.add_index(a + stride + 1)
+			var mi := MeshInstance3D.new()
+			mi.name = "Chunk_%d_%d" % [ci, cj]
+			mi.mesh = st.commit()
+			mi.material_override = mat
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+			root.add_child(mi)
+	print("MeshTerrain: visual chunks=%d material=%s" % [root.get_child_count(), _material_mode()])
+	return root
+
+static func _material_mode() -> String:
 	var mode := "shader"
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--terrain-mat="):
 			mode = a.substr(14)
-	match mode:
+	return mode
+
+static func _pick_material() -> Material:
+	match _material_mode():
 		"standard":
 			var sm := StandardMaterial3D.new()
 			sm.vertex_color_use_as_albedo = true
 			sm.roughness = 1.0
-			mi.material_override = sm
+			return sm
 		"flat":
 			var fm := StandardMaterial3D.new()
 			fm.albedo_color = Color(0.35, 0.5, 0.2)
 			fm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-			mi.material_override = fm
+			return fm
 		"none":
-			pass
+			return null
 		_:
-			mi.material_override = make_material()
-	print("MeshTerrain: visual verts=%d aabb=%s material=%s" % [mi.mesh.surface_get_array_len(0), mi.mesh.get_aabb(), mode])
-	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	return mi
+			return make_material()
 
 static var _noise_tex: ImageTexture
 

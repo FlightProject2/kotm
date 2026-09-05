@@ -94,6 +94,8 @@ func _on_character_died(killer: Character, how: String, headshot: bool, victim: 
 	CharacterInteraction.drop_bag(victim, world.loot_registry)
 	if killer:
 		killer.kills += 1
+		if killer.is_local():
+			Events.local_stat.emit("kill", 1.0)
 		kills_total += 1
 	var killer_name := killer.display_name if killer else "The gas"
 	Events.kill_feed.emit(killer_name, victim.display_name, how, headshot)

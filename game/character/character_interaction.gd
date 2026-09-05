@@ -7,6 +7,8 @@ const REACH := 2.2
 var c: Character
 var registry: LootRegistry
 var nearest: LootRegistry.Entry
+var nearest_vehicle: Vehicle
+const VEHICLE_REACH := 3.2
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -15,13 +17,39 @@ func _ready() -> void:
 func tick() -> void:
 	if registry == null and c.world:
 		registry = c.world.loot_registry
-	if registry == null or not c.alive():
+	if not c.alive():
 		nearest = null
+		nearest_vehicle = null
 		return
-	nearest = registry.nearest(c.global_position, REACH)
-	if c.input.pressed(CharacterInput.B_INTERACT) and not c.prev_input.pressed(CharacterInput.B_INTERACT):
-		if nearest and c.mode != Character.Mode.PARACHUTE:
+	var just_pressed := c.input.pressed(CharacterInput.B_INTERACT) and not c.prev_input.pressed(CharacterInput.B_INTERACT)
+	if c.in_vehicle():
+		nearest = null
+		nearest_vehicle = null
+		if just_pressed:
+			c.leave_vehicle()
+		return
+	nearest = registry.nearest(c.global_position, REACH) if registry else null
+	nearest_vehicle = _find_vehicle()
+	if just_pressed and c.mode != Character.Mode.PARACHUTE:
+		if nearest:
 			take(nearest)
+		elif nearest_vehicle:
+			c.enter_vehicle(nearest_vehicle)
+
+func _find_vehicle() -> Vehicle:
+	if c.is_bot:
+		return null   # bots don't drive yet (M1.5)
+	var best: Vehicle = null
+	var bd := VEHICLE_REACH
+	for v in c.get_tree().get_nodes_in_group("vehicles"):
+		var veh := v as Vehicle
+		if veh == null or not veh.can_enter():
+			continue
+		var d := veh.global_position.distance_to(c.global_position)
+		if d < bd:
+			bd = d
+			best = veh
+	return best
 
 ## Applies a loot entry to the character's inventory and removes it from the ground.
 func take(e: LootRegistry.Entry) -> bool:
@@ -38,6 +66,7 @@ func take(e: LootRegistry.Entry) -> bool:
 	else:
 		_apply(item, pos)
 		if c.is_local():
+			Events.local_stat.emit("pickup", 1.0)
 			Events.popup.emit("", "Picked up " + LootTables.display_name(item))
 	Events.loot_removed.emit(e.id)
 	c.inventory.changed.emit()

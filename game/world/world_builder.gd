@@ -46,7 +46,46 @@ static func build(world: World) -> Dictionary:
 		_props_for(world, b, node, rng, stats)
 	_wrecks(world, rng, stats)
 	_farm_fences(world, rng, stats)
+	stats["vehicles"] = _vehicles(world, rng)
 	return stats
+
+## Drivable cars parked beside dirt roads near buildings, weighted by vehicles.json spawnWeight.
+static func _vehicles(world: World, rng: RandomNumberGenerator) -> int:
+	var defs: Array = DataLib.vehicles()["vehicles"].filter(func(v): return Vehicle.MODELS.has(v["id"]) and v["id"] != "atv")
+	if defs.is_empty():
+		return 0
+	var total_w := 0.0
+	for v in defs:
+		total_w += float(v.get("spawnWeight", 10))
+	var count := 0
+	var acc := 0.0
+	for road in world.layout.roads:
+		var pts: Array = road["points"]
+		for i in range(pts.size() - 1):
+			var a := Vector2(pts[i][0], pts[i][1])
+			var b := Vector2(pts[i + 1][0], pts[i + 1][1])
+			acc += a.distance_to(b)
+			if acc < 260.0:
+				continue
+			acc = 0.0
+			if rng.randf() > 0.6:
+				continue
+			var pick := rng.randf() * total_w
+			var chosen: Dictionary = defs[0]
+			for v in defs:
+				pick -= float(v.get("spawnWeight", 10))
+				if pick <= 0.0:
+					chosen = v
+					break
+			var dir := (b - a).normalized()
+			var side := Vector2(-dir.y, dir.x) * 4.5 * (1.0 if rng.randf() < 0.5 else -1.0)
+			var p := a.lerp(b, rng.randf_range(0.3, 0.7)) + side
+			var veh := Vehicle.new()
+			world.vehicles.add_child(veh)
+			veh.setup(String(chosen["id"]), world)
+			veh.global_transform = Transform3D(Basis(Vector3.UP, atan2(-dir.x, -dir.y)), Vector3(p.x, world.height_at(p.x, p.y), p.y))
+			count += 1
+	return count
 
 static var _merged_cache: Dictionary = {}   # prefab id -> {mesh: ArrayMesh, xf: Transform3D}
 
