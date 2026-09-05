@@ -40,7 +40,9 @@ func _on_play() -> void:
 	if in_match:
 		_end_match()
 	menus.hide_all()
-	start_match(randi(), int(preset["botCount"]), true, str(args.get("terrain", "auto")))
+	# the single-threaded web build gets fewer bots so the frame stays under budget
+	var bots := mini(int(preset["botCount"]), 20) if OS.has_feature("web") else int(preset["botCount"])
+	start_match(randi(), bots, true, str(args.get("terrain", "auto")))
 
 func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String) -> void:
 	world = WORLD_SCENE.instantiate()

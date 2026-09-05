@@ -21,8 +21,17 @@ the gun model with mag/reserve, the full menu set (main with live character prev
 Settings, Pause, End), building prefabs merged to one mesh each (4284 -> 84 instances), and a
 distance-based animation LOD for bots.
 
-Backlog (M1.5): prone, navmesh bots, doors, vehicles, retargeted animations (walk/aim/crouch),
-host/join multiplayer, Inventory screen, higher-detail gun and character models, grass.
+Third pass (playability on the web): terrain now draws on the WebGL renderer (depth fog instead of
+exponential fog, chunked 128 m tiles, vertex colours baked into tree albedo), a procedural crouch
+pose (leg IK, feet planted), a human character (head and hands split by skin bones, skin tones,
+hair styles, procedural face), helmet ding and death grunt, shotgun re-tuned (tighter spread,
+longer reach, distance falloff), loot laid out in rings with ammo beside each gun, drivable cars
+parked along roads, and the Z1BR-style front end: side-panel main menu with wallet and dailies,
+Customize item grid with rarity bars and locked items, Marketplace with crates and a reel-style
+opening, local leaderboard. Web physics runs at 30 Hz with 20 bots.
+
+Backlog (M1.5): prone, navmesh bots that drive, doors, retargeted animations (walk/aim), host/join
+multiplayer, Inventory screen with crafting, 3D item renders in the Customize grid, grass.
 
 ## Phase 0 – Pre-production (4 weeks)
 

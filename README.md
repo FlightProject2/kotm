@@ -19,9 +19,12 @@ at:
 
     https://flightproject2.github.io/kotm/
 
-Click **PLAY SOLO**, then click once in the game to lock the mouse. Esc opens the pause menu.
-**CUSTOMIZE** picks clothes, hats and weapon skins with a live preview; **SETTINGS** has mouse
-sensitivity, invert Y, volume and first-person default. The browser build uses the fallback mesh
+Click **PLAY**, then click once in the game to lock the mouse. Esc opens the pause menu.
+**CUSTOMIZE** is an item grid (clothing, head, gear, weapon skins) with rarity bars; locked items
+drop from crates. **MARKETPLACE** sells the Hot Shot Crate for coins earned in matches; winning a
+match awards a free Victory Crate. Opening a crate runs a reel that lands on the drop. Dailies on
+the main menu pay coins (and a crate) for kills, damage, pickups, top-10s, wins and driving.
+Cars parked along the dirt roads are drivable: walk up, press F, WASD drives, Space brakes, F exits. The browser build uses the fallback mesh
 terrain (Terrain3D has no web binary), runs single-threaded, and renders at 0.85 scale with smaller
 shadows. Chrome or Edge on a desktop is recommended. After a new build is published, hard-refresh
 (Ctrl+F5) so the browser drops the cached copy.
@@ -39,9 +42,11 @@ If the editor reports a Vulkan or Forward+ error on your GPU, run with `--render
 
 ### Controls
 
-WASD move, Shift sprint, Space jump, C crouch, right mouse aim (hunting rifle scopes), left mouse fire,
-R reload, F pick up / loot bag, 1-6 hotbar, H bandage, J first aid kit, T first-person toggle, M map,
-Esc release the mouse. Under the parachute: W dives, S flares, mouse steers.
+WASD move, Shift sprint, Space jump, C crouch (knees bend, feet stay planted), right mouse aim
+(hunting rifle scopes), left mouse fire, R reload, F pick up / loot bag / enter and exit a car, 1-6
+hotbar, H bandage, J first aid kit, T first-person toggle, M map, Esc pause. Under the parachute: W
+dives (faster descent), S flares, mouse steers. In a car: W/S throttle and reverse, A/D steer, Space
+handbrake.
 
 ### Headless checks (contributors)
 

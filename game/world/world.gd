@@ -44,6 +44,16 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 	vehicles = Node3D.new()
 	vehicles.name = "Vehicles"
 	add_child(vehicles)
+	# Exponential fog saturates on the Compatibility (WebGL) renderer: use explicit depth fog there.
+	if OS.has_feature("web") or "--env=depthfog" in OS.get_cmdline_user_args():
+		var wenv: Environment = $Env.environment
+		wenv.fog_mode = Environment.FOG_MODE_DEPTH
+		wenv.fog_depth_begin = 220.0
+		wenv.fog_depth_end = 1900.0
+		wenv.fog_depth_curve = 1.0
+		wenv.fog_density = 1.0
+		wenv.fog_sky_affect = 0.25
+		print("World: depth fog")
 	if "--env=plain" in OS.get_cmdline_user_args():
 		# render debugging: no fog, flat ambient, linear tonemap
 		var env: Environment = $Env.environment

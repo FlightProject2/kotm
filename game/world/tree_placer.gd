@@ -68,6 +68,18 @@ static func _mesh_for(species: String) -> Mesh:
 			var mm := (m as BaseMaterial3D).duplicate() as BaseMaterial3D
 			mm.metallic = 0.0
 			mm.roughness = 0.95
+			# Vertex colours are decoded differently by the Compatibility (WebGL) renderer and wash
+			# out to cyan-white; bake the surface's mean vertex colour into a plain albedo instead.
+			if mm.vertex_color_use_as_albedo:
+				var arrays := mesh.surface_get_arrays(i)
+				var cols = arrays[Mesh.ARRAY_COLOR]
+				if cols != null and cols.size() > 0:
+					var acc := Color(0, 0, 0, 0)
+					for c in cols:
+						acc += c
+					acc /= float(cols.size())
+					mm.vertex_color_use_as_albedo = false
+					mm.albedo_color = Color(acc.r, acc.g, acc.b, 1.0) * mm.albedo_color
 			mesh.surface_set_material(i, mm)
 	inst.free()
 	return mesh
