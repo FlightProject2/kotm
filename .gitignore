@@ -2,3 +2,5 @@
 scratch/
 *.tmp
 __pycache__/
+world/terrain/*.f32
+world/terrain/*.exr

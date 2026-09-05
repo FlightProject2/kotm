@@ -1,0 +1,1840 @@
+{
+ "id": "slice_2km",
+ "seed": 20160218,
+ "halfSizeM": 1024,
+ "vertexSpacing": 1.0,
+ "regionSize": 512,
+ "heightmap": "res://world/terrain/heightmap_2km.res",
+ "heightmapExr": "res://world/terrain/heightmap_2km.exr",
+ "colormap": "res://world/terrain/colormap_2km.png",
+ "preview": "res://world/terrain/preview_2km.png",
+ "trees": "res://world/terrain/trees_2km.json",
+ "pads": "res://world/terrain/pads_2km.json",
+ "north": "-z",
+ "pois": [
+  {
+   "id": "the_mountain",
+   "name": "The Mountain",
+   "type": "mountain",
+   "x": 0,
+   "z": 0,
+   "padRadius": 22
+  },
+  {
+   "id": "ashford",
+   "name": "Ashford",
+   "type": "town",
+   "x": 520,
+   "z": 430,
+   "padRadius": 150
+  },
+  {
+   "id": "cranmoor",
+   "name": "Cranmoor",
+   "type": "village",
+   "x": -560,
+   "z": -300,
+   "padRadius": 95
+  },
+  {
+   "id": "bumjick_farm",
+   "name": "Bumjick Farm",
+   "type": "farm",
+   "x": -540,
+   "z": 520,
+   "padRadius": 95
+  },
+  {
+   "id": "hollis_farm",
+   "name": "Hollis Farm",
+   "type": "farm",
+   "x": 500,
+   "z": -560,
+   "padRadius": 85
+  },
+  {
+   "id": "rail_yard",
+   "name": "Rail Yard",
+   "type": "industrial",
+   "x": -600,
+   "z": -720,
+   "padRadius": 120
+  },
+  {
+   "id": "gas_station",
+   "name": "Gas Station",
+   "type": "commercial",
+   "x": 300,
+   "z": -210,
+   "padRadius": 45
+  },
+  {
+   "id": "hilltop_cabins",
+   "name": "Hilltop Cabins",
+   "type": "cabins",
+   "x": 700,
+   "z": -760,
+   "padRadius": 0
+  }
+ ],
+ "buildings": [
+  {
+   "prefab": "house_small",
+   "x": 468.0,
+   "z": 379.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": 494.0,
+   "z": 379.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 520.0,
+   "z": 379.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shop",
+   "x": 546.0,
+   "z": 379.0,
+   "yaw": 0.0,
+   "nodeClass": "commercial",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": 572.0,
+   "z": 379.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 468.0,
+   "z": 413.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "diner",
+   "x": 494.0,
+   "z": 413.0,
+   "yaw": 3.142,
+   "nodeClass": "commercial",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 520.0,
+   "z": 413.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": 546.0,
+   "z": 413.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shop",
+   "x": 572.0,
+   "z": 413.0,
+   "yaw": 3.142,
+   "nodeClass": "commercial",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 468.0,
+   "z": 447.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 494.0,
+   "z": 447.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "church",
+   "x": 520.0,
+   "z": 447.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": 546.0,
+   "z": 447.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 572.0,
+   "z": 447.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "police_station",
+   "x": 468.0,
+   "z": 481.0,
+   "yaw": 3.142,
+   "nodeClass": "police",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 494.0,
+   "z": 481.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": 520.0,
+   "z": 481.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shop",
+   "x": 546.0,
+   "z": 481.0,
+   "yaw": 3.142,
+   "nodeClass": "commercial",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 572.0,
+   "z": 481.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "ashford",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -620.0,
+   "z": -284.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "diner",
+   "x": -620.0,
+   "z": -316.0,
+   "yaw": 3.142,
+   "nodeClass": "commercial",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shop",
+   "x": -590.0,
+   "z": -284.0,
+   "yaw": 0.0,
+   "nodeClass": "commercial",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -590.0,
+   "z": -316.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_two_storey",
+   "x": -560.0,
+   "z": -284.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "motel",
+   "x": -560.0,
+   "z": -316.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -530.0,
+   "z": -284.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -530.0,
+   "z": -316.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shop",
+   "x": -500.0,
+   "z": -284.0,
+   "yaw": 0.0,
+   "nodeClass": "commercial",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -500.0,
+   "z": -316.0,
+   "yaw": 3.142,
+   "nodeClass": "residential",
+   "poi": "cranmoor",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_bigbarn",
+   "x": -540.0,
+   "z": 520.0,
+   "yaw": 0.3,
+   "nodeClass": "industrial",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_barn",
+   "x": -498.0,
+   "z": 510.0,
+   "yaw": 1.2,
+   "nodeClass": "residential",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_silo",
+   "x": -510.0,
+   "z": 548.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_watertower",
+   "x": -580.0,
+   "z": 550.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": -585.0,
+   "z": 485.0,
+   "yaw": 0.6,
+   "nodeClass": "residential",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_windmill",
+   "x": -535.0,
+   "z": 465.0,
+   "yaw": 0.0,
+   "nodeClass": "hunting",
+   "poi": "bumjick_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_bigbarn",
+   "x": 500.0,
+   "z": -560.0,
+   "yaw": 0.3,
+   "nodeClass": "industrial",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_barn",
+   "x": 542.0,
+   "z": -570.0,
+   "yaw": 1.2,
+   "nodeClass": "residential",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_silo",
+   "x": 530.0,
+   "z": -532.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_watertower",
+   "x": 460.0,
+   "z": -530.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "house_small",
+   "x": 455.0,
+   "z": -595.0,
+   "yaw": 0.6,
+   "nodeClass": "residential",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "quat_windmill",
+   "x": 505.0,
+   "z": -615.0,
+   "yaw": 0.0,
+   "nodeClass": "hunting",
+   "poi": "hollis_farm",
+   "padRadius": 0
+  },
+  {
+   "prefab": "warehouse",
+   "x": -555.0,
+   "z": -750.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "warehouse",
+   "x": -555.0,
+   "z": -680.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "shed",
+   "x": -640.0,
+   "z": -710.0,
+   "yaw": 1.57,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -780.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -758.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -736.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -714.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -692.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "railcar",
+   "x": -600.0,
+   "z": -670.0,
+   "yaw": 0.0,
+   "nodeClass": "industrial",
+   "poi": "rail_yard",
+   "padRadius": 0
+  },
+  {
+   "prefab": "gas_station",
+   "x": 300.0,
+   "z": -210.0,
+   "yaw": 0.0,
+   "nodeClass": "commercial",
+   "poi": "gas_station",
+   "padRadius": 0
+  },
+  {
+   "prefab": "radio_hut",
+   "x": 0.0,
+   "z": 0.0,
+   "yaw": 0.0,
+   "nodeClass": "military",
+   "poi": "the_mountain",
+   "padRadius": 0
+  },
+  {
+   "prefab": "radio_tower",
+   "x": 8.0,
+   "z": -6.0,
+   "yaw": 0.0,
+   "nodeClass": "military",
+   "poi": "the_mountain",
+   "padRadius": 0
+  },
+  {
+   "prefab": "cabin",
+   "x": 770.0,
+   "z": -760.0,
+   "yaw": 0.0,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "cabin",
+   "x": 734.8,
+   "z": -712.3,
+   "yaw": 1.05,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "cabin",
+   "x": 664.7,
+   "z": -712.5,
+   "yaw": 2.1,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "cabin",
+   "x": 630.0,
+   "z": -760.5,
+   "yaw": 3.15,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "cabin",
+   "x": 665.7,
+   "z": -807.9,
+   "yaw": 4.2,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "cabin",
+   "x": 735.8,
+   "z": -807.2,
+   "yaw": 5.25,
+   "nodeClass": "residential",
+   "poi": "hilltop_cabins",
+   "padRadius": 14
+  },
+  {
+   "prefab": "hunting_stand",
+   "x": -300.0,
+   "z": 800.0,
+   "yaw": 5.02,
+   "nodeClass": "hunting",
+   "poi": "",
+   "padRadius": 8
+  },
+  {
+   "prefab": "hunting_stand",
+   "x": 820.0,
+   "z": 120.0,
+   "yaw": 6.125,
+   "nodeClass": "hunting",
+   "poi": "",
+   "padRadius": 8
+  },
+  {
+   "prefab": "hunting_stand",
+   "x": -850.0,
+   "z": 100.0,
+   "yaw": 1.578,
+   "nodeClass": "hunting",
+   "poi": "",
+   "padRadius": 8
+  },
+  {
+   "prefab": "hunting_stand",
+   "x": 200.0,
+   "z": 850.0,
+   "yaw": 1.376,
+   "nodeClass": "hunting",
+   "poi": "",
+   "padRadius": 8
+  },
+  {
+   "prefab": "barn_small",
+   "x": 732.9,
+   "z": -38.4,
+   "yaw": 2.065,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "shed",
+   "x": 501.6,
+   "z": 118.4,
+   "yaw": 5.852,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": -220.7,
+   "z": -568.4,
+   "yaw": 2.236,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "cabin",
+   "x": 692.9,
+   "z": 708.0,
+   "yaw": 4.68,
+   "nodeClass": "residential",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": -512.0,
+   "z": 653.8,
+   "yaw": 2.232,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "shed",
+   "x": -878.8,
+   "z": -721.4,
+   "yaw": 0.412,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": -554.7,
+   "z": -120.4,
+   "yaw": 0.362,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "cabin",
+   "x": 488.5,
+   "z": -828.7,
+   "yaw": 3.637,
+   "nodeClass": "residential",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": 21.9,
+   "z": -878.1,
+   "yaw": 4.453,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "shed",
+   "x": -798.1,
+   "z": -725.1,
+   "yaw": 3.643,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": -627.9,
+   "z": 375.8,
+   "yaw": 1.449,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "cabin",
+   "x": -397.1,
+   "z": -788.9,
+   "yaw": 1.303,
+   "nodeClass": "residential",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": 520.8,
+   "z": -207.1,
+   "yaw": 2.95,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "shed",
+   "x": 471.6,
+   "z": 829.0,
+   "yaw": 3.76,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": 357.5,
+   "z": -506.4,
+   "yaw": 1.492,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "cabin",
+   "x": 784.2,
+   "z": 255.6,
+   "yaw": 3.982,
+   "nodeClass": "residential",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": -364.4,
+   "z": 378.0,
+   "yaw": 0.974,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "shed",
+   "x": 344.8,
+   "z": 887.3,
+   "yaw": 5.468,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "barn_small",
+   "x": 637.0,
+   "z": 882.3,
+   "yaw": 1.412,
+   "nodeClass": "industrial",
+   "poi": "",
+   "padRadius": 18
+  },
+  {
+   "prefab": "cabin",
+   "x": -88.7,
+   "z": 689.4,
+   "yaw": 6.208,
+   "nodeClass": "residential",
+   "poi": "",
+   "padRadius": 18
+  }
+ ],
+ "roads": [
+  {
+   "id": "ring",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     450.0,
+     0.0
+    ],
+    [
+     447.8,
+     44.1
+    ],
+    [
+     441.4,
+     87.8
+    ],
+    [
+     430.6,
+     130.6
+    ],
+    [
+     415.7,
+     172.2
+    ],
+    [
+     396.9,
+     212.1
+    ],
+    [
+     374.2,
+     250.0
+    ],
+    [
+     347.9,
+     285.5
+    ],
+    [
+     318.2,
+     318.2
+    ],
+    [
+     285.5,
+     347.9
+    ],
+    [
+     250.0,
+     374.2
+    ],
+    [
+     212.1,
+     396.9
+    ],
+    [
+     172.2,
+     415.7
+    ],
+    [
+     130.6,
+     430.6
+    ],
+    [
+     87.8,
+     441.4
+    ],
+    [
+     44.1,
+     447.8
+    ],
+    [
+     0.0,
+     450.0
+    ],
+    [
+     -44.1,
+     447.8
+    ],
+    [
+     -87.8,
+     441.4
+    ],
+    [
+     -130.6,
+     430.6
+    ],
+    [
+     -172.2,
+     415.7
+    ],
+    [
+     -212.1,
+     396.9
+    ],
+    [
+     -250.0,
+     374.2
+    ],
+    [
+     -285.5,
+     347.9
+    ],
+    [
+     -318.2,
+     318.2
+    ],
+    [
+     -347.9,
+     285.5
+    ],
+    [
+     -374.2,
+     250.0
+    ],
+    [
+     -396.9,
+     212.1
+    ],
+    [
+     -415.7,
+     172.2
+    ],
+    [
+     -430.6,
+     130.6
+    ],
+    [
+     -441.4,
+     87.8
+    ],
+    [
+     -447.8,
+     44.1
+    ],
+    [
+     -450.0,
+     0.0
+    ],
+    [
+     -447.8,
+     -44.1
+    ],
+    [
+     -441.4,
+     -87.8
+    ],
+    [
+     -430.6,
+     -130.6
+    ],
+    [
+     -415.7,
+     -172.2
+    ],
+    [
+     -396.9,
+     -212.1
+    ],
+    [
+     -374.2,
+     -250.0
+    ],
+    [
+     -347.9,
+     -285.5
+    ],
+    [
+     -318.2,
+     -318.2
+    ],
+    [
+     -285.5,
+     -347.9
+    ],
+    [
+     -250.0,
+     -374.2
+    ],
+    [
+     -212.1,
+     -396.9
+    ],
+    [
+     -172.2,
+     -415.7
+    ],
+    [
+     -130.6,
+     -430.6
+    ],
+    [
+     -87.8,
+     -441.4
+    ],
+    [
+     -44.1,
+     -447.8
+    ],
+    [
+     -0.0,
+     -450.0
+    ],
+    [
+     44.1,
+     -447.8
+    ],
+    [
+     87.8,
+     -441.4
+    ],
+    [
+     130.6,
+     -430.6
+    ],
+    [
+     172.2,
+     -415.7
+    ],
+    [
+     212.1,
+     -396.9
+    ],
+    [
+     250.0,
+     -374.2
+    ],
+    [
+     285.5,
+     -347.9
+    ],
+    [
+     318.2,
+     -318.2
+    ],
+    [
+     347.9,
+     -285.5
+    ],
+    [
+     374.2,
+     -250.0
+    ],
+    [
+     396.9,
+     -212.1
+    ],
+    [
+     415.7,
+     -172.2
+    ],
+    [
+     430.6,
+     -130.6
+    ],
+    [
+     441.4,
+     -87.8
+    ],
+    [
+     447.8,
+     -44.1
+    ],
+    [
+     450.0,
+     -0.0
+    ]
+   ]
+  },
+  {
+   "id": "spoke_ashford",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     346.8,
+     286.8
+    ],
+    [
+     520,
+     430
+    ]
+   ]
+  },
+  {
+   "id": "spoke_cranmoor",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     -396.7,
+     -212.5
+    ],
+    [
+     -560,
+     -300
+    ]
+   ]
+  },
+  {
+   "id": "spoke_bumjick_farm",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     -324.1,
+     312.1
+    ],
+    [
+     -540,
+     520
+    ]
+   ]
+  },
+  {
+   "id": "spoke_hollis_farm",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     299.7,
+     -335.7
+    ],
+    [
+     500,
+     -560
+    ]
+   ]
+  },
+  {
+   "id": "spoke_rail_yard",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     -288.1,
+     -345.7
+    ],
+    [
+     -600,
+     -720
+    ]
+   ]
+  },
+  {
+   "id": "spoke_gas_station",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     368.7,
+     -258.1
+    ],
+    [
+     300,
+     -210
+    ]
+   ]
+  },
+  {
+   "id": "spoke_hilltop_cabins",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     304.9,
+     -331.0
+    ],
+    [
+     700,
+     -760
+    ]
+   ]
+  },
+  {
+   "id": "mountain_switchback",
+   "type": "dirt",
+   "width": 5,
+   "points": [
+    [
+     313.5,
+     322.8
+    ],
+    [
+     292.0,
+     338.4
+    ],
+    [
+     269.8,
+     352.5
+    ],
+    [
+     247.0,
+     365.3
+    ],
+    [
+     223.5,
+     376.6
+    ],
+    [
+     199.7,
+     386.4
+    ],
+    [
+     175.4,
+     394.6
+    ],
+    [
+     150.9,
+     401.4
+    ],
+    [
+     126.1,
+     406.7
+    ],
+    [
+     101.3,
+     410.5
+    ],
+    [
+     76.5,
+     412.8
+    ],
+    [
+     51.7,
+     413.5
+    ],
+    [
+     27.1,
+     412.9
+    ],
+    [
+     2.8,
+     410.7
+    ],
+    [
+     -21.1,
+     407.1
+    ],
+    [
+     -44.7,
+     402.2
+    ],
+    [
+     -67.7,
+     395.9
+    ],
+    [
+     -90.2,
+     388.3
+    ],
+    [
+     -112.0,
+     379.4
+    ],
+    [
+     -133.0,
+     369.4
+    ],
+    [
+     -153.3,
+     358.1
+    ],
+    [
+     -172.7,
+     345.8
+    ],
+    [
+     -191.2,
+     332.4
+    ],
+    [
+     -208.8,
+     318.1
+    ],
+    [
+     -225.3,
+     302.9
+    ],
+    [
+     -240.7,
+     286.8
+    ],
+    [
+     -255.1,
+     270.0
+    ],
+    [
+     -268.3,
+     252.5
+    ],
+    [
+     -280.4,
+     234.3
+    ],
+    [
+     -291.2,
+     215.7
+    ],
+    [
+     -300.8,
+     196.5
+    ],
+    [
+     -309.2,
+     177.0
+    ],
+    [
+     -316.4,
+     157.2
+    ],
+    [
+     -322.3,
+     137.2
+    ],
+    [
+     -327.0,
+     117.0
+    ],
+    [
+     -330.4,
+     96.7
+    ],
+    [
+     -332.5,
+     76.5
+    ],
+    [
+     -333.5,
+     56.3
+    ],
+    [
+     -333.2,
+     36.3
+    ],
+    [
+     -331.7,
+     16.5
+    ],
+    [
+     -329.1,
+     -2.9
+    ],
+    [
+     -325.4,
+     -22.1
+    ],
+    [
+     -320.5,
+     -40.8
+    ],
+    [
+     -314.6,
+     -59.0
+    ],
+    [
+     -307.7,
+     -76.6
+    ],
+    [
+     -299.7,
+     -93.6
+    ],
+    [
+     -290.9,
+     -110.0
+    ],
+    [
+     -281.2,
+     -125.7
+    ],
+    [
+     -270.6,
+     -140.6
+    ],
+    [
+     -259.3,
+     -154.7
+    ],
+    [
+     -247.3,
+     -167.9
+    ],
+    [
+     -234.6,
+     -180.3
+    ],
+    [
+     -221.3,
+     -191.8
+    ],
+    [
+     -207.5,
+     -202.4
+    ],
+    [
+     -193.2,
+     -212.0
+    ],
+    [
+     -178.5,
+     -220.6
+    ],
+    [
+     -163.5,
+     -228.3
+    ],
+    [
+     -148.2,
+     -234.9
+    ],
+    [
+     -132.7,
+     -240.6
+    ],
+    [
+     -117.0,
+     -245.2
+    ],
+    [
+     -101.3,
+     -248.9
+    ],
+    [
+     -85.5,
+     -251.5
+    ],
+    [
+     -69.8,
+     -253.2
+    ],
+    [
+     -54.2,
+     -253.9
+    ],
+    [
+     -38.7,
+     -253.7
+    ],
+    [
+     -23.5,
+     -252.5
+    ],
+    [
+     -8.5,
+     -250.4
+    ],
+    [
+     6.1,
+     -247.5
+    ],
+    [
+     20.4,
+     -243.7
+    ],
+    [
+     34.3,
+     -239.1
+    ],
+    [
+     47.6,
+     -233.7
+    ],
+    [
+     60.5,
+     -227.6
+    ],
+    [
+     72.8,
+     -220.7
+    ],
+    [
+     84.5,
+     -213.3
+    ],
+    [
+     95.6,
+     -205.2
+    ],
+    [
+     106.1,
+     -196.6
+    ],
+    [
+     115.9,
+     -187.4
+    ],
+    [
+     124.9,
+     -177.8
+    ],
+    [
+     133.3,
+     -167.8
+    ],
+    [
+     140.9,
+     -157.5
+    ],
+    [
+     147.8,
+     -146.8
+    ],
+    [
+     153.9,
+     -135.9
+    ],
+    [
+     159.2,
+     -124.7
+    ],
+    [
+     163.8,
+     -113.4
+    ],
+    [
+     167.6,
+     -102.0
+    ],
+    [
+     170.6,
+     -90.6
+    ],
+    [
+     172.9,
+     -79.2
+    ],
+    [
+     174.4,
+     -67.8
+    ],
+    [
+     175.2,
+     -56.5
+    ],
+    [
+     175.3,
+     -45.4
+    ],
+    [
+     174.7,
+     -34.4
+    ],
+    [
+     173.4,
+     -23.7
+    ],
+    [
+     171.5,
+     -13.2
+    ],
+    [
+     169.0,
+     -3.1
+    ],
+    [
+     165.8,
+     6.7
+    ],
+    [
+     162.1,
+     16.2
+    ],
+    [
+     157.9,
+     25.2
+    ],
+    [
+     153.2,
+     33.8
+    ],
+    [
+     148.1,
+     41.9
+    ],
+    [
+     142.5,
+     49.5
+    ],
+    [
+     136.6,
+     56.6
+    ],
+    [
+     130.3,
+     63.2
+    ],
+    [
+     123.7,
+     69.3
+    ],
+    [
+     116.9,
+     74.8
+    ],
+    [
+     109.8,
+     79.8
+    ],
+    [
+     102.6,
+     84.2
+    ],
+    [
+     95.3,
+     88.0
+    ],
+    [
+     87.9,
+     91.3
+    ],
+    [
+     80.4,
+     94.0
+    ],
+    [
+     72.9,
+     96.1
+    ],
+    [
+     65.4,
+     97.7
+    ],
+    [
+     58.1,
+     98.8
+    ],
+    [
+     50.8,
+     99.4
+    ],
+    [
+     43.6,
+     99.4
+    ],
+    [
+     36.7,
+     99.0
+    ],
+    [
+     29.9,
+     98.1
+    ],
+    [
+     23.4,
+     96.7
+    ],
+    [
+     17.1,
+     94.9
+    ],
+    [
+     11.2,
+     92.8
+    ],
+    [
+     5.5,
+     90.3
+    ],
+    [
+     0.2,
+     87.4
+    ],
+    [
+     -4.8,
+     84.3
+    ],
+    [
+     -9.4,
+     80.8
+    ],
+    [
+     -13.6,
+     77.2
+    ],
+    [
+     -17.4,
+     73.3
+    ],
+    [
+     -20.8,
+     69.3
+    ],
+    [
+     -23.8,
+     65.1
+    ],
+    [
+     -26.4,
+     60.8
+    ],
+    [
+     -28.5,
+     56.4
+    ],
+    [
+     -30.3,
+     52.1
+    ],
+    [
+     -31.6,
+     47.7
+    ],
+    [
+     -32.5,
+     43.3
+    ],
+    [
+     -33.1,
+     39.0
+    ],
+    [
+     -33.2,
+     34.8
+    ],
+    [
+     -33.0,
+     30.8
+    ],
+    [
+     -32.4,
+     26.8
+    ],
+    [
+     -31.5,
+     23.1
+    ],
+    [
+     -30.3,
+     19.6
+    ],
+    [
+     -28.7,
+     16.3
+    ],
+    [
+     -26.9,
+     13.2
+    ]
+   ]
+  },
+  {
+   "id": "rail_line",
+   "type": "rail",
+   "width": 4,
+   "points": [
+    [
+     -600,
+     -1000
+    ],
+    [
+     -600,
+     1000
+    ]
+   ]
+  },
+  {
+   "id": "ashford_main",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     440,
+     447
+    ],
+    [
+     600,
+     447
+    ]
+   ]
+  },
+  {
+   "id": "ashford_cross",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     440,
+     413
+    ],
+    [
+     600,
+     413
+    ]
+   ]
+  },
+  {
+   "id": "cranmoor_main",
+   "type": "dirt",
+   "width": 6,
+   "points": [
+    [
+     -640,
+     -300
+    ],
+    [
+     -480,
+     -300
+    ]
+   ]
+  }
+ ],
+ "spawnMaxHeightM": 110
+}
