@@ -85,9 +85,14 @@ func aim_direction(ch: Character) -> Vector3:
 static func _is_own_hitbox(collider: Object, ch: Character) -> bool:
 	return collider != null and collider is Node and (collider as Node).is_ancestor_of(ch) == false and ch.is_ancestor_of(collider)
 
+var _bound: Character
+
 func _process(_dt: float) -> void:
 	if target == null or not is_instance_valid(target):
 		return
+	if _bound != target:
+		_bound = target
+		target.fired.connect(kick)
 	if not Input.is_action_pressed("free_look"):
 		free_look_yaw = lerpf(free_look_yaw, 0.0, 0.25)
 	aiming = target.input.pressed(CharacterInput.B_AIM) and target.mode != Character.Mode.PARACHUTE

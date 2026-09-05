@@ -73,6 +73,10 @@ static func _set_color(mi: MeshInstance3D, c: Color) -> void:
 		mi.material_override = m
 	m.albedo_color = c
 
+func play_melee() -> void:
+	if anim:
+		anim.play_melee()
+
 func show_weapon(weapon_id: String, weapon_class: String) -> void:
 	if weapon_holder:
 		weapon_holder.set_weapon(weapon_id, weapon_class)

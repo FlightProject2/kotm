@@ -23,6 +23,7 @@ var mode: int = Mode.GROUND
 var crouching: bool = false
 var stun: float = 0.0
 var health: HealthState = HealthState.new()
+var inventory: Inventory = Inventory.new()
 var kills: int = 0
 var damage_dealt: float = 0.0
 var last_hit_by: Character
@@ -36,6 +37,7 @@ var gas_timer: float = 0.0
 @onready var motor: CharacterMotor = $Motor
 @onready var collision: CollisionShape3D = $Collision
 @onready var visual: Node3D = $Visual
+@onready var combat: CharacterCombat = $Combat
 
 var cfg: Dictionary = DataLib.movement()
 
@@ -85,18 +87,19 @@ func _physics_process(dt: float) -> void:
 	yaw = input.yaw
 	pitch = input.pitch
 	motor.simulate(dt)
+	combat.tick(dt)
 	_tick_heal(dt)
 	prev_input = input.duplicate_input()
 
 # ---- health helpers (authority) ----
-func apply_hit(result: DamageModel.HitResult, from: Character) -> void:
+func apply_hit(result: DamageModel.HitResult, from: Character, weapon_name := "") -> void:
 	if from:
 		from.damage_dealt += minf(result.damage, health.hp + result.damage)
 		last_hit_by = from
 	heal_timer = 0.0
 	heal_pending = {}
 	if result.killed:
-		_die(from, "", result.headshot)
+		_die(from, weapon_name, result.headshot)
 
 func take_plain_damage(amount: float, from: Character, how: String) -> void:
 	if not alive():
@@ -111,6 +114,9 @@ func _die(killer: Character, how: String, headshot: bool) -> void:
 	health.alive = false
 	set_collision_layer_value(2, false)
 	visual.visible = false
+	var rig := get_node_or_null("Hitboxes") as HitboxRig
+	if rig:
+		rig.set_enabled(false)
 	died.emit(killer, how, headshot)
 
 func start_heal(med_id: String) -> bool:
@@ -140,6 +146,13 @@ func _tick_heal(dt: float) -> void:
 		if bleed_timer >= float(DataLib.armor()["bleeding"]["tickSec"]):
 			bleed_timer = 0.0
 			take_plain_damage(1.0, last_hit_by, "Bleeding")
+
+func show_weapon(id: String, weapon_class: String) -> void:
+	if visual and visual.has_method("show_weapon"):
+		visual.show_weapon(id, weapon_class)
+
+func current_weapon_scoped() -> bool:
+	return combat != null and combat.current_is_scoped()
 
 func healing_blocks_sprint() -> bool:
 	return heal_timer > 0.0

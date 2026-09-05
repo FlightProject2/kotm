@@ -35,6 +35,17 @@ func setup(mode: String = "auto", map_layout: MapLayout = null) -> void:
 		backend_name = "mesh"
 	add_child(terrain)
 	move_child(terrain, 0)
+	var ps := ProjectileSystem.new()
+	ps.name = "ProjectileSystem"
+	ps.world = self
+	projectiles.add_child(ps)
+	var tr := TracerRenderer.new()
+	tr.name = "Tracers"
+	tr.world = self
+	add_child(tr)
+	var fx := HitFx.new()
+	fx.name = "HitFx"
+	add_child(fx)
 
 func height_at(x: float, z: float) -> float:
 	return height_field.height_at(x, z)
