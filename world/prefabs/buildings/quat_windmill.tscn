@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/farm/Windmill.fbx" id="1_eejtc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fci7q"]
+size = Vector3(6.5076675, 11.196159, 1.8978522)
+
+[node name="QuatWindmill" type="StaticBody3D" unique_id=1891884020]
+collision_layer = 33
+collision_mask = 0
+metadata/footprint = Vector2(6.5076675, 1.8978522)
+metadata/prefab_id = "quat_windmill"
+
+[node name="Visual" type="Node3D" parent="." unique_id=609676564]
+
+[node name="Windmill" type="Node3D" parent="Visual" unique_id=560604257 instance=ExtResource("1_eejtc")]
+
+[node name="LootNodes" type="Node3D" parent="." unique_id=1433811545]
+
+[node name="Loot0" type="Marker3D" parent="LootNodes" unique_id=614842766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.918038, 0.15, 1.3827672)
+
+[node name="Col2" type="CollisionShape3D" parent="." unique_id=704683442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9945295, 5.6005254, -5.364418e-07)
+shape = SubResource("BoxShape3D_fci7q")

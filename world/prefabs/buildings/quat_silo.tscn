@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/farm/Silo.fbx" id="1_i7dym"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_no7uf"]
+size = Vector3(3.6675158, 9.068632, 3.5099943)
+
+[node name="QuatSilo" type="StaticBody3D" unique_id=1425653826]
+collision_layer = 33
+collision_mask = 0
+metadata/footprint = Vector2(3.6675158, 3.5099943)
+metadata/prefab_id = "quat_silo"
+
+[node name="Visual" type="Node3D" parent="." unique_id=487665219]
+
+[node name="Silo" type="Node3D" parent="Visual" unique_id=593437836 instance=ExtResource("1_i7dym")]
+
+[node name="LootNodes" type="Node3D" parent="." unique_id=724967444]
+
+[node name="Loot0" type="Marker3D" parent="LootNodes" unique_id=1059208433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8350015, 0.15, 1.9283427)
+
+[node name="Col2" type="CollisionShape3D" parent="." unique_id=476461947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08353245, 4.4848695, 0.09043312)
+shape = SubResource("BoxShape3D_no7uf")

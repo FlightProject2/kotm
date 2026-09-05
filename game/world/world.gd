@@ -9,6 +9,10 @@ var terrain: Node3D
 var backend_name: String = ""
 var colormap: Image
 var loot_registry: LootRegistry
+var loot_nodes: Array = []
+var tree_bodies: Array[RID] = []
+var tree_shapes: Array[RID] = []
+var build_stats: Dictionary = {}
 
 @onready var buildings: Node3D = $Buildings
 @onready var trees: Node3D = $Trees
@@ -19,7 +23,7 @@ var loot_registry: LootRegistry
 @onready var characters: Node3D = $Characters
 
 ## mode: "auto" | "terrain3d" | "mesh". Loads the layout + heightmap and builds the terrain.
-func setup(mode: String = "auto", map_layout: MapLayout = null) -> void:
+func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: bool = false) -> void:
 	layout = map_layout if map_layout != null else MapLayout.load_default()
 	height_field = HeightField.load_from(layout.heightmap_path, layout.vertex_spacing)
 	assert(height_field != null, "World: heightmap missing")
@@ -50,6 +54,20 @@ func setup(mode: String = "auto", map_layout: MapLayout = null) -> void:
 	loot_registry = LootRegistry.new()
 	loot_registry.name = "LootRegistry"
 	loot.add_child(loot_registry)
+	if build_content:
+		var t0 := Time.get_ticks_msec()
+		build_stats = WorldBuilder.build(self)
+		build_stats.merge(TreePlacer.build(self, trees))
+		build_stats["ms"] = Time.get_ticks_msec() - t0
+		print("World: built %s" % [build_stats])
+
+func _exit_tree() -> void:
+	for b in tree_bodies:
+		PhysicsServer3D.free_rid(b)
+	for s in tree_shapes:
+		PhysicsServer3D.free_rid(s)
+	tree_bodies.clear()
+	tree_shapes.clear()
 
 func height_at(x: float, z: float) -> float:
 	return height_field.height_at(x, z)

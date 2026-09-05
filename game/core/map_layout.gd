@@ -59,13 +59,18 @@ func pad_height(pad_id: String) -> float:
 			return float(p["height"])
 	return NAN
 
-## Height a building should sit at: the pad height of its POI or own pad, else NAN.
+## Height a building should sit at: its POI pad, else the pad baked at its own position, else NAN.
 func building_base_height(b: Dictionary) -> float:
 	if b.get("poi", "") != "":
 		var h := pad_height(b["poi"])
 		if not is_nan(h):
 			return h
-	return pad_height(b["prefab"])
+	var bx := float(b["x"])
+	var bz := float(b["z"])
+	for p in pads:
+		if absf(float(p["x"]) - bx) < 1.5 and absf(float(p["z"]) - bz) < 1.5:
+			return float(p["height"])
+	return NAN
 
 ## Distance from a point to the nearest road centreline (metres), and that road's width.
 func nearest_road(x: float, z: float) -> Array:

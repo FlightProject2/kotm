@@ -1,0 +1,57 @@
+{
+  "$schema_note": "Building prefab grammar consumed by tools/godot/build_prefabs.gd. kit = assembled from Kenney Building Kit pieces (2 m cells, 2.4 m walls). model = a single imported model with a box collider. boxes = simple coloured boxes. extras = additional model instances with local transforms.",
+  "kitPieces": {
+    "wall": "res://assets/kenney/building/wall.glb",
+    "door": "res://assets/kenney/building/wall-doorway-square.glb",
+    "window": "res://assets/kenney/building/wall-window-square.glb",
+    "windowWide": "res://assets/kenney/building/wall-window-wide-square.glb",
+    "floor": "res://assets/kenney/building/floor.glb",
+    "stairs": "res://assets/kenney/building/stairs-open.glb",
+    "border": "res://assets/kenney/building/border.glb",
+    "column": "res://assets/kenney/building/column.glb"
+  },
+  "prefabs": {
+    "house_small":    { "kind": "kit", "cells": [4, 3], "floors": 1, "door": "front", "windows": "alternate", "lootNodes": 2 },
+    "house_two_storey": { "kind": "kit", "cells": [4, 4], "floors": 2, "door": "front", "windows": "alternate", "stairs": true, "lootNodes": 3 },
+    "cabin":          { "kind": "kit", "cells": [3, 3], "floors": 1, "door": "front", "windows": "sparse", "lootNodes": 1 },
+    "shed":           { "kind": "kit", "cells": [2, 2], "floors": 1, "door": "front", "windows": "none", "lootNodes": 1 },
+    "shop":           { "kind": "kit", "cells": [5, 3], "floors": 1, "door": "front", "windows": "wide", "lootNodes": 2 },
+    "diner":          { "kind": "kit", "cells": [6, 3], "floors": 1, "door": "front", "windows": "wide", "lootNodes": 2 },
+    "motel":          { "kind": "kit", "cells": [8, 3], "floors": 2, "door": "front_back", "windows": "alternate", "stairs": true, "lootNodes": 4 },
+    "church":         { "kind": "kit", "cells": [4, 6], "floors": 1, "wallRows": 2, "door": "front", "windows": "alternate", "lootNodes": 2 },
+    "police_station": { "kind": "kit", "cells": [6, 4], "floors": 2, "door": "front_back", "windows": "alternate", "stairs": true, "lootNodes": 4 },
+    "warehouse":      { "kind": "kit", "cells": [8, 6], "floors": 1, "wallRows": 2, "door": "front_back", "windows": "sparse", "lootNodes": 4 },
+    "barn_small":     { "kind": "kit", "cells": [4, 3], "floors": 1, "wallRows": 2, "door": "front", "windows": "none", "lootNodes": 2 },
+    "radio_hut":      { "kind": "kit", "cells": [2, 2], "floors": 1, "door": "front", "windows": "none", "lootNodes": 1 },
+    "gas_station":    { "kind": "kit", "cells": [3, 2], "floors": 1, "door": "front", "windows": "wide", "lootNodes": 2,
+                        "extras": [
+                          { "scene": "res://assets/kenney/retro-urban/roof-metal-poles.glb", "pos": [-4.5, 0, 6.5], "scale": 3.0, "collision": "none" },
+                          { "scene": "res://assets/kenney/retro-urban/roof-metal-poles.glb", "pos": [-1.5, 0, 6.5], "scale": 3.0, "collision": "none" },
+                          { "scene": "res://assets/kenney/retro-urban/roof-metal-poles.glb", "pos": [1.5, 0, 6.5], "scale": 3.0, "collision": "none" },
+                          { "scene": "res://assets/kenney/retro-urban/roof-metal-poles.glb", "pos": [4.5, 0, 6.5], "scale": 3.0, "collision": "none" },
+                          { "scene": "res://assets/kenney/survival/barrel.glb", "pos": [-3, 0, 4.5], "scale": 2.5, "collision": "box" },
+                          { "scene": "res://assets/kenney/survival/barrel.glb", "pos": [3, 0, 4.5], "scale": 2.5, "collision": "box" }
+                        ] },
+    "quat_bigbarn":   { "kind": "model", "scene": "res://assets/quaternius/farm/BigBarn.fbx", "scale": 1.0, "lootNodes": 3 },
+    "quat_barn":      { "kind": "model", "scene": "res://assets/quaternius/farm/Barn.fbx", "scale": 1.0, "lootNodes": 2 },
+    "quat_silo":      { "kind": "model", "scene": "res://assets/quaternius/farm/Silo.fbx", "scale": 1.0, "lootNodes": 1 },
+    "quat_watertower": { "kind": "model", "scene": "res://assets/quaternius/farm/WaterTower.fbx", "scale": 1.0, "lootNodes": 1 },
+    "quat_windmill":  { "kind": "model", "scene": "res://assets/quaternius/farm/Windmill.fbx", "scale": 1.0, "lootNodes": 1 },
+    "radio_tower":    { "kind": "boxes", "lootNodes": 0, "boxes": [
+                          { "size": [0.5, 24, 0.5], "pos": [0, 12, 0], "color": "#8a2020" },
+                          { "size": [3.0, 0.3, 3.0], "pos": [0, 0.15, 0], "color": "#555555" },
+                          { "size": [0.2, 24, 0.2], "pos": [1.2, 12, 1.2], "color": "#777777" },
+                          { "size": [0.2, 24, 0.2], "pos": [-1.2, 12, -1.2], "color": "#777777" } ] },
+    "railcar":        { "kind": "boxes", "lootNodes": 1, "boxes": [
+                          { "size": [2.6, 2.6, 13.0], "pos": [0, 2.0, 0], "color": "#5a4a3a" },
+                          { "size": [2.2, 0.7, 12.0], "pos": [0, 0.35, 0], "color": "#2a2a2a" } ] },
+    "hunting_stand":  { "kind": "boxes", "lootNodes": 1, "boxes": [
+                          { "size": [2.4, 0.2, 2.4], "pos": [0, 3.2, 0], "color": "#6b4a2b" },
+                          { "size": [0.15, 3.2, 0.15], "pos": [1.1, 1.6, 1.1], "color": "#4a3320" },
+                          { "size": [0.15, 3.2, 0.15], "pos": [-1.1, 1.6, 1.1], "color": "#4a3320" },
+                          { "size": [0.15, 3.2, 0.15], "pos": [1.1, 1.6, -1.1], "color": "#4a3320" },
+                          { "size": [0.15, 3.2, 0.15], "pos": [-1.1, 1.6, -1.1], "color": "#4a3320" },
+                          { "size": [1.0, 3.4, 0.1], "pos": [0, 1.7, 1.25], "color": "#4a3320", "ramp": true },
+                          { "size": [2.4, 1.0, 0.1], "pos": [0, 3.8, -1.2], "color": "#6b4a2b" } ] }
+  }
+}

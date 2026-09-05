@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/farm/WaterTower.fbx" id="1_oubt4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nulx8"]
+size = Vector3(2.5322518, 8.428597, 2.4894874)
+
+[node name="QuatWatertower" type="StaticBody3D" unique_id=1714829550]
+collision_layer = 33
+collision_mask = 0
+metadata/footprint = Vector2(2.5322518, 2.4894874)
+metadata/prefab_id = "quat_watertower"
+
+[node name="Visual" type="Node3D" parent="." unique_id=1665999259]
+
+[node name="WaterTower" type="Node3D" parent="Visual" unique_id=1393165344 instance=ExtResource("1_oubt4")]
+
+[node name="LootNodes" type="Node3D" parent="." unique_id=759042862]
+
+[node name="Loot0" type="Marker3D" parent="LootNodes" unique_id=1186791644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.355998, 0.15, 1.5497984)
+
+[node name="Col2" type="CollisionShape3D" parent="." unique_id=1185909489]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07301569, 4.142731, -4.7683716e-07)
+shape = SubResource("BoxShape3D_nulx8")

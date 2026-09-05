@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/farm/BigBarn.fbx" id="1_j07dc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqmom"]
+size = Vector3(7.7268934, 7.8867726, 8.222447)
+
+[node name="QuatBigbarn" type="StaticBody3D" unique_id=1952324514]
+collision_layer = 33
+collision_mask = 0
+metadata/footprint = Vector2(7.7268934, 8.222447)
+metadata/prefab_id = "quat_bigbarn"
+
+[node name="Visual" type="Node3D" parent="." unique_id=1753667596]
+
+[node name="BigBarn" type="Node3D" parent="Visual" unique_id=1332674944 instance=ExtResource("1_j07dc")]
+
+[node name="LootNodes" type="Node3D" parent="." unique_id=423360911]
+
+[node name="Loot0" type="Marker3D" parent="LootNodes" unique_id=495800500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4266453, 0.15, 3.2170045)
+
+[node name="Loot1" type="Marker3D" parent="LootNodes" unique_id=986287267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.836017, 0.15, 2.475189)
+
+[node name="Loot2" type="Marker3D" parent="LootNodes" unique_id=213459174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40937728, 0.15, -5.5461855)
+
+[node name="Col2" type="CollisionShape3D" parent="." unique_id=21191455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9073486e-06, 3.9393814, 0.04866934)
+shape = SubResource("BoxShape3D_pqmom")

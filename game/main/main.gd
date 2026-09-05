@@ -36,7 +36,7 @@ func _on_play() -> void:
 func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String) -> void:
 	world = WORLD_SCENE.instantiate()
 	add_child(world)
-	world.setup(terrain_mode)
+	world.setup(terrain_mode, null, true)
 	match_node = Match.new()
 	match_node.name = "Match"
 	add_child(match_node)

@@ -7,6 +7,13 @@ static func generate(world: World, registry: LootRegistry, rng: RandomNumberGene
 	var layout := world.layout
 	var n := 0
 	var from_buildings := 0
+	if not world.loot_nodes.is_empty():
+		# Prefab loot markers (inside and beside buildings), rolled by the building's class.
+		for ln in world.loot_nodes:
+			for item in LootTables.roll_node(ln["class"], rng):
+				var p: Vector3 = ln["pos"]
+				registry.add(item, p + Vector3(rng.randf_range(-0.4, 0.4), 0, rng.randf_range(-0.4, 0.4)))
+				n += 1
 	for b in layout.buildings:
 		var cls: String = b.get("nodeClass", "residential")
 		var base := layout.building_base_height(b)
@@ -14,7 +21,7 @@ static func generate(world: World, registry: LootRegistry, rng: RandomNumberGene
 		for k in nodes:
 			for item in LootTables.roll_node(cls, rng):
 				var ang := rng.randf() * TAU
-				var r := rng.randf_range(2.5, 7.0)
+				var r := rng.randf_range(6.0, 11.0)
 				var x: float = b["x"] + cos(ang) * r
 				var z: float = b["z"] + sin(ang) * r
 				var y := base if not is_nan(base) else world.height_at(x, z)
