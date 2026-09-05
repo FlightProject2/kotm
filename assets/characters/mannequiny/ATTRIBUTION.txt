@@ -1,0 +1,5 @@
+Mannequiny 0.3.0 (mannequiny-0.3.0.glb)
+Source: https://github.com/gdquest-demos/godot-3d-mannequin
+License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+Attribution: GDQuest and contributors (https://www.gdquest.com/)
+Only the glTF model is used; it is imported fresh by Godot 4 (the original project targets Godot 3).

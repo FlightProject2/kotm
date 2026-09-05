@@ -1,0 +1,4 @@
+Mannequiny by GDQuest and contributors (https://www.gdquest.com/)
+Repository: https://github.com/gdquest-demos/godot-3d-mannequin
+Art assets are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
