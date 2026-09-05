@@ -3,11 +3,13 @@ extends Node
 
 const WORLD_SCENE := preload("res://game/world/world.tscn")
 const CAMERA_SCENE := preload("res://game/camera/camera_rig.tscn")
+const HUD_SCRIPT := preload("res://game/ui/hud.gd")
 
 var args: Dictionary = {}
 var world: World
 var match_node: Match
 var camera_rig: CameraRig
+var hud: HUD
 var sim: bool = false
 var sim_seconds: float = 60.0
 var preset: Dictionary
@@ -50,6 +52,10 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 		src.camera_rig = camera_rig
 		match_node.local_player.add_child(src)
 		Events.local_character_changed.emit(match_node.local_player)
+		hud = HUD_SCRIPT.new()
+		hud.name = "HUD"
+		add_child(hud)
+		hud.bind(match_node, camera_rig, world)
 		if not sim:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	print("KOTM: match started seed=%d bots=%d terrain=%s" % [p_seed, bots, world.backend_name])
@@ -70,6 +76,8 @@ func _on_match_ended(won: bool, placement: int, killer_name: String, weapon: Str
 		_print_summary_and_quit()
 		return
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if hud:
+		hud.visible = false
 	menu.visible = true
 	status_label.text = ("KING OF THE MOUNTAIN" if won else "You placed #%d" % placement) + (" · killed by %s (%s)" % [killer_name, weapon] if not won and killer_name != "" else "")
 

@@ -28,6 +28,7 @@ var wall: MeshInstance3D
 var ring: MeshInstance3D
 
 func start(p_schedule: Dictionary, p_half: float, p_border: float, p_rng: RandomNumberGenerator, characters: Callable, p_height_at: Callable) -> void:
+	add_to_group("zone")
 	schedule = p_schedule
 	phases = schedule["phases"]
 	half_size = p_half
