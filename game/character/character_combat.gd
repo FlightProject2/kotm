@@ -111,6 +111,9 @@ func try_fire(is_melee: bool) -> bool:
 	return true
 
 func muzzle_position() -> Vector3:
+	var vis: Node = c.get_node_or_null("Visual")
+	if vis and vis.get("weapon_holder") != null and vis.weapon_holder.has_weapon_model():
+		return vis.weapon_holder.muzzle_global()
 	return c.global_position + Vector3(0, c.height() - 0.5, 0) + c.right() * 0.28 + c.forward() * 0.5
 
 func start_reload() -> void:

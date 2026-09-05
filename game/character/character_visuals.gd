@@ -31,6 +31,7 @@ func _ready() -> void:
 	weapon_holder.bone_name = "hand.r"
 	weapon_holder.character = character
 	skeleton.add_child(weapon_holder)
+	character.fired.connect(func(_v: float, _h: float) -> void: weapon_holder.fire_effects())
 	var head_mount := BoneAttachment3D.new()
 	head_mount.name = "HeadMount"
 	head_mount.bone_name = "head"
