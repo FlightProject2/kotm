@@ -6,19 +6,56 @@ point per player (no bus, no plane), projectile bullets with visible trails and 
 helmets that crack, body armor that soaks, vehicles that drift, toxic gas that closes in, and the
 last player standing crowned **King of the Mountain**.
 
-This repository holds the **game plan** (design + technical blueprint) and a **browser prototype**
-used to playtest the plan's numbers before any engine work.
+This repository holds the **game plan** (design + technical blueprint), the **Godot 4.6 game** built from
+it (`project.godot` at the root), and the original **browser prototype**.
 
-## Play the prototype
+## Play it
 
-Open `prototype/index.html` in Chrome or Edge. That is the whole install: it is one HTML file that
-loads Three.js from a CDN, so it needs an internet connection but no Node, no build step, and no
-server. Click **Play**, and the game grabs the mouse.
+### In the browser (no install)
 
-It is a single-player Phase 1 feel test on a 1.2 km map against 30 bots: random-point parachute
-spawn, projectile bullets with per-gun drop and tracers, helmet pop, laminated armor, bleeding,
-loot and death bags, and a compressed 6-minute gas schedule. Shapes are placeholders; the numbers
-come from `design/data`.
+The Godot build is exported for the web and published on the `gh-pages` branch. Once GitHub Pages is
+enabled for this repository (Settings > Pages > Deploy from a branch > `gh-pages` / root), it is served
+at:
+
+    https://flightproject2.github.io/kotm/
+
+Click **PLAY (SOLO)**, and the game captures the mouse. Esc releases it. The browser build uses the
+fallback mesh terrain (Terrain3D has no web binary), runs single-threaded, and is a first playable,
+not the target performance. Chrome or Edge on a desktop is recommended.
+
+### In Godot (the real thing)
+
+1. Install **Godot 4.6.x Standard** (not the .NET build) from https://godotengine.org/download.
+2. Clone or download this branch.
+3. In Godot's project manager choose **Import**, pick `project.godot` at the top of the folder, then
+   **Import & Edit**. The first import takes a minute. If Godot asks to restart for the Terrain3D
+   plugin, do so.
+4. Press **F5**.
+
+If the editor reports a Vulkan or Forward+ error on your GPU, run with `--rendering-driver opengl3`.
+
+### Controls
+
+WASD move, Shift sprint, Space jump, C crouch, right mouse aim (hunting rifle scopes), left mouse fire,
+R reload, F pick up / loot bag, 1-6 hotbar, H bandage, J first aid kit, T first-person toggle, M map,
+Esc release the mouse. Under the parachute: W dives, S flares, mouse steers.
+
+### Headless checks (contributors)
+
+```
+tools/ci/setup_godot.sh                 # downloads the pinned Godot 4.6.3 Linux binary
+tools/ci/test.sh                        # import + 39 unit/scene tests + TTK parity with tools/ttk.py
+scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path . res://game/main/main.tscn -- --sim --seed=7 --bots=30 --sim-seconds=240 --no-player
+scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
+```
+
+`python3 tools/bake_map.py` regenerates the terrain and layout; `tools/godot/bake_terrain.gd` converts
+the heightmap; `tools/godot/build_prefabs.gd` rebuilds the building prefabs from `design/map/prefabs.json`.
+
+### The original browser prototype
+
+`prototype/index.html` is the single-file Three.js prototype the Godot build was ported from. Open it
+in a browser (needs internet for the graphics library). It is kept as the gameplay reference.
 
 ## Document index
 
