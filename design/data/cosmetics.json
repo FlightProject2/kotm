@@ -1,44 +1,510 @@
 {
   "$schema_note": "Cosmetic skins (docs/game-plan/11). Never affect stats. Clothing recipes recolour the mannequin's material slots; weapon recipes recolour the gun model's surfaces. Patterns are procedural (generated at runtime) so no textures are needed until real art arrives.",
-  "slots": ["head", "face", "chest", "legs", "feet", "hands", "back", "parachute"],
+  "slots": [
+    "head",
+    "face",
+    "chest",
+    "legs",
+    "feet",
+    "hands",
+    "back",
+    "parachute",
+    "skin",
+    "hair"
+  ],
   "rarities": {
-    "common": "#f1ede6", "uncommon": "#5fd35f", "rare": "#3b82f6", "ultra_rare": "#a855f7", "legendary": "#e6c25a"
+    "common": "#f1ede6",
+    "uncommon": "#5fd35f",
+    "rare": "#3b82f6",
+    "ultra_rare": "#a855f7",
+    "legendary": "#e6c25a"
   },
-  "patterns": ["solid", "stripe", "camo", "flames", "checker", "snakeskin"],
-  "defaultLoadout": { "chest": "shirt_grey", "legs": "pants_dark", "feet": "shoes_conveys_white", "head": "", "face": "", "hands": "", "back": "", "parachute": "chute_red" },
+  "patterns": [
+    "solid",
+    "stripe",
+    "camo",
+    "flames",
+    "checker",
+    "snakeskin"
+  ],
+  "defaultLoadout": {
+    "chest": "shirt_grey",
+    "legs": "pants_dark",
+    "feet": "shoes_conveys_white",
+    "head": "",
+    "face": "",
+    "hands": "",
+    "back": "",
+    "parachute": "chute_red",
+    "skin": "skin_medium",
+    "hair": "hair_short_brown"
+  },
   "items": [
-    { "id": "shirt_grey", "slot": "chest", "name": "Grey Tee", "rarity": "common", "recipe": { "target": "shirt", "color": "#8a8f95" } },
-    { "id": "shirt_police", "slot": "chest", "name": "Police Shirt", "rarity": "rare", "recipe": { "target": "shirt", "color": "#1f2d5a", "pattern": "stripe", "accent": "#dfe3ea" } },
-    { "id": "shirt_camo_green", "slot": "chest", "name": "Woodland Camo Shirt", "rarity": "uncommon", "recipe": { "target": "shirt", "color": "#4a5a33", "pattern": "camo", "accent": "#2f3a22" } },
-    { "id": "shirt_hotshot", "slot": "chest", "name": "Hot Shot Hoodie", "rarity": "legendary", "recipe": { "target": "shirt", "color": "#ff3b1f", "pattern": "flames", "accent": "#ffd23f" } },
-    { "id": "shirt_toxic", "slot": "chest", "name": "Toxic Tee", "rarity": "ultra_rare", "recipe": { "target": "shirt", "color": "#39ff88", "pattern": "checker", "accent": "#101010" } },
-    { "id": "pants_dark", "slot": "legs", "name": "Dark Jeans", "rarity": "common", "recipe": { "target": "pants", "color": "#2a2a30" } },
-    { "id": "pants_camo", "slot": "legs", "name": "Camo Pants", "rarity": "uncommon", "recipe": { "target": "pants", "color": "#5a6140", "pattern": "camo", "accent": "#3a3f2a" } },
-    { "id": "pants_police", "slot": "legs", "name": "Police Slacks", "rarity": "rare", "recipe": { "target": "pants", "color": "#1a2140" } },
-    { "id": "shoes_conveys_white", "slot": "feet", "name": "White Conveys", "rarity": "common", "recipe": { "target": "shoes", "color": "#f0f0f0" } },
-    { "id": "shoes_conveys_red", "slot": "feet", "name": "Red Conveys", "rarity": "uncommon", "recipe": { "target": "shoes", "color": "#c8102e" } },
-    { "id": "hat_boonie_snake", "slot": "head", "name": "Snakeskin Boonie Hat", "rarity": "common", "recipe": { "target": "hat", "shape": "boonie", "color": "#7d6b3a", "pattern": "snakeskin", "accent": "#3b3120" } },
-    { "id": "hat_police_cap", "slot": "head", "name": "Police Cap", "rarity": "rare", "recipe": { "target": "hat", "shape": "cap", "color": "#1f2d5a", "accent": "#e6c25a" } },
-    { "id": "hat_beanie_police", "slot": "head", "name": "POLICE Beanie", "rarity": "uncommon", "recipe": { "target": "hat", "shape": "beanie", "color": "#151515", "accent": "#ffffff" } },
-    { "id": "mask_toxic", "slot": "face", "name": "Toxic Grin Mask", "rarity": "ultra_rare", "recipe": { "target": "mask", "color": "#39ff88", "accent": "#101010" } },
-    { "id": "gloves_flag", "slot": "hands", "name": "Stars & Stripes Gloves", "rarity": "rare", "recipe": { "target": "gloves", "color": "#1f2d5a", "pattern": "stripe", "accent": "#c8102e" } },
-    { "id": "chute_red", "slot": "parachute", "name": "Red Canopy", "rarity": "common", "recipe": { "target": "parachute", "color": "#c8102e" } },
-    { "id": "chute_camo", "slot": "parachute", "name": "Camo Canopy", "rarity": "uncommon", "recipe": { "target": "parachute", "color": "#4a5a33", "pattern": "camo", "accent": "#2f3a22" } }
+    {
+      "id": "shirt_grey",
+      "slot": "chest",
+      "name": "Grey Tee",
+      "rarity": "common",
+      "recipe": {
+        "target": "shirt",
+        "color": "#8a8f95"
+      }
+    },
+    {
+      "id": "shirt_police",
+      "slot": "chest",
+      "name": "Police Shirt",
+      "rarity": "rare",
+      "recipe": {
+        "target": "shirt",
+        "color": "#1f2d5a",
+        "pattern": "stripe",
+        "accent": "#dfe3ea"
+      }
+    },
+    {
+      "id": "shirt_camo_green",
+      "slot": "chest",
+      "name": "Woodland Camo Shirt",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "shirt",
+        "color": "#4a5a33",
+        "pattern": "camo",
+        "accent": "#2f3a22"
+      }
+    },
+    {
+      "id": "shirt_hotshot",
+      "slot": "chest",
+      "name": "Hot Shot Hoodie",
+      "rarity": "legendary",
+      "recipe": {
+        "target": "shirt",
+        "color": "#ff3b1f",
+        "pattern": "flames",
+        "accent": "#ffd23f"
+      }
+    },
+    {
+      "id": "shirt_toxic",
+      "slot": "chest",
+      "name": "Toxic Tee",
+      "rarity": "ultra_rare",
+      "recipe": {
+        "target": "shirt",
+        "color": "#39ff88",
+        "pattern": "checker",
+        "accent": "#101010"
+      }
+    },
+    {
+      "id": "pants_dark",
+      "slot": "legs",
+      "name": "Dark Jeans",
+      "rarity": "common",
+      "recipe": {
+        "target": "pants",
+        "color": "#2a2a30"
+      }
+    },
+    {
+      "id": "pants_camo",
+      "slot": "legs",
+      "name": "Camo Pants",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "pants",
+        "color": "#5a6140",
+        "pattern": "camo",
+        "accent": "#3a3f2a"
+      }
+    },
+    {
+      "id": "pants_police",
+      "slot": "legs",
+      "name": "Police Slacks",
+      "rarity": "rare",
+      "recipe": {
+        "target": "pants",
+        "color": "#1a2140"
+      }
+    },
+    {
+      "id": "shoes_conveys_white",
+      "slot": "feet",
+      "name": "White Conveys",
+      "rarity": "common",
+      "recipe": {
+        "target": "shoes",
+        "color": "#f0f0f0"
+      }
+    },
+    {
+      "id": "shoes_conveys_red",
+      "slot": "feet",
+      "name": "Red Conveys",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "shoes",
+        "color": "#c8102e"
+      }
+    },
+    {
+      "id": "hat_boonie_snake",
+      "slot": "head",
+      "name": "Snakeskin Boonie Hat",
+      "rarity": "common",
+      "recipe": {
+        "target": "hat",
+        "shape": "boonie",
+        "color": "#7d6b3a",
+        "pattern": "snakeskin",
+        "accent": "#3b3120"
+      }
+    },
+    {
+      "id": "hat_police_cap",
+      "slot": "head",
+      "name": "Police Cap",
+      "rarity": "rare",
+      "recipe": {
+        "target": "hat",
+        "shape": "cap",
+        "color": "#1f2d5a",
+        "accent": "#e6c25a"
+      }
+    },
+    {
+      "id": "hat_beanie_police",
+      "slot": "head",
+      "name": "POLICE Beanie",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "hat",
+        "shape": "beanie",
+        "color": "#151515",
+        "accent": "#ffffff"
+      }
+    },
+    {
+      "id": "mask_toxic",
+      "slot": "face",
+      "name": "Toxic Grin Mask",
+      "rarity": "ultra_rare",
+      "recipe": {
+        "target": "mask",
+        "color": "#39ff88",
+        "accent": "#101010"
+      }
+    },
+    {
+      "id": "gloves_flag",
+      "slot": "hands",
+      "name": "Stars & Stripes Gloves",
+      "rarity": "rare",
+      "recipe": {
+        "target": "gloves",
+        "color": "#1f2d5a",
+        "pattern": "stripe",
+        "accent": "#c8102e"
+      }
+    },
+    {
+      "id": "chute_red",
+      "slot": "parachute",
+      "name": "Red Canopy",
+      "rarity": "common",
+      "recipe": {
+        "target": "parachute",
+        "color": "#c8102e"
+      }
+    },
+    {
+      "id": "chute_camo",
+      "slot": "parachute",
+      "name": "Camo Canopy",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "parachute",
+        "color": "#4a5a33",
+        "pattern": "camo",
+        "accent": "#2f3a22"
+      }
+    },
+    {
+      "id": "skin_light",
+      "slot": "skin",
+      "name": "Light",
+      "rarity": "common",
+      "recipe": {
+        "target": "skin",
+        "color": "#f0c8a8"
+      }
+    },
+    {
+      "id": "skin_medium",
+      "slot": "skin",
+      "name": "Medium",
+      "rarity": "common",
+      "recipe": {
+        "target": "skin",
+        "color": "#d9a37a"
+      }
+    },
+    {
+      "id": "skin_tan",
+      "slot": "skin",
+      "name": "Tan",
+      "rarity": "common",
+      "recipe": {
+        "target": "skin",
+        "color": "#b97d55"
+      }
+    },
+    {
+      "id": "skin_brown",
+      "slot": "skin",
+      "name": "Brown",
+      "rarity": "common",
+      "recipe": {
+        "target": "skin",
+        "color": "#8a5738"
+      }
+    },
+    {
+      "id": "skin_dark",
+      "slot": "skin",
+      "name": "Dark",
+      "rarity": "common",
+      "recipe": {
+        "target": "skin",
+        "color": "#59392a"
+      }
+    },
+    {
+      "id": "hair_short_brown",
+      "slot": "hair",
+      "name": "Short Brown",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "short",
+        "color": "#3b2617"
+      }
+    },
+    {
+      "id": "hair_short_black",
+      "slot": "hair",
+      "name": "Short Black",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "short",
+        "color": "#151210"
+      }
+    },
+    {
+      "id": "hair_short_blond",
+      "slot": "hair",
+      "name": "Short Blond",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "short",
+        "color": "#c9a25e"
+      }
+    },
+    {
+      "id": "hair_buzz_brown",
+      "slot": "hair",
+      "name": "Buzz Cut",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "buzz",
+        "color": "#3b2617"
+      }
+    },
+    {
+      "id": "hair_long_red",
+      "slot": "hair",
+      "name": "Long Red",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "long",
+        "color": "#7a2e13"
+      }
+    },
+    {
+      "id": "hair_long_black",
+      "slot": "hair",
+      "name": "Long Black",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "long",
+        "color": "#151210"
+      }
+    },
+    {
+      "id": "hair_bald",
+      "slot": "hair",
+      "name": "Bald",
+      "rarity": "common",
+      "recipe": {
+        "target": "hair",
+        "style": "bald",
+        "color": "#000000"
+      }
+    }
   ],
   "weaponSkins": [
-    { "id": "ar15_standard", "weapon": "ar15", "name": "Standard", "rarity": "common", "recipe": { "base": "#3b3f46", "accent": "#222226" } },
-    { "id": "ar15_hotshot", "weapon": "ar15", "name": "Hot Shot", "rarity": "legendary", "recipe": { "base": "#ff3b1f", "accent": "#ffd23f", "pattern": "flames" } },
-    { "id": "ar15_toxic", "weapon": "ar15", "name": "Toxic", "rarity": "ultra_rare", "recipe": { "base": "#39ff88", "accent": "#101010", "pattern": "checker" } },
-    { "id": "ar15_camo", "weapon": "ar15", "name": "Woodland", "rarity": "uncommon", "recipe": { "base": "#4a5a33", "accent": "#2f3a22", "pattern": "camo" } },
-    { "id": "ak47_standard", "weapon": "ak47", "name": "Standard", "rarity": "common", "recipe": { "base": "#5a3d22", "accent": "#2b2b2b" } },
-    { "id": "ak47_gold", "weapon": "ak47", "name": "Gold Plated", "rarity": "legendary", "recipe": { "base": "#e6c25a", "accent": "#8a6d1c" } },
-    { "id": "hunting_rifle_standard", "weapon": "hunting_rifle", "name": "Standard", "rarity": "common", "recipe": { "base": "#6b4a2b", "accent": "#2b2b2b" } },
-    { "id": "hunting_rifle_snake", "weapon": "hunting_rifle", "name": "Snakeskin", "rarity": "rare", "recipe": { "base": "#7d6b3a", "accent": "#3b3120", "pattern": "snakeskin" } },
-    { "id": "shotgun_12g_standard", "weapon": "shotgun_12g", "name": "Standard", "rarity": "common", "recipe": { "base": "#2c2c2c", "accent": "#5a3d22" } },
-    { "id": "shotgun_12g_police", "weapon": "shotgun_12g", "name": "Police Issue", "rarity": "rare", "recipe": { "base": "#1f2d5a", "accent": "#dfe3ea", "pattern": "stripe" } },
-    { "id": "hellfire_standard", "weapon": "hellfire", "name": "Standard", "rarity": "common", "recipe": { "base": "#4a4a52", "accent": "#222226" } },
-    { "id": "m9_standard", "weapon": "m9", "name": "Standard", "rarity": "common", "recipe": { "base": "#303030", "accent": "#1a1a1a" } },
-    { "id": "m9_chrome", "weapon": "m9", "name": "Chrome", "rarity": "rare", "recipe": { "base": "#c9ccd1", "accent": "#5a5d63" } },
-    { "id": "magnum44_standard", "weapon": "magnum44", "name": "Standard", "rarity": "common", "recipe": { "base": "#8a8a8a", "accent": "#3a2a1a" } }
+    {
+      "id": "ar15_standard",
+      "weapon": "ar15",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#3b3f46",
+        "accent": "#222226"
+      }
+    },
+    {
+      "id": "ar15_hotshot",
+      "weapon": "ar15",
+      "name": "Hot Shot",
+      "rarity": "legendary",
+      "recipe": {
+        "base": "#ff3b1f",
+        "accent": "#ffd23f",
+        "pattern": "flames"
+      }
+    },
+    {
+      "id": "ar15_toxic",
+      "weapon": "ar15",
+      "name": "Toxic",
+      "rarity": "ultra_rare",
+      "recipe": {
+        "base": "#39ff88",
+        "accent": "#101010",
+        "pattern": "checker"
+      }
+    },
+    {
+      "id": "ar15_camo",
+      "weapon": "ar15",
+      "name": "Woodland",
+      "rarity": "uncommon",
+      "recipe": {
+        "base": "#4a5a33",
+        "accent": "#2f3a22",
+        "pattern": "camo"
+      }
+    },
+    {
+      "id": "ak47_standard",
+      "weapon": "ak47",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#5a3d22",
+        "accent": "#2b2b2b"
+      }
+    },
+    {
+      "id": "ak47_gold",
+      "weapon": "ak47",
+      "name": "Gold Plated",
+      "rarity": "legendary",
+      "recipe": {
+        "base": "#e6c25a",
+        "accent": "#8a6d1c"
+      }
+    },
+    {
+      "id": "hunting_rifle_standard",
+      "weapon": "hunting_rifle",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#6b4a2b",
+        "accent": "#2b2b2b"
+      }
+    },
+    {
+      "id": "hunting_rifle_snake",
+      "weapon": "hunting_rifle",
+      "name": "Snakeskin",
+      "rarity": "rare",
+      "recipe": {
+        "base": "#7d6b3a",
+        "accent": "#3b3120",
+        "pattern": "snakeskin"
+      }
+    },
+    {
+      "id": "shotgun_12g_standard",
+      "weapon": "shotgun_12g",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#2c2c2c",
+        "accent": "#5a3d22"
+      }
+    },
+    {
+      "id": "shotgun_12g_police",
+      "weapon": "shotgun_12g",
+      "name": "Police Issue",
+      "rarity": "rare",
+      "recipe": {
+        "base": "#1f2d5a",
+        "accent": "#dfe3ea",
+        "pattern": "stripe"
+      }
+    },
+    {
+      "id": "hellfire_standard",
+      "weapon": "hellfire",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#4a4a52",
+        "accent": "#222226"
+      }
+    },
+    {
+      "id": "m9_standard",
+      "weapon": "m9",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#303030",
+        "accent": "#1a1a1a"
+      }
+    },
+    {
+      "id": "m9_chrome",
+      "weapon": "m9",
+      "name": "Chrome",
+      "rarity": "rare",
+      "recipe": {
+        "base": "#c9ccd1",
+        "accent": "#5a5d63"
+      }
+    },
+    {
+      "id": "magnum44_standard",
+      "weapon": "magnum44",
+      "name": "Standard",
+      "rarity": "common",
+      "recipe": {
+        "base": "#8a8a8a",
+        "accent": "#3a2a1a"
+      }
+    }
   ]
 }

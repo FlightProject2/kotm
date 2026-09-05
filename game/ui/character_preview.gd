@@ -107,6 +107,10 @@ func rebuild() -> void:
 		var head := BoneAttachment3D.new()
 		head.bone_name = "head"
 		skeleton.add_child(head)
+		for m in mannequin.find_children("*", "MeshInstance3D", true, false):
+			if (m as MeshInstance3D).skin != null:
+				head.add_child(SkinSystem.build_face(skeleton, (m as MeshInstance3D).mesh, loadout))
+				break
 		if att["hat"]:
 			att["hat"].position = Vector3(0, 0.04, 0)
 			head.add_child(att["hat"])

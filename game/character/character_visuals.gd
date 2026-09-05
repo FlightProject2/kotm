@@ -50,6 +50,9 @@ func _ready() -> void:
 	helmet_mesh.position = Vector3(0, 0.06, 0)
 	helmet_mesh.visible = false
 	head_mount.add_child(helmet_mesh)
+	var body := _body_mesh()
+	if body:
+		head_mount.add_child(SkinSystem.build_face(skeleton, body.mesh, character.cosmetics))
 	var att := SkinSystem.build_attachments(character.cosmetics)
 	if att["hat"]:
 		hat = att["hat"]
@@ -137,6 +140,13 @@ func _build_canopy() -> void:
 	canopy.add_child(lines)
 	canopy.visible = false
 	add_child(canopy)
+
+func _body_mesh() -> MeshInstance3D:
+	for m in find_children("*", "MeshInstance3D", true, false):
+		var mi := m as MeshInstance3D
+		if mi.skin != null and mi.mesh != null:
+			return mi
+	return null
 
 static func _set_color(mi: MeshInstance3D, c: Color) -> void:
 	var m := mi.material_override as StandardMaterial3D

@@ -14,7 +14,7 @@ const INK := Color("f1ede6")
 const INK_DIM := Color("b8b2a8")
 const GOLD := Color("e6c25a")
 const PANEL := Color(0.047, 0.05, 0.063, 0.82)
-const SLOT_NAMES := {"head": "HEAD", "face": "FACE", "chest": "CHEST", "legs": "LEGS", "feet": "FEET", "hands": "HANDS", "back": "BACK", "parachute": "PARACHUTE"}
+const SLOT_NAMES := {"head": "HEAD", "face": "FACE", "chest": "CHEST", "legs": "LEGS", "feet": "FEET", "hands": "HANDS", "back": "BACK", "parachute": "PARACHUTE", "skin": "SKIN TONE", "hair": "HAIR"}
 const PREVIEW_WEAPONS := ["ar15", "ak47", "hunting_rifle", "shotgun_12g", "hellfire", "m9", "magnum44"]
 const CONTROLS := [
 	["WASD", "Move"], ["Shift", "Sprint"], ["Space", "Jump"], ["C", "Crouch"], ["Mouse 1 / 2", "Fire / Aim"],
