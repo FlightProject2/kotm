@@ -73,7 +73,16 @@
   #prompt{position:fixed;left:50%;top:58%;transform:translateX(-50%);background:var(--panel);padding:5px 12px;font-family:var(--body);font-size:14px;pointer-events:none;display:none;border-left:2px solid var(--red)}
   #prompt b{font-family:var(--hud);color:var(--red);margin-right:6px}
   /* screens */
-  .screen{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,7,9,.86)}
+  .screen{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,7,9,.86);overflow:auto}
+  #start{flex-direction:column;gap:18px;padding:24px 0}
+  .launch{width:720px;max-width:92vw;background:var(--panel-2);border-top:3px solid var(--red);padding:22px 28px;font-family:var(--body)}
+  .launch h1{font-family:var(--hud);font-size:30px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink)}
+  .launch p{color:var(--ink-dim);font-size:14px;line-height:1.5;margin:0 0 12px}
+  .launch ol{color:var(--ink-dim);font-size:14px;line-height:1.6;margin:0 0 14px 18px;padding:0}
+  .launch a.big{display:inline-block;font-family:var(--hud);font-size:22px;letter-spacing:.12em;text-transform:uppercase;background:var(--red);color:#fff;text-decoration:none;padding:12px 32px;box-shadow:0 4px 0 var(--red-deep)}
+  .launch a.big:hover{background:#dc1a3a}
+  .launch code{background:rgba(0,0,0,.4);padding:2px 6px;color:var(--ink)}
+  .launch .sub{font-family:var(--hud);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--zone);margin-bottom:6px}
   .screen.on{display:flex}
   .menu{display:grid;grid-template-columns:300px 420px;gap:0;min-height:460px;max-width:92vw}
   .menu .left{background:linear-gradient(160deg,#8d0b20,#4c0611 70%,#2a070d);padding:34px 32px;border-right:3px solid #1a0407;position:relative;overflow:hidden}
@@ -129,14 +138,25 @@
 <div id="map"><canvas id="mapc" width="640" height="640"></canvas></div>
 
 <div class="screen on" id="start">
+  <div class="launch">
+    <div class="sub">Step 1 · one-time setup</div>
+    <h1>Play the Godot build in your browser</h1>
+    <p>The real game (2 km map with towns, farms, loot, 30 bots, skins) is a Godot build published on the repo's <code>gh-pages</code> branch. GitHub needs to be told to serve it once:</p>
+    <ol>
+      <li>Open <a href="https://github.com/FlightProject2/kotm/settings/pages" target="_blank" rel="noopener" style="color:var(--zone)">github.com/FlightProject2/kotm/settings/pages</a></li>
+      <li>Under <b>Build and deployment</b> pick <b>Deploy from a branch</b>, branch <b>gh-pages</b>, folder <b>/ (root)</b>, then <b>Save</b>.</li>
+      <li>Wait one to two minutes, then press the button below. Click inside the game to lock the mouse; Esc pauses.</li>
+    </ol>
+    <a class="big" href="https://flightproject2.github.io/kotm/" target="_blank" rel="noopener">Play the Godot build ↗</a>
+    <p style="margin-top:14px">Prefer the desktop version? Install Godot 4.6, clone the branch, open <code>project.godot</code>, press F5.</p>
+  </div>
   <div class="menu">
     <div class="left">
       <div class="logo">King of<br>the<br>Mountain<small>PROTOTYPE 0.1</small></div>
       <ul class="nav"><li>Play</li><li class="dim">Customize</li><li class="dim">Marketplace</li><li class="dim">Leaderboards</li></ul>
     </div>
     <div class="right">
-      <h2>Solo · 30 bots · 1.2 km test map</h2>
-      <p style="border-left:2px solid var(--zone);padding-left:10px"><b style="color:var(--ink)">Godot build now available.</b> The real game (2 km map, buildings, loot, bots, skins) runs in the browser at <a href="https://flightproject2.github.io/kotm/" target="_blank" rel="noopener" style="color:var(--zone)">flightproject2.github.io/kotm</a> once GitHub Pages is switched on for the repo. This page stays as the original feel prototype.</p>
+      <h2>Old browser prototype (feel test)</h2>
       <p>Phase 1 feel test: random-point parachute spawn, projectile bullets with per-gun drop and tracers, helmet pop, laminated armor, bleeding, weight-free loot for now, and a 6-minute compressed gas schedule. Everything is a placeholder shape; the numbers come from <code>design/data</code>.</p>
       <div class="keys">
         <b>W A S D</b><span>Move · steer parachute</span>
