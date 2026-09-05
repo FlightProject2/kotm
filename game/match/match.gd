@@ -24,6 +24,7 @@ var shots_total: int = 0
 var landed_count: int = 0
 var loot_count: int = 0
 var loot_stats: Dictionary = {}
+var zone: Zone
 var rng_spawn := RandomNumberGenerator.new()
 var rng_loot := RandomNumberGenerator.new()
 var rng_zone := RandomNumberGenerator.new()
@@ -52,6 +53,10 @@ func start(p_seed: int, p_world: World, p_preset: Dictionary, bot_count: int, wi
 		_spawn_character(bot_name, true, spawns[i], rng_spawn.randf() * TAU, 0)
 		i += 1
 	alive_count = characters.size()
+	zone = Zone.new()
+	zone.name = "Zone"
+	world.zone_root.add_child(zone)
+	zone.start(preset["zone"], float(preset["mapHalfSizeM"]), float(preset["borderMarginM"]), rng_zone, alive_characters, world.height_at)
 	started = true
 	Events.match_started.emit(match_seed)
 	Events.remain_changed.emit(alive_count)
@@ -122,4 +127,4 @@ func alive_characters() -> Array[Character]:
 func summary() -> Dictionary:
 	return {"ok": true, "seed": match_seed, "time": snappedf(match_time, 0.1), "alive": alive_count,
 		"landed": landed_count, "kills": kills_total, "shots": ProjectileSystem.instance.shots_fired if ProjectileSystem.instance else 0,
-		"loot": loot_stats, "loot_left": world.loot_registry.count()}
+		"loot": loot_stats, "loot_left": world.loot_registry.count(), "zone_phase": zone.phase if zone else -1, "zone_state": zone.state if zone else ""}
