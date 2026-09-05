@@ -1,97 +1,72 @@
-# 12 – Technical Architecture
+# 12 – Technical Architecture (Godot 4.6)
 
 ## Engine
 
-**Unreal Engine 5 (5.4+), C++ core with Blueprints for content.** Rationale:
-- Proven 100+ player BR networking (replication graph / Iris, network prediction, server-side
-  rewind) and mature dedicated-server tooling on Linux.
-- Chaos Vehicles for the arcade car model; Gameplay Ability System (GAS) for attributes (HP, bleed,
-  armor durability) and effects (gas, fire, heal-over-time).
-- World Partition + HLOD for an 8×8 km streamed map.
-- Large hiring pool.
+**Godot 4.6.3, GDScript.** Chosen with the user for its open licence, a working headless toolchain
+(every check in this repo runs without a GPU), Terrain3D as a GDExtension, built-in high-level
+multiplayer over ENet, and Jolt physics. The project file sits at the repository root so
+`res://design/data/*.json` is the single source of tuning truth for the game and for `tools/ttk.py`.
 
-Alternatives considered: Unity + Netcode for Entities (weaker at 150-player open world out of the
-box), Godot (no proven large-scale netcode), custom (too slow). Decision: UE5.
-
-## Networking model
-
-- **Dedicated authoritative servers**, Linux, headless. One match per server process. Target
-  **30 Hz server tick** with 60 Hz client simulation and interpolation.
-- Client-side prediction for movement and weapon firing (muzzle flash, tracer, recoil instantly);
-  server confirms hits. Projectiles are spawned on the client for visuals and on the server for truth;
-  mismatch shows as a tracer that didn't cause a hitmarker.
-- **Lag compensation**: the server keeps 1 s of hitbox history per player and rewinds to the
-  shooter's estimated view time (clamped to 250 ms) when spawning their projectile and on each
-  sub-step. Beyond 250 ms ping you must lead more, which is the honest trade-off.
-- **Relevancy / interest management**: replication graph with spatial grid cells of 500 m. Players
-  in the parachute phase use a low-rate "distant" update. Nearby players (<150 m) update at full
-  rate; 150–600 m at 10 Hz; beyond 600 m only for the kill feed and sound events (gunshot events are
-  replicated map-wide as lightweight RPC for audio at up to 1.2 km for rifles).
-- Bandwidth budget: ≤ 60 kB/s down, 10 kB/s up per client in the worst case (final circle).
-- Voice: proximity + team voice through a separate low-latency voice service (Vivox or EOS Voice)
-  with server-driven positional metadata.
-
-## Anti-cheat
-
-- Server authority on everything with a gameplay consequence: movement validation (speed, teleport,
-  fly), fire-rate caps, projectile origin checks (bullet must originate within 30 cm of the weapon
-  muzzle), inventory authority, loot pickup range.
-- Kernel-level anti-cheat on the client: **Easy Anti-Cheat (EOS)** at launch, BattlEye as fallback.
-- Server-side stats anomaly detection (headshot ratio, reaction time distribution) feeding a review
-  queue and shadow-ban list.
-- Replay recording on the server (input + state snapshots, ~10 MB/match) kept 14 days for reports.
-
-## Backend services
-
-```
- Client ──► Auth (Steam ticket → JWT)
-        ──► Matchmaker (mode, region, party) ──► Fleet manager (Agones on Kubernetes)
-        ──► Session (server IP/port + join token)
-        ──► Game server ──► Match results ──► Stats/Leaderboards/Progression
-        ──► Inventory/Cosmetics, Marketplace, Missions, Dailies, Friends/Party, Telemetry
-```
-
-| Service | Tech |
+| Concern | Choice |
 |---|---|
-| Auth | Steam auth ticket exchange, EOS as secondary; JWT with 1 h TTL |
-| Matchmaker | Go service, Redis queues per mode/region; fills lobbies to 150 or times out (see 01) |
-| Fleet | Agones + Kubernetes on cloud VMs (c6i / n2 class, 1 match per 4 vCPU / 8 GB), autoscaled per region |
-| Player data | PostgreSQL (accounts, inventory, progression), Redis (sessions, leaderboards via sorted sets) |
-| Telemetry | Match events streamed to Kafka → ClickHouse for balance dashboards (weapon TTK, spawn heatmaps, gas deaths) |
-| Content | Loot tables, weapon tuning, gas schedule loaded from the `design/data/*.json` files at server start; hot-reloadable in dev |
+| Renderer | Forward+ on desktop; the web export uses the Compatibility (GLES3) renderer automatically |
+| Physics | Jolt, 60 Hz; physics layers 1 world, 2 players, 3 hitboxes, 4 loot, 5 vehicles, 6 camera blockers |
+| Terrain | Terrain3D 1.0.2 on desktop (built in code from the baked heightmap); `MeshTerrainBackend` (HeightMapShape3D + textured mesh) headless and on the web |
+| Gameplay truth for height | `HeightField` (the baked `world/terrain/heightmap_2km.res` Image): floor clamp, projectile terrain hits, spawn mask, camera clamp. Never Terrain3D |
+| Data | JSON under `design/data`, loaded by the static `DataLib` (works in `--script` test runs) |
 
-## Client performance targets
+## Authority and networking model
 
-| Setting | Target |
-|---|---|
-| 1080p Medium, GTX 1060 / RX 580 | 60 FPS avg, 45 FPS 1% low in the lobby |
-| 1440p High, RTX 3070 | 120 FPS |
-| Load into lobby | < 20 s from queue pop on SSD |
-| Memory | < 8 GB RAM, < 4 GB VRAM at medium |
+Everything with a gameplay consequence runs only where `multiplayer.is_server()` is true. Offline
+Godot uses `OfflineMultiplayerPeer`, so single player executes the identical server path: this peer
+is id 1 and every RPC is declared `call_local`.
 
-## Server performance targets
+- **Input up**: `Character._rx_input(bytes)` (`any_peer`, unreliable ordered) carries a packed
+  `CharacterInput` (tick, move, yaw, pitch, aim direction, buttons, slot, medical use). Players build
+  it from the InputMap and camera (`PlayerInputSource`); bots build it in `BotBrain`. Both drive the
+  same `Character` body, so a bot and a player are indistinguishable to the simulation.
+- **Events down**: `Net.event_all / event_to / fx_all` fan out through `Events` signals (hit
+  confirmed, damaged, kill feed, remain, zone state, loot added/removed, tracer, hit fx, gunshot).
+  HUD, audio and effects only listen to `Events`.
+- **State**: `MultiplayerSynchronizer` per character and `MultiplayerSpawner` slots are reserved for
+  host/join; loot, spawns and the zone derive from the match seed on every peer, so only removals and
+  additions replicate.
+- **Reserved**: client prediction in `CharacterMotor`, a hitbox-transform ring buffer in
+  `HitboxRig` for lag compensation, interest management by 500 m cells.
 
-- 150 players, 40 vehicles, ~10k loot actors: ≤ 25 ms frame at 30 Hz on 4 vCPU.
-- Loot actors are not replicated individually; the client receives a match seed + loot table and
-  spawns identical loot locally, with the server only replicating **removals** (pickups) and
-  additions (death bags, airdrops). This is what makes 10k items cheap.
+## Simulation pieces
 
-## Repository layout (proposed)
+| Piece | File | Notes |
+|---|---|---|
+| Locomotion | `game/character/character_motor.gd` | walk/sprint/crouch, jump, fall damage, parachute; constants in `movement.json` |
+| Weapons | `game/character/character_combat.gd` | per-weapon fire timers, semi/auto/bolt/pump, spread, reloads, melee, meds |
+| Projectiles | `game/combat/projectile_system.gd` | 2.5 m sub-stepped rays against world, hitbox areas and the height field; per-gun gravity |
+| Damage | `game/combat/damage_model.gd` | pure; tests reproduce `tools/ttk.py` |
+| Hit regions | `game/character/hitbox_rig.gd` | bone-driven `Area3D`s updated from `skeleton_updated` |
+| Loot | `game/inventory/*` | seeded tables, spatial-grid registry rendered by MultiMesh, prefab loot markers, death bags |
+| Zone | `game/match/zone.gd` | reveal/warn/close phases from the preset, damage ticks, wall shader |
+| Match | `game/match/match.gd` | seeded RNG streams, spawns, kill feed, win/lose, `SIM_SUMMARY` |
+| World | `game/world/*` + `tools/bake_map.py` + `tools/godot/build_prefabs.gd` | baked heightmap and layout, kit-assembled prefabs, instanced trees with node-less trunk bodies |
+| Cosmetics | `game/cosmetics/skin_system.gd` | procedural recolours and patterns, attachments, canopy |
+
+## Headless verification
 
 ```
-/docs/game-plan/         design documents (this plan)
-/design/data/            tuning JSON consumed by the game
-/Game/                   UE5 project
-  /Source/KOTM/          C++ modules: Core, Movement, Weapons, Ballistics, Gear, Inventory,
-                          Vehicles, Zone, Spawn, UI, Net
-  /Content/              assets (Git LFS)
-/Server/                 Dockerfile, Agones config, server launch scripts
-/Services/               matchmaker, auth, stats, marketplace (Go)
-/Tools/                  balance sim (Python: TTK calculator from weapons.json), spawn visualiser
+tools/ci/setup_godot.sh                      # pinned Godot 4.6.3 Linux binary
+$GODOT --headless --path . --import
+$GODOT --headless --path . --script res://tools/godot/run_tests.gd
+$GODOT --headless --fixed-fps 60 --path . res://game/main/main.tscn -- --sim --seed=7 --bots=30 --sim-seconds=240 --no-player
+$GODOT --headless --path . --export-release "Web" build/web/index.html
 ```
 
-## Testing
+`--fixed-fps 60` makes simulations deterministic per seed. The web build is published to the
+`gh-pages` branch and served by GitHub Pages.
 
-- Headless bot clients (UE5 `-nullrhi`) to fill 150-player lobbies in CI load tests.
-- Deterministic ballistics unit tests against `weapons.json` (drop at 100/200/300 m, TTK matrix).
-- Nightly soak: 8 h of continuous matches on one region with bots; crash-free requirement.
+## Scaling to 150 players (risk register)
+
+GDScript CPU per character, per-character synchroniser bandwidth and ENet packet limits are the
+known risks. Mitigations in order: 30 Hz network tick with 60 Hz physics, interest management by
+500 m cells, low-rate parachute sync, typed GDScript in hot loops (bot perception, hitbox updates,
+projectile sweeps), moving the projectile sweep and hitbox history into a small C++ GDExtension if
+profiling demands it, a `--headless` dedicated-server export, and load tests with headless bot
+clients from 60 to 150.

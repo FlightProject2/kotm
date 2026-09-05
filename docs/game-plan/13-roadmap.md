@@ -2,6 +2,17 @@
 
 Durations assume a core team of ~14 (see below). Adjust proportionally.
 
+## Milestone 1 (Godot port) – status
+
+Built on branch `claude/h1z1-style-game-plan-7kzer5`: project skeleton and headless test runner,
+pure combat core with TTK parity tests, baked 2 x 2 km slice (heightmap, layout, trees), World with
+Terrain3D and mesh backends, shared character body with motor/camera/input, random-point parachute
+spawns and match flow, bone-driven hitboxes and visuals, weapons/projectiles/tracers/hit effects,
+seeded loot with pickups and death bags, the gas zone, the HUD, the bot AI, kit-assembled building
+prefabs with props and trees, the cosmetic skin system, placeholder audio, and a web export served
+from `gh-pages`. Backlog (M1.5): prone, navmesh bots, doors, vehicles, retargeted animations,
+host/join multiplayer, Customize/Inventory screens, real gun and character models.
+
 ## Phase 0 – Pre-production (4 weeks)
 
 - Lock this plan; art bible from the reference screenshots; block-out list of POIs.
