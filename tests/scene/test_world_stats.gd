@@ -23,6 +23,11 @@ func test_instance_budget() -> void:
 		by_group[g] = int(by_group.get(g, 0)) + 1
 	mmi = w.find_children("*", "MultiMeshInstance3D", true, false).size()
 	bodies = w.find_children("*", "StaticBody3D", true, false).size()
+	for mm in w.find_children("*", "MultiMeshInstance3D", true, false).slice(0, 2):
+		var mesh: Mesh = (mm as MultiMeshInstance3D).multimesh.mesh
+		for i in mesh.get_surface_count():
+			var mat := mesh.surface_get_material(i) as BaseMaterial3D
+			print("    tree %s surf %d albedo=%s vtxcol=%s" % [mm.name, i, mat.albedo_color if mat else null, mat.vertex_color_use_as_albedo if mat else null])
 	print("    world: mesh_instances=%d surfaces=%d materials=%d multimesh=%d static_bodies=%d groups=%s" % [mi, surfaces, mats.size(), mmi, bodies, by_group])
 	assert_true(mi > 0)
 	assert_true(int(by_group.get("Buildings", 0)) <= 200, "buildings merged to a few draw calls each (%d)" % int(by_group.get("Buildings", 0)))

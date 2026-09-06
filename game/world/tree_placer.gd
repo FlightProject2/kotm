@@ -68,18 +68,24 @@ static func _mesh_for(species: String) -> Mesh:
 			var mm := (m as BaseMaterial3D).duplicate() as BaseMaterial3D
 			mm.metallic = 0.0
 			mm.roughness = 0.95
-			# Vertex colours are decoded differently by the Compatibility (WebGL) renderer and wash
-			# out to cyan-white; bake the surface's mean vertex colour into a plain albedo instead.
-			if mm.vertex_color_use_as_albedo:
-				var arrays := mesh.surface_get_arrays(i)
-				var cols = arrays[Mesh.ARRAY_COLOR]
-				if cols != null and cols.size() > 0:
-					var acc := Color(0, 0, 0, 0)
-					for c in cols:
-						acc += c
-					acc /= float(cols.size())
-					mm.vertex_color_use_as_albedo = false
-					mm.albedo_color = Color(acc.r, acc.g, acc.b, 1.0) * mm.albedo_color
+			# The kit's colours arrive as odd vertex/base colours (cyan foliage on WebGL): classify the
+			# surface by hue and give it a plain, renderer-independent palette colour.
+			var c := mm.albedo_color
+			var arrays := mesh.surface_get_arrays(i)
+			var cols = arrays[Mesh.ARRAY_COLOR]
+			if cols != null and cols.size() > 0:
+				var acc := Color(0, 0, 0, 0)
+				for vc in cols:
+					acc += vc
+				acc /= float(cols.size())
+				c = Color(acc.r, acc.g, acc.b, 1.0) * c
+			mm.vertex_color_use_as_albedo = false
+			if c.g >= c.r and c.g >= c.b * 0.9 and c.g > 0.3:
+				mm.albedo_color = Color(0.33, 0.52, 0.22)      # foliage
+			elif c.r > c.g and c.g > c.b:
+				mm.albedo_color = Color(0.40, 0.29, 0.19)      # trunk / wood
+			else:
+				mm.albedo_color = Color(0.55, 0.53, 0.50)      # rock / other
 			mesh.surface_set_material(i, mm)
 	inst.free()
 	return mesh

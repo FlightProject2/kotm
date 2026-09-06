@@ -44,24 +44,7 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 	vehicles = Node3D.new()
 	vehicles.name = "Vehicles"
 	add_child(vehicles)
-	# Exponential fog saturates on the Compatibility (WebGL) renderer: use explicit depth fog there.
-	if OS.has_feature("web") or "--env=depthfog" in OS.get_cmdline_user_args():
-		var wenv: Environment = $Env.environment
-		wenv.fog_mode = Environment.FOG_MODE_DEPTH
-		wenv.fog_depth_begin = 220.0
-		wenv.fog_depth_end = 1900.0
-		wenv.fog_depth_curve = 1.0
-		wenv.fog_density = 1.0
-		wenv.fog_sky_affect = 0.25
-		print("World: depth fog")
-	if "--env=plain" in OS.get_cmdline_user_args():
-		# render debugging: no fog, flat ambient, linear tonemap
-		var env: Environment = $Env.environment
-		env.fog_enabled = false
-		env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-		env.ambient_light_color = Color(0.6, 0.6, 0.65)
-		print("World: plain environment")
+	_configure_environment()
 	var ps := ProjectileSystem.new()
 	ps.name = "ProjectileSystem"
 	ps.world = self
@@ -82,6 +65,48 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		build_stats.merge(TreePlacer.build(self, trees))
 		build_stats["ms"] = Time.get_ticks_msec() - t0
 		print("World: built %s" % [build_stats])
+
+## Renderer-specific environment. Exponential fog saturates on the Compatibility (WebGL)
+## renderer, so the web build uses depth fog. "--env=a,b,c" flags (debug): nofog, linear, filmic,
+## aces, ambientcolor, plain (all of nofog+linear+ambientcolor), depthfog.
+func _configure_environment() -> void:
+	var env: Environment = $Env.environment
+	var flags: PackedStringArray = PackedStringArray()
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--env="):
+			flags = a.substr(6).split(",")
+	if "plain" in flags:
+		flags.append_array(PackedStringArray(["nofog", "linear", "ambientcolor"]))
+	var web := OS.has_feature("web")
+	if web:
+		# the WebGL renderer over-exposes sky ambient + ACES: calmer, deterministic lighting
+		env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+		env.tonemap_exposure = 1.0
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		env.ambient_light_color = Color(0.62, 0.66, 0.74)
+		env.ambient_light_energy = 0.45
+		var sun := get_node_or_null("Sun") as DirectionalLight3D
+		if sun:
+			sun.light_energy = 1.1
+	if web or "depthfog" in flags:
+		env.fog_mode = Environment.FOG_MODE_DEPTH
+		env.fog_depth_begin = 220.0
+		env.fog_depth_end = 1900.0
+		env.fog_depth_curve = 1.0
+		env.fog_density = 1.0
+		env.fog_sky_affect = 0.25
+	if "nofog" in flags:
+		env.fog_enabled = false
+	if "linear" in flags:
+		env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+	elif "filmic" in flags:
+		env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	elif "aces" in flags:
+		env.tonemap_mode = Environment.TONE_MAPPER_ACES
+	if "ambientcolor" in flags:
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		env.ambient_light_color = Color(0.6, 0.6, 0.65)
+	print("World: env web=%s flags=%s fog=%s mode=%d tonemap=%d ambient=%d" % [web, flags, env.fog_enabled, env.fog_mode, env.tonemap_mode, env.ambient_light_source])
 
 func _exit_tree() -> void:
 	for b in tree_bodies:

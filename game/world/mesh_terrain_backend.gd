@@ -40,7 +40,7 @@ static func _visual(world: World) -> Node3D:
 	var cm := world.colormap
 	var root := Node3D.new()
 	root.name = "Visual"
-	var mat := _pick_material()
+	var mat := _pick_material(world)
 	var chunks := int(ceil(float(n) / CHUNK_QUADS))
 	for cj in chunks:
 		for ci in chunks:
@@ -87,7 +87,7 @@ static func _material_mode() -> String:
 			mode = a.substr(14)
 	return mode
 
-static func _pick_material() -> Material:
+static func _pick_material(world: World = null) -> Material:
 	match _material_mode():
 		"standard":
 			var sm := StandardMaterial3D.new()
@@ -102,7 +102,7 @@ static func _pick_material() -> Material:
 		"none":
 			return null
 		_:
-			return make_material()
+			return make_material(world.colormap if world else null, world.height_field.half if world else 1024.0)
 
 static var _noise_tex: ImageTexture
 
@@ -121,13 +121,18 @@ static func noise_texture() -> ImageTexture:
 	_noise_tex = ImageTexture.create_from_image(img)
 	return _noise_tex
 
-static func make_material() -> ShaderMaterial:
+static var _colormap_tex: ImageTexture
+
+static func make_material(colormap: Image = null, half_size := 1024.0) -> ShaderMaterial:
 	var sh := Shader.new()
 	sh.code = """
 shader_type spatial;
 render_mode cull_back, diffuse_lambert, specular_disabled;
 
 uniform sampler2D noise_tex : filter_linear_mipmap, repeat_enable;
+uniform sampler2D colormap_tex : filter_linear, repeat_disable;
+uniform float half_size = 1024.0;
+uniform float use_colormap = 0.0;
 uniform float macro_scale = 0.012;
 uniform float detail_scale = 0.28;
 uniform vec3 grass_a : source_color = vec3(0.33, 0.47, 0.19);
@@ -165,8 +170,9 @@ void fragment() {
 	float blades = mix(1.0, 0.72 + 0.56 * det.b, detail_fade);
 	grass *= blades * (0.9 + 0.2 * fine.g * detail_fade);
 
-	// roads from the baked colour map (brown = dirt road, neutral grey = rail bed)
-	vec3 tint = v_color.rgb;
+	// roads from the baked colour map (brown = dirt road, neutral grey = rail bed); the map is
+	// sampled as a texture by world position so it does not depend on vertex colour decoding
+	vec3 tint = use_colormap > 0.5 ? texture(colormap_tex, (v_world.xz + vec2(half_size)) / (2.0 * half_size)).rgb : vec3(0.45, 0.55, 0.3);
 	float roadness = clamp((tint.r - tint.g) * 7.0 + 0.45, 0.0, 1.0);
 	float grey = 1.0 - clamp((abs(tint.r - tint.g) + abs(tint.g - tint.b)) * 12.0, 0.0, 1.0);
 	float railness = grey * step(0.35, tint.r) * (1.0 - roadness);
@@ -188,4 +194,13 @@ void fragment() {
 	var mat := ShaderMaterial.new()
 	mat.shader = sh
 	mat.set_shader_parameter("noise_tex", noise_texture())
+	mat.set_shader_parameter("half_size", half_size)
+	if colormap != null:
+		if _colormap_tex == null:
+			var img := colormap.duplicate() as Image
+			if img.get_format() != Image.FORMAT_RGB8 and img.get_format() != Image.FORMAT_RGBA8:
+				img.convert(Image.FORMAT_RGBA8)
+			_colormap_tex = ImageTexture.create_from_image(img)
+		mat.set_shader_parameter("colormap_tex", _colormap_tex)
+		mat.set_shader_parameter("use_colormap", 1.0)
 	return mat
