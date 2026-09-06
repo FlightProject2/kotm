@@ -162,7 +162,11 @@ void fragment() {
 	vec3 macro = texture(noise_tex, uv * macro_scale).rgb;
 	vec3 det = texture(noise_tex, uv * detail_scale).rgb;
 	vec3 fine = texture(noise_tex, uv * detail_scale * 3.3).rgb;
-	float slope = 1.0 - clamp(v_normal.y, 0.0, 1.0);
+	// face normal from screen derivatives: independent of vertex-normal encoding on WebGL
+	vec3 face_n = normalize(cross(dFdx(v_world), dFdy(v_world)));
+	if (face_n.y < 0.0) { face_n = -face_n; }
+	NORMAL = normalize((VIEW_MATRIX * vec4(face_n, 0.0)).xyz);
+	float slope = 1.0 - clamp(face_n.y, 0.0, 1.0);
 
 	// grass: patches from the macro noise, blades from the detail cells
 	vec3 grass = mix(grass_a, grass_b, macro.r);
