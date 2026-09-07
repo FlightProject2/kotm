@@ -53,14 +53,24 @@ func start(p_seed: int, p_world: World, p_preset: Dictionary, bot_count: int, wi
 		_spawn_character(bot_name, true, spawns[i], rng_spawn.randf() * TAU, 0)
 		i += 1
 	alive_count = characters.size()
-	zone = Zone.new()
+	# SummitZone delegates to legacy gas rules unless the preset opts into whiteout.
+	zone = SummitZone.new()
 	zone.name = "Zone"
 	world.zone_root.add_child(zone)
 	zone.start(preset["zone"], float(preset["mapHalfSizeM"]), float(preset["borderMarginM"]), rng_zone, alive_characters, world.height_at)
+	if with_player and _uses_whiteout():
+		var atmosphere := AlpineAtmosphere.new()
+		atmosphere.world = world
+		atmosphere.zone = zone as SummitZone
+		atmosphere.viewer = local_player
+		world.add_child(atmosphere)
 	started = true
 	Events.match_started.emit(match_seed)
 	Events.remain_changed.emit(alive_count)
-	Events.banner.emit("Parachute in. Everyone spawns at a random point.")
+	Events.banner.emit("Drop in. Loot up. Outrun the whiteout." if _uses_whiteout() else "Parachute in. Everyone spawns at a random point.")
+
+func _uses_whiteout() -> bool:
+	return str(preset.get("zone", {}).get("theme", "gas")) == "whiteout"
 
 func _spawn_character(display_name: String, is_bot: bool, pos: Vector3, yaw: float, peer_id: int) -> Character:
 	var ch: Character = CHARACTER_SCENE.instantiate()
@@ -116,7 +126,8 @@ func _on_character_died(killer: Character, how: String, headshot: bool, victim: 
 		if killer.is_local():
 			Events.local_stat.emit("kill", 1.0)
 		kills_total += 1
-	var killer_name := killer.display_name if killer else "The gas"
+	var hazard_name := "The whiteout" if _uses_whiteout() else "The gas"
+	var killer_name := killer.display_name if killer else hazard_name
 	Events.kill_feed.emit(killer_name, victim.display_name, how, headshot)
 	Events.remain_changed.emit(alive_count)
 	for t in preset["zone"].get("remainingToasts", []):
