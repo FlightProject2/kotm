@@ -9,7 +9,7 @@ extends BoneAttachment3D
 const TARGET_LENGTH := {"rifle": 0.82, "sniper": 1.1, "shotgun": 1.0, "smg": 0.58, "pistol": 0.26, "bow": 1.2, "melee": 0.4}
 const GRIP_FRACTION := {"rifle": 0.38, "sniper": 0.4, "shotgun": 0.4, "smg": 0.35, "pistol": 0.15, "bow": 0.5, "melee": 0.2}
 const MODELS := {
-	"ar15": "res://assets/kenney/weapon/machinegun.glb", "ak47": "res://assets/kenney/weapon/machinegun.glb",
+	"ar15": "res://assets/models/ar75.glb", "ak47": "res://assets/kenney/weapon/machinegun.glb",
 	"hunting_rifle": "res://assets/kenney/weapon/sniper.glb", "shotgun_12g": "res://assets/kenney/weapon/shotgun.glb",
 	"hellfire": "res://assets/kenney/weapon/uzi.glb", "m9": "res://assets/kenney/weapon/pistol.glb",
 	"r380": "res://assets/kenney/weapon/pistol.glb", "m1911": "res://assets/kenney/weapon/pistol.glb",

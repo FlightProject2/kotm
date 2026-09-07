@@ -10,6 +10,7 @@ var arm_pose: ArmPoseModifier
 var crouch_pose: CrouchPoseModifier
 var weapon_holder: WeaponHolder
 var helmet_mesh: MeshInstance3D
+var backpack_mesh: MeshInstance3D
 var armor_mesh: MeshInstance3D
 var anim: AnimationDriver
 var hat: Node3D
@@ -44,12 +45,7 @@ func _ready() -> void:
 	head_mount.name = "HeadMount"
 	head_mount.bone_name = "head"
 	skeleton.add_child(head_mount)
-	helmet_mesh = MeshInstance3D.new()
-	var hm := SphereMesh.new(); hm.radius = 0.15; hm.height = 0.2
-	helmet_mesh.mesh = hm
-	helmet_mesh.position = Vector3(0, 0.06, 0)
-	helmet_mesh.visible = false
-	head_mount.add_child(helmet_mesh)
+	helmet_mesh = _build_helmet(head_mount)
 	var body := _body_mesh()
 	if body:
 		head_mount.add_child(SkinSystem.build_face(skeleton, body.mesh, character.cosmetics))
@@ -71,6 +67,7 @@ func _ready() -> void:
 	armor_mesh.position = Vector3(0, 0.12, 0)
 	armor_mesh.visible = false
 	chest_mount.add_child(armor_mesh)
+	backpack_mesh = _build_backpack(chest_mount)
 	if att["back"]:
 		chest_mount.add_child(att["back"])
 	_build_canopy()
@@ -101,9 +98,11 @@ func _process(dt: float) -> void:
 		hat.visible = not character.health.has_helmet()
 	if helmet_mesh:
 		helmet_mesh.visible = character.health.has_helmet()
-		if character.health.has_helmet():
+		if character.health.has_helmet() and helmet_mesh.mesh is SphereMesh:
 			var col := Color(0.15, 0.35, 0.7) if character.health.helmet_id == "motorcycle_helmet" else Color(0.25, 0.3, 0.18)
 			_set_color(helmet_mesh, col)
+	if backpack_mesh:
+		backpack_mesh.visible = character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != ""
 	if armor_mesh:
 		armor_mesh.visible = character.health.has_armor()
 		if character.health.has_armor():
@@ -140,6 +139,49 @@ func _build_canopy() -> void:
 	canopy.add_child(lines)
 	canopy.visible = false
 	add_child(canopy)
+
+## The studio motorcycle helmet, fitted over the measured head (falls back to a sphere).
+func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
+	var body := _body_mesh()
+	var mi: MeshInstance3D = ModelLib.instance("motorcycle_helmet") if ModelLib.exists("motorcycle_helmet") else null
+	if mi == null or mi.mesh == null or body == null or skeleton == null:
+		var sphere := MeshInstance3D.new()
+		var hm := SphereMesh.new(); hm.radius = 0.15; hm.height = 0.2
+		sphere.mesh = hm
+		sphere.position = Vector3(0, 0.06, 0)
+		sphere.visible = false
+		head_mount.add_child(sphere)
+		return sphere
+	# head bounds are in skeleton space; the helmet's own space has its centre at the origin
+	var hb := SkinSystem.head_bounds(body.mesh)
+	var head_c := hb.get_center() + Vector3(0, hb.size.y * 0.06, hb.size.z * 0.02)
+	var scale := (hb.size.x * 1.22) / maxf(ModelLib.aabb("motorcycle_helmet").size.x, 0.01)
+	var to_bone := skeleton.get_bone_global_rest(skeleton.find_bone("head")).affine_inverse()
+	# the model faces -Z (Blender -Y forward -> glTF -Z); the mannequin faces +Z in skeleton space
+	mi.transform = to_bone * Transform3D(Basis(Vector3.UP, PI).scaled(Vector3.ONE * scale), head_c)
+	mi.visible = false
+	head_mount.add_child(mi)
+	return mi
+
+## The studio military backpack on the upper back; visible with a backpack item or back cosmetic.
+func _build_backpack(chest_mount: Node3D) -> MeshInstance3D:
+	if not ModelLib.exists("military_backpack") or skeleton == null:
+		return null
+	var mi := ModelLib.instance("military_backpack")
+	if mi.mesh == null:
+		return null
+	var body := _body_mesh()
+	var hb := SkinSystem.head_bounds(body.mesh) if body else AABB(Vector3(-0.1, 1.55, -0.1), Vector3(0.2, 0.25, 0.2))
+	var chest_bi := skeleton.find_bone("spine_02")
+	var chest_rest := skeleton.get_bone_global_rest(chest_bi)
+	var sz := ModelLib.aabb("military_backpack").size
+	var scale := 0.44 / maxf(sz.y, 0.01)
+	# behind the chest: mannequin faces +Z, so the back is -Z; pack front (straps) faces +Z
+	var pos := chest_rest.origin + Vector3(0, 0.10, -(hb.size.z * 0.55 + sz.z * scale * 0.5))
+	mi.transform = chest_rest.affine_inverse() * Transform3D(Basis().scaled(Vector3.ONE * scale), pos)
+	mi.visible = false
+	chest_mount.add_child(mi)
+	return mi
 
 func _body_mesh() -> MeshInstance3D:
 	for m in find_children("*", "MeshInstance3D", true, false):

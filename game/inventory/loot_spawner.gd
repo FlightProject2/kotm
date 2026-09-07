@@ -25,12 +25,17 @@ static func generate(world: World, registry: LootRegistry, rng: RandomNumberGene
 	from_buildings = n
 	var scatter := int(preset.get("lootScatterCount", 150))
 	var half := layout.half_size - 40.0
-	for i in scatter:
-		var x := rng.randf_range(-half, half)
-		var z := rng.randf_range(-half, half)
-		if world.height_at(x, z) > layout.spawn_max_height:
-			continue
-		n += place_group(registry, LootTables.roll_node("residential", rng), Vector3(x, world.height_at(x, z), z), rng, 0.7)
+	# stratified: one candidate per grid cell with jitter, so loot covers the whole map evenly
+	# instead of clumping; cells that land on the peak or a building pad are skipped
+	var cells := int(ceil(sqrt(float(scatter))))
+	var cell := (half * 2.0) / float(cells)
+	for cy in cells:
+		for cx in cells:
+			var x := -half + (float(cx) + rng.randf()) * cell
+			var z := -half + (float(cy) + rng.randf()) * cell
+			if world.height_at(x, z) > layout.spawn_max_height:
+				continue
+			n += place_group(registry, LootTables.roll_node("residential", rng), Vector3(x, world.height_at(x, z), z), rng, 0.7)
 	return {"total": n, "buildings": from_buildings, "scatter": n - from_buildings}
 
 ## Lays one roll out so items never stack: guns first, each gun's ammo box right beside it

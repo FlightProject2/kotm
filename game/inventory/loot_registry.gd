@@ -108,12 +108,28 @@ func _ensure_mm(key: String) -> MultiMeshInstance3D:
 		mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3.ZERO), Vector3(0, -1000, 0)))
 	return mmi
 
+const STUDIO_MODELS := {"helmet": ["motorcycle_helmet", 0.34], "backpack": ["military_backpack", 0.5]}
+
 func _mesh_for(key: String) -> Array:
 	var mat := StandardMaterial3D.new()
 	mat.roughness = 0.8
+	if STUDIO_MODELS.has(key):
+		var id: String = STUDIO_MODELS[key][0]
+		var m := ModelLib.mesh(id)
+		if m:
+			var sz := ModelLib.aabb(id).size
+			_mesh_scale[key] = float(STUDIO_MODELS[key][1]) / maxf(maxf(sz.x, sz.y), sz.z)
+			return [m, null]
 	if key.begins_with("weapon:"):
 		var wid := key.substr(7)
 		var path: String = WeaponHolder.MODELS.get(wid, "")
+		if path.begins_with(ModelLib.DIR):
+			var id := path.get_file().get_basename()
+			var m := ModelLib.mesh(id)
+			if m:
+				var sz := ModelLib.aabb(id).size
+				_mesh_scale[key] = WEAPON_MODEL_LENGTH / maxf(maxf(sz.x, sz.y), sz.z)
+				return [m, null]
 		if path != "":
 			var scene: PackedScene = load(path)
 			if scene:

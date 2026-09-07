@@ -1,6 +1,6 @@
 class_name World
 extends Node3D
-## Owns the terrain (Terrain3D or the mesh fallback), lighting and the content containers.
+## Owns the terrain (our chunked snow mesh), lighting and the content containers.
 ## Gameplay height queries go through height_at(), backed by the baked HeightField.
 
 var layout: MapLayout
@@ -23,7 +23,7 @@ var vehicles: Node3D
 @onready var zone_root: Node3D = $Zone
 @onready var characters: Node3D = $Characters
 
-## mode: "auto" | "terrain3d" | "mesh". Loads the layout + heightmap and builds the terrain.
+## mode is kept for the CLI ("auto" | "mesh"); the layout + heightmap are loaded and the terrain built.
 func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: bool = false) -> void:
 	layout = map_layout if map_layout != null else MapLayout.load_default()
 	height_field = HeightField.load_from(layout.heightmap_path, layout.vertex_spacing)
@@ -32,13 +32,9 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		var tex: Texture2D = load(layout.colormap_path)
 		if tex:
 			colormap = tex.get_image()
-	var want_t3d := mode == "terrain3d" or (mode == "auto" and ClassDB.class_exists("Terrain3D") and DisplayServer.get_name() != "headless")
-	if want_t3d and ClassDB.class_exists("Terrain3D"):
-		terrain = Terrain3DBackend.build(self)
-		backend_name = "terrain3d"
-	else:
-		terrain = MeshTerrainBackend.build(self)
-		backend_name = "mesh"
+	# one terrain, ours: chunked mesh from the baked HeightField (see MeshTerrainBackend)
+	terrain = MeshTerrainBackend.build(self)
+	backend_name = "mesh"
 	add_child(terrain)
 	move_child(terrain, 0)
 	vehicles = Node3D.new()

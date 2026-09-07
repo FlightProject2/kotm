@@ -1,7 +1,7 @@
 class_name MeshTerrainBackend
 extends RefCounted
-## Fallback terrain: a HeightMapShape3D collider from the heightmap plus a textured visual mesh.
-## Used headless, on the web build (Terrain3D has no wasm binary) and if Terrain3D fails.
+## The game's terrain: a HeightMapShape3D collider from the baked heightmap plus chunked visual
+## meshes with the snow-biome shader. Same on desktop, web and headless.
 ## The material is fully procedural: a generated noise texture drives grass patches, dirt on
 ## roads (from the baked colour map carried in vertex colours), rock on slopes and snow on top.
 
@@ -62,8 +62,10 @@ static func _visual(world: World) -> Node3D:
 					var z := pz * hf.spacing - hf.half
 					var c := cm.get_pixel(px, pz) if cm else Color(0.5, 0.6, 0.35)
 					st.set_color(c)
-					st.set_normal(hf.normal_at(x, z))
+					var nrm := hf.normal_at(x, z)
+					st.set_normal(nrm)
 					st.set_uv(Vector2(x, z) * 0.05)
+					st.set_uv2(Vector2(1.0 - clampf(nrm.y, 0.0, 1.0), hf.raw(px, pz) / 256.0))
 					st.add_vertex(Vector3(x, hf.raw(px, pz), z))
 			var stride := w + 1
 			for j in h:
@@ -127,72 +129,69 @@ static func make_material(colormap: Image = null, half_size := 1024.0) -> Shader
 	var sh := Shader.new()
 	sh.code = """
 shader_type spatial;
-render_mode cull_back, diffuse_lambert, specular_disabled;
+render_mode cull_back, diffuse_lambert, specular_schlick_ggx;
 
 uniform sampler2D noise_tex : filter_linear_mipmap, repeat_enable;
 uniform sampler2D colormap_tex : filter_linear, repeat_disable;
 uniform float half_size = 1024.0;
 uniform float use_colormap = 0.0;
-uniform float macro_scale = 0.012;
-uniform float detail_scale = 0.28;
-uniform vec3 grass_a : source_color = vec3(0.33, 0.47, 0.19);
-uniform vec3 grass_b : source_color = vec3(0.52, 0.58, 0.25);
-uniform vec3 grass_dry : source_color = vec3(0.62, 0.58, 0.30);
-uniform vec3 dirt : source_color = vec3(0.47, 0.37, 0.25);
-uniform vec3 gravel : source_color = vec3(0.55, 0.53, 0.49);
-uniform vec3 rock : source_color = vec3(0.47, 0.45, 0.43);
-uniform vec3 snow : source_color = vec3(0.93, 0.94, 0.97);
-uniform float snow_start = 116.0;
-uniform float snow_full = 130.0;
+uniform float macro_scale = 0.010;
+uniform float detail_scale = 0.22;
+uniform vec3 snow_a : source_color = vec3(0.90, 0.93, 0.97);
+uniform vec3 snow_b : source_color = vec3(0.80, 0.86, 0.94);
+uniform vec3 snow_shadow : source_color = vec3(0.62, 0.72, 0.86);
+uniform vec3 packed_road : source_color = vec3(0.66, 0.68, 0.72);
+uniform vec3 mud_road : source_color = vec3(0.36, 0.30, 0.25);
+uniform vec3 rock : source_color = vec3(0.34, 0.33, 0.34);
+uniform vec3 rock_lit : source_color = vec3(0.52, 0.50, 0.48);
+uniform vec3 thaw_grass : source_color = vec3(0.42, 0.45, 0.30);
+uniform float thaw_below = 11.0;   // low, sheltered ground shows some dead grass through the snow
 
 varying vec3 v_world;
-varying vec3 v_normal;
-varying vec4 v_color;
+varying vec2 v_slope_h;
 
 void vertex() {
 	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	v_normal = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
-	v_color = COLOR;
+	v_slope_h = UV2;   // x = slope (0 flat .. 1 vertical), y = height / 256
 }
 
 void fragment() {
 	vec2 uv = v_world.xz;
 	float dist = length(v_world - CAMERA_POSITION_WORLD);
-	float detail_fade = 1.0 - smoothstep(120.0, 400.0, dist);
+	float detail_fade = 1.0 - smoothstep(90.0, 320.0, dist);
 	vec3 macro = texture(noise_tex, uv * macro_scale).rgb;
 	vec3 det = texture(noise_tex, uv * detail_scale).rgb;
-	vec3 fine = texture(noise_tex, uv * detail_scale * 3.3).rgb;
-	// face normal from screen derivatives: independent of vertex-normal encoding on WebGL
-	vec3 face_n = normalize(cross(dFdx(v_world), dFdy(v_world)));
-	if (face_n.y < 0.0) { face_n = -face_n; }
-	NORMAL = normalize((VIEW_MATRIX * vec4(face_n, 0.0)).xyz);
-	float slope = 1.0 - clamp(face_n.y, 0.0, 1.0);
+	vec3 fine = texture(noise_tex, uv * detail_scale * 3.7).rgb;
+	float slope = clamp(v_slope_h.x, 0.0, 1.0);
+	float height = v_slope_h.y * 256.0;
 
-	// grass: patches from the macro noise, blades from the detail cells
-	vec3 grass = mix(grass_a, grass_b, macro.r);
-	grass = mix(grass, grass_dry, smoothstep(0.62, 0.8, macro.g));
-	float blades = mix(1.0, 0.72 + 0.56 * det.b, detail_fade);
-	grass *= blades * (0.9 + 0.2 * fine.g * detail_fade);
+	// snow: wind-drift streaks from the macro noise, sparkle-scale grain up close
+	vec3 snow = mix(snow_a, snow_b, macro.r);
+	float drift = smoothstep(0.35, 0.75, macro.g + (det.r - 0.5) * 0.35);
+	snow = mix(snow, snow_shadow, drift * 0.35);
+	float grain = mix(1.0, 0.92 + 0.16 * fine.g, detail_fade);
+	snow *= grain;
 
-	// roads from the baked colour map (brown = dirt road, neutral grey = rail bed); the map is
-	// sampled as a texture by world position so it does not depend on vertex colour decoding
+	// roads from the baked colour map: brown = ploughed/mud track, grey = packed snow / rail bed
 	vec3 tint = use_colormap > 0.5 ? texture(colormap_tex, (v_world.xz + vec2(half_size)) / (2.0 * half_size)).rgb : vec3(0.45, 0.55, 0.3);
 	float roadness = clamp((tint.r - tint.g) * 7.0 + 0.45, 0.0, 1.0);
 	float grey = 1.0 - clamp((abs(tint.r - tint.g) + abs(tint.g - tint.b)) * 12.0, 0.0, 1.0);
 	float railness = grey * step(0.35, tint.r) * (1.0 - roadness);
-	vec3 dirt_col = dirt * (0.8 + 0.4 * det.r) * (0.92 + 0.16 * fine.r);
-	vec3 col = mix(grass, dirt_col, roadness);
-	col = mix(col, gravel * (0.85 + 0.3 * det.g), railness * 0.8);
+	vec3 col = mix(snow, mix(packed_road, mud_road, 0.35 + 0.4 * det.r), roadness * 0.85);
+	col = mix(col, packed_road * (0.9 + 0.2 * det.g), railness * 0.7);
 
-	// rock on slopes, snow on the peak
-	float rockness = smoothstep(0.22, 0.48, slope + (det.r - 0.5) * 0.12);
-	vec3 rock_col = rock * (0.75 + 0.5 * det.g) * (0.9 + 0.2 * fine.b);
+	// thaw patches in low ground, rock where it is too steep for snow to hold
+	float thaw = (1.0 - smoothstep(thaw_below - 4.0, thaw_below + 3.0, height)) * smoothstep(0.62, 0.8, macro.b + det.g * 0.15);
+	col = mix(col, thaw_grass * (0.85 + 0.3 * det.b), thaw * 0.45 * (1.0 - roadness));
+	float rockness = smoothstep(0.30, 0.52, slope + (det.r - 0.5) * 0.10);
+	vec3 rock_col = mix(rock, rock_lit, det.g) * (0.9 + 0.2 * fine.b);
+	// snow still clings to ledges: keep a dusting on rock facing up
+	rock_col = mix(rock_col, snow_a, (1.0 - slope) * 0.25);
 	col = mix(col, rock_col, rockness);
-	float snowness = smoothstep(snow_start, snow_full, v_world.y + (macro.b - 0.5) * 10.0) * (1.0 - smoothstep(0.35, 0.6, slope));
-	col = mix(col, snow * (0.94 + 0.06 * det.b), snowness);
 
 	ALBEDO = col;
-	ROUGHNESS = mix(0.95, 0.8, snowness);
+	ROUGHNESS = mix(0.55, 0.9, rockness);   // fresh snow is slightly glossy
+	SPECULAR = 0.25;
 }
 """
 	var mat := ShaderMaterial.new()

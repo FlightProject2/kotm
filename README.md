@@ -24,8 +24,7 @@ Click **PLAY**, then click once in the game to lock the mouse. Esc opens the pau
 drop from crates. **MARKETPLACE** sells the Hot Shot Crate for coins earned in matches; winning a
 match awards a free Victory Crate. Opening a crate runs a reel that lands on the drop. Dailies on
 the main menu pay coins (and a crate) for kills, damage, pickups, top-10s, wins and driving.
-Cars parked along the dirt roads are drivable: walk up, press F, WASD drives, Space brakes, F exits. The browser build uses the fallback mesh
-terrain (Terrain3D has no web binary), runs single-threaded, and renders at 0.85 scale with smaller
+Cars parked along the dirt roads are drivable: walk up, press F, WASD drives, Space brakes, F exits. The browser build runs single-threaded, and renders at 0.85 scale with smaller
 shadows. Chrome or Edge on a desktop is recommended. After a new build is published, hard-refresh
 (Ctrl+F5) so the browser drops the cached copy.
 
@@ -34,8 +33,7 @@ shadows. Chrome or Edge on a desktop is recommended. After a new build is publis
 1. Install **Godot 4.6.x Standard** (not the .NET build) from https://godotengine.org/download.
 2. Clone or download this branch.
 3. In Godot's project manager choose **Import**, pick `project.godot` at the top of the folder, then
-   **Import & Edit**. The first import takes a minute. If Godot asks to restart for the Terrain3D
-   plugin, do so.
+   **Import & Edit**. The first import takes a minute. 
 4. Press **F5**.
 
 If the editor reports a Vulkan or Forward+ error on your GPU, run with `--rendering-driver opengl3`.
@@ -57,7 +55,9 @@ scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path 
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
 ```
 
-`python3 tools/bake_map.py` regenerates the terrain and layout; `tools/godot/bake_terrain.gd` converts
+`BLEND_SRC=<dir> python3 tools/blender/convert_blends.py` converts the studio's `.blend` files to
+`assets/models/*.glb` (needs `pip install bpy`, Blender's Python module); `python3 tools/bake_map.py`
+regenerates the terrain and layout; `tools/godot/bake_terrain.gd` converts
 the heightmap; `tools/godot/build_prefabs.gd` rebuilds the building prefabs from `design/map/prefabs.json`.
 
 ### The original browser prototype

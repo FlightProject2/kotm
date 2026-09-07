@@ -3,7 +3,7 @@
 ## Engine
 
 **Godot 4.6.3, GDScript.** Chosen with the user for its open licence, a working headless toolchain
-(every check in this repo runs without a GPU), Terrain3D as a GDExtension, built-in high-level
+(every check in this repo runs without a GPU), our own chunked snow terrain (no terrain add-on), built-in high-level
 multiplayer over ENet, and Jolt physics. The project file sits at the repository root so
 `res://design/data/*.json` is the single source of tuning truth for the game and for `tools/ttk.py`.
 
@@ -11,8 +11,8 @@ multiplayer over ENet, and Jolt physics. The project file sits at the repository
 |---|---|
 | Renderer | Forward+ on desktop; the web export uses the Compatibility (GLES3) renderer automatically |
 | Physics | Jolt, 60 Hz; physics layers 1 world, 2 players, 3 hitboxes, 4 loot, 5 vehicles, 6 camera blockers |
-| Terrain | Terrain3D 1.0.2 on desktop (built in code from the baked heightmap); `MeshTerrainBackend` (HeightMapShape3D + textured mesh) headless and on the web |
-| Gameplay truth for height | `HeightField` (the baked `world/terrain/heightmap_2km.res` Image): floor clamp, projectile terrain hits, spawn mask, camera clamp. Never Terrain3D |
+| Terrain | `MeshTerrainBackend`: HeightMapShape3D collider + 256 chunked meshes with the snow-biome shader, built from the baked heightmap on every platform (the Terrain3D add-on was removed) |
+| Gameplay truth for height | `HeightField` (the baked `world/terrain/heightmap_2km.res` Image): floor clamp, projectile terrain hits, spawn mask, camera clamp. Never the render mesh |
 | Data | JSON under `design/data`, loaded by the static `DataLib` (works in `--script` test runs) |
 
 ## Authority and networking model

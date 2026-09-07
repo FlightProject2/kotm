@@ -6,7 +6,7 @@ Durations assume a core team of ~14 (see below). Adjust proportionally.
 
 Built on branch `claude/h1z1-style-game-plan-7kzer5`: project skeleton and headless test runner,
 pure combat core with TTK parity tests, baked 2 x 2 km slice (heightmap, layout, trees), World with
-Terrain3D and mesh backends, shared character body with motor/camera/input, random-point parachute
+a chunked mesh terrain (the Terrain3D add-on was tried and later removed), shared character body with motor/camera/input, random-point parachute
 spawns and match flow, bone-driven hitboxes and visuals, weapons/projectiles/tracers/hit effects,
 seeded loot with pickups and death bags, the gas zone, the HUD, the bot AI, kit-assembled building
 prefabs with props and trees, the cosmetic skin system, placeholder audio, and a web export served
@@ -30,8 +30,19 @@ parked along roads, and the Z1BR-style front end: side-panel main menu with wall
 Customize item grid with rarity bars and locked items, Marketplace with crates and a reel-style
 opening, local leaderboard. Web physics runs at 30 Hz with 20 bots.
 
+Fourth pass (studio assets and the snow biome): the Terrain3D add-on is gone; the terrain is our
+own chunked mesh with a snow-biome shader (wind-drift snow, packed-snow and mud roads, rock on
+slopes, thaw patches in low ground) under a low winter sun and spruce-green trees. The studio's
+Blender files are converted headless with Blender's Python module (`tools/blender/convert_blends.py`,
+sockets exported to `assets/models/sockets.json`) and merged into single meshes by `ModelLib`: the
+AR75 carbine is the AR-15 in hand, on the hotbar and on the ground; the motorcycle helmet and the
+military backpack attach to the head and back and lie on the ground as loot; the snow truck and
+the snowmobile replace the car-kit vehicles. Loot is laid out on a jittered grid across the whole
+map (640 scatter groups plus the building nodes).
+
 Backlog (M1.5): prone, navmesh bots that drive, doors, retargeted animations (walk/aim), host/join
-multiplayer, Inventory screen with crafting, 3D item renders in the Customize grid, grass.
+multiplayer, Inventory screen with crafting, 3D item renders in the Customize grid, snow footprints
+and drifts, the remaining weapons and clothing as studio models.
 
 ## Phase 0 – Pre-production (4 weeks)
 

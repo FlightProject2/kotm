@@ -6,9 +6,9 @@ extends CharacterBody3D
 ## simulates; the driver character rides the seat and stays shootable.
 
 const KMH := 1.0 / 3.6
-const MODELS := {"offroader": "res://assets/kenney/car/suv.glb", "police_car": "res://assets/kenney/car/police.glb",
-	"pickup_truck": "res://assets/kenney/car/truck.glb", "atv": "res://assets/kenney/car/sedan.glb"}
-const MODEL_SCALE := 1.6
+const MODELS := {"offroader": "res://assets/models/snowmobile.glb", "police_car": "res://assets/models/snow_truck.glb",
+	"pickup_truck": "res://assets/models/snow_truck.glb", "atv": "res://assets/models/snowmobile.glb"}
+const MODEL_SCALE := 1.6   # Kenney kit models only; studio models are metric
 
 var vehicle_id: String = "offroader"
 var def: Dictionary = {}
@@ -54,7 +54,23 @@ func setup(id: String, p_world: World) -> void:
 	cs.position = Vector3(0, 0.75, 0)
 	add_child(cs)
 	var path: String = MODELS.get(id, MODELS["offroader"])
-	if ResourceLoader.exists(path):
+	if path.begins_with(ModelLib.DIR):
+		var mid := path.get_file().get_basename()
+		var mi := ModelLib.instance(mid)
+		if mi.mesh:
+			model = mi
+			add_child(model)
+			var box := ModelLib.aabb(mid)
+			# the export puts the base on the ground and the footprint centre at the origin; the
+			# studio vehicles are modelled with +X forward (Blender) -> -Z forward after export
+			# only if the artist rotated them; measure and turn the long axis onto -Z
+			if box.size.x > box.size.z:
+				model.rotation.y = -PI * 0.5
+				box = AABB(Vector3(-box.size.z * 0.5, box.position.y, -box.size.x * 0.5), Vector3(box.size.z, box.size.y, box.size.x))
+			bs.size = Vector3(box.size.x, box.size.y, box.size.z)
+			cs.position = box.get_center()
+			seat_offset = Vector3(-box.size.x * 0.22, box.size.y * 0.45, 0.0)
+	elif ResourceLoader.exists(path):
 		var scene: PackedScene = load(path)
 		model = scene.instantiate()
 		model.scale = Vector3.ONE * MODEL_SCALE
@@ -176,7 +192,10 @@ func _wreck(from: Character) -> void:
 			d.leave_vehicle()
 	Events.hit_fx.emit(global_position + Vector3(0, 1.0, 0), Vector3.UP, "explosion")
 	if model:
-		for m in model.find_children("*", "MeshInstance3D", true, false):
+		var parts: Array = model.find_children("*", "MeshInstance3D", true, false)
+		if model is MeshInstance3D:
+			parts.append(model)
+		for m in parts:
 			var mat := StandardMaterial3D.new()
 			mat.albedo_color = Color(0.12, 0.1, 0.09)
 			mat.roughness = 0.95

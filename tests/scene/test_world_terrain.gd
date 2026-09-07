@@ -31,19 +31,3 @@ func test_mesh_backend_matches_heightfield() -> void:
 	assert_true(r[1] < 0.06, "worst error %.3f m" % r[1])
 	world.queue_free()
 	await settle(1)
-
-func test_terrain3d_backend_matches_heightfield() -> void:
-	if not ClassDB.class_exists("Terrain3D"):
-		print("    (Terrain3D not available, skipped)")
-		return
-	var world: World = load(WORLD_SCENE).instantiate()
-	await add_to_tree(world)
-	world.setup("terrain3d")
-	await settle(6)
-	assert_eq(world.backend_name, "terrain3d")
-	var r := _probe(world, 60, 0.3)
-	print("    terrain3d: %d/60 hits, worst %.3f m" % [r[0], r[1]])
-	assert_true(r[0] >= 55, "Terrain3D collision covers the map")
-	assert_true(r[1] < 0.35, "Terrain3D height agrees with HeightField (worst %.3f m)" % r[1])
-	world.queue_free()
-	await settle(1)

@@ -81,9 +81,9 @@ static func _mesh_for(species: String) -> Mesh:
 				c = Color(acc.r, acc.g, acc.b, 1.0) * c
 			mm.vertex_color_use_as_albedo = false
 			if c.g >= c.r and c.g >= c.b * 0.9 and c.g > 0.3:
-				mm.albedo_color = Color(0.33, 0.52, 0.22)      # foliage
+				mm.albedo_color = Color(0.20, 0.34, 0.24)      # spruce foliage under snow light
 			elif c.r > c.g and c.g > c.b:
-				mm.albedo_color = Color(0.40, 0.29, 0.19)      # trunk / wood
+				mm.albedo_color = Color(0.33, 0.25, 0.18)      # trunk / wood
 			else:
 				mm.albedo_color = Color(0.55, 0.53, 0.50)      # rock / other
 			mesh.surface_set_material(i, mm)

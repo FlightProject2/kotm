@@ -1,7 +1,7 @@
 class_name HeightField
 extends RefCounted
 ## The gameplay truth for terrain height: the baked heightmap Image. Characters, projectiles,
-## spawn selection and the camera clamp query this, so gameplay never depends on Terrain3D.
+## spawn selection and the camera clamp query this, so gameplay never depends on the render mesh.
 ## Pixel (px, py) <-> world (x = px * spacing - half, z = py * spacing - half).
 
 var image: Image

@@ -1,0 +1,52 @@
+{
+  "ar75": {
+    "_size_yup": [
+      1.049,
+      0.373,
+      0.06
+    ],
+    "_tris": 6631
+  },
+  "military_backpack": {
+    "Backpack_Socket": [
+      0.0,
+      0.0123,
+      0.059
+    ],
+    "_size_yup": [
+      0.37,
+      0.501,
+      0.446
+    ],
+    "_tris": 4296
+  },
+  "motorcycle_helmet": {
+    "Helmet_Socket": [
+      0.0,
+      -0.1264,
+      0.0045
+    ],
+    "_size_yup": [
+      0.295,
+      0.253,
+      0.333
+    ],
+    "_tris": 9658
+  },
+  "snow_truck": {
+    "_size_yup": [
+      4.91,
+      2.275,
+      2.38
+    ],
+    "_tris": 11913
+  },
+  "snowmobile": {
+    "_size_yup": [
+      4.079,
+      1.345,
+      1.16
+    ],
+    "_tris": 6656
+  }
+}

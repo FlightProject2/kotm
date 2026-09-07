@@ -1,6 +1,6 @@
 extends SceneTree
 ## Converts world/terrain/heightmap_2km.f32 (raw float32 from tools/bake_map.py) into the
-## compressed Image resource the game loads, plus an EXR for external tools / Terrain3D's importer.
+## compressed Image resource the game loads, plus an EXR for external tools (Blender, image editors).
 ## Run: godot --headless --path . --script res://tools/godot/bake_terrain.gd
 
 const SRC := "res://world/terrain/heightmap_2km.f32"

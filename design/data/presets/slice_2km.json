@@ -4,7 +4,7 @@
   "mapHalfSizeM": 1000, "borderMarginM": 67,
   "spawnAltitudeM": 220, "spawnMinSpacingM": 130, "spawnRelaxAfterTries": 20, "spawnRelaxPerTryM": 5,
   "spawnMaxSlopeDeg": 45, "spawnMaxHeightM": 110,
-  "botCount": 30, "lootScatterCount": 200,
+  "botCount": 30, "lootScatterCount": 640,
   "zone": {
     "revealBannerAtSec": 45, "revealBannerCountdownSec": 15, "firstCircleShownAtSec": 60,
     "firstCircleSampleRadiusM": 630, "outOfBoundsDps": 5,
