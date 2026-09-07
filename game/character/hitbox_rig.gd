@@ -6,20 +6,20 @@ extends Node
 
 const REGIONS := [
 	# region, bone, child bone (for alignment; "" = sphere), shape, radius, length pad
-	["head", "head", "", "sphere", 0.13, 0.0],
-	["neck", "neck_01", "head", "capsule", 0.07, 0.0],
-	["upperTorso", "spine_02", "neck_01", "box", 0.19, 0.02],
-	["lowerTorso", "spine_01", "spine_02", "box", 0.17, 0.04],
-	["arms", "upperarm.l", "lowerarm.l", "capsule", 0.065, 0.0],
-	["arms", "upperarm.r", "lowerarm.r", "capsule", 0.065, 0.0],
-	["arms", "lowerarm.l", "hand.l", "capsule", 0.055, 0.0],
-	["arms", "lowerarm.r", "hand.r", "capsule", 0.055, 0.0],
-	["upperLegs", "thigh.l", "calf.l", "capsule", 0.095, 0.0],
-	["upperLegs", "thigh.r", "calf.r", "capsule", 0.095, 0.0],
-	["lowerLegs", "calf.l", "foot.l", "capsule", 0.075, 0.0],
-	["lowerLegs", "calf.r", "foot.r", "capsule", 0.075, 0.0],
-	["lowerLegs", "foot.l", "ball.l", "capsule", 0.06, 0.03],
-	["lowerLegs", "foot.r", "ball.r", "capsule", 0.06, 0.03],
+	["head", "head", "", "sphere", 0.15, 0.0],
+	["neck", "neck_01", "head", "capsule", 0.08, 0.0],
+	["upperTorso", "spine_02", "neck_01", "box", 0.21, 0.04],
+	["lowerTorso", "spine_01", "spine_02", "box", 0.19, 0.06],
+	["arms", "upperarm.l", "lowerarm.l", "capsule", 0.08, 0.0],
+	["arms", "upperarm.r", "lowerarm.r", "capsule", 0.08, 0.0],
+	["arms", "lowerarm.l", "hand.l", "capsule", 0.07, 0.0],
+	["arms", "lowerarm.r", "hand.r", "capsule", 0.07, 0.0],
+	["upperLegs", "thigh.l", "calf.l", "capsule", 0.11, 0.0],
+	["upperLegs", "thigh.r", "calf.r", "capsule", 0.11, 0.0],
+	["lowerLegs", "calf.l", "foot.l", "capsule", 0.09, 0.0],
+	["lowerLegs", "calf.r", "foot.r", "capsule", 0.09, 0.0],
+	["lowerLegs", "foot.l", "ball.l", "capsule", 0.07, 0.03],
+	["lowerLegs", "foot.r", "ball.r", "capsule", 0.07, 0.03],
 ]
 
 var character: Character

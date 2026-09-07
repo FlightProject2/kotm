@@ -35,6 +35,7 @@ var heal_rate: float = 0.0
 var bleed_timer: float = 0.0
 var gas_timer: float = 0.0
 var vehicle: Vehicle = null
+var god_mode: bool = false   # admin/testing: never takes damage
 
 @onready var motor: CharacterMotor = $Motor
 @onready var collision: CollisionShape3D = $Collision
@@ -106,6 +107,9 @@ func _physics_process(dt: float) -> void:
 
 # ---- health helpers (authority) ----
 func apply_hit(result: DamageModel.HitResult, from: Character, weapon_name := "") -> void:
+	if god_mode:
+		health.hp = 100.0
+		return
 	if from:
 		var dealt := minf(result.damage, health.hp + result.damage)
 		from.damage_dealt += dealt
@@ -120,7 +124,7 @@ func apply_hit(result: DamageModel.HitResult, from: Character, weapon_name := ""
 		_die(from, weapon_name, result.headshot)
 
 func take_plain_damage(amount: float, from: Character, how: String) -> void:
-	if not alive():
+	if not alive() or god_mode:
 		return
 	if from:
 		from.damage_dealt += minf(amount, health.hp)

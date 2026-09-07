@@ -85,6 +85,25 @@ func _spawn_character(display_name: String, is_bot: bool, pos: Vector3, yaw: flo
 	characters.append(ch)
 	return ch
 
+## Admin/testing: drop [count] bots already on the ground around [centre].
+func spawn_bots_near(centre: Vector3, count: int, radius := 25.0) -> Array[Character]:
+	var out: Array[Character] = []
+	for k in count:
+		var ang := rng_bots.randf() * TAU
+		var r := radius * (0.5 + 0.5 * rng_bots.randf())
+		var x := centre.x + cos(ang) * r
+		var z := centre.z + sin(ang) * r
+		var y := world.height_at(x, z) + 0.02
+		var bot_name: String = NAMES[(characters.size()) % NAMES.size()] + "_" + str(characters.size())
+		var ch := _spawn_character(bot_name, true, Vector3(x, y, z), ang + PI, 0)
+		ch.mode = Character.Mode.GROUND
+		ch.velocity = Vector3.ZERO
+		ch.landed.emit()
+		alive_count += 1
+		out.append(ch)
+	Events.remain_changed.emit(alive_count)
+	return out
+
 func _process(dt: float) -> void:
 	if started and not is_over:
 		match_time += dt

@@ -22,7 +22,7 @@ var steer: float = 0.0          ## -1..1 smoothed
 var top_speed: float = 30.0
 var accel: float = 8.0
 var brake: float = 18.0
-var reverse_max: float = 8.0
+var reverse_max: float = 4.5
 var turn_rate: float = 1.6      ## rad/s at low speed
 var grip: float = 0.8
 var model: Node3D
@@ -65,7 +65,7 @@ func setup(id: String, p_world: World) -> void:
 			# studio vehicles are modelled with +X forward (Blender) -> -Z forward after export
 			# only if the artist rotated them; measure and turn the long axis onto -Z
 			if box.size.x > box.size.z:
-				model.rotation.y = -PI * 0.5
+				model.rotation.y = PI * 0.5   # +X (nose) -> -Z
 				box = AABB(Vector3(-box.size.z * 0.5, box.position.y, -box.size.x * 0.5), Vector3(box.size.z, box.size.y, box.size.x))
 			bs.size = Vector3(box.size.x, box.size.y, box.size.z)
 			cs.position = box.get_center()

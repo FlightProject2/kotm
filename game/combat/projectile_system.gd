@@ -72,6 +72,13 @@ func _physics_process(dt: float) -> void:
 			if is_instance_valid(p.shooter):
 				q.exclude = _exclusions(p.shooter)
 			var hit := space.intersect_ray(q)
+			if hit.is_empty() or HitboxRig.character_of(hit.get("collider")) == null:
+				# hit assist: a bullet has width. If the exact ray misses every hitbox, sweep a thin
+				# capsule along the same segment against hitboxes only and take the nearest one
+				# in front of whatever the ray did hit.
+				var near := _near_miss(space, p, to)
+				if not near.is_empty() and (hit.is_empty() or p.pos.distance_to(near["position"]) < p.pos.distance_to(hit["position"])):
+					hit = near
 			var t_hit := -1.0
 			if not hit.is_empty():
 				t_hit = p.pos.distance_to(hit["position"]) / maxf(p.pos.distance_to(to), 0.0001)
@@ -91,6 +98,50 @@ func _physics_process(dt: float) -> void:
 				if p.dist > float(p.def.get("maxRange", max_range)) or p.pos.y < -100.0:
 					p.alive = false
 	projectiles = projectiles.filter(func(x: Proj) -> bool: return x.alive)
+
+const ASSIST_RADIUS := 0.06   # bullet "width" for the hitbox sweep (m)
+var _assist_shape: CapsuleShape3D = CapsuleShape3D.new()
+
+## Capsule sweep of one sub-step against hitboxes (layer 3). Returns a ray-like hit dictionary
+## (position, normal, collider) for the hitbox nearest the start of the segment, or {}.
+func _near_miss(space: PhysicsDirectSpaceState3D, p: Proj, to: Vector3) -> Dictionary:
+	var seg := to - p.pos
+	var len := seg.length()
+	if len < 0.01:
+		return {}
+	_assist_shape.radius = ASSIST_RADIUS
+	_assist_shape.height = len + 2.0 * ASSIST_RADIUS
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = _assist_shape
+	q.collision_mask = 4
+	q.collide_with_areas = true
+	q.collide_with_bodies = false
+	q.transform = Transform3D(_capsule_basis(seg.normalized()), (p.pos + to) * 0.5)
+	if is_instance_valid(p.shooter):
+		q.exclude = _exclusions(p.shooter)
+	var best: Dictionary = {}
+	var best_d := INF
+	for r in space.intersect_shape(q, 8):
+		var col: Object = r.get("collider")
+		var victim := HitboxRig.character_of(col)
+		if victim == null or victim == p.shooter or not victim.alive():
+			continue
+		# closest point of the hitbox centre onto the segment = approximate impact point
+		var c: Vector3 = (col as Node3D).global_position
+		var t := clampf((c - p.pos).dot(seg) / (len * len), 0.0, 1.0)
+		var d := t * len
+		if d < best_d:
+			best_d = d
+			best = {"position": p.pos + seg * t, "normal": -seg.normalized(), "collider": col}
+	return best
+
+## A capsule's axis is its local Y; build a basis whose Y points along [dir].
+static func _capsule_basis(dir: Vector3) -> Basis:
+	var y := dir.normalized()
+	var helper := Vector3.UP if absf(y.y) < 0.99 else Vector3.RIGHT
+	var x := helper.cross(y).normalized()
+	var z := x.cross(y).normalized()
+	return Basis(x, y, z)
 
 func _impact(p: Proj, hit: Dictionary) -> void:
 	var collider: Object = hit.get("collider")

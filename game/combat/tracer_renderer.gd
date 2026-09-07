@@ -31,6 +31,8 @@ func _ready() -> void:
 	Events.tracer.connect(_on_tracer)
 
 func _on_tracer(_shooter_id: int, origin: Vector3, velocity: Vector3, weapon_id: String) -> void:
+	if not Settings.tracers:
+		return
 	var t := Tracer.new()
 	t.start = origin
 	t.pos = origin

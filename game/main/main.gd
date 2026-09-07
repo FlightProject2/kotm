@@ -5,6 +5,7 @@ const WORLD_SCENE := preload("res://game/world/world.tscn")
 const CAMERA_SCENE := preload("res://game/camera/camera_rig.tscn")
 const HUD_SCRIPT := preload("res://game/ui/hud.gd")
 const MENUS_SCRIPT := preload("res://game/ui/menus.gd")
+const ADMIN_SCRIPT := preload("res://game/ui/admin_menu.gd")
 
 var args: Dictionary = {}
 var world: World
@@ -12,6 +13,7 @@ var match_node: Match
 var camera_rig: CameraRig
 var hud: HUD
 var menus: Menus
+var admin: AdminMenu
 var sim: bool = false
 var sim_seconds: float = 60.0
 var preset: Dictionary
@@ -68,6 +70,10 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 		add_child(hud)
 		hud.bind(match_node, camera_rig, world)
 		if not sim:
+			admin = ADMIN_SCRIPT.new()
+			admin.name = "Admin"
+			add_child(admin)
+			admin.bind(match_node, world, camera_rig)
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			hud.show_banner("Parachute in. Click in the game to lock the mouse; Esc pauses.")
 	in_match = true
@@ -78,10 +84,11 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 func _end_match() -> void:
 	in_match = false
 	paused = false
-	for n in [hud, camera_rig, match_node, world]:
+	for n in [admin, hud, camera_rig, match_node, world]:
 		if n and is_instance_valid(n):
 			n.queue_free()
-	hud = null; camera_rig = null; match_node = null; world = null
+	admin = null; hud = null; camera_rig = null; match_node = null; world = null
+	Engine.time_scale = 1.0
 
 func _quit_to_menu() -> void:
 	_end_match()
@@ -121,6 +128,9 @@ func _on_match_ended(won: bool, placement: int, killer_name: String, weapon: Str
 
 func _unhandled_input(event: InputEvent) -> void:
 	if match_node == null or sim or match_node.is_over:
+		return
+	if admin and admin.open and event.is_action_pressed("pause"):
+		admin.set_open(false)
 		return
 	if event.is_action_pressed("pause"):
 		if paused and menus.current == "settings":
