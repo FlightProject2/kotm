@@ -9,14 +9,42 @@ var size: int = 0
 var half: float = 0.0
 var spacing: float = 1.0
 
-static func load_from(path: String, vertex_spacing := 1.0) -> HeightField:
+## [lod] > 1 averages lod x lod blocks of the baked map so collision, gameplay height and the
+## render mesh all use the very same grid (a 1 m map at lod 2 becomes a 2 m grid).
+static func load_from(path: String, vertex_spacing := 1.0, lod := 1) -> HeightField:
 	var hf := HeightField.new()
 	var img: Image = ResourceLoader.load(path, "Image")
 	if img == null:
 		push_error("HeightField: cannot load " + path)
 		return null
+	if lod > 1:
+		img = downsample(img, lod)
+		vertex_spacing *= float(lod)
 	hf.set_image(img, vertex_spacing)
 	return hf
+
+## Block-average downsample of a single-channel float image (FORMAT_RF in, FORMAT_RF out).
+static func downsample(img: Image, factor: int) -> Image:
+	var src := img
+	if src.get_format() != Image.FORMAT_RF:
+		src = img.duplicate()
+		src.convert(Image.FORMAT_RF)
+	var w := src.get_width() / factor
+	var h := src.get_height() / factor
+	var data := src.get_data().to_float32_array()
+	var sw := src.get_width()
+	var out := PackedFloat32Array()
+	out.resize(w * h)
+	var inv := 1.0 / float(factor * factor)
+	for y in h:
+		for x in w:
+			var acc := 0.0
+			for dy in factor:
+				var row := (y * factor + dy) * sw + x * factor
+				for dx in factor:
+					acc += data[row + dx]
+			out[y * w + x] = acc * inv
+	return Image.create_from_data(w, h, false, Image.FORMAT_RF, out.to_byte_array())
 
 func set_image(img: Image, vertex_spacing := 1.0) -> void:
 	image = img

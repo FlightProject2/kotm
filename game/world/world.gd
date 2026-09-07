@@ -3,6 +3,7 @@ extends Node3D
 ## Owns the terrain (our chunked snow mesh), lighting and the content containers.
 ## Gameplay height queries go through height_at(), backed by the baked HeightField.
 
+const TERRAIN_LOD := 2   # baked map is 1 m; everything runs on the 2 m average
 var layout: MapLayout
 var height_field: HeightField
 var terrain: Node3D
@@ -26,7 +27,9 @@ var vehicles: Node3D
 ## mode is kept for the CLI ("auto" | "mesh"); the layout + heightmap are loaded and the terrain built.
 func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: bool = false) -> void:
 	layout = map_layout if map_layout != null else MapLayout.load_default()
-	height_field = HeightField.load_from(layout.heightmap_path, layout.vertex_spacing)
+	# 2 m grid everywhere: the collider, height_at() and the drawn mesh are one surface, so the
+	# player never stands above or below what is drawn
+	height_field = HeightField.load_from(layout.heightmap_path, layout.vertex_spacing, TERRAIN_LOD)
 	assert(height_field != null, "World: heightmap missing")
 	if layout.colormap_path != "":
 		var tex: Texture2D = load(layout.colormap_path)

@@ -100,9 +100,11 @@ func _land(vy_before: float) -> void:
 func _floor_clamp() -> void:
 	if c.world == null:
 		return
+	# rescue only a real fall-through: the collider's triangles and the bilinear height differ by
+	# a few cm on slopes, and snapping inside that band fights the physics floor
 	var g := c.world.height_at(c.global_position.x, c.global_position.z)
-	if c.global_position.y < g - 0.02:
-		c.global_position.y = g
+	if c.global_position.y < g - 0.15:
+		c.global_position.y = g + 0.05
 		if c.velocity.y < 0.0:
 			c.velocity.y = 0.0
 
@@ -125,8 +127,8 @@ func _parachute(dt: float) -> void:
 	c.move_and_slide()
 	var ground := c.world.height_at(c.global_position.x, c.global_position.z) if c.world else 0.0
 	if c.is_on_floor() or c.global_position.y <= ground + 0.05:
-		if c.global_position.y < ground:
-			c.global_position.y = ground
+		if c.global_position.y < ground + 0.08:
+			c.global_position.y = ground + 0.08
 		c.velocity = Vector3.ZERO
 		c.mode = Character.Mode.GROUND
 		c.stun = float(cfg["landingStunSec"])

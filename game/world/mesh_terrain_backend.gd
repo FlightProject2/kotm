@@ -5,7 +5,7 @@ extends RefCounted
 ## The material is fully procedural: a generated noise texture drives grass patches, dirt on
 ## roads (from the baked colour map carried in vertex colours), rock on slopes and snow on top.
 
-const VISUAL_STEP := 4
+const VISUAL_STEP := 1   # one visual vertex per height sample: the mesh IS the collider
 
 static func build(world: World) -> Node3D:
 	var root := Node3D.new()
@@ -30,7 +30,7 @@ static func build(world: World) -> Node3D:
 	root.add_child(_visual(world))
 	return root
 
-const CHUNK_QUADS := 32   ## quads per chunk side (x VISUAL_STEP m); 2048 m -> 16 x 16 chunks
+const CHUNK_QUADS := 64   ## quads per chunk side (x sample spacing); 1024 samples -> 16 x 16 chunks of 128 m
 
 ## The visual is chunked so the renderer can frustum-cull most of it (one 263k-vertex surface is
 ## always fully drawn) and so no single buffer gets huge on WebGL.
@@ -42,6 +42,11 @@ static func _visual(world: World) -> Node3D:
 	root.name = "Visual"
 	var mat := _pick_material(world)
 	var chunks := int(ceil(float(n) / CHUNK_QUADS))
+	# raw heights once (Image.get_pixel per vertex is the slow path)
+	var heights := hf.image.get_data().to_float32_array()
+	var sz := hf.size
+	var sp := hf.spacing
+	var half := hf.half
 	for cj in chunks:
 		for ci in chunks:
 			var i0 := ci * CHUNK_QUADS
@@ -52,30 +57,54 @@ static func _visual(world: World) -> Node3D:
 			var h := j1 - j0
 			if w <= 0 or h <= 0:
 				continue
-			var st := SurfaceTool.new()
-			st.begin(Mesh.PRIMITIVE_TRIANGLES)
-			for j in range(j0, j1 + 1):
-				for i in range(i0, i1 + 1):
-					var px := mini(i * VISUAL_STEP, hf.size - 1)
-					var pz := mini(j * VISUAL_STEP, hf.size - 1)
-					var x := px * hf.spacing - hf.half
-					var z := pz * hf.spacing - hf.half
-					var c := cm.get_pixel(px, pz) if cm else Color(0.5, 0.6, 0.35)
-					st.set_color(c)
-					var nrm := hf.normal_at(x, z)
-					st.set_normal(nrm)
-					st.set_uv(Vector2(x, z) * 0.05)
-					st.set_uv2(Vector2(1.0 - clampf(nrm.y, 0.0, 1.0), hf.raw(px, pz) / 256.0))
-					st.add_vertex(Vector3(x, hf.raw(px, pz), z))
 			var stride := w + 1
+			var count := stride * (h + 1)
+			var verts := PackedVector3Array(); verts.resize(count)
+			var norms := PackedVector3Array(); norms.resize(count)
+			var uvs := PackedVector2Array(); uvs.resize(count)
+			var uv2s := PackedVector2Array(); uv2s.resize(count)
+			var cols := PackedColorArray(); cols.resize(count)
+			var k := 0
+			for j in range(j0, j1 + 1):
+				var pz := mini(j * VISUAL_STEP, sz - 1)
+				var z := pz * sp - half
+				for i in range(i0, i1 + 1):
+					var px := mini(i * VISUAL_STEP, sz - 1)
+					var x := px * sp - half
+					var y := heights[pz * sz + px]
+					# central-difference normal from the same samples the collider uses
+					var xl := heights[pz * sz + maxi(px - 1, 0)]
+					var xr := heights[pz * sz + mini(px + 1, sz - 1)]
+					var zl := heights[maxi(pz - 1, 0) * sz + px]
+					var zr := heights[mini(pz + 1, sz - 1) * sz + px]
+					var nrm := Vector3(xl - xr, 2.0 * sp, zl - zr).normalized()
+					verts[k] = Vector3(x, y, z)
+					norms[k] = nrm
+					uvs[k] = Vector2(x, z) * 0.05
+					uv2s[k] = Vector2(1.0 - clampf(nrm.y, 0.0, 1.0), y / 256.0)
+					cols[k] = cm.get_pixel(mini(px * int(cm.get_width() / sz), cm.get_width() - 1), mini(pz * int(cm.get_height() / sz), cm.get_height() - 1)) if cm else Color(0.5, 0.6, 0.35)
+					k += 1
+			var idx := PackedInt32Array(); idx.resize(w * h * 6)
+			var q := 0
 			for j in h:
 				for i in w:
 					var a := j * stride + i
-					st.add_index(a); st.add_index(a + stride); st.add_index(a + 1)
-					st.add_index(a + 1); st.add_index(a + stride); st.add_index(a + stride + 1)
+					idx[q] = a; idx[q + 1] = a + stride; idx[q + 2] = a + 1
+					idx[q + 3] = a + 1; idx[q + 4] = a + stride; idx[q + 5] = a + stride + 1
+					q += 6
+			var arrays := []
+			arrays.resize(Mesh.ARRAY_MAX)
+			arrays[Mesh.ARRAY_VERTEX] = verts
+			arrays[Mesh.ARRAY_NORMAL] = norms
+			arrays[Mesh.ARRAY_TEX_UV] = uvs
+			arrays[Mesh.ARRAY_TEX_UV2] = uv2s
+			arrays[Mesh.ARRAY_COLOR] = cols
+			arrays[Mesh.ARRAY_INDEX] = idx
+			var mesh := ArrayMesh.new()
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 			var mi := MeshInstance3D.new()
 			mi.name = "Chunk_%d_%d" % [ci, cj]
-			mi.mesh = st.commit()
+			mi.mesh = mesh
 			mi.material_override = mat
 			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			root.add_child(mi)
@@ -129,7 +158,7 @@ static func make_material(colormap: Image = null, half_size := 1024.0) -> Shader
 	var sh := Shader.new()
 	sh.code = """
 shader_type spatial;
-render_mode cull_back, diffuse_lambert, specular_schlick_ggx;
+render_mode cull_disabled, diffuse_lambert, specular_schlick_ggx;   // two-sided: a camera that dips under a slope still sees ground
 
 uniform sampler2D noise_tex : filter_linear_mipmap, repeat_enable;
 uniform sampler2D colormap_tex : filter_linear, repeat_disable;
