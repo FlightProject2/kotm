@@ -3,7 +3,7 @@ extends Node
 
 const WORLD_SCENE := preload("res://game/world/world.tscn")
 const CAMERA_SCENE := preload("res://game/camera/camera_rig.tscn")
-const HUD_SCRIPT := preload("res://game/ui/hud.gd")
+const HUD_SCRIPT := preload("res://game/ui/alpine_hud.gd")
 const MENUS_SCRIPT := preload("res://game/ui/menus.gd")
 const ADMIN_SCRIPT := preload("res://game/ui/admin_menu.gd")
 
@@ -75,7 +75,8 @@ func start_match(p_seed: int, bots: int, with_player: bool, terrain_mode: String
 			add_child(admin)
 			admin.bind(match_node, world, camera_rig)
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			hud.show_banner("Parachute in. Click in the game to lock the mouse; Esc pauses.")
+			var intro := "Drop in. Loot up. Outrun the whiteout." if str(preset["zone"].get("theme", "gas")) == "whiteout" else "Parachute in."
+			hud.show_banner(intro + " Click to lock the mouse; Esc pauses.")
 	in_match = true
 	paused = false
 	print("KOTM: match started seed=%d bots=%d terrain=%s" % [p_seed, bots, world.backend_name])
