@@ -6,6 +6,10 @@ ten blank wardrobe templates, finished KOTM beanie and fitted equipment.
 Textures are packed into the file. The full body is retained in the hidden
 `00_EDITABLE_FULL_BODY` collection for editing and weight transfer.
 
+The AR and hunting-rifle ADS actions use a shouldered sight line: the buttpad
+sits in the shoulder pocket, the right eye follows the sights, and both palms
+remain fitted to their grips in standing, moving, crouched and firing clips.
+
 `KOTM_AR75_SolidStock.blend` is the independent rifle with the stock opening
 filled and the lower adjustment latch removed.
 

@@ -29,6 +29,7 @@ var current_class: String = ""
 var character: Node
 var length: float = 0.0
 var _flash_t: float = 0.0
+var _flash_scale := 1.0
 var _kick: float = 0.0
 var _last_dir: Vector3 = Vector3.FORWARD
 var studio_rig: KOTMCharacterRig
@@ -48,23 +49,55 @@ func _ready() -> void:
 func _build_flash() -> void:
 	flash = Node3D.new()
 	flash.name = "MuzzleFlash"
-	var q := MeshInstance3D.new()
-	var qm := QuadMesh.new()
-	qm.size = Vector2(0.28, 0.28)
-	q.mesh = qm
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	m.albedo_color = Color(1.0, 0.85, 0.5, 0.9)
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	q.material_override = m
-	q.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	flash.add_child(q)
-	# Compile the flash material before the first shot, without a per-weapon light.
-	flash.visible = true
-	_flash_t = 0.08
+	# Two compact additive stars read as a brief muzzle burst instead of the old
+	# opaque square. Their world size stays below the width of a character head.
+	for layer in [
+		{"radius": 0.070, "points": 8, "color": Color(1.0, 0.55, 0.12, 0.95)},
+		{"radius": 0.043, "points": 6, "color": Color(1.0, 0.94, 0.68, 1.0)},
+	]:
+		var burst := MeshInstance3D.new()
+		var burst_color: Color = layer.color
+		burst.mesh = _star_mesh(float(layer.radius), int(layer.points))
+		var material := StandardMaterial3D.new()
+		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		material.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		material.albedo_color = burst_color
+		material.emission_enabled = true
+		material.emission = burst_color
+		material.emission_energy_multiplier = 3.0
+		material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		burst.material_override = material
+		burst.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		burst.rotation.z = PI / float(layer.points)
+		flash.add_child(burst)
+	var flash_light := OmniLight3D.new()
+	flash_light.name = "FlashLight"
+	flash_light.light_color = Color(1.0, 0.62, 0.24)
+	flash_light.light_energy = 0.55
+	flash_light.omni_range = 1.1
+	flash_light.shadow_enabled = false
+	flash.add_child(flash_light)
+	flash.visible = false
 	mount.add_child(flash)
+
+static func _star_mesh(radius: float, point_count: int) -> ArrayMesh:
+	var vertices := PackedVector3Array()
+	var corners := point_count * 2
+	for index in corners:
+		var angle_a := TAU * float(index) / float(corners)
+		var angle_b := TAU * float(index + 1) / float(corners)
+		var radius_a := radius if index % 2 == 0 else radius * 0.32
+		var radius_b := radius if (index + 1) % 2 == 0 else radius * 0.32
+		vertices.append(Vector3.ZERO)
+		vertices.append(Vector3(cos(angle_a) * radius_a, sin(angle_a) * radius_a, 0.0))
+		vertices.append(Vector3(cos(angle_b) * radius_b, sin(angle_b) * radius_b, 0.0))
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
 
 func set_weapon(weapon_id: String, weapon_class: String) -> void:
 	if weapon_id == current_id:
@@ -109,10 +142,12 @@ func muzzle_global() -> Vector3:
 
 ## Fires the flash and a small kick; called from the character's fired signal.
 func fire_effects() -> void:
-	_flash_t = 0.045
+	_flash_t = 0.035
+	_flash_scale = randf_range(0.82, 1.08)
 	_kick = 0.05
 	flash.visible = true
 	flash.rotation.z = randf() * TAU
+	flash.scale = Vector3.ONE * _flash_scale
 
 func _process(dt: float) -> void:
 	if _flash_t > 0.0:
@@ -127,7 +162,9 @@ func _align() -> void:
 		return
 	if studio_rig and KOTMCharacterRig.WEAPONS.has(current_id):
 		if _flash_t > 0:
-			flash.global_transform = studio_rig.marker_world(current_id)
+			var marker := studio_rig.marker_world(current_id)
+			marker.basis = marker.basis.orthonormalized().scaled(Vector3.ONE * _flash_scale)
+			flash.global_transform = marker
 		return
 	var dir: Vector3 = _last_dir
 	var inp = character.get("input")
