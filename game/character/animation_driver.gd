@@ -69,8 +69,8 @@ func _pick_clip() -> void:
 	var clip := "idle"
 	var speed_scale := 1.0
 	if character.mode == Character.Mode.PARACHUTE:
-		clip = "air_jump"
-		speed_scale = 0.2
+		clip = "idle"            # hanging in the harness; the arm pose raises the hands to the risers
+		speed_scale = 0.5
 	elif now < melee_until:
 		clip = "fight_punch"
 	elif character.mode == Character.Mode.AIR:

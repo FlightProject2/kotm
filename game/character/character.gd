@@ -136,7 +136,7 @@ func in_vehicle() -> bool:
 	return vehicle != null and is_instance_valid(vehicle)
 
 func enter_vehicle(v: Vehicle) -> bool:
-	if v == null or not v.can_enter() or mode != Mode.GROUND:
+	if v == null or not v.can_enter() or mode == Mode.PARACHUTE:
 		return false
 	vehicle = v
 	v.enter(self)

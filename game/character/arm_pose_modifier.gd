@@ -11,12 +11,14 @@ extends SkeletonModifier3D
 ## The mannequin's arms are short (about 0.47 m shoulder to wrist), so the grip sits close to
 ## the chest and the torso twists toward the gun side so the support hand can reach.
 const POSES := {
-	"rifle": {"grip": 0.24, "right": 0.03, "up": -0.10, "support": 0.15, "sup_right": -0.04, "sup_up": -0.01},
-	"sniper": {"grip": 0.24, "right": 0.03, "up": -0.10, "support": 0.17, "sup_right": -0.04, "sup_up": -0.01},
-	"shotgun": {"grip": 0.24, "right": 0.03, "up": -0.10, "support": 0.16, "sup_right": -0.04, "sup_up": -0.01},
-	"smg": {"grip": 0.25, "right": 0.03, "up": -0.09, "support": 0.11, "sup_right": -0.04, "sup_up": -0.01},
-	"pistol": {"grip": 0.30, "right": 0.04, "up": -0.04, "support": 0.03, "sup_right": -0.04, "sup_up": -0.02},
+	"rifle": {"grip": 0.27, "right": 0.06, "up": -0.13, "support": 0.20, "sup_right": -0.03, "sup_up": 0.0},
+	"sniper": {"grip": 0.27, "right": 0.06, "up": -0.13, "support": 0.22, "sup_right": -0.03, "sup_up": 0.0},
+	"shotgun": {"grip": 0.27, "right": 0.06, "up": -0.13, "support": 0.21, "sup_right": -0.03, "sup_up": 0.0},
+	"smg": {"grip": 0.27, "right": 0.05, "up": -0.11, "support": 0.13, "sup_right": -0.03, "sup_up": 0.0},
+	"pistol": {"grip": 0.32, "right": 0.05, "up": -0.05, "support": 0.03, "sup_right": -0.05, "sup_up": -0.02},
 	"bow": {"grip": 0.30, "right": 0.02, "up": 0.0, "support": 0.02, "sup_right": -0.03, "sup_up": 0.0},
+	# under the canopy: both hands up on the risers, no twist
+	"parachute": {"grip": 0.05, "right": 0.22, "up": 0.62, "support": 0.0, "sup_right": -0.44, "sup_up": 0.0},
 }
 ## Torso yaw toward the gun side while armed (radians; the head counter-rotates to keep aim).
 const TORSO_TWIST := -0.35
@@ -64,7 +66,7 @@ func _process_modification() -> void:
 		right = Vector3.LEFT
 	var up := dir.cross(right).normalized() * -1.0
 	# shooting stance: twist the upper spine toward the gun side, keep the head on the aim
-	var twist := Basis(Vector3.UP, TORSO_TWIST * weight * influence)
+	var twist := Basis(Vector3.UP, (0.0 if weapon_class == "parachute" else TORSO_TWIST) * weight * influence)
 	var cg := skel.get_bone_global_pose(chest_bone)
 	skel.set_bone_global_pose(chest_bone, Transform3D(twist * cg.basis, cg.origin))
 	skel.force_update_bone_child_transform(chest_bone)
@@ -75,9 +77,13 @@ func _process_modification() -> void:
 	var chest := skel.get_bone_global_pose(chest_bone).origin + Vector3(0, 0.12, 0)
 	var grip := chest + dir * float(pose["grip"]) + right * float(pose["right"]) + up * float(pose["up"])
 	var support := grip + dir * float(pose["support"]) + right * float(pose["sup_right"]) + up * float(pose["sup_up"])
-	# elbows: right elbow out and down, left elbow down and slightly out
-	_solve(skel, r_chain, grip, right * 0.6 - up * 0.5 - dir * 0.3, weight * influence)
-	_solve(skel, l_chain, support, -right * 0.5 - up * 0.7 - dir * 0.2, weight * influence)
+	# elbows: right elbow out and down, left elbow down and slightly out (out to the sides when hanging)
+	if weapon_class == "parachute":
+		_solve(skel, r_chain, grip, right * 0.9 - dir * 0.2, weight * influence)
+		_solve(skel, l_chain, support, -right * 0.9 - dir * 0.2, weight * influence)
+	else:
+		_solve(skel, r_chain, grip, right * 0.6 - up * 0.5 - dir * 0.3, weight * influence)
+		_solve(skel, l_chain, support, -right * 0.5 - up * 0.7 - dir * 0.2, weight * influence)
 
 ## Two-bone IK by rotating the global poses: point the upper arm so the elbow lands on the
 ## law-of-cosines circle nearest the pole, then point the forearm at the target.
@@ -118,8 +124,14 @@ static func _aim_bone(skel: Skeleton3D, bone: int, from_dir: Vector3, to_dir: Ve
 	var s := axis.length()
 	var cth := clampf(f.dot(t), -1.0, 1.0)
 	if s < 1e-5:
-		return
-	var rot := Basis(axis / s, atan2(s, cth))
+		if cth > 0.0:
+			return   # already aligned
+		# exactly opposite: pick any axis perpendicular to f (never a random flip)
+		axis = f.cross(Vector3.UP if absf(f.y) < 0.9 else Vector3.RIGHT).normalized()
+		s = 1.0
+	# a nearly-opposite pair would otherwise rotate ~180 deg around a noisy axis: limit one
+	# modification to 150 degrees so the limb turns smoothly over a few frames instead of flipping
+	var rot := Basis(axis / s, minf(atan2(s, cth), deg_to_rad(150.0)))
 	var g := skel.get_bone_global_pose(bone)
 	var new_global := Transform3D(rot * g.basis, g.origin)
 	skel.set_bone_global_pose(bone, new_global)

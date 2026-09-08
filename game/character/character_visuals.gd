@@ -88,10 +88,13 @@ func _process(dt: float) -> void:
 		aim_spine.pitch = character.pitch
 	if arm_pose and skeleton:
 		# arms only hold the gun on foot; the parachute and melee keep the clip's arms
-		arm_pose.weapon_class = "" if character.mode == Character.Mode.PARACHUTE else _held_class
+		arm_pose.weapon_class = "parachute" if character.mode == Character.Mode.PARACHUTE else _held_class
 		var aim: Vector3 = character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else \
 			Vector3(-sin(character.yaw) * cos(character.pitch), sin(character.pitch), -cos(character.yaw) * cos(character.pitch))
 		arm_pose.aim_dir = skeleton.global_transform.basis.inverse() * aim
+	# the gun goes away under the canopy: both hands are on the risers
+	if weapon_holder and weapon_holder.mount:
+		weapon_holder.mount.visible = character.mode != Character.Mode.PARACHUTE
 	if canopy:
 		canopy.visible = character.mode == Character.Mode.PARACHUTE
 	if hat:
@@ -170,14 +173,15 @@ func _build_backpack(chest_mount: Node3D) -> MeshInstance3D:
 	var mi := ModelLib.instance("military_backpack")
 	if mi.mesh == null:
 		return null
-	var body := _body_mesh()
-	var hb := SkinSystem.head_bounds(body.mesh) if body else AABB(Vector3(-0.1, 1.55, -0.1), Vector3(0.2, 0.25, 0.2))
 	var chest_bi := skeleton.find_bone("spine_02")
 	var chest_rest := skeleton.get_bone_global_rest(chest_bi)
 	var sz := ModelLib.aabb("military_backpack").size
-	var scale := 0.44 / maxf(sz.y, 0.01)
-	# behind the chest: mannequin faces +Z, so the back is -Z; pack front (straps) faces +Z
-	var pos := chest_rest.origin + Vector3(0, 0.10, -(hb.size.z * 0.55 + sz.z * scale * 0.5))
+	var scale := 0.46 / maxf(sz.y, 0.01)
+	# the artist's Backpack_Socket is the point that touches the wearer's back; the mannequin's
+	# back surface sits about 0.14 m behind the spine_02 bone (it faces +Z, so back is -Z)
+	var socket := ModelLib.socket("military_backpack", "Backpack_Socket", Vector3(0, 0, 0.06))
+	var back_point := chest_rest.origin + Vector3(0, 0.04, -0.15)
+	var pos := back_point - socket * scale
 	mi.transform = chest_rest.affine_inverse() * Transform3D(Basis().scaled(Vector3.ONE * scale), pos)
 	mi.visible = false
 	chest_mount.add_child(mi)

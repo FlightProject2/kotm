@@ -17,14 +17,14 @@
     "lethalM": 15.0
   },
   "parachute": {
-    "forwardSpeed": 12.0,
-    "forwardDescent": 9.0,
-    "neutralSpeed": 8.0,
-    "neutralDescent": 6.0,
-    "flareSpeed": 4.0,
-    "flareDescent": 4.0,
+    "forwardSpeed": 17.0,
+    "forwardDescent": 20.0,
+    "neutralSpeed": 9.0,
+    "neutralDescent": 6.5,
+    "flareSpeed": 5.0,
+    "flareDescent": 3.2,
     "turnRateRad": 1.0,
-    "horizontalLerp": 1.5,
+    "horizontalLerp": 2.6, "strafeSpeed": 6.0,
     "detachHeightM": 1.5
   },
   "camera": {
@@ -40,7 +40,7 @@
     "aimSensMult": 0.8,
     "scopeSensMult": 0.35,
     "terrainClamp": 0.5,
-    "recoilToCamera": 0.6,
+    "recoilToCamera": 0.45,
     "pitchLimitDeg": 70.0,
     "mouseSensitivity": 0.0022,
     "armSmoothing": 18.0,

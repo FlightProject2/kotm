@@ -19,12 +19,14 @@ var stuck_t: float = 0.0
 var detour_t: float = 0.0
 var detour_side: float = 1.0
 var fire_toggle: bool = false
+var burst_left: int = 0
+var burst_t: float = 0.0
 var crouch: bool = false
 var strafe_phase: float = 0.0
 var zone: Zone
 var _prev_pos: Vector3 = Vector3.ZERO
 
-const PERCEPTION_RANGE := 140.0
+const PERCEPTION_RANGE := 190.0
 const MELEE_SEARCH := 6.0
 const LOOT_SEARCH := 90.0
 const WANDER := 40.0
@@ -35,8 +37,8 @@ func _ready() -> void:
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.seed = hash(c.name)
-	react = rng.randf_range(0.3, 1.2)
-	spread = rng.randf_range(2.5, 6.0)
+	react = rng.randf_range(0.2, 0.8)
+	spread = rng.randf_range(0.4, 1.4)
 	look_t = rng.randf() * 0.35
 	strafe_phase = rng.randf() * TAU
 	c.set_meta("spread_override", spread)
@@ -138,7 +140,7 @@ func _perceive(is_melee: bool) -> void:
 		bd = d
 		best = o
 	if best != target:
-		react = rng.randf_range(0.3, 1.2)
+		react = rng.randf_range(0.2, 0.8)
 	target = best
 
 func _combat(dt: float, i: CharacterInput, def: Dictionary) -> void:
@@ -159,19 +161,35 @@ func _combat(dt: float, i: CharacterInput, def: Dictionary) -> void:
 				if sid != "" and int(c.inventory.mags.get(sid, 0)) > 0:
 					i.slot = s
 					break
+	# engagement range by weapon class: close in instead of wasting shots
+	var wclass := String(ItemCatalog.get_item(weapon_id).get("class", "rifle"))
+	var engage: float = {"rifle": 130.0, "sniper": 190.0, "shotgun": 24.0, "smg": 45.0, "pistol": 40.0}.get(wclass, 60.0)
 	react -= dt
-	if react <= 0.0 and absf(dy) < 0.15 and mag > 0:
+	if react <= 0.0 and absf(dy) < 0.2 and mag > 0 and d <= engage:
 		var aim := Ballistics.lead_point(c.combat.muzzle_position(), tp, target.velocity, def)
 		var dir := (aim - c.combat.muzzle_position()).normalized()
 		i.aim_dir = dir
 		i.pitch = asin(clampf(dir.y, -1.0, 1.0))
-		if rng.randf() < 0.85:
+		i.set_button(CharacterInput.B_AIM, d > 30.0)
+		# bursts: 3-6 shots, then a short pause to re-aim, like a player tapping the trigger
+		burst_t -= dt
+		if burst_left <= 0 and burst_t <= 0.0:
+			burst_left = rng.randi_range(3, 6)
+		if burst_left > 0:
 			fire_toggle = not fire_toggle
-			i.set_button(CharacterInput.B_FIRE, fire_toggle if String(def.get("fireMode", "semi")) != "auto" else true)
-	# movement in a fight
+			var auto := String(def.get("fireMode", "semi")) == "auto"
+			i.set_button(CharacterInput.B_FIRE, true if auto else fire_toggle)
+			if fire_toggle or auto:
+				burst_left -= 1
+				if burst_left <= 0:
+					burst_t = rng.randf_range(0.35, 0.8)
+	# movement in a fight: plant the feet while bursting, strafe between bursts, close the gap
 	strafe_phase += dt * 1.7
-	i.move.x = 1.0 if sin(strafe_phase) > 0.0 else -1.0
-	if d > 60.0:
+	i.move.x = 0.0 if burst_left > 0 else (1.0 if sin(strafe_phase) > 0.0 else -1.0)
+	if d > engage * 0.8:
+		i.move.y = 1.0
+		i.set_button(CharacterInput.B_SPRINT, d > engage)
+	elif d > 60.0:
 		i.move.y = 1.0
 	elif d < 25.0 and String(def.get("id", "")) != "shotgun_12g":
 		i.move.y = -1.0

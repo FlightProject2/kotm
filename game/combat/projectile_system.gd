@@ -109,6 +109,16 @@ func _near_miss(space: PhysicsDirectSpaceState3D, p: Proj, to: Vector3) -> Dicti
 	var len := seg.length()
 	if len < 0.01:
 		return {}
+	# cheap gate: any living character within 3 m of the segment's midpoint?
+	var mid := (p.pos + to) * 0.5
+	var near_any := false
+	for c in get_tree().get_nodes_in_group("characters"):
+		var ch := c as Character
+		if ch and ch != p.shooter and ch.alive() and ch.global_position.distance_squared_to(mid) < (len * 0.5 + 3.0) * (len * 0.5 + 3.0):
+			near_any = true
+			break
+	if not near_any:
+		return {}
 	_assist_shape.radius = ASSIST_RADIUS
 	_assist_shape.height = len + 2.0 * ASSIST_RADIUS
 	var q := PhysicsShapeQueryParameters3D.new()

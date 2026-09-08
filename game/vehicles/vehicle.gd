@@ -29,6 +29,7 @@ var model: Node3D
 var wheels: Array[Node3D] = []
 var wheel_spin: float = 0.0
 var seat_offset := Vector3(-0.45, 0.6, 0.0)
+var half_extents := Vector3(1.05, 0.65, 2.2)
 var _ground_normal := Vector3.UP
 var _burn_t := 0.0
 
@@ -67,8 +68,10 @@ func setup(id: String, p_world: World) -> void:
 			if box.size.x > box.size.z:
 				model.rotation.y = PI * 0.5   # +X (nose) -> -Z
 				box = AABB(Vector3(-box.size.z * 0.5, box.position.y, -box.size.x * 0.5), Vector3(box.size.z, box.size.y, box.size.x))
-			bs.size = Vector3(box.size.x, box.size.y, box.size.z)
-			cs.position = box.get_center()
+			# the box floats 0.3 m above the base so its corners never dig into slopes
+			bs.size = Vector3(box.size.x, maxf(box.size.y - 0.3, 0.6), box.size.z)
+			cs.position = box.get_center() + Vector3(0, 0.15, 0)
+			half_extents = bs.size * 0.5
 			seat_offset = Vector3(-box.size.x * 0.22, box.size.y * 0.45, 0.0)
 	elif ResourceLoader.exists(path):
 		var scene: PackedScene = load(path)
@@ -79,6 +82,12 @@ func setup(id: String, p_world: World) -> void:
 			if String(n.name).to_lower().contains("wheel"):
 				wheels.append(n)
 	set_meta("vehicle", true)
+
+## Distance from a world point to the vehicle's body box (0 when touching it).
+func distance_to_body(p: Vector3) -> float:
+	var local := global_transform.affine_inverse() * p
+	var d := Vector3(maxf(absf(local.x) - half_extents.x, 0.0), 0.0, maxf(absf(local.z) - half_extents.z, 0.0))
+	return d.length()
 
 func display_name() -> String:
 	return String(def.get("name", vehicle_id))

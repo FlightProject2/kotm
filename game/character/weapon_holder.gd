@@ -60,13 +60,9 @@ func _build_flash() -> void:
 	q.material_override = m
 	q.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	flash.add_child(q)
-	var light := OmniLight3D.new()
-	light.light_color = Color(1.0, 0.8, 0.5)
-	light.light_energy = 3.0
-	light.omni_range = 4.0
-	light.shadow_enabled = false
-	flash.add_child(light)
-	flash.visible = false
+	# shown for the first frames so the renderer compiles its material before the first shot
+	flash.visible = true
+	_flash_t = 0.08
 	mount.add_child(flash)
 
 func set_weapon(weapon_id: String, weapon_class: String) -> void:

@@ -23,7 +23,7 @@ func test_parachute_lands() -> void:
 		frames += 1
 	var secs := frames / 60.0
 	assert_true(ch.mode != Character.Mode.PARACHUTE, "landed")
-	assert_between(secs, 5.0, 12.0, "60 m descent takes 5-12 s (got %.1f)" % secs)
+	assert_between(secs, 2.0, 12.0, "60 m descent takes 2-12 s (got %.1f)" % secs)
 	assert_true(ch.stun > 0.0 or ch.mode == Character.Mode.GROUND, "landing stun / ground mode")
 	assert_true(absf(ch.global_position.y - world.height_at(ch.global_position.x, ch.global_position.z)) < 0.3, "on the ground")
 	assert_true(ch.global_position.z < 300.0 - 20.0, "drifted forward while diving")
