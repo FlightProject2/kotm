@@ -57,6 +57,9 @@ scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path 
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
 ```
 
+Blender can be driven from a Claude Code session for asset work — see
+[Blender MCP bridge](docs/blender-mcp.md); it must run on the same machine as Blender.
+
 `python3 tools/bake_map.py` regenerates the terrain and layout; `tools/godot/bake_terrain.gd` converts
 the heightmap; `tools/godot/build_prefabs.gd` rebuilds the building prefabs from `design/map/prefabs.json`.
 
