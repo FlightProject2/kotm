@@ -32,6 +32,10 @@ broken one when the session is remote.
    `pip install 'mcp>=1.2'` and register `python tools/blender_mcp_bridge.py` instead.
 4. Restart Claude Code and check `claude mcp list` shows `blender` connected.
 
+`connected` there only means the bridge process started — it says nothing about whether
+Blender is reachable, because the socket is opened per call, not at startup. The proof is
+a `blender_get_scene` call returning a real version string and object list.
+
 Environment overrides: `BLENDER_HOST` (default `127.0.0.1`), `BLENDER_PORT` (default
 `9876`), `BLENDER_TIMEOUT` in seconds (default `30` — raise it for genuinely slow
 operations like heavy renders or bakes).
