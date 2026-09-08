@@ -1,0 +1,39 @@
+name: Godot checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - enhancement/summit-whiteout
+
+permissions:
+  contents: read
+
+concurrency:
+  group: godot-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  headless-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the proposed game build
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install the project's pinned Godot editor
+        run: tools/ci/setup_godot.sh
+      - name: Import, run scene and unit tests, check weapon-balance parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p scratch/logs
+          tools/ci/test.sh 2>&1 | tee scratch/logs/tests.log
+          # GDScript runtime errors must not be mistaken for passing test methods.
+          if grep -E 'SCRIPT ERROR|Parse Error' scratch/logs/tests.log; then
+            exit 1
+          fi
+      - name: Print import diagnostics on failure
+        if: failure()
+        run: tail -200 scratch/logs/import.log || true
