@@ -3,59 +3,60 @@
   "walkSpeed": 3.5,
   "sprintSpeed": 6.5,
   "crouchSpeed": 1.2,
-  "proneSpeed": 1.0,
+  "proneSpeed": 1,
   "jumpVelocity": 6.8,
-  "gravity": 20.0,
-  "groundAccel": 60.0,
-  "airAccel": 5.0,
+  "gravity": 20,
+  "groundAccel": 60,
+  "airAccel": 5,
   "capsuleRadius": 0.35,
   "standHeight": 1.8,
   "crouchHeight": 1.3,
   "landingStunSec": 0.6,
   "fallDamage": {
-    "safeM": 4.0,
-    "lethalM": 15.0
+    "safeM": 4,
+    "lethalM": 15
   },
   "parachute": {
-    "forwardSpeed": 12.0,
-    "forwardDescent": 9.0,
-    "neutralSpeed": 8.0,
-    "neutralDescent": 6.0,
-    "flareSpeed": 4.0,
-    "flareDescent": 4.0,
-    "turnRateRad": 1.0,
-    "horizontalLerp": 1.5,
+    "forwardSpeed": 17,
+    "forwardDescent": 20,
+    "neutralSpeed": 9,
+    "neutralDescent": 6.5,
+    "flareSpeed": 5,
+    "flareDescent": 3.2,
+    "turnRateRad": 1,
+    "horizontalLerp": 2.6,
+    "strafeSpeed": 6,
     "detachHeightM": 1.5
   },
   "camera": {
     "pivotOffset": -0.2,
     "armThirdPerson": 2.4,
     "armAim": 1.3,
-    "armParachute": 6.0,
+    "armParachute": 6,
     "shoulder": 0.4,
     "shoulderAim": 0.45,
-    "fov": 72.0,
-    "fovAim": 55.0,
-    "fovScope": 16.0,
+    "fov": 72,
+    "fovAim": 55,
+    "fovScope": 16,
     "aimSensMult": 0.8,
     "scopeSensMult": 0.35,
     "terrainClamp": 0.5,
     "recoilToCamera": 0.6,
-    "pitchLimitDeg": 70.0,
+    "pitchLimitDeg": 70,
     "mouseSensitivity": 0.0022,
-    "armSmoothing": 18.0,
-    "fovSmoothing": 14.0,
-    "freeLookReturn": 10.0
+    "armSmoothing": 18,
+    "fovSmoothing": 14,
+    "freeLookReturn": 10
   },
   "spread": {
     "movingMult": 1.5,
-    "airborneMult": 2.0
+    "airborneMult": 2
   },
   "melee": {
-    "reachM": 2.0,
-    "arcDeg": 180.0
+    "reachM": 2,
+    "arcDeg": 180
   },
-  "groundDecel": 70.0,
+  "groundDecel": 70,
   "jumpBufferSec": 0.12,
   "coyoteSec": 0.1
 }

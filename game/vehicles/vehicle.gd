@@ -40,6 +40,7 @@ var driver_marker: Node3D
 var animator: VehicleAnimation
 var contact_markers: Dictionary = {}
 var _collision_half_width := 1.05
+var _body_bounds := AABB(Vector3(-1.05, 0.1, -2.2), Vector3(2.1, 1.3, 4.4))
 var _ground_normal := Vector3.UP
 var _burn_t := 0.0
 
@@ -104,6 +105,11 @@ func setup(id: String, p_world: World) -> void:
 		for n in model.find_children("*", "Node3D", true, false):
 			if String(n.name).to_lower().contains("wheel"):
 				wheels.append(n)
+	# Keep the lower corners clear of slopes while retaining the top of the body.
+	var clearance := minf(0.3, maxf(bs.size.y - 0.6, 0.0))
+	bs.size.y -= clearance
+	cs.position.y += clearance * 0.5
+	_body_bounds = AABB(cs.position - bs.size * 0.5, bs.size)
 	_collision_half_width = bs.size.x * 0.5
 	if model:
 		if vehicle_id in ["police_car", "pickup_truck"]:
@@ -140,6 +146,12 @@ func _configure_truck_glass() -> void:
 				tint.a = 0.18
 				glass.albedo_color = tint
 			mesh.set_surface_override_material(surface, glass)
+
+## Horizontal distance to the fitted body so large vehicles can be entered at their doors.
+func distance_to_body(p: Vector3) -> float:
+	var local := global_transform.affine_inverse() * p
+	var nearest := local.clamp(_body_bounds.position, _body_bounds.end)
+	return Vector2(local.x - nearest.x, local.z - nearest.z).length()
 
 func display_name() -> String:
 	return String(def.get("name", vehicle_id))

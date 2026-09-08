@@ -122,9 +122,11 @@ func _parachute(dt: float) -> void:
 	else:
 		speed = float(pcfg["neutralSpeed"]); descent = float(pcfg["neutralDescent"])
 	var k := minf(1.0, float(pcfg["horizontalLerp"]) * dt)
-	c.velocity.x = lerpf(c.velocity.x, f.x * speed, k)
-	c.velocity.z = lerpf(c.velocity.z, f.z * speed, k)
-	c.velocity.y = -descent
+	var r := c.right()
+	var side := inp.move.x * float(pcfg.get("strafeSpeed", 5.0))
+	c.velocity.x = lerpf(c.velocity.x, f.x * speed + r.x * side, k)
+	c.velocity.z = lerpf(c.velocity.z, f.z * speed + r.z * side, k)
+	c.velocity.y = lerpf(c.velocity.y, -descent, minf(1.0, 3.0 * dt))
 	c.move_and_slide()
 	var ground := c.world.height_at(c.global_position.x, c.global_position.z) if c.world else 0.0
 	if c.is_on_floor() or c.global_position.y <= ground + 0.05:

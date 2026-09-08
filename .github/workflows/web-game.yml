@@ -1,0 +1,64 @@
+name: Build and publish playable game
+on:
+  push:
+    branches: [claude/h1z1-style-game-plan-7kzer5]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: web-game-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Import and test the exact source being published
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p scratch/logs
+          tools/ci/test.sh 2>&1 | tee scratch/logs/tests.log
+          if grep -E 'SCRIPT ERROR|Parse Error' scratch/logs/tests.log; then exit 1; fi
+      - name: Install pinned web export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 -o scratch/templates.tpz https://github.com/godotengine/godot/releases/download/4.6.3-stable/Godot_v4.6.3-stable_export_templates.tpz
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.6.3.stable"
+          unzip -j scratch/templates.tpz 'templates/web*' -d "$HOME/.local/share/godot/export_templates/4.6.3.stable"
+      - name: Export and verify the playable bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/web
+          GODOT="$(tools/ci/setup_godot.sh)"
+          "$GODOT" --headless --path . --export-release Web build/web/index.html 2>&1 | tee scratch/logs/export.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Failed to export' scratch/logs/export.log; then exit 1; fi
+          python3 tools/ci/prepare_web_release.py build/web "$GITHUB_SHA"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-build-diagnostics
+          path: scratch/logs
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/claude/h1z1-style-game-plan-7kzer5'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the newly exported game
+        id: deployment
+        uses: actions/deploy-pages@v4
