@@ -72,6 +72,15 @@ func test_helmet_pop_at_100m_and_pierce() -> void:
 	await settle(20)
 	var holder: WeaponHolder = shooter.visual.weapon_holder
 	assert_true(holder.has_weapon_model(), "AR model mounted")
+	assert_false(holder.flash.visible, "muzzle flash is hidden before a shot")
+	holder.fire_effects()
+	await settle(1)
+	assert_true(holder.flash.visible, "a shot displays the muzzle flash")
+	assert_true(holder.flash.global_position.distance_to(holder.muzzle_global()) < 0.01, "flash is fixed to the exported barrel tip")
+	var flash_mesh := holder.flash.find_child("*", true, false) as MeshInstance3D
+	assert_true(flash_mesh != null and flash_mesh.get_aabb().size.x <= 0.15, "muzzle flash remains a compact burst")
+	await settle(4)
+	assert_false(holder.flash.visible, "muzzle flash clears within a few frames")
 	var mz := shooter.combat.muzzle_position()
 	assert_true(mz.distance_to(holder.muzzle_global()) < 0.001, "combat muzzle is the weapon's muzzle marker")
 	var hand := holder.global_position

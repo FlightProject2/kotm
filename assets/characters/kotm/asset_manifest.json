@@ -668,7 +668,13 @@
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 0.45,
       "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
-      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips."
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips.",
+      "origin": [
+        0.103,
+        -0.322,
+        1.455
+      ],
+      "ads_revision": "Shouldered sight-line stance: buttpad seated on the shoulder, cheek welded, right eye behind the sights, elbows bent and both palms fixed to their grips."
     },
     "HuntingRifle": {
       "scale": 0.8,
@@ -701,7 +707,13 @@
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 1.0,
       "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
-      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips."
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips.",
+      "origin": [
+        0.322,
+        -0.327,
+        1.508
+      ],
+      "ads_revision": "Shouldered sight-line stance: buttpad seated on the shoulder, cheek welded, right eye behind the sights, elbows bent and both palms fixed to their grips."
     }
   },
   "garment_polish": {
