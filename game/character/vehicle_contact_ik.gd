@@ -77,10 +77,10 @@ func _process_modification() -> void:
 		if not _orientation_offsets.has(socket):
 			_orientation_offsets[socket] = target.basis.inverse() * skel.get_bone_global_pose(bones[2]).basis
 		target.basis *= _orientation_offsets[socket]
-		_solve(skel, bones, target, socket)
+		_solve(skel, bones, target, socket, Vector3.UP if socket.begins_with("FootRest") and _vehicle.seated_animation() == "KOTM_Truck_Seated" else Vector3.ZERO)
 	solve_count += 1
 
-func _solve(skel: Skeleton3D, bones: Array, target: Transform3D, socket: String) -> void:
+func _solve(skel: Skeleton3D, bones: Array, target: Transform3D, socket: String, preferred_bend := Vector3.ZERO) -> void:
 	var upper := skel.get_bone_global_pose(bones[0])
 	var middle := skel.get_bone_global_pose(bones[1])
 	var end := skel.get_bone_global_pose(bones[2])
@@ -95,7 +95,7 @@ func _solve(skel: Skeleton3D, bones: Array, target: Transform3D, socket: String)
 		return
 	var distance := clampf(reach.length(), absf(a - b) + 0.00001, a + b - 0.00001)
 	var direction := reach.normalized()
-	var bend := first - direction * first.dot(direction)
+	var bend: Vector3 = preferred_bend - direction * preferred_bend.dot(direction) if preferred_bend.length_squared() > 0.0 else first - direction * first.dot(direction)
 	if bend.length_squared() < 0.000001:
 		bend = upper.basis.z - direction * upper.basis.z.dot(direction)
 	if bend.length_squared() < 0.000001:

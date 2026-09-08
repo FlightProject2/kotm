@@ -7,6 +7,7 @@ const MANNEQUIN := preload("res://assets/characters/kotm/KOTM_Character.glb")
 
 var viewport: SubViewport
 var pivot: Node3D
+var pedestal: Node3D
 var mannequin: Node3D
 var skeleton: Skeleton3D
 var hand_mount: BoneAttachment3D
@@ -59,6 +60,8 @@ func _ready() -> void:
 	viewport.add_child(rim)
 	pivot = Node3D.new()
 	viewport.add_child(pivot)
+	pedestal = Node3D.new()
+	pivot.add_child(pedestal)
 	var disc := MeshInstance3D.new()
 	var cm := CylinderMesh.new()
 	cm.top_radius = 0.7; cm.bottom_radius = 0.78; cm.height = 0.06
@@ -69,7 +72,7 @@ func _ready() -> void:
 	dm.metallic = 0.2
 	disc.material_override = dm
 	disc.position = Vector3(0, -0.03, 0)
-	pivot.add_child(disc)
+	pedestal.add_child(disc)
 	var ring := MeshInstance3D.new()
 	var tm := TorusMesh.new()
 	tm.inner_radius = 0.76; tm.outer_radius = 0.8
@@ -81,7 +84,7 @@ func _ready() -> void:
 	rm.emission_energy_multiplier = 1.6
 	ring.material_override = rm
 	ring.position = Vector3(0, 0.0, 0)
-	pivot.add_child(ring)
+	pedestal.add_child(ring)
 	if loadout.is_empty():
 		loadout = SkinSystem.default_loadout()
 	rebuild()
@@ -93,6 +96,14 @@ func set_loadout(l: Dictionary) -> void:
 func set_weapon(id: String) -> void:
 	weapon_id = id
 	_mount_gun()
+
+## The lobby uses a closer portrait and no display stand. Other menu screens keep the studio view.
+func set_lobby_presentation(enabled: bool) -> void:
+	if pedestal:
+		pedestal.visible = not enabled
+	if cam:
+		var distance := 3.1 if enabled else 4.4
+		cam.look_at_from_position(Vector3(0, 1.05, distance), Vector3(0, 0.95, 0), Vector3.UP)
 
 func rebuild() -> void:
 	if pivot == null:
@@ -173,7 +184,8 @@ func _align_gun() -> void:
 
 func _process(dt: float) -> void:
 	if auto_spin and absf(drag_spin) < 0.001:
-		spin += dt * 0.35
+		# A slow first web frame must not rotate the lobby model halfway around while assets load.
+		spin += minf(dt, 0.05) * 0.35
 	spin += drag_spin
 	drag_spin = lerpf(drag_spin, 0.0, minf(1.0, dt * 6.0))
 	pivot.rotation.y = spin

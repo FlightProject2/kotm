@@ -40,6 +40,7 @@ var root: Control
 var screens: Dictionary = {}
 var current: String = ""
 var preview: CharacterPreview
+var ui_layout_editor: UILayoutEditor
 var preview_slots: Dictionary = {}     # screen -> Control that hosts the preview
 var loadout: Dictionary = {}
 var main_status: Label
@@ -98,7 +99,7 @@ func _ready() -> void:
 		preview.loadout = loadout
 		preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	screens["main"] = _build_main()
+	screens["main"] = _build_main_reference()
 	screens["customize"] = _build_customize()
 	screens["market"] = _build_market()
 	screens["stats"] = _build_stats()
@@ -108,6 +109,9 @@ func _ready() -> void:
 	for k in screens:
 		screens[k].visible = false
 		root.add_child(screens[k])
+	ui_layout_editor = UILayoutEditor.new()
+	root.add_child(ui_layout_editor)
+	ui_layout_editor.setup(screens["main"])
 	toast_label = _label("", 18, GOLD, 600)
 	toast_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	toast_label.position = Vector2(-300, 70)
@@ -192,6 +196,25 @@ func _button(text: String, size := 17, w := 0.0) -> Button:
 		b.custom_minimum_size = Vector2(w, 0)
 	b.pressed.connect(func() -> void: _click())
 	return b
+
+func _nav_button(text: String, active: bool, on_press: Callable) -> Button:
+	var b := _button(text, 24, 0)
+	b.custom_minimum_size = Vector2(maxf(130.0, text.length() * 15.0 + 38.0), 74)
+	var normal := _style(Color(0.55, 0.0, 0.015, 0.96) if active else Color(0.015, 0.015, 0.018, 0.98), RED if active else Color(0.16, 0.16, 0.18), 1, 0)
+	var hover := _style(Color(0.72, 0.01, 0.025, 1.0), RED, 1, 0)
+	b.add_theme_stylebox_override("normal", normal)
+	b.add_theme_stylebox_override("hover", hover)
+	b.add_theme_stylebox_override("pressed", hover)
+	b.add_theme_stylebox_override("focus", normal)
+	b.pressed.connect(on_press)
+	return b
+
+func _rule() -> ColorRect:
+	var line := ColorRect.new()
+	line.color = Color(0.3, 0.3, 0.32, 0.75)
+	line.custom_minimum_size.y = 1
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return line
 
 ## Big side-panel entry: red triangle + word, like the Z1BR menu.
 func _menu_entry(text: String, size: int, on_press: Callable) -> Control:
@@ -304,118 +327,177 @@ func _rarity_color(r: String) -> Color:
 	return Progress.RARITY_COLORS.get(r, Color("9aa0a6")) if get_node_or_null("/root/Progress") else Color("9aa0a6")
 
 # ---------- main ----------
-func _build_main() -> Control:
+func _build_main_reference() -> Control:
 	var s := Control.new()
 	s.set_anchors_preset(Control.PRESET_FULL_RECT)
-	s.add_child(_backdrop(1.0, true))
-	# left torn panel content
-	var left := VBoxContainer.new()
-	left.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	left.position = Vector2(70, 40)
-	left.size = Vector2(430, 1000)
-	left.add_theme_constant_override("separation", 6)
-	s.add_child(left)
-	var logo := VBoxContainer.new()
-	logo.add_theme_constant_override("separation", -18)
-	var l1 := _label("KOTM", 132, INK, 900)
-	l1.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
-	l1.add_theme_constant_override("shadow_offset_x", 4)
-	l1.add_theme_constant_override("shadow_offset_y", 5)
-	var l2 := _label("KING OF THE MOUNTAIN", 26, GOLD, 600)
-	logo.add_child(l1); logo.add_child(l2)
-	left.add_child(logo)
-	left.add_child(_spacer(40))
-	left.add_child(_menu_entry("PLAY", 44, func() -> void: play_pressed.emit()))
-	left.add_child(_menu_entry("CUSTOMIZE", 44, func() -> void: show_screen("customize")))
-	left.add_child(_menu_entry("MARKETPLACE", 44, func() -> void: show_screen("market")))
-	left.add_child(_spacer(10))
-	left.add_child(_menu_entry("LEADERBOARDS", 26, func() -> void: show_screen("stats")))
-	left.add_child(_menu_entry("SETTINGS", 26, func() -> void: settings_return = "main"; show_screen("settings")))
-	left.add_child(_spacer(24))
-	# message of the day
-	var motd := _panel(Color(0.02, 0.02, 0.025, 0.9))
-	motd.custom_minimum_size = Vector2(380, 0)
-	var mv := VBoxContainer.new()
-	mv.add_theme_constant_override("separation", 4)
-	mv.add_child(_label("MESSAGE OF THE DAY", 18, INK, 700))
-	var promo := _panel(Color(0.55, 0.07, 0.1, 1.0))
-	var pv := VBoxContainer.new()
-	pv.add_child(_label("Hot Shot CRATE", 30, GOLD, 800))
-	pv.add_child(_label("Win a match for a free Victory Crate. Flames, chrome and camo drops.", 13, INK, 400, barlow))
-	var promo_btn := _button("AVAILABLE NOW", 13, 140)
-	promo_btn.pressed.connect(func() -> void: show_screen("market"))
-	pv.add_child(promo_btn)
-	promo.add_child(pv)
-	promo.mouse_filter = Control.MOUSE_FILTER_PASS
-	mv.add_child(promo)
-	motd.add_child(mv)
-	motd.mouse_filter = Control.MOUSE_FILTER_PASS
-	left.add_child(motd)
-	main_status = _label("", 16, GOLD, 500)
-	main_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	main_status.custom_minimum_size = Vector2(380, 0)
-	left.add_child(main_status)
-	if not OS.has_feature("web"):
-		var quit := _button("EXIT KOTM", 18, 380)
-		quit.pressed.connect(func() -> void: quit_game_pressed.emit())
-		quit.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-		quit.position = Vector2(70, -70)
-		s.add_child(quit)
-	# top bar: wallet + profile
-	var top := HBoxContainer.new()
-	top.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	top.position = Vector2(560, 22)
-	top.add_theme_constant_override("separation", 34)
-	s.add_child(top)
-	for key in ["coins", "crates", "wins", "kills"]:
-		var cell := HBoxContainer.new()
-		cell.add_theme_constant_override("separation", 8)
-		var icon := ColorRect.new()
-		icon.custom_minimum_size = Vector2(22, 22)
-		icon.color = {"coins": GOLD, "crates": Color("c8102e"), "wins": GREEN, "kills": INK_DIM}[key]
-		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		var lab := _label("0", 22, INK, 600)
-		var cap := _label(key.to_upper(), 11, INK_DIM, 500)
-		cap.size_flags_vertical = Control.SIZE_SHRINK_END
-		cell.add_child(icon); cell.add_child(lab); cell.add_child(cap)
-		top.add_child(cell)
-		wallet_labels[key] = lab
-	var name_lab := _label("", 22, INK, 700)
-	wallet_labels["name"] = name_lab
-	top.add_child(name_lab)
-	# centre: character stage
-	var stage := _stage(0.5, 0.5, -200, -430, 640, 900)
+	s.add_child(_backdrop(1.0, false))
+	var blackout := ColorRect.new()
+	blackout.set_anchors_preset(Control.PRESET_FULL_RECT)
+	blackout.color = Color(0.0, 0.0, 0.0, 0.74)
+	blackout.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	s.add_child(blackout)
+	# A faint crest sits behind the live, fully customized 3D player.
+	var watermark := _label("K", 430, Color(0.5, 0.0, 0.02, 0.32), 900)
+	watermark.name = "MainWatermark"
+	watermark.set_anchors_preset(Control.PRESET_CENTER)
+	watermark.position = Vector2(-120, -300)
+	watermark.rotation = -0.12
+	s.add_child(watermark)
+	var stage := _stage(0.5, 0.5, -270, -390, 540, 790)
+	stage.name = "MainPlayerStage"
 	s.add_child(stage)
 	preview_slots["main"] = stage
-	# right: dailies + stats
-	var right := VBoxContainer.new()
-	right.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	right.position = Vector2(-470, 90)
-	right.size = Vector2(420, 700)
-	right.add_theme_constant_override("separation", 10)
-	s.add_child(right)
-	var dt := _label("DAILIES", 30, INK, 700)
-	dt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	right.add_child(dt)
+
+	# Full-width navigation bar from the supplied menu reference.
+	var top_panel := _panel(Color(0.005, 0.005, 0.006, 0.98), Color(0.22, 0.22, 0.24), 1)
+	top_panel.name = "MainNavigation"
+	top_panel.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	top_panel.offset_bottom = 75
+	var top_style: StyleBoxFlat = top_panel.get_theme_stylebox("panel")
+	top_style.content_margin_left = 0; top_style.content_margin_right = 12; top_style.content_margin_top = 0; top_style.content_margin_bottom = 0
+	s.add_child(top_panel)
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 0)
+	top_panel.add_child(top)
+	var brand := VBoxContainer.new()
+	brand.custom_minimum_size = Vector2(202, 74)
+	brand.add_theme_constant_override("separation", -6)
+	var brand_title := _label("KING OF THE", 14, INK, 700)
+	brand_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var brand_main := _label("MOUNTAIN", 27, INK, 900)
+	brand_main.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var brand_sub := _label("BATTLE ROYALE", 10, RED, 700)
+	brand_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	brand.add_child(_spacer(6)); brand.add_child(brand_title); brand.add_child(brand_main); brand.add_child(brand_sub)
+	top.add_child(brand)
+	top.add_child(_nav_button("PLAY", true, func() -> void: play_pressed.emit()))
+	top.add_child(_nav_button("CUSTOMIZE", false, func() -> void: show_screen("customize")))
+	top.add_child(_nav_button("MARKETPLACE", false, func() -> void: show_screen("market")))
+	top.add_child(_nav_button("LEADERBOARDS", false, func() -> void: show_screen("stats")))
+	var top_fill := Control.new()
+	top_fill.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(top_fill)
+	for key in ["coins", "crates", "wins", "kills"]:
+		var cell := VBoxContainer.new()
+		cell.custom_minimum_size = Vector2(48, 64)
+		cell.add_theme_constant_override("separation", -2)
+		var cap := _label({"coins": "$", "crates": "BOX", "wins": "W", "kills": "K"}[key], 11, {"coins": GOLD, "crates": RED, "wins": GREEN, "kills": INK_DIM}[key], 700)
+		cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var value := _label("0", 16, INK, 700)
+		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		cell.add_child(_spacer(10)); cell.add_child(cap); cell.add_child(value)
+		top.add_child(cell)
+		wallet_labels[key] = value
+	var settings_btn := _nav_button("SET", false, func() -> void: settings_return = "main"; show_screen("settings"))
+	settings_btn.custom_minimum_size.x = 58
+	top.add_child(settings_btn)
+
+	# Left matchmaking column.
+	var left := VBoxContainer.new()
+	left.name = "MatchmakingColumn"
+	left.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	left.position = Vector2(28, 106)
+	left.size = Vector2(354, 680)
+	left.add_theme_constant_override("separation", 9)
+	s.add_child(left)
+	var queue_panel := _panel(Color(0.015, 0.015, 0.018, 0.94), Color(0.30, 0.30, 0.32), 1)
+	queue_panel.custom_minimum_size = Vector2(354, 148)
+	var queue := VBoxContainer.new()
+	queue.add_theme_constant_override("separation", 2)
+	queue.add_child(_label("GAME MODE", 17, INK_DIM, 700))
+	queue.add_child(_label("SOLO", 19, INK, 700))
+	queue.add_child(_rule())
+	queue.add_child(_label("REGION", 16, INK_DIM, 700))
+	var region := HBoxContainer.new()
+	var europe := _label("EUROPE", 18, INK, 700)
+	europe.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	region.add_child(europe); region.add_child(_label("PING  28 MS", 14, GREEN, 600))
+	queue.add_child(region); queue_panel.add_child(queue); left.add_child(queue_panel)
+	var play := _button("PLAY", 52, 354)
+	play.custom_minimum_size.y = 96
+	play.add_theme_stylebox_override("normal", _style(Color(0.40, 0.02, 0.025, 0.98), RED, 2, 0))
+	play.add_theme_stylebox_override("hover", _style(Color(0.68, 0.01, 0.02, 1.0), Color("ff3131"), 2, 0))
+	play.pressed.connect(func() -> void: play_pressed.emit())
+	left.add_child(play)
+	main_status = _label("", 14, GOLD, 500)
+	main_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	left.add_child(main_status)
+	var daily_panel := _panel(Color(0.015, 0.015, 0.018, 0.94), Color(0.30, 0.30, 0.32), 1)
+	daily_panel.custom_minimum_size = Vector2(354, 178)
+	var daily := VBoxContainer.new()
+	daily.add_theme_constant_override("separation", 5)
+	daily.add_child(_label("DAILY CHALLENGES", 18, INK_DIM, 700))
 	dailies_box = VBoxContainer.new()
-	dailies_box.add_theme_constant_override("separation", 6)
-	right.add_child(dailies_box)
-	right.add_child(_spacer(20))
-	var st := _label("SOLO RECORD", 22, INK, 700)
-	st.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	right.add_child(st)
+	dailies_box.add_theme_constant_override("separation", 3)
+	daily.add_child(dailies_box); daily_panel.add_child(daily); left.add_child(daily_panel)
+	var motd := _panel(Color(0.015, 0.015, 0.018, 0.94), Color(0.30, 0.30, 0.32), 1)
+	motd.custom_minimum_size = Vector2(354, 150)
+	var mv := VBoxContainer.new()
+	mv.add_theme_constant_override("separation", 3)
+	mv.add_child(_label("MESSAGE OF THE DAY", 18, INK_DIM, 700))
+	var promo := _panel(Color(0.19, 0.025, 0.035, 0.97), RED, 1)
+	promo.mouse_filter = Control.MOUSE_FILTER_PASS
+	var pv := VBoxContainer.new()
+	pv.add_child(_label("THE WHITEOUT IS CLOSING", 20, INK, 800))
+	pv.add_child(_label("Drop in, gear up and take the summit.", 13, INK_DIM, 500, barlow_semi))
+	var news := _button("KOTM NEWS", 13, 130)
+	news.pressed.connect(func() -> void: toast("More KOTM news is coming soon."))
+	pv.add_child(news); promo.add_child(pv); mv.add_child(promo); motd.add_child(mv); left.add_child(motd)
+
+	# Season and party column.
+	var right := VBoxContainer.new()
+	right.name = "SeasonPartyColumn"
+	right.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	right.position = Vector2(-376, 106)
+	right.size = Vector2(348, 610)
+	right.add_theme_constant_override("separation", 14)
+	s.add_child(right)
+	var season_panel := _panel(Color(0.015, 0.015, 0.018, 0.94), Color(0.30, 0.30, 0.32), 1)
+	season_panel.custom_minimum_size = Vector2(348, 256)
+	var season := VBoxContainer.new()
+	season.add_theme_constant_override("separation", 6)
+	season.add_child(_label("SEASON 1", 22, INK_DIM, 700)); season.add_child(_rule())
+	var summit := _panel(Color(0.10, 0.15, 0.18, 1.0), RED, 1)
+	var summit_v := VBoxContainer.new()
+	summit_v.add_child(_label("ALPINE SUMMIT", 22, INK, 800))
+	summit_v.add_child(_label("SOLO BATTLE ROYALE", 13, GOLD, 600))
+	var season_news := _button("KOTM - NEWS", 14, 150)
+	season_news.pressed.connect(func() -> void: toast("Season 1: the summit belongs to the last survivor."))
+	summit_v.add_child(season_news); summit.add_child(summit_v); season.add_child(summit)
+	season.add_child(_label("SOLO RECORD", 14, INK_DIM, 700))
 	stats_box = VBoxContainer.new()
-	stats_box.add_theme_constant_override("separation", 3)
-	right.add_child(stats_box)
-	# bottom: controls strip
-	var ctr := _controls_strip()
-	ctr.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	ctr.position = Vector2(560, -80)
-	s.add_child(ctr)
-	var foot := _label("Milestone 1 · Godot 4.6 · Kenney, Quaternius (CC0), GDQuest (CC-BY)", 11, INK_DIM, 400, barlow)
-	foot.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	foot.position = Vector2(-470, -26)
-	s.add_child(foot)
+	stats_box.add_theme_constant_override("separation", 1)
+	season.add_child(stats_box); season_panel.add_child(season); right.add_child(season_panel)
+	var party_panel := _panel(Color(0.015, 0.015, 0.018, 0.94), Color(0.30, 0.30, 0.32), 1)
+	party_panel.custom_minimum_size = Vector2(348, 300)
+	party_panel.mouse_filter = Control.MOUSE_FILTER_PASS
+	var party := VBoxContainer.new()
+	party.add_theme_constant_override("separation", 7)
+	party.add_child(_label("PARTY", 20, INK_DIM, 700)); party.add_child(_rule())
+	var player_row := HBoxContainer.new()
+	var avatar := ColorRect.new()
+	avatar.custom_minimum_size = Vector2(38, 38); avatar.color = Color(0.25, 0.18, 0.14)
+	var player_info := VBoxContainer.new()
+	var player_name := _label("PLAYER", 16, INK, 700)
+	wallet_labels["name"] = player_name
+	player_info.add_child(player_name); player_info.add_child(_label("LEVEL 1  ●", 11, GREEN, 700))
+	player_row.add_child(avatar); player_row.add_child(player_info); party.add_child(player_row)
+	for slot in 3:
+		var add := _button("+    EMPTY PARTY SLOT", 15, 0)
+		add.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		add.pressed.connect(func() -> void: toast("Party invitations will unlock with online matchmaking."))
+		party.add_child(add)
+	var invite := _button("INVITE PLAYERS", 18, 310)
+	invite.add_theme_stylebox_override("normal", _style(Color(0.34, 0.02, 0.025, 1.0), RED, 2, 0))
+	invite.pressed.connect(func() -> void: toast("Party invitations will unlock with online matchmaking."))
+	party.add_child(invite); party_panel.add_child(party); right.add_child(party_panel)
+
+	var customize := _button("CUSTOMIZE APPEARANCE", 17, 285)
+	customize.name = "CustomizeAppearance"
+	customize.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	customize.position = Vector2(-142, -68)
+	customize.pressed.connect(func() -> void: show_screen("customize"))
+	s.add_child(customize)
 	return s
 
 func _controls_strip() -> Control:
@@ -965,6 +1047,9 @@ func _build_settings() -> Control:
 	invert_check = _check_row(v, "INVERT MOUSE Y", Settings.invert_y, func(on: bool) -> void: Settings.invert_y = on)
 	fp_check = _check_row(v, "START IN FIRST PERSON", Settings.first_person_default, func(on: bool) -> void: Settings.first_person_default = on)
 	v.add_child(_label("Changes apply immediately and are saved when you go back.", 13, INK_DIM, 400, barlow))
+	var layout_editor_button := _button("OPEN LOBBY UI MODIFIER", 18)
+	layout_editor_button.pressed.connect(func() -> void: show_screen("main"); ui_layout_editor.open_editor())
+	v.add_child(layout_editor_button)
 	var back := _button("BACK", 16)
 	back.pressed.connect(func() -> void: Settings.save_settings(); show_screen(settings_return))
 	v.add_child(back)
@@ -1008,6 +1093,13 @@ func refresh_settings() -> void:
 		vol_slider.value = Settings.master_volume
 		invert_check.button_pressed = Settings.invert_y
 		fp_check.button_pressed = Settings.first_person_default
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:
+		if not ui_layout_editor.is_open():
+			show_screen("main")
+		ui_layout_editor.toggle_editor()
+		get_viewport().set_input_as_handled()
 
 # ---------- pause ----------
 func _build_pause() -> Control:
@@ -1120,6 +1212,7 @@ func show_screen(name: String) -> void:
 		if slot:
 			preview.set_loadout(loadout)
 			preview.set_weapon(cust_weapon if name == "customize" and cust_tab == "WEAPONS" else "ar15")
+			preview.set_lobby_presentation(name == "main")
 	match name:
 		"main":
 			loadout = Settings.cosmetics.duplicate(true)

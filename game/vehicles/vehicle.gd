@@ -119,6 +119,14 @@ func setup(id: String, p_world: World) -> void:
 			var marker := model.find_child(socket, true, false) as Node3D
 			if marker:
 				contact_markers[socket] = marker
+		# The authored truck pedal markers were accidentally left at dashboard height,
+		# pulling both knees outward into a squat. Put them in the footwell, relative to
+		# the same seat basis used by the driver's visual.
+		if vehicle_id in ["police_car", "pickup_truck"] and driver_marker:
+			for side in [["FootRest_L", -0.14], ["FootRest_R", 0.14]]:
+				var pedal: Node3D = contact_markers.get(side[0])
+				if pedal:
+					pedal.global_position = seat_transform() * Vector3(side[1], 0.72, -0.48)
 		animator = ANIMATOR.new()
 		animator.name = "VehicleAnimation"
 		add_child(animator)

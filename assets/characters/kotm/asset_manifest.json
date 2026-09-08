@@ -455,7 +455,7 @@
         "Template_Helmet__GEAR_HELMET_Helmet_ChinVent"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_MotorcycleHelmet.glb",
+      "glb": "exports/templates/KOTM_Template_MotorcycleHelmet.glb",
       "triangles": 9658
     },
     "BaseballCap": {
@@ -473,7 +473,7 @@
         "Template_Cap_bill_edge"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_BaseballCap.glb",
+      "glb": "exports/templates/KOTM_Template_BaseballCap.glb",
       "triangles": 3648
     },
     "Sunglasses": {
@@ -488,7 +488,7 @@
         "Template_Glasses_bridge"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Sunglasses.glb",
+      "glb": "exports/templates/KOTM_Template_Sunglasses.glb",
       "triangles": 1168
     },
     "FaceBandana": {
@@ -501,7 +501,7 @@
         "Template_Bandana_tie_1"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_FaceBandana.glb",
+      "glb": "exports/templates/KOTM_Template_FaceBandana.glb",
       "triangles": 4056
     },
     "TankTop": {
@@ -510,7 +510,7 @@
         "EQ_Template_TankTop_Cloth"
       ],
       "hidden_body_faces": 452,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_TankTop.glb",
+      "glb": "exports/templates/KOTM_Template_TankTop.glb",
       "triangles": 3320
     },
     "TShirt": {
@@ -519,7 +519,7 @@
         "EQ_Template_TShirt_Cloth"
       ],
       "hidden_body_faces": 927,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_TShirt.glb",
+      "glb": "exports/templates/KOTM_Template_TShirt.glb",
       "triangles": 5008
     },
     "Hoodie": {
@@ -529,7 +529,7 @@
         "EQ_Template_Hoodie_HoodDown"
       ],
       "hidden_body_faces": 1721,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Hoodie.glb",
+      "glb": "exports/templates/KOTM_Template_Hoodie.glb",
       "triangles": 8488
     },
     "Leggings": {
@@ -538,7 +538,7 @@
         "Leggings_BlankShell"
       ],
       "hidden_body_faces": 918,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Leggings.glb",
+      "glb": "exports/templates/KOTM_Template_Leggings.glb",
       "triangles": 2408
     },
     "Shorts": {
@@ -547,7 +547,7 @@
         "Shorts_BlankShell"
       ],
       "hidden_body_faces": 252,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Shorts.glb",
+      "glb": "exports/templates/KOTM_Template_Shorts.glb",
       "triangles": 1034
     },
     "Sneakers": {
@@ -561,7 +561,7 @@
         "Sneaker_LacesEyelets.r"
       ],
       "hidden_body_faces": 2264,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Sneakers.glb",
+      "glb": "exports/templates/KOTM_Template_Sneakers.glb",
       "triangles": 1064
     },
     "Beanie": {
@@ -574,7 +574,7 @@
         "Beanie_BadgeStitching"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Beanie.glb",
+      "glb": "exports/KOTM_Beanie.glb",
       "finished_material": true,
       "triangles": 3420
     }
@@ -651,13 +651,13 @@
       ],
       "yaw_degrees": 45,
       "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
-      "ready_yaw_degrees": 75,
+      "ready_yaw_degrees": 68,
       "ready_origin": [
         0,
-        -0.34,
-        1.17
+        -0.245,
+        1.19
       ],
-      "ready_pitch_degrees": 25,
+      "ready_pitch_degrees": 32,
       "chest_yaw_degrees": -10,
       "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
       "neck_aim_rotation_degrees": [
@@ -667,7 +667,8 @@
       ],
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 0.45,
-      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips."
     },
     "HuntingRifle": {
       "scale": 0.8,
@@ -683,13 +684,13 @@
       ],
       "yaw_degrees": 65,
       "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
-      "ready_yaw_degrees": 75,
+      "ready_yaw_degrees": 68,
       "ready_origin": [
         0,
-        -0.39,
-        1.18
+        -0.275,
+        1.2
       ],
-      "ready_pitch_degrees": 25,
+      "ready_pitch_degrees": 32,
       "chest_yaw_degrees": -10,
       "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
       "neck_aim_rotation_degrees": [
@@ -699,7 +700,8 @@
       ],
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 1.0,
-      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips."
     }
   },
   "garment_polish": {

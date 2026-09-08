@@ -1,6 +1,6 @@
 extends SkeletonModifier3D
-## Redirect a forward clip's stride into velocity direction without turning the upper body
-## or flipping the feet. Vertical lift, ankle roll, toe-out and the animated knee plane stay.
+## Turn the hips into lateral travel while the chest keeps facing the camera. Backward
+## movement uses a back-pedal cycle instead of rotating both legs through each other.
 var character: Character
 var rig: KOTMCharacterRig
 var max_reach_error_m := 0.0
@@ -30,18 +30,39 @@ func _process_modification() -> void:
 	_clip = key
 	var skel := get_skeleton()
 	var local_direction := skel.global_basis.inverse() * velocity.normalized()
-	var angle := atan2(local_direction.x, local_direction.z)
-	var redirect := Basis(Vector3.UP, angle)
+	var travel_angle := atan2(local_direction.x, local_direction.z)
+	# A character facing the camera back-pedals for the rear half of the input circle.
+	# Folding the angle into +/-90 degrees prevents the impossible crossover produced by
+	# turning a forward stride 135-180 degrees underneath a forward-facing pelvis.
+	var gait_angle := asin(clampf(sin(travel_angle), -1.0, 1.0))
+	var hip_angle := gait_angle * 0.72
+	var hip_turn := Basis(Vector3.UP, hip_angle)
+	var redirect := Basis(Vector3.UP, gait_angle - hip_angle)
+	var pelvis_index := skel.find_bone("pelvis")
+	var spine_index := skel.find_bone("spine_01")
+	var pelvis := skel.get_bone_global_pose(pelvis_index)
+	var spine_basis := skel.get_bone_global_pose(spine_index).basis
+	pelvis.basis = hip_turn * pelvis.basis
+	skel.set_bone_global_pose(pelvis_index, pelvis)
+	skel.force_update_bone_child_transform(pelvis_index)
+	# Let the hips and legs open toward travel, but keep weapons, sightline and running
+	# shoulders aligned with the character's facing direction.
+	var spine := skel.get_bone_global_pose(spine_index)
+	spine.basis = spine_basis
+	skel.set_bone_global_pose(spine_index, spine)
+	skel.force_update_bone_child_transform(spine_index)
 	var targets: Array[Transform3D] = []
 	var pelvis_drop := 0.0
 	for side in 2:
 		_centres[side] = _centres[side].lerp(next_centres[side], minf(1, get_process_delta_time() * 15))
 		var chain: Array = _chains[side]
 		var foot := skel.get_bone_global_pose(chain[2])
-		var delta: Vector3 = foot.origin - _centres[side]
+		var centre: Vector3 = pelvis.origin + hip_turn * (_centres[side] - pelvis.origin)
+		var delta: Vector3 = foot.origin - centre
 		delta.y = 0
 		var target := foot
 		target.origin += redirect * delta - delta
+		target.basis = redirect * target.basis
 		targets.append(target)
 		var thigh := skel.get_bone_global_pose(chain[0])
 		var calf := skel.get_bone_global_pose(chain[1])
@@ -54,11 +75,10 @@ func _process_modification() -> void:
 		var vertical := sqrt(maxf(0.0, allowed_squared - reach.x * reach.x - reach.z * reach.z))
 		pelvis_drop = maxf(pelvis_drop, thigh.origin.y - target.origin.y - vertical)
 	if pelvis_drop > 0.0:
-		var pelvis := skel.find_bone("pelvis")
-		var pose := skel.get_bone_global_pose(pelvis)
+		var pose := skel.get_bone_global_pose(pelvis_index)
 		pose.origin.y -= pelvis_drop
-		skel.set_bone_global_pose(pelvis, pose)
-		skel.force_update_bone_child_transform(pelvis)
+		skel.set_bone_global_pose(pelvis_index, pose)
+		skel.force_update_bone_child_transform(pelvis_index)
 	for side in 2:
 		_solve(skel, _chains[side], targets[side])
 	calls += 1
