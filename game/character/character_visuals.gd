@@ -49,10 +49,12 @@ func _ready() -> void:
 	var body := _body_mesh()
 	if body:
 		head_mount.add_child(SkinSystem.build_face(skeleton, body.mesh, character.cosmetics))
-	var att := SkinSystem.build_attachments(character.cosmetics)
+	var att := SkinSystem.build_attachments(character.cosmetics, _head_fit(body))
 	if att["hat"]:
 		hat = att["hat"]
-		hat.position = Vector3(0, 0.04, 0.0)
+		# a model-based hat comes back already sized and seated on the head
+		if not hat.has_meta("fitted"):
+			hat.position = Vector3(0, 0.04, 0.0)
 		head_mount.add_child(hat)
 	if att["mask"]:
 		mask = att["mask"]
@@ -161,6 +163,20 @@ func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
 	mi.visible = false
 	head_mount.add_child(mi)
 	return mi
+
+## Head-bone-local transform that seats a hat model on this character's head: scaled a little
+## wider than the skull, with the model's opening plane at the widest part of it.
+func _head_fit(body: MeshInstance3D) -> Transform3D:
+	if skeleton == null:
+		return Transform3D.IDENTITY
+	var hb := SkinSystem.head_bounds(body.mesh) if body else AABB(Vector3(-0.1, 1.55, -0.1), Vector3(0.2, 0.25, 0.2))
+	var width := ModelLib.aabb(SkinSystem.CAP_MODEL).size.x
+	if width < 0.01:
+		return Transform3D.IDENTITY
+	var scale := (hb.size.x * 1.05) / width
+	var opening := Vector3(hb.get_center().x, hb.position.y + hb.size.y * 0.60, hb.get_center().z)
+	var to_bone := skeleton.get_bone_global_rest(skeleton.find_bone("head")).affine_inverse()
+	return to_bone * Transform3D(Basis().scaled(Vector3.ONE * scale), opening)
 
 ## A plate carrier that follows the torso instead of a box floating off it: front and back plates
 ## joined by shoulder straps, each plate narrower than the chest so nothing pokes through the arms.

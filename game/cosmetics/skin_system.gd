@@ -338,11 +338,11 @@ static func _add_part(root: Node3D, to_bone: Transform3D, part: MeshInstance3D, 
 	root.add_child(part)
 
 ## Builds hat / mask / backpack meshes. Returns {"hat": Node3D, "mask": Node3D, "back": Node3D} (any may be null).
-static func build_attachments(loadout: Dictionary) -> Dictionary:
+static func build_attachments(loadout: Dictionary, head_fit := Transform3D.IDENTITY) -> Dictionary:
 	var out := {"hat": null, "mask": null, "back": null}
 	var hat := item(String(loadout.get("head", "")))
 	if not hat.is_empty():
-		out["hat"] = _hat_mesh(hat["recipe"])
+		out["hat"] = _hat_mesh(hat["recipe"], head_fit)
 	var mask := item(String(loadout.get("face", "")))
 	if not mask.is_empty():
 		var mi := MeshInstance3D.new()
@@ -361,12 +361,28 @@ static func build_attachments(loadout: Dictionary) -> Dictionary:
 		out["back"] = mi
 	return out
 
-static func _hat_mesh(recipe: Dictionary) -> Node3D:
+## The studio baseball cap (tools/blender/make_baseball_cap.py). Authored to a real head with the
+## peak on +Z, the way the mannequin faces, so [head_fit] alone places it.
+const CAP_MODEL := "baseball_cap"
+
+static func _hat_mesh(recipe: Dictionary, head_fit := Transform3D.IDENTITY) -> Node3D:
 	var root := Node3D.new()
 	var mat := recipe_material(recipe, 0.9, 6.0)
 	var accent := StandardMaterial3D.new()
 	accent.albedo_color = Color(String(recipe.get("accent", "#222222")))
-	match String(recipe.get("shape", "cap")):
+	var shape := String(recipe.get("shape", "cap"))
+	if shape == "cap" and ModelLib.exists(CAP_MODEL):
+		var mi := ModelLib.instance(CAP_MODEL)
+		if mi.mesh:
+			# crown and peak take the skin's colour, the seams, sweatband and button the accent
+			for i in mi.mesh.get_surface_count():
+				var m := mi.mesh.surface_get_material(i)
+				mi.set_surface_override_material(i, accent if (m and m.resource_name == "CapAccent") else mat)
+			mi.transform = head_fit
+			root.add_child(mi)
+			root.set_meta("fitted", true)
+			return root
+	match shape:
 		"boonie":
 			var crown := MeshInstance3D.new()
 			var cm := CylinderMesh.new(); cm.top_radius = 0.11; cm.bottom_radius = 0.13; cm.height = 0.12

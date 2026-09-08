@@ -188,6 +188,31 @@
       }
     },
     {
+      "id": "hat_ball_cap_red",
+      "slot": "head",
+      "name": "Summit Ball Cap",
+      "rarity": "common",
+      "recipe": {
+        "target": "hat",
+        "shape": "cap",
+        "color": "#b3252f",
+        "accent": "#f2ede2"
+      }
+    },
+    {
+      "id": "hat_ball_cap_camo",
+      "slot": "head",
+      "name": "Backcountry Cap",
+      "rarity": "uncommon",
+      "recipe": {
+        "target": "hat",
+        "shape": "cap",
+        "color": "#4b5340",
+        "pattern": "camo",
+        "accent": "#2b2f24"
+      }
+    },
+    {
       "id": "mask_toxic",
       "slot": "face",
       "name": "Toxic Grin Mask",
