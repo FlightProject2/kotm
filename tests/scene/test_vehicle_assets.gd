@@ -202,12 +202,13 @@ func _assert_contacts(driver: Character, context: String) -> void:
 			if marker == null:
 				continue
 			var bone := skeleton.find_bone(sockets[socket])
-			var point := skeleton.global_transform * skeleton.get_bone_global_pose(bone).origin
+			var pose := skeleton.get_bone_global_pose(bone)
+			var point := skeleton.global_transform * (pose * HandPoses.palm("l" if socket.ends_with("L") else "r") if socket.begins_with("HandGrip") and driver.vehicle.seated_animation() == "KOTM_Truck_Seated" else pose.origin)
 			samples.max_error = maxf(samples.max_error, point.distance_to(marker.global_position))
 			samples.count += 1,
 		Object.CONNECT_ONE_SHOT)
 	await tree.process_frame
 	await tree.process_frame
-	assert_eq(samples.count, 4, context + " sampled both wrists and ankles")
+	assert_eq(samples.count, 4, context + " sampled both hand contacts and ankles")
 	assert_true(samples.max_error < 0.002, "%s contact error %.5f m" % [context, samples.max_error])
 	assert_true(int(modifier.get("solve_count")) > 0, context + " contact solver evaluated")

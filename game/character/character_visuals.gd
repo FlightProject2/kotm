@@ -134,6 +134,20 @@ func _build_canopy() -> void:
 	mi.material_override = m
 	mi.position.y = 4.2
 	canopy.add_child(mi)
+	if studio_rig:
+		for side in ["l", "r"]:
+			var riser := MeshInstance3D.new()
+			riser.name = "Riser_" + side
+			var strap := BoxMesh.new()
+			strap.size = Vector3(0.025, 0.36, 0.014)
+			riser.mesh = strap
+			var grip: Vector3 = preload("res://game/character/parachute_contact.gd").grip(side)
+			riser.position = to_local(skeleton.global_transform * (grip + Vector3.UP * 0.04))
+			var fabric := StandardMaterial3D.new()
+			fabric.albedo_color = Color(0.09, 0.09, 0.07)
+			fabric.roughness = 1.0
+			riser.material_override = fabric
+			canopy.add_child(riser)
 	var lines := MeshInstance3D.new()
 	var im := ImmediateMesh.new()
 	im.surface_begin(Mesh.PRIMITIVE_LINES)
@@ -155,8 +169,12 @@ func _update_canopy_lines(im: ImmediateMesh) -> void:
 	if not canopy.visible:
 		return
 	var hands: Array[Vector3] = []
-	for bone in ["hand.l", "hand.r"]:
-		hands.append(to_local(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(bone)).origin))
+	for side in ["l", "r"]:
+		if studio_rig:
+			var grip: Vector3 = preload("res://game/character/parachute_contact.gd").grip(side)
+			hands.append(to_local(skeleton.global_transform * (grip + Vector3.UP * 0.22)))
+		else:
+			hands.append(to_local(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone("hand." + side)).origin))
 	if hands[0].x > hands[1].x:
 		hands.reverse()
 	im.clear_surfaces()
@@ -248,6 +266,10 @@ func _setup_studio() -> void:
 	lower_layer.character = character
 	lower_layer.rig = studio_rig
 	skeleton.add_child(lower_layer)
+	var running_arms := preload("res://game/character/running_arms.gd").new()
+	running_arms.name = "RunningArms"
+	running_arms.character = character
+	skeleton.add_child(running_arms)
 	aim_spine = AimSpineModifier.new()
 	aim_spine.weights = {"spine_01": 0.35, "spine_02": 0.65, "head": 0.0}
 	skeleton.add_child(aim_spine)
@@ -270,6 +292,10 @@ func _setup_studio() -> void:
 	vehicle_contact.character = character
 	vehicle_contact.rig = studio_rig
 	skeleton.add_child(vehicle_contact)
+	var parachute_contact := preload("res://game/character/parachute_contact.gd").new()
+	parachute_contact.name = "ParachuteContact"
+	parachute_contact.character = character
+	skeleton.add_child(parachute_contact)
 	weapon_holder = WeaponHolder.new()
 	weapon_holder.name = "HandR"
 	weapon_holder.bone_name = "hand.r"
@@ -289,7 +315,7 @@ func _process_studio() -> void:
 	var parachuting := character.mode == Character.Mode.PARACHUTE
 	var fitted := KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id)
 	aim_spine.pitch = 0.0 if fitted or seated or parachuting else clampf(character.pitch, -0.9, 0.9)
-	arm_pose.active = parachuting or (not fitted and not seated)
+	arm_pose.active = not parachuting and not fitted and not seated
 	if fitted and not parachuting:
 		arm_pose.weight = 0.0
 	arm_pose.weapon_class = "parachute" if parachuting else (_held_class if not fitted and not seated else "")
