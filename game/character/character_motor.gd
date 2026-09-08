@@ -69,6 +69,7 @@ func _ground_air(dt: float) -> void:
 	_coyote_t = float(cfg["coyoteSec"]) if on_floor else maxf(0.0, _coyote_t - dt)
 	if _jump_buffer_t > 0.0 and (on_floor or _coyote_t > 0.0) and c.stun <= 0.0 and c.velocity.y <= 0.5:
 		c.velocity.y = float(cfg["jumpVelocity"])
+		c.jumped.emit()
 		_jump_buffer_t = 0.0
 		_coyote_t = 0.0
 		if c.crouching:
@@ -121,11 +122,9 @@ func _parachute(dt: float) -> void:
 	else:
 		speed = float(pcfg["neutralSpeed"]); descent = float(pcfg["neutralDescent"])
 	var k := minf(1.0, float(pcfg["horizontalLerp"]) * dt)
-	var r := c.right()
-	var side := inp.move.x * float(pcfg.get("strafeSpeed", 5.0))
-	c.velocity.x = lerpf(c.velocity.x, f.x * speed + r.x * side, k)
-	c.velocity.z = lerpf(c.velocity.z, f.z * speed + r.z * side, k)
-	c.velocity.y = lerpf(c.velocity.y, -descent, minf(1.0, 3.0 * dt))
+	c.velocity.x = lerpf(c.velocity.x, f.x * speed, k)
+	c.velocity.z = lerpf(c.velocity.z, f.z * speed, k)
+	c.velocity.y = -descent
 	c.move_and_slide()
 	var ground := c.world.height_at(c.global_position.x, c.global_position.z) if c.world else 0.0
 	if c.is_on_floor() or c.global_position.y <= ground + 0.05:

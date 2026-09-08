@@ -1,0 +1,248 @@
+{
+  "provenance": "User-provided player effects; original filenames retained below. Not CC0.",
+  "processing": "Byte-for-byte copies; runtime gain/pitch and Godot import do not alter source WAV files.",
+  "files": [
+    {
+      "file": "hurt.wav",
+      "source_basename": "PLAYER-SHOT HURT.wav",
+      "sha256": "f563799990816a3d57c4d75c2da729bf5d38f1fab8d9555393c15fafe3457180",
+      "bytes": 102572,
+      "frames": 51264,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.068
+    },
+    {
+      "file": "punch_1.wav",
+      "source_basename": "PUNCH 1.wav",
+      "sha256": "d2cf4c3098603e068378d98a479651572a4069da82617374f19ebbcd60bc854d",
+      "bytes": 26924,
+      "frames": 13440,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.28
+    },
+    {
+      "file": "punch_2.wav",
+      "source_basename": "PUNCH 2.wav",
+      "sha256": "1e05a73d8143b29c425907c9d20dccf8e6d3cc377344a123e60cf45b84eadb26",
+      "bytes": 51116,
+      "frames": 25536,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.532
+    },
+    {
+      "file": "step_hard_right.wav",
+      "source_basename": "RIGHT FOOTSTEP NORMAL FLOOR.wav",
+      "sha256": "ca8bcc260f1306c136bc741b818da99cfb3fc197a687a69e94a1adb3373fbff0",
+      "bytes": 56492,
+      "frames": 28224,
+      "sample_rate": 24000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.176
+    },
+    {
+      "file": "fence_2.wav",
+      "source_basename": "TOUCHING METAL FENCE 2.wav",
+      "sha256": "731edc7be212bb68c8213ae1d57a5275e089c96129f10f2d1ad0ad5a99dcc018",
+      "bytes": 56620,
+      "frames": 28288,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.589333
+    },
+    {
+      "file": "fence_1.wav",
+      "source_basename": "TOUCHING METAL FENCE.wav",
+      "sha256": "1723c744f28c51c6b56904be349fa2012541f4258a95f3cbc3197c3f3e3575da",
+      "bytes": 43564,
+      "frames": 21760,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.453333
+    },
+    {
+      "file": "step_metal.wav",
+      "source_basename": "WALKING ON METAL.wav",
+      "sha256": "cb6abf5750cd7be252a50423993566ee2ddf58e0b128eaf037d5ec7562d37cf8",
+      "bytes": 59436,
+      "frames": 29696,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.618667
+    },
+    {
+      "file": "step_wood.wav",
+      "source_basename": "WALKING ON STICK.wav",
+      "sha256": "636e21d70b1ec5522e4e510d1539f14f31e656a0a302a9c07f65c14aaa4b8b17",
+      "bytes": 59436,
+      "frames": 29696,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.618667
+    },
+    {
+      "file": "step_water_1.wav",
+      "source_basename": "WALKING ON WATER 1.wav",
+      "sha256": "2ff1fca29a835425806757e2130c7a43f36105de2b2450968199d03656fb9690",
+      "bytes": 68780,
+      "frames": 34368,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.716
+    },
+    {
+      "file": "step_water_2.wav",
+      "source_basename": "WALKING ON WATER 2.wav",
+      "sha256": "4a80c36e4dfd0f57a374785a00164bbe57e4ce9e7bab7db119ce604b7c0c4a72",
+      "bytes": 67372,
+      "frames": 33664,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.701333
+    },
+    {
+      "file": "step_water_deep.wav",
+      "source_basename": "WATER 3 - DEEPER.wav",
+      "sha256": "3cf0c010e98d915177bfb78c2d42db57d7767167cc046340ce2f646438050c01",
+      "bytes": 110892,
+      "frames": 55424,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.154667
+    },
+    {
+      "file": "cough_heavy.wav",
+      "source_basename": "DEEP - GAS ATTACK - COUGHING.wav",
+      "sha256": "f2512d399960ef6628b6d33962f6820f33e59089acf888e74453c35d9b001458",
+      "bytes": 246572,
+      "frames": 123264,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 2.568
+    },
+    {
+      "file": "door_locked.wav",
+      "source_basename": "door locked.wav",
+      "sha256": "6e8382c84247785450d5e601dcf0c3f971de9465023fb879dbe62dad1f0396c9",
+      "bytes": 133932,
+      "frames": 66944,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.394667
+    },
+    {
+      "file": "death_2.wav",
+      "source_basename": "DYING 2.wav",
+      "sha256": "8394657b5864f669bbc3a37b38f9189db5d3622abd79683a0dd5056b4b32eb6a",
+      "bytes": 192556,
+      "frames": 96256,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 2.005333
+    },
+    {
+      "file": "death_3.wav",
+      "source_basename": "DYING 3.wav",
+      "sha256": "64f258a313e8798903911fe84968b983385e1857165bcd37f3fb27e192f4f676",
+      "bytes": 350252,
+      "frames": 175104,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 3.648
+    },
+    {
+      "file": "death_1.wav",
+      "source_basename": "DYING.wav",
+      "sha256": "6fdf47ae87921d0dcaa4dda6f1ee62dd69e6758b750380443abbe37197493f67",
+      "bytes": 467628,
+      "frames": 233792,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 4.870667
+    },
+    {
+      "file": "cough.wav",
+      "source_basename": "GAS ATTACK - COUGH.wav",
+      "sha256": "a04900434364c1df4cb84d5f0cead3874eb6c9c3304926b78148a28a2cf4d1f1",
+      "bytes": 41772,
+      "frames": 20864,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.434667
+    },
+    {
+      "file": "jump.wav",
+      "source_basename": "JUMPING.wav",
+      "sha256": "05538960a5390a5cf46ec1d0515b740fff5a4196cbea5ef5751cbe1df08b3318",
+      "bytes": 30508,
+      "frames": 15232,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.317333
+    },
+    {
+      "file": "step_grass.wav",
+      "source_basename": "LEFT FOOTSTEP GRASS.wav",
+      "sha256": "ced4092d9ceae49682e033f8e0f13569e9eac556482d53f426dc6ebc30eee53e",
+      "bytes": 36652,
+      "frames": 18304,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.381333
+    },
+    {
+      "file": "step_light_left.wav",
+      "source_basename": "LIGHT LEFT FOOTSTEP.wav",
+      "sha256": "98871107ad85d94c0b10642957c1c2c9510e23405324ba38748a353b1da51637",
+      "bytes": 17836,
+      "frames": 8896,
+      "sample_rate": 16000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.556
+    },
+    {
+      "file": "exertion_1.wav",
+      "source_basename": "OUT OF STAMINA.wav",
+      "sha256": "1779c56ce09e72e412264d58ff874be6e2d98148f6be9dddadbf7d66e79f9bf5",
+      "bytes": 150700,
+      "frames": 75328,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.569333
+    },
+    {
+      "file": "exertion_2.wav",
+      "source_basename": "OUT OF STANIMA 2.wav",
+      "sha256": "a0bdbd9b78bcdf14aa8dd6ad2efaa7651783b0b6228cd8dca64b05d172c14d9d",
+      "bytes": 208684,
+      "frames": 104320,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bits_per_sample": 16,
+      "duration_seconds": 2.173333
+    }
+  ]
+}

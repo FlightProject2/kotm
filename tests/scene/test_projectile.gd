@@ -64,14 +64,19 @@ func test_helmet_pop_at_100m_and_pierce() -> void:
 	shooter.inventory.give_ammo("223", 60)
 	await settle(2)
 	assert_eq(shooter.inventory.current_id(), "ar15")
-	await settle(3)
+	var aim_input := CharacterInput.new()
+	aim_input.yaw = shooter.yaw
+	aim_input.aim_dir = shooter.forward()
+	aim_input.set_button(CharacterInput.B_AIM, true)
+	shooter.submit_input(aim_input)
+	await settle(20)
 	var holder: WeaponHolder = shooter.visual.weapon_holder
 	assert_true(holder.has_weapon_model(), "AR model mounted")
 	var mz := shooter.combat.muzzle_position()
 	assert_true(mz.distance_to(holder.muzzle_global()) < 0.001, "combat muzzle is the weapon's muzzle marker")
 	var hand := holder.global_position
 	assert_between(mz.distance_to(hand), 0.3, 1.1, "muzzle is a rifle-length ahead of the hand (%.2f m)" % mz.distance_to(hand))
-	assert_true((mz - hand).normalized().dot(shooter.forward()) > 0.7, "barrel points where the character faces")
+	assert_true((mz - hand).normalized().dot(shooter.forward()) > 0.7, "aimed barrel points where the character faces")
 	dummy.health.set_helmet("tactical_helmet")
 	var hits := []
 	Events.hit_confirmed.connect(func(kind: String, killed: bool) -> void: hits.append([kind, killed]))

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://game/dev/dev_flat.tscn" id="1"]
+[ext_resource type="Script" path="res://game/dev/character_test_yard.gd" id="2"]
+
+[node name="CharacterTestYard" instance=ExtResource("1")]
+script = ExtResource("2")

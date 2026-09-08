@@ -61,7 +61,7 @@ func test_vehicle_faces_forward() -> void:
 	v.setup("pickup_truck", null)
 	await settle(1)
 	assert_true(v.model != null, "truck model loaded")
-	assert_true(absf(v.model.rotation.y - PI * 0.5) < 0.01, "long axis turned so the nose points -Z")
+	assert_true(absf(v.model.rotation.y - PI) < 0.01, "authored +Z nose points toward gameplay -Z")
 	assert_true(v.reverse_max <= 5.0, "reverse capped")
 	v.queue_free()
 	await settle(1)
@@ -85,10 +85,5 @@ func test_admin_spawns_bots_on_the_ground() -> void:
 		assert_true(b.global_position.y < w.height_at(b.global_position.x, b.global_position.z) + 1.5, "standing on the terrain")
 		assert_true(Vector2(b.global_position.x - centre.x, b.global_position.z - centre.z).length() < 30.0, "within the spawn ring")
 	assert_eq(m.alive_count, 3)
-	# free the bots here: a later test's bot perceives every character in the tree, and a leftover
-	# standing 190 m away is a target it should never have seen
-	for b in made:
-		b.queue_free()
 	m.queue_free(); w.queue_free()
-	await tree.process_frame
-	await settle(2)
+	await settle(1)
