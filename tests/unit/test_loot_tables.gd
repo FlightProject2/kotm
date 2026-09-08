@@ -23,8 +23,11 @@ func test_guarantees() -> void:
 			if e["kind"] == "weapon" and e["id"] in ["ar15", "ak47"]:
 				has_rifle = true
 		assert_true(has_rifle, "police nodes always carry a rifle")
+		# military guarantees a rifle, but not always the same one, so the spot is worth
+		# re-visiting rather than handing out an identical hunting rifle every time
 		var mil := LootTables.roll_node("military", rng)
-		assert_true(mil.any(func(e): return e["id"] == "hunting_rifle"), "military nodes always carry a hunting rifle")
+		assert_true(mil.any(func(e): return e["kind"] == "weapon" and e["id"] in ["ar15", "ak47"]),
+			"military nodes always carry a rifle")
 
 func test_airdrop_fixed_set() -> void:
 	var rng := RandomNumberGenerator.new(); rng.seed = 1

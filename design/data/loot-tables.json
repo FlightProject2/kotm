@@ -151,7 +151,7 @@
       "itemsMax": 3,
       "emptyChance": 0.1,
       "guarantees": [
-        "hunting_rifle"
+        "rifle_random"
       ],
       "rolls": {
         "ar15": 6,
