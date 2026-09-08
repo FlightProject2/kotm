@@ -69,6 +69,7 @@ func _ground_air(dt: float) -> void:
 	_coyote_t = float(cfg["coyoteSec"]) if on_floor else maxf(0.0, _coyote_t - dt)
 	if _jump_buffer_t > 0.0 and (on_floor or _coyote_t > 0.0) and c.stun <= 0.0 and c.velocity.y <= 0.5:
 		c.velocity.y = float(cfg["jumpVelocity"])
+		c.jumped.emit()
 		_jump_buffer_t = 0.0
 		_coyote_t = 0.0
 		if c.crouching:

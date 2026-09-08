@@ -17,6 +17,9 @@ var melee_def: Dictionary = {}
 var spread_cfg: Dictionary = DataLib.movement()["spread"]
 var melee_cfg: Dictionary = DataLib.movement()["melee"]
 var rng := RandomNumberGenerator.new()
+const SEMI_BUFFER_SEC := 0.08
+var _pending_fire_until := -1.0
+var _pending_fire_id := ""
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -35,6 +38,7 @@ func tick(dt: float) -> void:
 	var inp := c.input
 	if inp.slot >= 0 and inp.slot != inv.cur and inp.slot < inv.slots.size():
 		if inv.select(inp.slot):
+			_clear_fire_buffer()
 			reload_t = 0.0
 			cycle_t = 0.0
 			swap_t = 0.4 if ItemCatalog.get_item(inv.current_id()).get("class", "") == "pistol" else 0.6
@@ -56,8 +60,27 @@ func tick(dt: float) -> void:
 	var want_fire := inp.pressed(CharacterInput.B_FIRE)
 	var edge := want_fire and not c.prev_input.pressed(CharacterInput.B_FIRE)
 	var mode: String = def.get("fireMode", "semi")
-	if want_fire and (mode == "auto" or edge or is_melee):
+	if mode == "semi" and not is_melee:
+		# Retain one early click across the last 80 ms of the cadence gate. Holding
+		# the button never queues more shots, and reload/swap cannot carry a click.
+		if edge and can_fire():
+			var interval := 60.0 / float(def.get("rpmCap", 120))
+			var wait := interval - (time - float(fire_times.get(id, -10.0)))
+			if wait <= SEMI_BUFFER_SEC:
+				_pending_fire_id = id
+				_pending_fire_until = time + SEMI_BUFFER_SEC
+		if _pending_fire_id == id and time <= _pending_fire_until + 0.000001 and can_fire():
+			if try_fire(false):
+				_clear_fire_buffer()
+		elif time > _pending_fire_until or not can_fire() or _pending_fire_id != id:
+			_clear_fire_buffer()
+	elif want_fire and (mode == "auto" or edge or is_melee):
+		_clear_fire_buffer()
 		try_fire(is_melee)
+
+func _clear_fire_buffer() -> void:
+	_pending_fire_until = -1.0
+	_pending_fire_id = ""
 
 func can_fire() -> bool:
 	return c.alive() and c.stun <= 0.0 and c.mode != Character.Mode.PARACHUTE and reload_t <= 0.0 and cycle_t <= 0.0 and swap_t <= 0.0
@@ -70,10 +93,12 @@ func try_fire(is_melee: bool) -> bool:
 	var rpm := float(def.get("rpmCap", def.get("rpm", 120)))
 	if is_melee:
 		rpm = 60.0 / float(def.get("swingSec", 0.5))
-	if time - float(fire_times.get(id, -10.0)) < 60.0 / rpm:
+	if time - float(fire_times.get(id, -10.0)) + 0.000001 < 60.0 / rpm:
 		return false
 	if is_melee:
 		fire_times[id] = time
+		if id == "fists":
+			c.player_audio.request("punch", 0.7)
 		_melee(def)
 		return true
 	if int(inv.mags.get(id, 0)) <= 0:
@@ -130,6 +155,7 @@ func start_reload() -> void:
 		t = float(def["reloadTacticalSec"])
 	reload_t = t
 	reloading_id = id
+	_clear_fire_buffer()
 
 func _finish_reload() -> void:
 	var def: Dictionary = ItemCatalog.weapon_def(reloading_id)

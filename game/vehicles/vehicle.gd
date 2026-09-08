@@ -9,6 +9,13 @@ const KMH := 1.0 / 3.6
 const MODELS := {"offroader": "res://assets/models/snowmobile.glb", "police_car": "res://assets/models/snow_truck.glb",
 	"pickup_truck": "res://assets/models/snow_truck.glb", "atv": "res://assets/models/snowmobile.glb"}
 const MODEL_SCALE := 1.6   # Kenney kit models only; studio models are metric
+const FITTED_MODELS := {
+	"offroader": "res://assets/models/kotm/KOTM_Snowmobile.glb",
+	"atv": "res://assets/models/kotm/KOTM_Snowmobile.glb",
+	"police_car": "res://assets/models/kotm/KOTM_SnowTruck.glb",
+	"pickup_truck": "res://assets/models/kotm/KOTM_SnowTruck.glb",
+}
+const ANIMATOR := preload("res://game/vehicles/vehicle_animation.gd")
 
 var vehicle_id: String = "offroader"
 var def: Dictionary = {}
@@ -29,7 +36,11 @@ var model: Node3D
 var wheels: Array[Node3D] = []
 var wheel_spin: float = 0.0
 var seat_offset := Vector3(-0.45, 0.6, 0.0)
-var half_extents := Vector3(1.05, 0.65, 2.2)
+var driver_marker: Node3D
+var animator: VehicleAnimation
+var contact_markers: Dictionary = {}
+var _collision_half_width := 1.05
+var _body_bounds := AABB(Vector3(-1.05, 0.1, -2.2), Vector3(2.1, 1.3, 4.4))
 var _ground_normal := Vector3.UP
 var _burn_t := 0.0
 
@@ -55,7 +66,22 @@ func setup(id: String, p_world: World) -> void:
 	cs.position = Vector3(0, 0.75, 0)
 	add_child(cs)
 	var path: String = MODELS.get(id, MODELS["offroader"])
-	if path.begins_with(ModelLib.DIR):
+	var fitted_path: String = FITTED_MODELS.get(id, "")
+	if not fitted_path.is_empty() and ResourceLoader.exists(fitted_path):
+		model = (load(fitted_path) as PackedScene).instantiate()
+		model.rotation.y = PI # authored forward +Z, game vehicle forward -Z
+		add_child(model)
+		driver_marker = model.find_child("SeatDriver", true, false) as Node3D
+		if driver_marker == null:
+			driver_marker = model.find_child("VehicleSeatDriver", true, false) as Node3D
+		var vertices := WeaponHolder._gather_vertices(model)
+		if not vertices.is_empty():
+			var box := AABB(vertices[0], Vector3.ZERO)
+			for vertex in vertices:
+				box = box.expand(vertex)
+			bs.size = box.size
+			cs.position = model.transform * box.get_center()
+	elif path.begins_with(ModelLib.DIR):
 		var mid := path.get_file().get_basename()
 		var mi := ModelLib.instance(mid)
 		if mi.mesh:
@@ -68,10 +94,8 @@ func setup(id: String, p_world: World) -> void:
 			if box.size.x > box.size.z:
 				model.rotation.y = PI * 0.5   # +X (nose) -> -Z
 				box = AABB(Vector3(-box.size.z * 0.5, box.position.y, -box.size.x * 0.5), Vector3(box.size.z, box.size.y, box.size.x))
-			# the box floats 0.3 m above the base so its corners never dig into slopes
-			bs.size = Vector3(box.size.x, maxf(box.size.y - 0.3, 0.6), box.size.z)
-			cs.position = box.get_center() + Vector3(0, 0.15, 0)
-			half_extents = bs.size * 0.5
+			bs.size = Vector3(box.size.x, box.size.y, box.size.z)
+			cs.position = box.get_center()
 			seat_offset = Vector3(-box.size.x * 0.22, box.size.y * 0.45, 0.0)
 	elif ResourceLoader.exists(path):
 		var scene: PackedScene = load(path)
@@ -81,13 +105,53 @@ func setup(id: String, p_world: World) -> void:
 		for n in model.find_children("*", "Node3D", true, false):
 			if String(n.name).to_lower().contains("wheel"):
 				wheels.append(n)
+	# Keep the lower corners clear of slopes while retaining the top of the body.
+	var clearance := minf(0.3, maxf(bs.size.y - 0.6, 0.0))
+	bs.size.y -= clearance
+	cs.position.y += clearance * 0.5
+	_body_bounds = AABB(cs.position - bs.size * 0.5, bs.size)
+	_collision_half_width = bs.size.x * 0.5
+	if model:
+		if vehicle_id in ["police_car", "pickup_truck"]:
+			_configure_truck_glass()
+		for socket in ["HandGrip_L", "HandGrip_R", "FootRest_L", "FootRest_R"]:
+			var marker := model.find_child(socket, true, false) as Node3D
+			if marker:
+				contact_markers[socket] = marker
+		animator = ANIMATOR.new()
+		animator.name = "VehicleAnimation"
+		add_child(animator)
+		animator.setup(model)
+	# Update moving controls and the seat before the character's AnimationPlayer/modifiers.
+	process_priority = -20
 	set_meta("vehicle", true)
 
-## Distance from a world point to the vehicle's body box (0 when touching it).
+func _configure_truck_glass() -> void:
+	# glTF retains the authored alpha value but some imports lose Blender's blend
+	# mode. Per-instance overrides preserve the shared imported materials.
+	for mesh: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
+		if mesh.mesh == null:
+			continue
+		for surface in mesh.mesh.get_surface_count():
+			var source := mesh.get_active_material(surface) as BaseMaterial3D
+			if source == null:
+				continue
+			var key := (String(mesh.name) + " " + source.resource_name).to_lower()
+			if not key.contains("glass") and not key.contains("window") and not key.contains("windshield"):
+				continue
+			var glass := source.duplicate() as BaseMaterial3D
+			glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			if glass.albedo_color.a >= 0.5:
+				var tint := glass.albedo_color
+				tint.a = 0.18
+				glass.albedo_color = tint
+			mesh.set_surface_override_material(surface, glass)
+
+## Horizontal distance to the fitted body so large vehicles can be entered at their doors.
 func distance_to_body(p: Vector3) -> float:
 	var local := global_transform.affine_inverse() * p
-	var d := Vector3(maxf(absf(local.x) - half_extents.x, 0.0), 0.0, maxf(absf(local.z) - half_extents.z, 0.0))
-	return d.length()
+	var nearest := local.clamp(_body_bounds.position, _body_bounds.end)
+	return Vector2(local.x - nearest.x, local.z - nearest.z).length()
 
 func display_name() -> String:
 	return String(def.get("name", vehicle_id))
@@ -100,18 +164,41 @@ func can_enter() -> bool:
 
 func enter(ch: Character) -> void:
 	driver = ch
+	if animator:
+		animator.play_door_cycle()
 
 func exit() -> Vector3:
 	driver = null
 	speed = 0.0
+	if animator:
+		animator.play_door_cycle()
 	# exit point: left of the car, on the ground
-	var out := global_transform * Vector3(-1.8, 0.2, 0.0)
+	var out := global_transform * Vector3(-(_collision_half_width + 0.7), 0.2, 0.0)
 	if world:
 		out.y = world.height_at(out.x, out.z) + 0.05
 	return out
 
 func seat_global() -> Vector3:
+	if driver_marker:
+		return driver_marker.global_position
 	return global_transform * seat_offset
+
+## Character's Model already turns its +Z authored forward onto gameplay -Z.
+## Keep the seat's suspension/tilt, with the same facing compensation as the vehicle root.
+func seat_transform() -> Transform3D:
+	if driver_marker:
+		return driver_marker.global_transform * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO)
+	return Transform3D(global_basis, seat_global())
+
+func seated_animation() -> String:
+	return "KOTM_Truck_Seated" if vehicle_id in ["police_car", "pickup_truck"] else "KOTM_Snowmobile_Seated"
+
+func contact_marker(socket: String) -> Node3D:
+	return contact_markers.get(socket) as Node3D
+
+func _process(dt: float) -> void:
+	if animator:
+		animator.update_motion(dt, speed, steer, occupied(), wrecked)
 
 ## Called by the driver's Character during its physics step (same tick, deterministic order).
 func drive(dt: float, inp: CharacterInput) -> void:

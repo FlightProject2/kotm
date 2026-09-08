@@ -1,4 +1,5 @@
 extends Node
+signal player_sound_played(event: String, character_id: int, resource_path: String, volume: float)
 ## Plays placeholder sound effects from the Events bus (docs/game-plan/14). Positional sounds use
 ## AudioStreamPlayer3D pooled players; local-only cues (hitmarkers, kills, UI) are 2D.
 
@@ -12,8 +13,13 @@ var _pool_i := 0
 var _ui: AudioStreamPlayer
 var listener_pos: Vector3 = Vector3.ZERO
 var local_character_id: int = -1
+var player_pool: PlayerAudioPool
 
 func _ready() -> void:
+	player_pool = PlayerAudioPool.new()
+	player_pool.name = "PlayerSounds"
+	add_child(player_pool)
+	player_pool.played.connect(func(event: String, id: int, path: String, volume: float) -> void: player_sound_played.emit(event, id, path, volume))
 	_ui = AudioStreamPlayer.new()
 	_ui.bus = "Master"
 	add_child(_ui)
@@ -88,7 +94,7 @@ func _on_hit_fx(pos: Vector3, _n: Vector3, kind: String) -> void:
 		"flesh": play_at("hit_flesh", pos, 0.8)
 		"armor": play_at("hit_armor", pos, 0.8)
 		"helmet": play_at("helmet_ding", pos, 1.0, 0.03)
-		"death": play_at("death_grunt", pos, 1.0, 0.08)
+		"death": pass # CharacterAudio sends the supplied death recording once, through Net.
 		_: play_at("crack", pos, 0.25, 0.2)
 
 func _on_hit_confirmed(kind: String, killed: bool) -> void:

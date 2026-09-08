@@ -1,11 +1,13 @@
 {
   "ar75": {
     "_size_yup": [
-      1.049,
-      0.373,
-      0.06
+      1.1329,
+      0.3782,
+      0.0648
     ],
-    "_tris": 6631
+    "_tris": 6533,
+    "_solid_stock": true,
+    "_source_fit_scale": 1.08
   },
   "military_backpack": {
     "Backpack_Socket": [
@@ -48,18 +50,5 @@
       1.16
     ],
     "_tris": 6656
-  },
-  "baseball_cap": {
-    "Cap_Socket": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "_size_yup": [
-      0.194,
-      0.1142,
-      0.3088
-    ],
-    "_tris": 3752
   }
 }

@@ -7,6 +7,7 @@ enum Mode { GROUND, AIR, PARACHUTE, LANDING }
 
 signal died(killer: Character, weapon_name: String, headshot: bool)
 signal landed
+signal jumped
 signal fired(recoil_vertical: float, recoil_horizontal: float)
 
 @export var display_name: String = "Player"
@@ -36,6 +37,8 @@ var bleed_timer: float = 0.0
 var gas_timer: float = 0.0
 var vehicle: Vehicle = null
 var god_mode: bool = false   # admin/testing: never takes damage
+var player_audio: CharacterAudio
+var _death_notified := false
 
 @onready var motor: CharacterMotor = $Motor
 @onready var collision: CollisionShape3D = $Collision
@@ -49,6 +52,9 @@ func _ready() -> void:
 	add_to_group("characters")
 	set_collision_layer_value(2, true)
 	collision_mask = 1 | 2 | 16
+	player_audio = CharacterAudio.new()
+	player_audio.name = "PlayerAudio"
+	add_child(player_audio)
 
 func is_authority() -> bool:
 	return multiplayer.is_server()
@@ -90,6 +96,7 @@ func _physics_process(dt: float) -> void:
 		return
 	yaw = input.yaw
 	pitch = input.pitch
+	var previous_position := global_position
 	if vehicle != null and is_instance_valid(vehicle):
 		var before := vehicle.global_position
 		vehicle.drive(dt, input)
@@ -103,6 +110,7 @@ func _physics_process(dt: float) -> void:
 		combat.tick(dt)
 	interaction.tick()
 	_tick_heal(dt)
+	player_audio.tick(dt, previous_position)
 	prev_input = input.duplicate_input()
 
 # ---- health helpers (authority) ----
@@ -122,6 +130,8 @@ func apply_hit(result: DamageModel.HitResult, from: Character, weapon_name := ""
 	heal_pending = {}
 	if result.killed:
 		_die(from, weapon_name, result.headshot)
+	elif result.damage > 0.0:
+		player_audio.on_damage(result.damage, weapon_name)
 
 func take_plain_damage(amount: float, from: Character, how: String) -> void:
 	if not alive() or god_mode:
@@ -131,6 +141,8 @@ func take_plain_damage(amount: float, from: Character, how: String) -> void:
 		last_hit_by = from
 	if health.apply_damage(amount):
 		_die(from, how, false)
+	else:
+		player_audio.on_damage(amount, how)
 
 func in_vehicle() -> bool:
 	return vehicle != null and is_instance_valid(vehicle)
@@ -157,6 +169,9 @@ func leave_vehicle() -> void:
 	mode = Mode.GROUND
 
 func _die(killer: Character, how: String, headshot: bool) -> void:
+	if _death_notified:
+		return
+	_death_notified = true
 	if in_vehicle():
 		var v := vehicle
 		vehicle = null

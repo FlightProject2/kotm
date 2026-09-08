@@ -13,9 +13,9 @@ it (`project.godot` at the root), and the original **browser prototype**.
 
 ### In the browser (no install)
 
-The Godot build is exported for the web and published on the `gh-pages` branch. Once GitHub Pages is
-enabled for this repository (Settings > Pages > Deploy from a branch > `gh-pages` / root), it is served
-at:
+The **Build and publish playable game** workflow tests and exports the merged game source, then
+publishes that exact bundle to GitHub Pages. Source changes are live only after deployment succeeds.
+The game is served at:
 
     https://flightproject2.github.io/kotm/
 
@@ -25,8 +25,8 @@ drop from crates. **MARKETPLACE** sells the Hot Shot Crate for coins earned in m
 match awards a free Victory Crate. Opening a crate runs a reel that lands on the drop. Dailies on
 the main menu pay coins (and a crate) for kills, damage, pickups, top-10s, wins and driving.
 Cars parked along the dirt roads are drivable: walk up, press F, WASD drives, Space brakes, F exits. The browser build runs single-threaded, and renders at 0.85 scale with smaller
-shadows. Chrome or Edge on a desktop is recommended. After a new build is published, hard-refresh
-(Ctrl+F5) so the browser drops the cached copy.
+shadows. Chrome or Edge on a desktop is recommended. New releases use unique asset filenames. Reload after deployment; `build-info.json` at the site
+root records the deployed source commit and character checksum.
 
 ### In Godot (the real thing)
 

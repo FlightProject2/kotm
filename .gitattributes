@@ -1,4 +1,5 @@
 *.glb binary
+*.blend binary
 *.gltf binary
 *.fbx binary
 *.obj binary

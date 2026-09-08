@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cm4indksc4jcs"
-path="res://.godot/imported/baseball_cap.glb-5a37e056e6c2685400b44870d4f3d76c.scn"
+uid="uid://c1ihng3jygb7e"
+path="res://.godot/imported/KOTM_Template_Leggings.glb-241a3a7a5a5191e237dd288d3afb27a0.scn"
 
 [deps]
 
-source_file="res://assets/models/baseball_cap.glb"
-dest_files=["res://.godot/imported/baseball_cap.glb-5a37e056e6c2685400b44870d4f3d76c.scn"]
+source_file="res://assets/characters/kotm/templates/KOTM_Template_Leggings.glb"
+dest_files=["res://.godot/imported/KOTM_Template_Leggings.glb-241a3a7a5a5191e237dd288d3afb27a0.scn"]
 
 [params]
 

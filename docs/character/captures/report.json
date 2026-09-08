@@ -1,0 +1,35 @@
+{
+	"asset_sha256": "f41b8dd731f5e59f46dc3be1adf3cb28f9cb7b3d611a43b2d444a817ccb43f8f",
+	"captures": [
+		{
+			"clip": "KOTM_Idle",
+			"image": "default.png"
+		},
+		{
+			"clip": "KOTM_AR75_Ready",
+			"image": "ar_ready.png"
+		},
+		{
+			"clip": "KOTM_AR75_Aim",
+			"image": "ar_aim.png"
+		},
+		{
+			"clip": "KOTM_AR75_Aim",
+			"image": "layered_aim.png"
+		},
+		{
+			"clip": "KOTM_AR75_Crouch_Aim",
+			"image": "layered_crouch.png"
+		},
+		{
+			"clip": "KOTM_Hunting_Crouch_Fire",
+			"image": "hunting_crouch_fire.png"
+		},
+		{
+			"clip": "KOTM_Snowmobile_Seated",
+			"image": "seated_driver.png"
+		}
+	],
+	"engine": "4.6.3-stable (official)",
+	"utc": "2026-09-07T22:59:29"
+}

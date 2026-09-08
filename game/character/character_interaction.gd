@@ -35,6 +35,8 @@ func tick() -> void:
 			take(nearest)
 		elif nearest_vehicle:
 			c.enter_vehicle(nearest_vehicle)
+		else:
+			c.player_audio.try_locked_door()
 
 func _find_vehicle() -> Vehicle:
 	if c.is_bot:

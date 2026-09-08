@@ -28,9 +28,9 @@
     "snakeskin"
   ],
   "defaultLoadout": {
-    "chest": "shirt_grey",
-    "legs": "pants_dark",
-    "feet": "shoes_conveys_white",
+    "chest": "tank_white",
+    "legs": "boxers_white",
+    "feet": "feet_bare",
     "head": "",
     "face": "",
     "hands": "",
@@ -40,6 +40,9 @@
     "hair": "hair_short_brown"
   },
   "items": [
+    {"id": "tank_white", "slot": "chest", "name": "White Tank Top", "rarity": "common", "recipe": {"target": "shirt", "color": "#f2f0e9"}},
+    {"id": "boxers_white", "slot": "legs", "name": "White Boxers", "rarity": "common", "recipe": {"target": "pants", "color": "#ffffff"}},
+    {"id": "feet_bare", "slot": "feet", "name": "Bare Feet", "rarity": "common", "recipe": {"target": "shoes", "color": "#d9a37a"}},
     {
       "id": "shirt_grey",
       "slot": "chest",

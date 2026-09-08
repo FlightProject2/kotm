@@ -31,6 +31,7 @@ var length: float = 0.0
 var _flash_t: float = 0.0
 var _kick: float = 0.0
 var _last_dir: Vector3 = Vector3.FORWARD
+var studio_rig: KOTMCharacterRig
 
 func _ready() -> void:
 	mount = Node3D.new()
@@ -60,7 +61,7 @@ func _build_flash() -> void:
 	q.material_override = m
 	q.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	flash.add_child(q)
-	# shown for the first frames so the renderer compiles its material before the first shot
+	# Compile the flash material before the first shot, without a per-weapon light.
 	flash.visible = true
 	_flash_t = 0.08
 	mount.add_child(flash)
@@ -75,6 +76,11 @@ func set_weapon(weapon_id: String, weapon_class: String) -> void:
 			c.queue_free()
 	length = 0.0
 	muzzle.position = Vector3(0, 0, -0.5)
+	if studio_rig:
+		studio_rig.set_weapon(weapon_id)
+		if KOTMCharacterRig.WEAPONS.has(weapon_id):
+			length = 1.0
+			return
 	if weapon_id == "" or weapon_id == "fists" or not MODELS.has(weapon_id):
 		return
 	var scene: PackedScene = load(MODELS[weapon_id])
@@ -97,6 +103,8 @@ func has_weapon_model() -> bool:
 	return length > 0.0
 
 func muzzle_global() -> Vector3:
+	if studio_rig and KOTMCharacterRig.WEAPONS.has(current_id):
+		return studio_rig.marker_world(current_id).origin
 	return muzzle.global_position
 
 ## Fires the flash and a small kick; called from the character's fired signal.
@@ -116,6 +124,10 @@ func _process(dt: float) -> void:
 ## Orient the mount so its -Z follows the aim direction, at the hand position.
 func _align() -> void:
 	if character == null or not is_inside_tree():
+		return
+	if studio_rig and KOTMCharacterRig.WEAPONS.has(current_id):
+		if _flash_t > 0:
+			flash.global_transform = studio_rig.marker_world(current_id)
 		return
 	var dir: Vector3 = _last_dir
 	var inp = character.get("input")

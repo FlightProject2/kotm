@@ -16,6 +16,9 @@ var anim: AnimationDriver
 var hat: Node3D
 var mask: Node3D
 var canopy: Node3D
+var studio_rig: KOTMCharacterRig
+var leg_ik: SkeletonModifier3D
+var vehicle_contact: SkeletonModifier3D
 
 func _ready() -> void:
 	character = get_parent() as Character
@@ -25,6 +28,9 @@ func _ready() -> void:
 	skeleton = skels[0]
 	if character.cosmetics.is_empty():
 		character.cosmetics = SkinSystem.default_loadout()
+	if find_child("KOTM_Character_Rig", true, false) or find_child("EQ_AR75", true, false):
+		_setup_studio()
+		return
 	SkinSystem.apply_to_character(self, character.cosmetics)
 	crouch_pose = CrouchPoseModifier.new()
 	crouch_pose.name = "CrouchPose"
@@ -49,12 +55,10 @@ func _ready() -> void:
 	var body := _body_mesh()
 	if body:
 		head_mount.add_child(SkinSystem.build_face(skeleton, body.mesh, character.cosmetics))
-	var att := SkinSystem.build_attachments(character.cosmetics, _head_fit(body))
+	var att := SkinSystem.build_attachments(character.cosmetics)
 	if att["hat"]:
 		hat = att["hat"]
-		# a model-based hat comes back already sized and seated on the head
-		if not hat.has_meta("fitted"):
-			hat.position = Vector3(0, 0.04, 0.0)
+		hat.position = Vector3(0, 0.04, 0.0)
 		head_mount.add_child(hat)
 	if att["mask"]:
 		mask = att["mask"]
@@ -63,7 +67,11 @@ func _ready() -> void:
 	chest_mount.name = "ChestMount"
 	chest_mount.bone_name = "spine_02"
 	skeleton.add_child(chest_mount)
-	armor_mesh = _build_armor()
+	armor_mesh = MeshInstance3D.new()
+	var bm := BoxMesh.new(); bm.size = Vector3(0.42, 0.34, 0.3)
+	armor_mesh.mesh = bm
+	armor_mesh.position = Vector3(0, 0.12, 0)
+	armor_mesh.visible = false
 	chest_mount.add_child(armor_mesh)
 	backpack_mesh = _build_backpack(chest_mount)
 	if att["back"]:
@@ -75,10 +83,14 @@ func _ready() -> void:
 
 func _physics_process(_dt: float) -> void:
 	if character:
-		rotation.y = character.yaw
+		if studio_rig == null or not KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id):
+			rotation.y = character.yaw
 
 func _process(dt: float) -> void:
 	if character == null:
+		return
+	if studio_rig:
+		_process_studio()
 		return
 	if crouch_pose:
 		crouch_pose.crouching = character.crouching and character.mode == Character.Mode.GROUND
@@ -86,13 +98,10 @@ func _process(dt: float) -> void:
 		aim_spine.pitch = character.pitch
 	if arm_pose and skeleton:
 		# arms only hold the gun on foot; the parachute and melee keep the clip's arms
-		arm_pose.weapon_class = "parachute" if character.mode == Character.Mode.PARACHUTE else _held_class
+		arm_pose.weapon_class = "" if character.mode == Character.Mode.PARACHUTE else _held_class
 		var aim: Vector3 = character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else \
 			Vector3(-sin(character.yaw) * cos(character.pitch), sin(character.pitch), -cos(character.yaw) * cos(character.pitch))
 		arm_pose.aim_dir = skeleton.global_transform.basis.inverse() * aim
-	# the gun goes away under the canopy: both hands are on the risers
-	if weapon_holder and weapon_holder.mount:
-		weapon_holder.mount.visible = character.mode != Character.Mode.PARACHUTE
 	if canopy:
 		canopy.visible = character.mode == Character.Mode.PARACHUTE
 	if hat:
@@ -140,6 +149,22 @@ func _build_canopy() -> void:
 	canopy.add_child(lines)
 	canopy.visible = false
 	add_child(canopy)
+	skeleton.skeleton_updated.connect(_update_canopy_lines.bind(im))
+
+func _update_canopy_lines(im: ImmediateMesh) -> void:
+	if not canopy.visible:
+		return
+	var hands: Array[Vector3] = []
+	for bone in ["hand.l", "hand.r"]:
+		hands.append(to_local(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(bone)).origin))
+	if hands[0].x > hands[1].x:
+		hands.reverse()
+	im.clear_surfaces()
+	im.surface_begin(Mesh.PRIMITIVE_LINES)
+	for corner in [Vector3(-1.6, 4.2, -1.6), Vector3(1.6, 4.2, -1.6), Vector3(-1.6, 4.2, 1.6), Vector3(1.6, 4.2, 1.6)]:
+		im.surface_add_vertex(hands[0 if corner.x < 0 else 1])
+		im.surface_add_vertex(corner)
+	im.surface_end()
 
 ## The studio motorcycle helmet, fitted over the measured head (falls back to a sphere).
 func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
@@ -164,78 +189,6 @@ func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
 	head_mount.add_child(mi)
 	return mi
 
-## Head-bone-local transform that seats a hat model on this character's head: scaled a little
-## wider than the skull, with the model's opening plane at the widest part of it.
-func _head_fit(body: MeshInstance3D) -> Transform3D:
-	if skeleton == null:
-		return Transform3D.IDENTITY
-	var hb := SkinSystem.head_bounds(body.mesh) if body else AABB(Vector3(-0.1, 1.55, -0.1), Vector3(0.2, 0.25, 0.2))
-	var width := ModelLib.aabb(SkinSystem.CAP_MODEL).size.x
-	if width < 0.01:
-		return Transform3D.IDENTITY
-	var scale := (hb.size.x * 1.05) / width
-	var opening := Vector3(hb.get_center().x, hb.position.y + hb.size.y * 0.60, hb.get_center().z)
-	var to_bone := skeleton.get_bone_global_rest(skeleton.find_bone("head")).affine_inverse()
-	return to_bone * Transform3D(Basis().scaled(Vector3.ONE * scale), opening)
-
-## A plate carrier that follows the torso instead of a box floating off it: front and back plates
-## joined by shoulder straps, each plate narrower than the chest so nothing pokes through the arms.
-func _build_armor() -> MeshInstance3D:
-	const HALF_W := 0.155      # plate half-width: the mannequin's chest is about 0.34 m across
-	const TOP := 0.27
-	const BOT := -0.02
-	const DEPTH := 0.115       # how far each plate stands off the spine
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	# each plate is a shallow shell: the outer face is bowed forward at the centre so it reads as
-	# curved armour rather than a slab
-	for face: float in [1.0, -1.0]:
-		var z: float = DEPTH * face
-		var bow: float = 0.035 * face
-		var rows := [[BOT, HALF_W * 0.86], [BOT + 0.10, HALF_W], [TOP - 0.09, HALF_W], [TOP, HALF_W * 0.62]]
-		for r in rows.size() - 1:
-			var y0: float = rows[r][0]; var w0: float = rows[r][1]
-			var y1: float = rows[r + 1][0]; var w1: float = rows[r + 1][1]
-			for s in 4:
-				var t0 := -1.0 + 2.0 * float(s) / 4.0
-				var t1 := -1.0 + 2.0 * float(s + 1) / 4.0
-				var a := Vector3(w0 * t0, y0, z + bow * (1.0 - t0 * t0))
-				var b := Vector3(w0 * t1, y0, z + bow * (1.0 - t1 * t1))
-				var c := Vector3(w1 * t1, y1, z + bow * (1.0 - t1 * t1))
-				var d := Vector3(w1 * t0, y1, z + bow * (1.0 - t0 * t0))
-				if face > 0.0:
-					st.add_vertex(a); st.add_vertex(b); st.add_vertex(c)
-					st.add_vertex(a); st.add_vertex(c); st.add_vertex(d)
-				else:
-					st.add_vertex(a); st.add_vertex(c); st.add_vertex(b)
-					st.add_vertex(a); st.add_vertex(d); st.add_vertex(c)
-	# shoulder straps over the top, one each side, joining the two plates
-	for sx: float in [-1.0, 1.0]:
-		var x0: float = sx * HALF_W * 0.30
-		var x1: float = sx * HALF_W * 0.62
-		for face: float in [1.0, -1.0]:
-			var za: float = DEPTH * face
-			var zb := 0.0
-			var ya := TOP
-			var yb := TOP + 0.055
-			var p0 := Vector3(x0, ya, za); var p1 := Vector3(x1, ya, za)
-			var p2 := Vector3(x1, yb, zb); var p3 := Vector3(x0, yb, zb)
-			st.add_vertex(p0); st.add_vertex(p1); st.add_vertex(p2)
-			st.add_vertex(p0); st.add_vertex(p2); st.add_vertex(p3)
-			st.add_vertex(p0); st.add_vertex(p2); st.add_vertex(p1)
-			st.add_vertex(p0); st.add_vertex(p3); st.add_vertex(p2)
-	st.generate_normals()
-	var mi := MeshInstance3D.new()
-	mi.name = "Armor"
-	mi.mesh = st.commit()
-	var mat := StandardMaterial3D.new()
-	mat.roughness = 0.9
-	mat.metallic = 0.0
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	mi.material_override = mat
-	mi.visible = false
-	return mi
-
 ## The studio military backpack on the upper back; visible with a backpack item or back cosmetic.
 func _build_backpack(chest_mount: Node3D) -> MeshInstance3D:
 	if not ModelLib.exists("military_backpack") or skeleton == null:
@@ -243,15 +196,14 @@ func _build_backpack(chest_mount: Node3D) -> MeshInstance3D:
 	var mi := ModelLib.instance("military_backpack")
 	if mi.mesh == null:
 		return null
+	var body := _body_mesh()
+	var hb := SkinSystem.head_bounds(body.mesh) if body else AABB(Vector3(-0.1, 1.55, -0.1), Vector3(0.2, 0.25, 0.2))
 	var chest_bi := skeleton.find_bone("spine_02")
 	var chest_rest := skeleton.get_bone_global_rest(chest_bi)
 	var sz := ModelLib.aabb("military_backpack").size
-	var scale := 0.46 / maxf(sz.y, 0.01)
-	# the artist's Backpack_Socket is the point that touches the wearer's back; the mannequin's
-	# back surface sits about 0.14 m behind the spine_02 bone (it faces +Z, so back is -Z)
-	var socket := ModelLib.socket("military_backpack", "Backpack_Socket", Vector3(0, 0, 0.06))
-	var back_point := chest_rest.origin + Vector3(0, 0.04, -0.15)
-	var pos := back_point - socket * scale
+	var scale := 0.44 / maxf(sz.y, 0.01)
+	# behind the chest: mannequin faces +Z, so the back is -Z; pack front (straps) faces +Z
+	var pos := chest_rest.origin + Vector3(0, 0.10, -(hb.size.z * 0.55 + sz.z * scale * 0.5))
 	mi.transform = chest_rest.affine_inverse() * Transform3D(Basis().scaled(Vector3.ONE * scale), pos)
 	mi.visible = false
 	chest_mount.add_child(mi)
@@ -283,3 +235,69 @@ func show_weapon(weapon_id: String, weapon_class: String) -> void:
 		weapon_holder.set_weapon(weapon_id, weapon_class)
 	if anim:
 		anim.armed = weapon_class != "melee" and weapon_id != ""
+		if studio_rig:
+			anim.weapon_changed()
+
+func _setup_studio() -> void:
+	studio_rig = KOTMCharacterRig.new()
+	studio_rig.name = "StudioRig"
+	add_child(studio_rig)
+	studio_rig.setup(get_node("Model"))
+	studio_rig.apply_loadout(character.cosmetics)
+	var lower_layer := preload("res://game/character/locomotion_layer.gd").new()
+	lower_layer.character = character
+	lower_layer.rig = studio_rig
+	skeleton.add_child(lower_layer)
+	aim_spine = AimSpineModifier.new()
+	aim_spine.weights = {"spine_01": 0.35, "spine_02": 0.65, "head": 0.0}
+	skeleton.add_child(aim_spine)
+	# Other weapon classes retain the existing procedural hold until their own fitted clips
+	# are authored. This modifier is disabled for both studio rifles.
+	arm_pose = ArmPoseModifier.new()
+	skeleton.add_child(arm_pose)
+	var facing := preload("res://game/character/kotm_pose_modifier.gd").new()
+	facing.character = character
+	facing.rig = studio_rig
+	facing.visual = self
+	skeleton.add_child(facing)
+	leg_ik = preload("res://game/character/directional_leg_ik.gd").new()
+	leg_ik.character = character
+	leg_ik.rig = studio_rig
+	skeleton.add_child(leg_ik)
+	studio_rig.finish_modifiers()
+	vehicle_contact = preload("res://game/character/vehicle_contact_ik.gd").new()
+	vehicle_contact.name = "VehicleContact"
+	vehicle_contact.character = character
+	vehicle_contact.rig = studio_rig
+	skeleton.add_child(vehicle_contact)
+	weapon_holder = WeaponHolder.new()
+	weapon_holder.name = "HandR"
+	weapon_holder.bone_name = "hand.r"
+	weapon_holder.character = character
+	weapon_holder.studio_rig = studio_rig
+	skeleton.add_child(weapon_holder)
+	character.fired.connect(func(_v: float, _h: float) -> void: weapon_holder.fire_effects())
+	hat = studio_rig.roots.get(studio_rig.wardrobe.head)
+	mask = studio_rig.roots.get(studio_rig.wardrobe.face)
+	_build_canopy()
+	anim = AnimationDriver.new()
+	anim.name = "Anim"
+	character.add_child.call_deferred(anim)
+
+func _process_studio() -> void:
+	var seated := character.in_vehicle()
+	var parachuting := character.mode == Character.Mode.PARACHUTE
+	var fitted := KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id)
+	aim_spine.pitch = 0.0 if fitted or seated or parachuting else clampf(character.pitch, -0.9, 0.9)
+	arm_pose.active = parachuting or (not fitted and not seated)
+	if fitted and not parachuting:
+		arm_pose.weight = 0.0
+	arm_pose.weapon_class = "parachute" if parachuting else (_held_class if not fitted and not seated else "")
+	var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
+	arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
+	studio_rig.contact_enabled = fitted and not seated and not parachuting and character.combat.reload_t <= 0
+	studio_rig.set_equipment(character.health.has_helmet(), character.health.has_armor(), character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != "")
+	if fitted:
+		studio_rig.weapon_root(studio_rig.weapon_id).visible = not seated and not parachuting
+	weapon_holder.mount.visible = not seated and not parachuting
+	canopy.visible = parachuting

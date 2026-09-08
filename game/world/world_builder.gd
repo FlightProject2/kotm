@@ -37,6 +37,8 @@ static func build(world: World) -> Dictionary:
 		world.buildings.add_child(node)
 		node.global_transform = xf
 		node.set_meta("node_class", b.get("nodeClass", "residential"))
+		if id in ["cabin", "barn_small"]:
+			node.set_meta("audio_surface", "wood")
 		var loot_nodes := node.get_node_or_null("LootNodes")
 		if loot_nodes:
 			for m in loot_nodes.get_children():
@@ -189,6 +191,11 @@ static func _prop(world: World, scene_path: String, pos: Vector3, yaw: float, sc
 		root = body
 	else:
 		root = inst
+	# Known physical materials only. Wooden farm fences must not use metal rattles.
+	if scene_path.begins_with("res://assets/kenney/car/") or scene_path == "res://assets/kenney/survival/barrel.glb":
+		root.set_meta("audio_surface", "metal")
+	elif scene_path in ["res://assets/kenney/survival/box-large.glb", "res://assets/quaternius/farm/Fence.fbx"]:
+		root.set_meta("audio_surface", "wood")
 	world.props.add_child(root)
 	root.global_transform = Transform3D(Basis(Vector3.UP, yaw), Vector3(pos.x, world.height_at(pos.x, pos.z) if pos.y == 0.0 else pos.y, pos.z))
 	return root

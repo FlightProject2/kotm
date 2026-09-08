@@ -27,7 +27,7 @@ func test_crouch_bends_knees() -> void:
 		await settle(1)
 	await skel.skeleton_updated
 	assert_true(ch.crouching, "motor is crouching")
-	assert_true(vis.crouch_pose.weight > 0.95, "crouch pose blended in (%.2f)" % vis.crouch_pose.weight)
+	assert_eq(vis.anim.current, "KOTM_Crouch_Idle", "authored deep crouch is playing")
 	var head_down: Vector3 = skel.global_transform * skel.get_bone_global_pose(head).origin
 	var foot_down: Vector3 = skel.global_transform * skel.get_bone_global_pose(foot_l).origin
 	assert_true(head_up.y - head_down.y > 0.3, "head dropped (%.2f m)" % (head_up.y - head_down.y))
