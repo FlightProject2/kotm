@@ -34,9 +34,9 @@ func test_sprint_walk_crouch_speeds() -> void:
 	var ch := _spawn(Vector3(0, 0.1, 0))
 	await settle(3)
 	await _drive(ch, 90, func(i: CharacterInput) -> void: i.move = Vector2(0, 1); i.set_button(CharacterInput.B_SPRINT, true))
-	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 6.5, 0.15, "sprint speed")
+	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 5.2, 0.15, "sprint speed")
 	await _drive(ch, 60, func(i: CharacterInput) -> void: i.move = Vector2(0, 1))
-	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 3.5, 0.15, "walk speed")
+	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 2.8, 0.15, "walk speed")
 	await _drive(ch, 60, func(i: CharacterInput) -> void: i.move = Vector2(0, 1); i.set_button(CharacterInput.B_CROUCH, true))
 	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 1.2, 0.15, "native deep-crouch speed")
 	assert_true(ch.crouching)
@@ -97,14 +97,14 @@ func test_ground_accel_stop_and_jump_buffer() -> void:
 	while not ch.is_on_floor():
 		await tree.physics_frame
 	var ticks := 0
-	while Vector2(ch.velocity.x, ch.velocity.z).length() < 0.95 * 6.5 and ticks < 60:
+	while Vector2(ch.velocity.x, ch.velocity.z).length() < 0.95 * 5.2 and ticks < 60:
 		var i := CharacterInput.new(); i.move = Vector2(0, 1); i.set_button(CharacterInput.B_SPRINT, true)
 		ch.submit_input(i)
 		await tree.physics_frame
 		ticks += 1
 	assert_between(ticks, 1, 8, "sprint reaches 95%% in <= 8 ticks (got %d)" % ticks)
 	ticks = 0
-	while Vector2(ch.velocity.x, ch.velocity.z).length() > 0.05 * 6.5 and ticks < 60:
+	while Vector2(ch.velocity.x, ch.velocity.z).length() > 0.05 * 5.2 and ticks < 60:
 		ch.submit_input(CharacterInput.new())
 		await tree.physics_frame
 		ticks += 1

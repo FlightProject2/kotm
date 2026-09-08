@@ -226,8 +226,17 @@ func _apply_appearance() -> void:
 		if String(loadout.get("hair", "")) != "hair_short_brown":
 			hair.material_override = SkinSystem.recipe_material(recipe)
 
+var worn_shoes := false
+
+func set_worn_shoes(on: bool) -> void:
+	if on != worn_shoes:
+		worn_shoes = on
+		apply_visibility()
+
 func apply_visibility() -> void:
 	var active: Array = wardrobe.values()
+	if worn_shoes:
+		active.append("Sneakers")
 	var helmet_on: bool = equipment.helmet or wardrobe.head == "MotorcycleHelmet"
 	for key in meshes:
 		var enabled: bool = key in active and not (key == "Sunglasses" and helmet_on)

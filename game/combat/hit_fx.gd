@@ -54,4 +54,9 @@ func _on_helmet_pop(position: Vector3, _helmet_id: String) -> void:
 	body.global_position = position
 	body.linear_velocity = Vector3(randf_range(-2, 2), 5.0, randf_range(-2, 2))
 	body.angular_velocity = Vector3(randf_range(-6, 6), 0, randf_range(-6, 6))
-	get_tree().create_timer(30.0).timeout.connect(body.queue_free)
+	body.set_meta("destroyed_helmet", true)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	var fade := create_tween()
+	fade.tween_interval(1.2)
+	fade.tween_property(m, "albedo_color:a", 0.0, 0.8)
+	fade.tween_callback(body.queue_free)

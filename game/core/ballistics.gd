@@ -45,6 +45,17 @@ static func jitter(dir: Vector3, spread_deg: float, rng: RandomNumberGenerator) 
 	var t2 := dir.cross(t1)
 	return (dir + t1 * (cos(th) * tan(r)) + t2 * (sin(th) * tan(r))).normalized()
 
+## Evenly distributed pellet pattern prevents random clumps and empty-centre blasts.
+static func pellet_direction(dir: Vector3, spread_deg: float, index: int, count: int, rotation: float) -> Vector3:
+	if index == 0 or count <= 1:
+		return dir
+	var radius := tan(deg_to_rad(spread_deg)) * sqrt(float(index) / float(count - 1))
+	var angle := rotation + index * 2.39996323
+	var helper := Vector3.RIGHT if absf(dir.y) > 0.99 else Vector3.UP
+	var right := dir.cross(helper).normalized()
+	var up := dir.cross(right)
+	return (dir + right * (cos(angle) * radius) + up * (sin(angle) * radius)).normalized()
+
 ## Simulates a projectile in sub-steps over flat ground until it has flown [distance_m]
 ## horizontally. Returns the vertical drop in metres (positive = below the muzzle line).
 static func simulate_drop(weapon: Dictionary, distance_m: float) -> float:

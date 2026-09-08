@@ -52,7 +52,8 @@ static func resolve(id: String, rng: RandomNumberGenerator) -> Array:
 			for a in ["223", "762", "308"]:
 				out.append_array(resolve("ammo_" + a, rng))
 			return out
-		"clothing_cosmetic", "shoes_random", "scope2x", "reflex", "ethanol", "empty_bottle", "rubbing_alcohol", "wood_stick", "gunpowder", "gas_can", "vehicle_repair_kit", "airdrop_ticket":
+		"shoes_random": return [{"kind": "shoes", "id": "running_shoes"}]
+		"clothing_cosmetic", "scope2x", "reflex", "ethanol", "empty_bottle", "rubbing_alcohol", "wood_stick", "gunpowder", "gas_can", "vehicle_repair_kit", "airdrop_ticket":
 			return []
 		"first_aid_kit x2": return [{"kind": "med", "id": "first_aid_kit", "qty": 2}]
 	if id.begins_with("ammo_"):
@@ -70,6 +71,7 @@ static func resolve(id: String, rng: RandomNumberGenerator) -> Array:
 		"armor": return [{"kind": "armor", "id": id}]
 		"med": return [{"kind": "med", "id": id, "qty": 1}]
 		"throwable": return [{"kind": "throwable", "id": id, "qty": 1}]
+		"shoes": return [{"kind": "shoes", "id": id}]
 		"backpack": return [{"kind": "backpack", "id": id}]
 		"material": return [{"kind": "material", "id": id, "qty": 1}]
 	return []

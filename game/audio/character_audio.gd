@@ -40,7 +40,7 @@ func tick(dt: float, previous_position: Vector3) -> void:
 		_step_distance = 0.0
 		_gait_phase = -1.0
 		_sprint_time = maxf(0.0, _sprint_time - dt * 2.0)
-	if _sprint_time >= 7.0:
+	if c.motor.stamina.exhausted:
 		request("exertion", 0.48)
 	_check_fence()
 

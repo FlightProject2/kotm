@@ -1,5 +1,5 @@
 {
-  "$schema_note": "Protective gear per docs/game-plan/06. Helmets are single-hit; body armor is a durability pool.",
+  "$schema_note": "Helmets break on one hit and suppress ordinary headshot bonus to body damage; hunting rifle pierces. wearerTakesFraction is retained for old data compatibility, not used by projectile damage. Body armor is a KOTM durability pool covering non-head regions; historical two-shot durability is not implemented.",
   "helmets": [
     { "id": "motorcycle_helmet", "name": "Motorcycle Helmet", "wearerTakesFraction": 0.45, "rarity": "common", "weight": 15, "protects": ["head"] },
     { "id": "tactical_helmet", "name": "Tactical Helmet", "wearerTakesFraction": 0.25, "rarity": "rare", "weight": 20, "protects": ["head"] },
@@ -10,9 +10,9 @@
     { "id": "makeshift_armor", "name": "Makeshift Plated Armor", "absorbFraction": 0.60, "durability": 45, "rarity": "crafted", "weight": 35, "protects": ["upperTorso", "lowerTorso"] }
   ],
   "shoes": [
-    { "id": "barefoot", "name": "Barefoot", "footstepNoiseMult": 0.6, "fallDamageThresholdM": 3, "sprintSpeedMult": 0.95, "lowerLegDamageMult": 1.0 },
-    { "id": "conveys", "name": "Conveys", "footstepNoiseMult": 1.0, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0, "default": true },
-    { "id": "running_shoes", "name": "Running Shoes", "footstepNoiseMult": 0.85, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0 },
+    {"id": "barefoot", "name": "Barefoot", "footstepNoiseMult": 0.6, "fallDamageThresholdM": 4, "sprintSpeedMult": 0.95, "lowerLegDamageMult": 1.0, "default": true},
+    {"id": "conveys", "name": "Conveys", "footstepNoiseMult": 1.0, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0},
+    {"id": "running_shoes", "name": "Sneakers", "footstepNoiseMult": 0.85, "fallDamageThresholdM": 4, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0, "preventsSprintExhaustion": true},
     { "id": "work_boots", "name": "Work Boots", "footstepNoiseMult": 1.2, "fallDamageThresholdM": 6, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 1.0, "kickBonusDamage": 5 },
     { "id": "military_boots", "name": "Military Boots", "footstepNoiseMult": 1.1, "fallDamageThresholdM": 7, "sprintSpeedMult": 1.0, "lowerLegDamageMult": 0.9 }
   ],
@@ -25,7 +25,8 @@
   "medical": [
     { "id": "bandage", "name": "Bandage", "heal": 15, "healOverSec": 10, "useSec": 2.0, "stopsBleeding": true, "canWalk": true, "weight": 3 },
     { "id": "field_bandage", "name": "Field Bandage", "heal": 30, "healOverSec": 10, "useSec": 2.5, "stopsBleeding": true, "canWalk": true, "weight": 4 },
-    { "id": "first_aid_kit", "name": "First Aid Kit", "heal": 100, "healOverSec": 20, "useSec": 4.0, "stopsBleeding": true, "canWalk": false, "weight": 15 }
+    { "id": "first_aid_kit", "name": "First Aid Kit", "heal": 100, "healOverSec": 20, "useSec": 4.0, "stopsBleeding": true, "canWalk": false, "weight": 15 },
+    {"id": "blood_coagulant", "name": "Blood Coagulant", "heal": 0, "healOverSec": 1, "useSec": 1, "stopsBleeding": true, "canWalk": true, "weight": 5}
   ],
   "bleeding": { "damagePerTick": 1, "tickSec": 2, "maxStacks": 1 },
   "fallDamage": { "safeM": 4, "lethalM": 15 }

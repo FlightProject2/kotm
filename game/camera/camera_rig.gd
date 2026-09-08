@@ -85,7 +85,7 @@ func aim_direction(ch: Character) -> Vector3:
 	var from := camera.global_position
 	var to := from + dir * 300.0
 	var space := get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(from, to, 1 | 4 | 16)
+	var q := PhysicsRayQueryParameters3D.create(from, to, 1 | 4 | 32)
 	q.collide_with_areas = true
 	q.exclude = [ch.get_rid()]
 	var hit := space.intersect_ray(q)

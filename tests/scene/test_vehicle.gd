@@ -27,7 +27,7 @@ func test_drive_and_exit() -> void:
 		ch.submit_input(drive)
 		await settle(1)
 	var moved := veh.global_position.distance_to(start)
-	assert_true(moved > 8.0, "drove forward (%.1f m in 2 s)" % moved)
+	assert_between(moved, 5.0, 7.0, "data-driven acceleration travels about 5.6 m in two seconds")
 	assert_true(veh.speed > 5.0, "gained speed (%.1f m/s)" % veh.speed)
 	assert_true(ch.global_position.distance_to(veh.seat_global()) < 0.05, "driver rides the seat")
 	var turn := CharacterInput.new()

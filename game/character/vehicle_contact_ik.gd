@@ -31,6 +31,19 @@ func _process_modification() -> void:
 		_vehicle = character.vehicle
 		_orientation_offsets.clear()
 	var skel := get_skeleton()
+	if _vehicle.seated_animation() == "KOTM_Truck_Seated":
+		# The truck used to alias the low snowmobile saddle pose. Place the pelvis
+		# 12 cm above the authored seat cushion, then keep the torso upright in the cab.
+		var pelvis_index := skel.find_bone("pelvis")
+		var pelvis := skel.get_bone_global_pose(pelvis_index)
+		pelvis.origin = Vector3(0.0, 1.1645106, -0.005)
+		pelvis.basis = skel.get_bone_global_rest(pelvis_index).basis
+		skel.set_bone_global_pose(pelvis_index, pelvis)
+		for name in ["spine_01", "spine_02", "spine_03", "neck_01", "head"]:
+			var index := skel.find_bone(name)
+			if index >= 0:
+				skel.set_bone_pose_rotation(index, skel.get_bone_rest(index).basis.get_rotation_quaternion())
+		skel.force_update_bone_child_transform(pelvis_index)
 	if _spine_index >= 0 and _vehicle.seated_animation() == "KOTM_Snowmobile_Seated":
 		# A rider follows the bars with the shoulders while the pelvis remains planted.
 		# This keeps the outside wrist reachable without lengthening either arm.
