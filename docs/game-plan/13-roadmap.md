@@ -52,7 +52,13 @@ back. Parachuting hangs from the risers with the gun stowed, strafes with A/D an
 dive and flare instead of snapping. Recoil is roughly halved, the hit-assist sweep is gated behind
 a proximity check so firing no longer stutters, every loot node rolls at least one item, and bots
 fight for real: 190 m perception, per-class engagement ranges and 3-6 shot bursts with planted feet
-took a 180 s 30-bot match from 0 kills to 15.
+took a 180 s 30-bot match from 0 kills to 15. Steep ground is climbable rather than a wall
+(`floor_max_angle` 45.8 -> 55 degrees: at the old limit a character walking a 50 degree slope slid
+80 m back down), military loot nodes guarantee a random rifle instead of the same hunting rifle
+every time, and body armour is a fitted plate carrier instead of a box wider than the chest.
+Three new tests measure these directly: a slope climb, the loot laid out on the real map (1674
+items, 36 distinct, commonest 6.3%) and how worn gear sits on the body at rest and while armed
+and crouched.
 
 Backlog (M1.5): prone, navmesh bots that drive, doors, retargeted animations (walk/aim), host/join
 multiplayer, Inventory screen with crafting, 3D item renders in the Customize grid, snow footprints

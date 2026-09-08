@@ -50,7 +50,7 @@ car: W/S throttle and reverse, A/D steer, Space handbrake.
 
 ```
 tools/ci/setup_godot.sh                 # downloads the pinned Godot 4.6.3 Linux binary
-tools/ci/test.sh                        # import + 66 unit/scene tests + TTK parity with tools/ttk.py
+tools/ci/test.sh                        # import + 70 unit/scene tests + TTK parity with tools/ttk.py
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path . res://game/main/main.tscn -- --sim --seed=7 --bots=30 --sim-seconds=240 --no-player
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
 ```
