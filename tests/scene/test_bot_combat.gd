@@ -25,12 +25,16 @@ func test_bot_hits_standing_target() -> void:
 	bot.inventory.give_ammo("223", 120)
 	await settle(30)
 	var shots0 := ps.shots_fired
+	# the brain drops a target the moment it dies, and the bot can kill in two shots, so record
+	# acquisition as it happens rather than reading brain.target after the fact
+	var saw_target := false
 	for i in 360:
 		await settle(1)
+		saw_target = saw_target or brain.target == target
 		if ps.hits >= 2:
 			break
-	print("    bot: target=%s shots=%d hits=%d dummy hp=%.0f aim=%s slot=%s" % [brain.target != null, ps.shots_fired - shots0, ps.hits, target.health.hp, bot.input.aim_dir, bot.inventory.current_id()])
-	assert_true(brain.target == target, "bot sees the target")
+	print("    bot: saw_target=%s shots=%d hits=%d dummy hp=%.0f slot=%s" % [saw_target, ps.shots_fired - shots0, ps.hits, target.health.hp, bot.inventory.current_id()])
+	assert_true(saw_target, "bot sees the target")
 	# two hits can arrive in two shots now that the bot aims well, so only require that it opened fire
 	assert_true(ps.shots_fired - shots0 >= 1, "bot fired (%d shots)" % (ps.shots_fired - shots0))
 	assert_true(ps.hits >= 1 and target.health.hp < 100.0, "bot landed a hit (hits %d, hp %.0f)" % [ps.hits, target.health.hp])

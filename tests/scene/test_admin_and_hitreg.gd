@@ -85,5 +85,10 @@ func test_admin_spawns_bots_on_the_ground() -> void:
 		assert_true(b.global_position.y < w.height_at(b.global_position.x, b.global_position.z) + 1.5, "standing on the terrain")
 		assert_true(Vector2(b.global_position.x - centre.x, b.global_position.z - centre.z).length() < 30.0, "within the spawn ring")
 	assert_eq(m.alive_count, 3)
+	# free the bots here: a later test's bot perceives every character in the tree, and a leftover
+	# standing 190 m away is a target it should never have seen
+	for b in made:
+		b.queue_free()
 	m.queue_free(); w.queue_free()
-	await settle(1)
+	await tree.process_frame
+	await settle(2)

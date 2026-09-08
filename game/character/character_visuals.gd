@@ -61,11 +61,7 @@ func _ready() -> void:
 	chest_mount.name = "ChestMount"
 	chest_mount.bone_name = "spine_02"
 	skeleton.add_child(chest_mount)
-	armor_mesh = MeshInstance3D.new()
-	var bm := BoxMesh.new(); bm.size = Vector3(0.42, 0.34, 0.3)
-	armor_mesh.mesh = bm
-	armor_mesh.position = Vector3(0, 0.12, 0)
-	armor_mesh.visible = false
+	armor_mesh = _build_armor()
 	chest_mount.add_child(armor_mesh)
 	backpack_mesh = _build_backpack(chest_mount)
 	if att["back"]:
@@ -164,6 +160,64 @@ func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
 	mi.transform = to_bone * Transform3D(Basis(Vector3.UP, PI).scaled(Vector3.ONE * scale), head_c)
 	mi.visible = false
 	head_mount.add_child(mi)
+	return mi
+
+## A plate carrier that follows the torso instead of a box floating off it: front and back plates
+## joined by shoulder straps, each plate narrower than the chest so nothing pokes through the arms.
+func _build_armor() -> MeshInstance3D:
+	const HALF_W := 0.155      # plate half-width: the mannequin's chest is about 0.34 m across
+	const TOP := 0.27
+	const BOT := -0.02
+	const DEPTH := 0.115       # how far each plate stands off the spine
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# each plate is a shallow shell: the outer face is bowed forward at the centre so it reads as
+	# curved armour rather than a slab
+	for face: float in [1.0, -1.0]:
+		var z: float = DEPTH * face
+		var bow: float = 0.035 * face
+		var rows := [[BOT, HALF_W * 0.86], [BOT + 0.10, HALF_W], [TOP - 0.09, HALF_W], [TOP, HALF_W * 0.62]]
+		for r in rows.size() - 1:
+			var y0: float = rows[r][0]; var w0: float = rows[r][1]
+			var y1: float = rows[r + 1][0]; var w1: float = rows[r + 1][1]
+			for s in 4:
+				var t0 := -1.0 + 2.0 * float(s) / 4.0
+				var t1 := -1.0 + 2.0 * float(s + 1) / 4.0
+				var a := Vector3(w0 * t0, y0, z + bow * (1.0 - t0 * t0))
+				var b := Vector3(w0 * t1, y0, z + bow * (1.0 - t1 * t1))
+				var c := Vector3(w1 * t1, y1, z + bow * (1.0 - t1 * t1))
+				var d := Vector3(w1 * t0, y1, z + bow * (1.0 - t0 * t0))
+				if face > 0.0:
+					st.add_vertex(a); st.add_vertex(b); st.add_vertex(c)
+					st.add_vertex(a); st.add_vertex(c); st.add_vertex(d)
+				else:
+					st.add_vertex(a); st.add_vertex(c); st.add_vertex(b)
+					st.add_vertex(a); st.add_vertex(d); st.add_vertex(c)
+	# shoulder straps over the top, one each side, joining the two plates
+	for sx: float in [-1.0, 1.0]:
+		var x0: float = sx * HALF_W * 0.30
+		var x1: float = sx * HALF_W * 0.62
+		for face: float in [1.0, -1.0]:
+			var za: float = DEPTH * face
+			var zb := 0.0
+			var ya := TOP
+			var yb := TOP + 0.055
+			var p0 := Vector3(x0, ya, za); var p1 := Vector3(x1, ya, za)
+			var p2 := Vector3(x1, yb, zb); var p3 := Vector3(x0, yb, zb)
+			st.add_vertex(p0); st.add_vertex(p1); st.add_vertex(p2)
+			st.add_vertex(p0); st.add_vertex(p2); st.add_vertex(p3)
+			st.add_vertex(p0); st.add_vertex(p2); st.add_vertex(p1)
+			st.add_vertex(p0); st.add_vertex(p3); st.add_vertex(p2)
+	st.generate_normals()
+	var mi := MeshInstance3D.new()
+	mi.name = "Armor"
+	mi.mesh = st.commit()
+	var mat := StandardMaterial3D.new()
+	mat.roughness = 0.9
+	mat.metallic = 0.0
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mi.material_override = mat
+	mi.visible = false
 	return mi
 
 ## The studio military backpack on the upper back; visible with a backpack item or back cosmetic.
