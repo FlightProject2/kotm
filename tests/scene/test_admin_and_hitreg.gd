@@ -19,7 +19,7 @@ func test_hit_assist_registers_near_miss() -> void:
 	await rig.skeleton.skeleton_updated
 	# aim 4 cm outside the head sphere: the exact ray misses, the capsule assist should not
 	var head_bi := rig.skeleton.find_bone("head")
-	var head: Vector3 = rig.skeleton.global_transform * rig.skeleton.get_bone_global_pose(head_bi).origin
+	var head: Vector3 = rig.head_world()
 	var origin := Vector3(0, 1.5, 0)
 	var edge := head + Vector3(0.15 + 0.04, 0, 0)
 	var def := ItemCatalog.weapon_def("ar15")

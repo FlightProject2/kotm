@@ -11,6 +11,7 @@ const ORANGE := Color("e8842b")
 const GOLD := Color("e6c25a")
 const PANEL := Color(0.047, 0.05, 0.063, 0.72)
 
+var inventory_panel: InventoryPanel
 var character: Character
 var match_ref: Match
 var camera_rig: CameraRig
@@ -30,6 +31,8 @@ var weapon_label: Label
 var weapon_icon: TextureRect
 var ammo_label: Label
 var hp_bar: ProgressBar
+var stamina_bar: ProgressBar
+var stamina_label: Label
 var hp_num: Label
 var bleed_label: Label
 var status_label: Label
@@ -70,6 +73,9 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	_build()
+	inventory_panel = InventoryPanel.new()
+	inventory_panel.hud = self
+	root.add_child(inventory_panel)
 	Events.remain_changed.connect(func(n: int) -> void: remain_label.text = str(n))
 	Events.kill_feed.connect(_on_kill_feed)
 	Events.banner.connect(show_banner)
@@ -240,10 +246,23 @@ void fragment(){ vec2 d = (UV - 0.5) * aspect; float r = length(d); float a = sm
 	hp_num = _label("100", _font(oswald, 24, 700), 24)
 	hp_row.add_child(bleed_label); hp_row.add_child(plus); hp_row.add_child(hp_bar); hp_row.add_child(hp_num)
 	bc.add_child(hp_row)
+	var stamina_row := HBoxContainer.new()
+	stamina_label = _label("STAMINA", _font(barlow, 12), 12, ZONE_GREEN)
+	stamina_label.custom_minimum_size.x = 150
+	stamina_bar = ProgressBar.new()
+	stamina_bar.custom_minimum_size = Vector2(350, 8)
+	stamina_bar.show_percentage = false
+	stamina_bar.add_theme_stylebox_override("background", bg.duplicate())
+	var stamina_fill := StyleBoxFlat.new()
+	stamina_fill.bg_color = ZONE_GREEN
+	stamina_bar.add_theme_stylebox_override("fill", stamina_fill)
+	stamina_row.add_child(stamina_label)
+	stamina_row.add_child(stamina_bar)
+	bc.add_child(stamina_row)
 	status_label = _label("", _font(barlow_semi, 14), 14, INK_DIM)
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	bc.add_child(status_label)
-	_place(bc, Control.PRESET_CENTER_BOTTOM, -280, -150, 560, 140)
+	_place(bc, Control.PRESET_CENTER_BOTTOM, -280, -174, 560, 164)
 	# gear bottom-left
 	var gear_panel := _panel(PANEL)
 	gear_label = _label("", _font(oswald, 15, 500), 15, INK)
@@ -360,9 +379,9 @@ func _draw_reticle() -> void:
 	var c := reticle.size * 0.5
 	var aiming := camera_rig.aiming
 	reticle.draw_circle(c, 2.0 if aiming else 3.0, Color.WHITE)
-	if not aiming:
+	if not aiming or character.combat.bloom > 0.01:
 		var def := character.combat.current_def()
-		var spread := float(def.get("hipSpreadDeg", 0.0)) * 6.0
+		var spread := (float(def.get("adsSpreadDeg" if aiming else "hipSpreadDeg", 0.0)) + character.combat.bloom) * 6.0
 		if spread > 0.0:
 			reticle.draw_arc(c, 6.0 + spread, 0, TAU, 32, Color(1, 1, 1, 0.5), 1.0)
 
@@ -454,6 +473,9 @@ func _process(dt: float) -> void:
 	# health / ammo / weapon
 	var h := character.health
 	hp_bar.value = h.hp
+	stamina_bar.value = character.motor.stamina.value
+	stamina_label.text = "SNEAKERS" if h.has_running_shoes() else ("CATCHING BREATH" if character.motor.stamina.exhausted else "STAMINA")
+	(stamina_bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = ORANGE if character.motor.stamina.exhausted else ZONE_GREEN
 	hp_num.text = str(ceili(maxf(h.hp, 0.0)))
 	bleed_label.visible = h.bleeding
 	var def := character.combat.current_def()
@@ -465,9 +487,9 @@ func _process(dt: float) -> void:
 	else:
 		ammo_label.text = "—"
 	if character.combat.reload_t > 0.0:
-		status_label.text = "Reloading…"
+		status_label.text = "RELOADING  %.1f s" % character.combat.reload_t
 	elif character.heal_timer > 0.0:
-		status_label.text = "Using %s…" % character.heal_pending.get("name", "")
+		status_label.text = "USING %s  %.1f s" % [character.heal_pending.get("name", ""), character.heal_timer]
 	elif character.mode == Character.Mode.PARACHUTE:
 		status_label.text = "Parachuting · W dive · S flare · mouse to steer"
 	elif _status_t > 0.0:
@@ -529,7 +551,8 @@ func _process(dt: float) -> void:
 	else:
 		zone_box.visible = false
 	if match_ref and match_ref.zone:
-		zone_num.text = str(ceili(match_ref.zone.seconds_left()))
+		var seconds := ceili(match_ref.zone.seconds_left())
+		zone_num.text = "%02d:%02d" % [seconds / 60, seconds % 60]
 		var in_gas := match_ref.zone.phase >= 0 and match_ref.zone.is_outside(character.global_position)
 		_gas = lerpf(_gas, 1.0 if in_gas else 0.0, 0.1)
 		(gasfx.material as ShaderMaterial).set_shader_parameter("strength", _gas)

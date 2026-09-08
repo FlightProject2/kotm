@@ -38,5 +38,5 @@ script = ExtResource("4")
 [node name="Model" parent="Visual" instance=ExtResource("3")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
 
-[node name="Hitboxes" type="Node" parent="."]
+[node name="Hitboxes" type="Node3D" parent="."]
 script = ExtResource("5")

@@ -1,5 +1,5 @@
 extends TestCase
-## AR-15 vs a helmeted dummy at 100 m: helmet pops and 75 hp remain; hunting rifle one-taps
+## AR-15 vs a helmeted dummy at 100 m: helmet pops and 72 hp remain; hunting rifle one-taps
 ## through a tactical helmet; a shooter never hits its own hitboxes.
 
 var floor_body: StaticBody3D
@@ -33,7 +33,7 @@ func _spawn(pos: Vector3, yaw: float, bot: bool) -> Character:
 
 func _head_pos(ch: Character) -> Vector3:
 	var rig: HitboxRig = ch.get_node("Hitboxes")
-	return rig.areas[0].global_position
+	return rig.head_world()
 
 func _fire_at(shooter: Character, target_point: Vector3, def: Dictionary) -> void:
 	var muzzle := shooter.combat.muzzle_position()
@@ -83,7 +83,7 @@ func test_helmet_pop_at_100m_and_pierce() -> void:
 	shooter.owner_peer_id = 1
 	await _fire_at(shooter, _head_pos(dummy), ItemCatalog.weapon_def("ar15"))
 	assert_true(ps.shots_fired >= 1, "a shot was fired")
-	assert_near(dummy.health.hp, 75.0, 0.01, "tactical helmet leaves 75 hp (hp %.1f, hits %s)" % [dummy.health.hp, ps.hits])
+	assert_near(dummy.health.hp, 72.0, 0.01, "tactical helmet leaves 72 hp (hp %.1f, hits %s)" % [dummy.health.hp, ps.hits])
 	assert_false(dummy.health.has_helmet(), "helmet popped")
 	assert_true(dummy.alive())
 	assert_eq(shooter.inventory.mags["ar15"], 29, "one round left the magazine")

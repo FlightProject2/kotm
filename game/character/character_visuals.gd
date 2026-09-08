@@ -296,6 +296,7 @@ func _process_studio() -> void:
 	var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
 	arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
 	studio_rig.contact_enabled = fitted and not seated and not parachuting and character.combat.reload_t <= 0
+	studio_rig.set_worn_shoes(character.health.shoes_id not in ["", "barefoot"])
 	studio_rig.set_equipment(character.health.has_helmet(), character.health.has_armor(), character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != "")
 	if fitted:
 		studio_rig.weapon_root(studio_rig.weapon_id).visible = not seated and not parachuting

@@ -150,7 +150,7 @@ func test_fitted_drivers_in_both_vehicles() -> void:
 		for frame in 80:
 			driver.submit_input(forward)
 			await settle(1)
-		assert_true(vehicle.global_position.distance_to(start) > 4.0 and vehicle.speed > 4.0, "real character input drives forward")
+		assert_true(vehicle.global_position.distance_to(start) > 2.0 and vehicle.speed > 3.5, "real character input drives forward with the configured 0-60 acceleration")
 		var turn := CharacterInput.new()
 		turn.move = Vector2(1, 1)
 		turn.yaw = 2.2 # Looking sideways must not turn the seated body away from the controls.

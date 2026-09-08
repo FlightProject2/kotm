@@ -44,14 +44,14 @@ static func hit(weapon: Dictionary, region: String, travel_m: float, state: Heal
 			r.kind = KIND_HELMET_POP
 			r.helmet_destroyed = true
 			if not bool(weapon.get("pierceHelmet", false)):
-				dmg *= state.helmet_take
+				dmg = float(weapon["bodyDamage"]) / float(pellets if pellet else 1)
 			state.helmet_popped_by_shot = shot_id
 			state.remove_helmet()
 		elif state.helmet_popped_by_shot == shot_id and pellet:
 			# Same blast that popped the helmet: remaining pellets are still reduced.
 			r.kind = KIND_HELMET_POP
 			if not bool(weapon.get("pierceHelmet", false)):
-				dmg *= state.helmet_popped_take
+				dmg = float(weapon["bodyDamage"]) / float(pellets)
 		else:
 			r.kind = KIND_FLESH
 	else:
@@ -64,7 +64,7 @@ static func hit(weapon: Dictionary, region: String, travel_m: float, state: Heal
 			var t := clampf((travel_m - float(falloff["startM"])) / (float(falloff["endM"]) - float(falloff["startM"])), 0.0, 1.0)
 			dmg *= lerpf(1.0, float(falloff["endMultiplier"]), t)
 		r.kind = KIND_FLESH
-		if is_torso(region) and state.has_armor():
+		if state.has_armor():
 			var absorbed := minf(state.armor_dur, dmg * state.armor_absorb)
 			state.armor_dur -= absorbed
 			dmg -= absorbed

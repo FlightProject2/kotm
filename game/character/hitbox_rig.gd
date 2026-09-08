@@ -1,5 +1,5 @@
 class_name HitboxRig
-extends Node
+extends Node3D
 ## Creates one Area3D per hit region (docs 06) and moves them every physics tick from the
 ## skeleton's bone poses. Areas live on physics layer 3 (hitboxes) and carry metadata:
 ## "region" (String) and "character" (Character).
@@ -9,7 +9,7 @@ const REGIONS := [
 	["head", "head", "", "sphere", 0.15, 0.0],
 	["neck", "neck_01", "head", "capsule", 0.08, 0.0],
 	["upperTorso", "spine_02", "neck_01", "box", 0.21, 0.04],
-	["lowerTorso", "spine_01", "spine_02", "box", 0.19, 0.06],
+	["lowerTorso", "pelvis", "spine_02", "box", 0.19, 0.06],
 	["arms", "upperarm.l", "lowerarm.l", "capsule", 0.08, 0.0],
 	["arms", "upperarm.r", "lowerarm.r", "capsule", 0.08, 0.0],
 	["arms", "lowerarm.l", "hand.l", "capsule", 0.07, 0.0],
@@ -55,6 +55,7 @@ func _ready() -> void:
 		match r[3]:
 			"sphere":
 				var s := SphereShape3D.new(); s.radius = r[4]; shape = s
+				local.origin = skeleton.get_bone_global_rest(bi).basis.inverse() * Vector3(0, 0.10, 0)
 			"capsule":
 				var s := CapsuleShape3D.new(); s.radius = r[4]; s.height = length + 2.0 * r[4] + r[5]; shape = s
 			"box":
@@ -119,3 +120,6 @@ static func character_of(collider: Object) -> Character:
 	if collider is Area3D and collider.has_meta("character"):
 		return collider.get_meta("character")
 	return null
+
+func head_world() -> Vector3:
+	return (areas[0].get_child(0) as Node3D).global_position if not areas.is_empty() else character.global_position + Vector3.UP * 1.65

@@ -10,8 +10,8 @@ const EXPECTED := {
 	"hellfire": [7, 12, 3, 3, 3],
 	"m9": [5, 9, 2, 3, 3],
 	"r380": [6, 12, 2, 3, 3],
-	"m1911": [4, 8, 2, 2, 3],
-	"magnum44": [3, 5, 1, 1, 1],
+	"m1911": [4, 8, 2, 2, 2],
+	"magnum44": [3, 5, 1, 2, 2],
 	"recurve_bow": [3, 5, 1, 2, 2],
 }
 
@@ -63,7 +63,7 @@ func test_helmet_pop_and_pierce() -> void:
 	var r := DamageModel.hit(weapon("ar15"), "head", 0.0, st)
 	assert_eq(r.kind, DamageModel.KIND_HELMET_POP)
 	assert_true(r.helmet_destroyed)
-	assert_near(st.hp, 75.0, 0.001, "tactical helmet leaves 75 hp after an AR headshot")
+	assert_near(st.hp, 72.0, 0.001, "helmet removes the bonus; wearer takes ordinary AR body damage")
 	assert_false(st.has_helmet())
 	var st2 := HealthState.new()
 	st2.set_helmet("tactical_helmet")
@@ -77,7 +77,7 @@ func test_shotgun_blast_shares_helmet_reduction() -> void:
 	var w := weapon("shotgun_12g")
 	for i in 8:
 		DamageModel.hit(w, "head", 0.0, st, true, 1)
-	assert_near(st.hp, 100.0 - 144.0 * 0.45, 0.01, "whole blast reduced by the helmet it popped")
+	assert_near(st.hp, 100.0 - float(w["bodyDamage"]), 0.01, "helmet removes the entire blast's headshot bonus")
 	assert_true(st.alive)
 
 func test_region_multipliers_and_shoes() -> void:
