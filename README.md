@@ -42,15 +42,15 @@ If the editor reports a Vulkan or Forward+ error on your GPU, run with `--render
 
 WASD move, Shift sprint, Space jump, C crouch (knees bend, feet stay planted), right mouse aim
 (hunting rifle scopes), left mouse fire, R reload, F pick up / loot bag / enter and exit a car, 1-6
-hotbar, H bandage, J first aid kit, T first-person toggle, M map, Esc pause. Under the parachute: W
-dives (faster descent), S flares, mouse steers. In a car: W/S throttle and reverse, A/D steer, Space
-handbrake.
+hotbar, H bandage, J first aid kit, T first-person toggle, M map, F10 admin/test menu, Esc pause.
+Under the parachute: W dives (faster descent), S flares, A/D strafe the canopy, mouse steers. In a
+car: W/S throttle and reverse, A/D steer, Space handbrake.
 
 ### Headless checks (contributors)
 
 ```
 tools/ci/setup_godot.sh                 # downloads the pinned Godot 4.6.3 Linux binary
-tools/ci/test.sh                        # import + 46 unit/scene tests + TTK parity with tools/ttk.py
+tools/ci/test.sh                        # import + 70 unit/scene tests + TTK parity with tools/ttk.py
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --fixed-fps 60 --path . res://game/main/main.tscn -- --sim --seed=7 --bots=30 --sim-seconds=240 --no-player
 scratch/godot/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
 ```

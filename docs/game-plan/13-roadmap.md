@@ -40,6 +40,26 @@ military backpack attach to the head and back and lie on the ground as loot; the
 the snowmobile replace the car-kit vehicles. Loot is laid out on a jittered grid across the whole
 map (640 scatter groups plus the building nodes).
 
+Fifth pass (movement feel and fair fights): terrain collision, the gameplay height query and the
+drawn mesh all read the same 2 m grid, so the ground can no longer be invisible or swallow a
+running player. An admin menu (F10) spawns and kills bots, hands out loadouts, toggles bullet
+trails and god mode, spawns vehicles, teleports to POIs and scales time. Crouch became analytic:
+the thighs swing forward, the calves fold back twice as far, the feet level out and the pelvis
+drops by exactly the height the folded legs lose, so the legs can never flail. The armed pose was
+re-tuned per weapon class and the IK now picks a deterministic axis for near-opposite rotations
+and turns at most 150 degrees per step. The backpack hangs off the artist's socket against the
+back. Parachuting hangs from the risers with the gun stowed, strafes with A/D and eases between
+dive and flare instead of snapping. Recoil is roughly halved, the hit-assist sweep is gated behind
+a proximity check so firing no longer stutters, every loot node rolls at least one item, and bots
+fight for real: 190 m perception, per-class engagement ranges and 3-6 shot bursts with planted feet
+took a 180 s 30-bot match from 0 kills to 15. Steep ground is climbable rather than a wall
+(`floor_max_angle` 45.8 -> 55 degrees: at the old limit a character walking a 50 degree slope slid
+80 m back down), military loot nodes guarantee a random rifle instead of the same hunting rifle
+every time, and body armour is a fitted plate carrier instead of a box wider than the chest.
+Three new tests measure these directly: a slope climb, the loot laid out on the real map (1674
+items, 36 distinct, commonest 6.3%) and how worn gear sits on the body at rest and while armed
+and crouched.
+
 Backlog (M1.5): prone, navmesh bots that drive, doors, retargeted animations (walk/aim), host/join
 multiplayer, Inventory screen with crafting, 3D item renders in the Customize grid, snow footprints
 and drifts, the remaining weapons and clothing as studio models.
