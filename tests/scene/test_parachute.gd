@@ -29,3 +29,23 @@ func test_parachute_lands() -> void:
 	assert_true(ch.global_position.z < 300.0 - 20.0, "drifted forward while diving")
 	world.queue_free()
 	await settle(1)
+
+func test_studio_character_holds_both_risers() -> void:
+	for armed in [false, true]:
+		var ch: Character = load("res://game/character/character.tscn").instantiate()
+		await add_to_tree(ch)
+		if armed:
+			ch.inventory.give_weapon("ar15")
+		ch.motor.start_parachute(Vector3(0, 200, 0), 0.0)
+		await settle(35)
+		var skel: Skeleton3D = ch.visual.skeleton
+		await skel.skeleton_updated
+		var head := skel.get_bone_global_pose(skel.find_bone("head")).origin
+		assert_eq(ch.visual.arm_pose.weapon_class, "parachute", "risers override weapon poses")
+		for side in ["l", "r"]:
+			var hand := skel.get_bone_global_pose(skel.find_bone("hand." + side)).origin
+			assert_true(hand.y > head.y + 0.08, "hand stays above the head while hanging: " + side)
+		if armed:
+			assert_false(ch.visual.studio_rig.weapon_root("ar15").visible, "rifle is stowed under canopy")
+		ch.queue_free()
+		await settle(1)

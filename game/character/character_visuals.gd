@@ -149,6 +149,22 @@ func _build_canopy() -> void:
 	canopy.add_child(lines)
 	canopy.visible = false
 	add_child(canopy)
+	skeleton.skeleton_updated.connect(_update_canopy_lines.bind(im))
+
+func _update_canopy_lines(im: ImmediateMesh) -> void:
+	if not canopy.visible:
+		return
+	var hands: Array[Vector3] = []
+	for bone in ["hand.l", "hand.r"]:
+		hands.append(to_local(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(bone)).origin))
+	if hands[0].x > hands[1].x:
+		hands.reverse()
+	im.clear_surfaces()
+	im.surface_begin(Mesh.PRIMITIVE_LINES)
+	for corner in [Vector3(-1.6, 4.2, -1.6), Vector3(1.6, 4.2, -1.6), Vector3(-1.6, 4.2, 1.6), Vector3(1.6, 4.2, 1.6)]:
+		im.surface_add_vertex(hands[0 if corner.x < 0 else 1])
+		im.surface_add_vertex(corner)
+	im.surface_end()
 
 ## The studio motorcycle helmet, fitted over the measured head (falls back to a sphere).
 func _build_helmet(head_mount: Node3D) -> MeshInstance3D:
@@ -273,10 +289,10 @@ func _process_studio() -> void:
 	var parachuting := character.mode == Character.Mode.PARACHUTE
 	var fitted := KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id)
 	aim_spine.pitch = 0.0 if fitted or seated or parachuting else clampf(character.pitch, -0.9, 0.9)
-	arm_pose.active = not fitted and not seated
-	if fitted:
+	arm_pose.active = parachuting or (not fitted and not seated)
+	if fitted and not parachuting:
 		arm_pose.weight = 0.0
-	arm_pose.weapon_class = _held_class if not fitted and not seated and not parachuting else ""
+	arm_pose.weapon_class = "parachute" if parachuting else (_held_class if not fitted and not seated else "")
 	var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
 	arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
 	studio_rig.contact_enabled = fitted and not seated and not parachuting and character.combat.reload_t <= 0
