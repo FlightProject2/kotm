@@ -20,5 +20,6 @@ signal tracer(shooter_id: int, origin: Vector3, velocity: Vector3, weapon_id: St
 signal hit_fx(position: Vector3, normal: Vector3, kind: String)
 signal helmet_pop(position: Vector3, helmet_id: String)
 signal gunshot(position: Vector3, weapon_id: String, shooter_id: int)
+signal player_sound(event: String, position: Vector3, character_id: int, volume: float)
 signal local_character_changed(character: Node)
 signal local_stat(kind: String, amount: float)   # progression: kill, headshot, damage, pickup, drive

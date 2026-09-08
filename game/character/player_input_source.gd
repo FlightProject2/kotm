@@ -45,6 +45,6 @@ func _physics_process(_dt: float) -> void:
 			i.use_med = 2
 	i.set_button(CharacterInput.B_CROUCH, crouch_toggle)
 	i.yaw = camera_rig.body_yaw()
-	i.pitch = camera_rig.pitch
+	i.pitch = camera_rig.view_pitch()
 	i.aim_dir = camera_rig.aim_direction(character)
 	character.submit_input(i)

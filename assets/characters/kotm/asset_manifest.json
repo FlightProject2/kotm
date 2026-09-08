@@ -1,0 +1,733 @@
+{
+  "character_height_m": 1.82,
+  "forward_axis": "Blender -Y; glTF +Z",
+  "fps": 30,
+  "skeleton": "KOTM_Character_Rig",
+  "deform_bones": [
+    "pelvis",
+    "spine_01",
+    "spine_02",
+    "chest",
+    "neck_01",
+    "head",
+    "eye.l",
+    "eye.r",
+    "clavicle.l",
+    "upperarm.l",
+    "lowerarm.l",
+    "hand.l",
+    "thumb_01.l",
+    "thumb_02.l",
+    "thumb_03.l",
+    "index_01.l",
+    "index_02.l",
+    "index_03.l",
+    "middle_01.l",
+    "middle_02.l",
+    "middle_03.l",
+    "ring_01.l",
+    "ring_02.l",
+    "ring_03.l",
+    "pinky_01.l",
+    "pinky_02.l",
+    "pinky_03.l",
+    "clavicle.r",
+    "upperarm.r",
+    "lowerarm.r",
+    "hand.r",
+    "thumb_01.r",
+    "thumb_02.r",
+    "thumb_03.r",
+    "index_01.r",
+    "index_02.r",
+    "index_03.r",
+    "middle_01.r",
+    "middle_02.r",
+    "middle_03.r",
+    "ring_01.r",
+    "ring_02.r",
+    "ring_03.r",
+    "pinky_01.r",
+    "pinky_02.r",
+    "pinky_03.r",
+    "thigh.l",
+    "calf.l",
+    "foot.l",
+    "ball.l",
+    "thigh.r",
+    "calf.r",
+    "foot.r",
+    "ball.r"
+  ],
+  "animations": {
+    "KOTM_Idle": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0.0
+    },
+    "KOTM_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Crouch_Idle": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_AR75_Aim": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Aim": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Reload": {
+      "duration_seconds": 2.2,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Snowmobile_Seated": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Reload": {
+      "duration_seconds": 2.6,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Crouch_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_AR75_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Crouch_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Crouch_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_AR75_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_AR75_Aim_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Aim_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Aim_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Crouch_Aim": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Crouch_Aim_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_AR75_Crouch_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Crouch": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Crouch_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Crouch_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_Hunting_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_Hunting_Aim_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Aim_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Aim_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Crouch_Aim": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Crouch_Aim_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_Hunting_Crouch_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Crouch": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    }
+  },
+  "templates": {
+    "MotorcycleHelmet": {
+      "root": "EQ_Template_MotorcycleHelmet",
+      "meshes": [
+        "Template_Helmet__GEAR_HELMET_Helmet_VisorPivot.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_VisorPivot",
+        "Template_Helmet__GEAR_HELMET_Helmet_Visor",
+        "Template_Helmet__GEAR_HELMET_Helmet_TopVent.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_TopVent",
+        "Template_Helmet__GEAR_HELMET_Helmet_Stripe.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_Stripe",
+        "Template_Helmet__GEAR_HELMET_Helmet_SideVent.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_SideVent",
+        "Template_Helmet__GEAR_HELMET_Helmet_Shell",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot.005",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot.004",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot.003",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot.002",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_RedDot",
+        "Template_Helmet__GEAR_HELMET_Helmet_PivotScrew.001",
+        "Template_Helmet__GEAR_HELMET_Helmet_PivotScrew",
+        "Template_Helmet__GEAR_HELMET_Helmet_PatchInner",
+        "Template_Helmet__GEAR_HELMET_Helmet_Patch",
+        "Template_Helmet__GEAR_HELMET_Helmet_NeckRoll",
+        "Template_Helmet__GEAR_HELMET_Helmet_EyeportTrim",
+        "Template_Helmet__GEAR_HELMET_Helmet_ChinVent"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_MotorcycleHelmet.glb",
+      "triangles": 9658
+    },
+    "BaseballCap": {
+      "root": "EQ_Template_BaseballCap",
+      "meshes": [
+        "Template_Cap_crown",
+        "Template_Cap_sweatband",
+        "Template_Cap_panel_seam_0",
+        "Template_Cap_panel_seam_1",
+        "Template_Cap_panel_seam_2",
+        "Template_Cap_panel_seam_3",
+        "Template_Cap_panel_seam_4",
+        "Template_Cap_panel_seam_5",
+        "Template_Cap_curved_bill",
+        "Template_Cap_bill_edge"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_BaseballCap.glb",
+      "triangles": 3648
+    },
+    "Sunglasses": {
+      "root": "EQ_Template_Sunglasses",
+      "meshes": [
+        "Template_Glasses_frame_1",
+        "Template_Glasses_lens_1",
+        "Template_Glasses_temple_1",
+        "Template_Glasses_frame_-1",
+        "Template_Glasses_lens_-1",
+        "Template_Glasses_temple_-1",
+        "Template_Glasses_bridge"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_Sunglasses.glb",
+      "triangles": 1168
+    },
+    "FaceBandana": {
+      "root": "EQ_Template_FaceBandana",
+      "meshes": [
+        "Template_Bandana_lower_face",
+        "Template_Bandana_top_binding",
+        "Template_Bandana_hem",
+        "Template_Bandana_tie_-1",
+        "Template_Bandana_tie_1"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_FaceBandana.glb",
+      "triangles": 4056
+    },
+    "TankTop": {
+      "root": "EQ_Template_TankTop",
+      "meshes": [
+        "EQ_Template_TankTop_Cloth"
+      ],
+      "hidden_body_faces": 452,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_TankTop.glb",
+      "triangles": 3320
+    },
+    "TShirt": {
+      "root": "EQ_Template_TShirt",
+      "meshes": [
+        "EQ_Template_TShirt_Cloth"
+      ],
+      "hidden_body_faces": 927,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_TShirt.glb",
+      "triangles": 5008
+    },
+    "Hoodie": {
+      "root": "EQ_Template_Hoodie",
+      "meshes": [
+        "EQ_Template_Hoodie_Cloth",
+        "EQ_Template_Hoodie_HoodDown"
+      ],
+      "hidden_body_faces": 1721,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_Hoodie.glb",
+      "triangles": 8488
+    },
+    "Leggings": {
+      "root": "EQ_Template_Leggings",
+      "meshes": [
+        "Leggings_BlankShell"
+      ],
+      "hidden_body_faces": 918,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_Leggings.glb",
+      "triangles": 2408
+    },
+    "Shorts": {
+      "root": "EQ_Template_Shorts",
+      "meshes": [
+        "Shorts_BlankShell"
+      ],
+      "hidden_body_faces": 252,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_Shorts.glb",
+      "triangles": 1034
+    },
+    "Sneakers": {
+      "root": "EQ_Template_Sneakers",
+      "meshes": [
+        "Sneaker_Blank.l",
+        "Sneaker_Tongue.l",
+        "Sneaker_LacesEyelets.l",
+        "Sneaker_Blank.r",
+        "Sneaker_Tongue.r",
+        "Sneaker_LacesEyelets.r"
+      ],
+      "hidden_body_faces": 2264,
+      "glb": "assets/characters/kotm/templates/KOTM_Template_Sneakers.glb",
+      "triangles": 1064
+    },
+    "Beanie": {
+      "root": "EQ_Beanie",
+      "meshes": [
+        "Beanie_KnitCrown",
+        "Beanie_FoldedCuff",
+        "Beanie_KOTM_Badge",
+        "Beanie_KOTM_Embroidery",
+        "Beanie_BadgeStitching"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "assets/characters/kotm/templates/KOTM_Beanie.glb",
+      "finished_material": true,
+      "triangles": 3420
+    }
+  },
+  "body_masks": {
+    "BODY_Region_000": [],
+    "BODY_Region_001": [
+      "Sneakers"
+    ],
+    "BODY_Region_002": [
+      "Leggings"
+    ],
+    "BODY_Region_003": [
+      "Hoodie",
+      "TShirt"
+    ],
+    "BODY_Region_004": [
+      "DefaultTank",
+      "Hoodie",
+      "TShirt",
+      "TankTop"
+    ],
+    "BODY_Region_005": [
+      "Hoodie"
+    ],
+    "BODY_Region_006": [
+      "DefaultTank",
+      "Hoodie",
+      "TShirt",
+      "TankTop"
+    ],
+    "BODY_Region_007": [
+      "DefaultBoxers",
+      "Leggings",
+      "Shorts"
+    ],
+    "BODY_Region_008": [
+      "Leggings",
+      "Shorts"
+    ],
+    "BODY_Region_009": [
+      "Hoodie",
+      "TShirt"
+    ],
+    "BODY_Region_010": [
+      "DefaultBoxers"
+    ]
+  },
+  "equipment_roots": [
+    "EQ_Helmet",
+    "EQ_Armour",
+    "EQ_Backpack",
+    "EQ_AR75",
+    "EQ_HuntingRifle"
+  ],
+  "seat_driver": [
+    0.0,
+    0.1899999976158142,
+    0.0
+  ],
+  "seat_surface_z": 0.773999810218811,
+  "weapon_fit": {
+    "AR75": {
+      "scale": 1.08,
+      "palm_R": [
+        -0.036,
+        0.025,
+        -0.042
+      ],
+      "palm_L": [
+        0.03,
+        -0.268,
+        0.081
+      ],
+      "yaw_degrees": 45,
+      "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
+      "ready_yaw_degrees": 75,
+      "ready_origin": [
+        0,
+        -0.34,
+        1.17
+      ],
+      "ready_pitch_degrees": 25,
+      "chest_yaw_degrees": -10,
+      "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
+      "neck_aim_rotation_degrees": [
+        12,
+        -6,
+        0
+      ],
+      "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
+      "recoil_input_gain": 0.45,
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+    },
+    "HuntingRifle": {
+      "scale": 0.8,
+      "palm_R": [
+        -0.034,
+        0.15,
+        -0.044
+      ],
+      "palm_L": [
+        0.031,
+        -0.195,
+        -0.02
+      ],
+      "yaw_degrees": 65,
+      "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
+      "ready_yaw_degrees": 75,
+      "ready_origin": [
+        0,
+        -0.39,
+        1.18
+      ],
+      "ready_pitch_degrees": 25,
+      "chest_yaw_degrees": -10,
+      "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
+      "neck_aim_rotation_degrees": [
+        12,
+        -6,
+        0
+      ],
+      "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
+      "recoil_input_gain": 1.0,
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+    }
+  },
+  "garment_polish": {
+    "EQ_Template_TankTop_Cloth": 450,
+    "DefaultTank_replaced": 1,
+    "Leggings_BlankShell": 0,
+    "Shorts_BlankShell": 0,
+    "EQ_Template_Hoodie_Cloth": 3120
+  },
+  "ar_stock_edit": {
+    "revision": "KOTM solid stock 1",
+    "removed": [
+      "AR75__StockLatch"
+    ],
+    "before": {
+      "vertices": 247,
+      "faces": 197,
+      "non_manifold_edges": 0,
+      "volume_m3": 0.00043298749597580927
+    },
+    "after": {
+      "vertices": 256,
+      "faces": 205,
+      "non_manifold_edges": 0,
+      "volume_m3": 0.0004795100944117954
+    },
+    "window_ray_checks_passed": true,
+    "ray_checks": 10,
+    "maximum_outer_surface_change_m": 1e-06
+  }
+}

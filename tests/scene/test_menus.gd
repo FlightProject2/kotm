@@ -46,7 +46,7 @@ func test_screens_and_customize() -> void:
 func test_crates_dailies_and_reel() -> void:
 	Progress.reset_for_tests()
 	assert_eq(Progress.dailies.size(), 4, "four dailies generated")
-	assert_true(Progress.owns("shirt_grey") and not Progress.owns("shirt_hotshot"), "defaults owned, rares locked")
+	assert_true(Progress.owns("tank_white") and not Progress.owns("shirt_hotshot"), "defaults owned, rares locked")
 	assert_false(Progress.buy_crate("hot_shot_crate"), "300 coins cannot buy a 500 crate")
 	Progress.coins = 1000
 	assert_true(Progress.buy_crate("hot_shot_crate"))

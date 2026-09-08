@@ -1,0 +1,77 @@
+{
+  "coordinate_system": "Blender Z up, -Y forward, metres",
+  "driver_root": [
+    0.45,
+    0.43,
+    0
+  ],
+  "seat_surface_z": 1.044510628,
+  "pelvis_z": 1.164510628,
+  "hand_grips": {
+    "L": [
+      0.6,
+      0.265,
+      1.579510628
+    ],
+    "R": [
+      0.3,
+      0.265,
+      1.579510628
+    ]
+  },
+  "foot_rests": {
+    "L": [
+      0.55,
+      -0.2,
+      0.884510628
+    ],
+    "R": [
+      0.35,
+      -0.2,
+      0.884510628
+    ]
+  },
+  "bounds_blender": {
+    "min": [
+      -1.195000171661377,
+      -2.6599998474121094,
+      -6.05359673500061e-09
+    ],
+    "max": [
+      1.195000171661377,
+      2.25,
+      2.274510622024536
+    ]
+  },
+  "driver_root_blender": [
+    0.45,
+    0.43,
+    0
+  ],
+  "hand_grips_blender": {
+    "L": [
+      0.6,
+      0.265,
+      1.579510628
+    ],
+    "R": [
+      0.3,
+      0.265,
+      1.579510628
+    ]
+  },
+  "foot_rests_blender": {
+    "L": [
+      0.55,
+      -0.2,
+      0.884510628
+    ],
+    "R": [
+      0.35,
+      -0.2,
+      0.884510628
+    ]
+  },
+  "source": "E:\\Users\\Scott\\Documents\\blender - king of the mountain assets\\Snow-truck .blend",
+  "clip": "KOTM_Truck_Seated"
+}

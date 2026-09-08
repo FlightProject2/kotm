@@ -4,9 +4,9 @@
   "regionMultipliers": { "head": 3.5, "neck": 1.5, "upperTorso": 1.0, "lowerTorso": 1.0, "arms": 0.7, "upperLegs": 0.7, "lowerLegs": 0.6 },
   "weapons": [
     { "id": "ar15", "name": "AR-15", "class": "rifle", "ammo": "223", "magSize": 30, "chambered": true,
-      "fireMode": "semi", "rpmCap": 400, "bodyDamage": 28, "headDamage": 100, "pierceHelmet": false,
+      "fireMode": "semi", "rpmCap": 600, "bodyDamage": 28, "headDamage": 100, "pierceHelmet": false,
       "muzzleVelocity": 620, "gravityMultiplier": 1.6, "maxRange": 800, "falloff": null,
-      "hipSpreadDeg": 2.5, "adsSpreadDeg": 0.3, "recoilVertical": 1.4, "recoilHorizontal": 0.4, "recoilRecoverySec": 0.25,
+      "hipSpreadDeg": 2.5, "adsSpreadDeg": 0.3, "recoilVertical": 0.55, "recoilHorizontal": 0.18, "recoilRecoverySec": 0.14,
       "reloadSec": 2.4, "reloadTacticalSec": 2.0, "swapSec": 0.6, "weight": 50, "rarity": "rare",
       "attachments": ["reflex", "scope2x"], "audibleRangeM": 1000 },
     { "id": "ak47", "name": "AK-47", "class": "rifle", "ammo": "762", "magSize": 30, "chambered": true,

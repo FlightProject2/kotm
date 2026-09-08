@@ -1,0 +1,44 @@
+extends SkeletonModifier3D
+## The lower-body clock is independent of recoil/reload. Sampling the same imported tracks
+## keeps hips and feet moving through repeated shots without restarting the step cycle.
+var character: Character
+var rig: KOTMCharacterRig
+var driver: AnimationDriver
+var _tracks: Dictionary = {}
+const BONES := ["pelvis", "spine_01", "thigh.l", "calf.l", "foot.l", "ball.l", "thigh.r", "calf.r", "foot.r", "ball.r"]
+
+func _process_modification() -> void:
+	if character == null or character.mode != Character.Mode.GROUND or character.in_vehicle():
+		return
+	if driver == null:
+		driver = character.visual.anim
+	if driver == null:
+		return
+	var key := driver.lower_gait_clip
+	var phase := driver.lower_gait_phase
+	if key.is_empty():
+		if character.crouching and character.combat.reload_t > 0:
+			key = "KOTM_Crouch_Idle"
+			phase = 0.0
+		else:
+			return
+	if not rig.clips.has(key):
+		return
+	var animation := rig.player.get_animation(rig.clips[key])
+	if not _tracks.has(key):
+		_tracks[key] = []
+		for index in animation.get_track_count():
+			var path := animation.track_get_path(index)
+			if path.get_subname_count() == 0:
+				continue
+			var bone := String(path.get_subname(path.get_subname_count() - 1))
+			if bone in BONES:
+				_tracks[key].append([index, get_skeleton().find_bone(bone)])
+	var time := phase * animation.length
+	for entry in _tracks[key]:
+		var track: int = entry[0]
+		var bone: int = entry[1]
+		match animation.track_get_type(track):
+			Animation.TYPE_POSITION_3D: get_skeleton().set_bone_pose_position(bone, animation.position_track_interpolate(track, time))
+			Animation.TYPE_ROTATION_3D: get_skeleton().set_bone_pose_rotation(bone, animation.rotation_track_interpolate(track, time))
+			Animation.TYPE_SCALE_3D: get_skeleton().set_bone_pose_scale(bone, animation.scale_track_interpolate(track, time))

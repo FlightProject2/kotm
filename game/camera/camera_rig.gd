@@ -13,7 +13,9 @@ var aiming: bool = false
 var scoped: bool = false
 var recoil_pitch: float = 0.0
 var recoil_yaw: float = 0.0
+var _recoil_recovery_sec := 0.14
 var look_enabled: bool = true
+var shoulder_side := 1.0
 var cfg: Dictionary = DataLib.movement()["camera"]
 
 @onready var pivot: Node3D = $Pivot
@@ -30,6 +32,8 @@ func _ready() -> void:
 		first_person = Settings.first_person_default
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_Q and look_enabled:
+		shoulder_side *= -1.0
 	if event is InputEventMouseMotion and look_enabled and (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or Input.mouse_mode == Input.MOUSE_MODE_VISIBLE):
 		var sens: float = Settings.mouse_sensitivity if Settings else float(cfg.get("mouseSensitivity", 0.0022))
 		if scoped:
@@ -51,13 +55,27 @@ func body_yaw() -> float:
 	return yaw
 
 func view_direction() -> Vector3:
-	var y := yaw + free_look_yaw
-	return Vector3(-sin(y) * cos(pitch), sin(pitch), -cos(y) * cos(pitch))
+	var y := yaw + free_look_yaw + recoil_yaw
+	var p := view_pitch()
+	return Vector3(-sin(y) * cos(p), sin(p), -cos(y) * cos(p))
+
+func view_pitch() -> float:
+	var lim := deg_to_rad(float(cfg["pitchLimitDeg"]))
+	return clampf(pitch + recoil_pitch, -lim, lim)
 
 func kick(vertical_deg: float, horizontal_deg: float) -> void:
 	var k := float(cfg["recoilToCamera"])
-	pitch = minf(deg_to_rad(float(cfg["pitchLimitDeg"])), pitch + deg_to_rad(vertical_deg) * k)
-	yaw += deg_to_rad(horizontal_deg) * k
+	recoil_pitch += deg_to_rad(vertical_deg) * k
+	recoil_yaw += deg_to_rad(horizontal_deg) * k
+	if is_instance_valid(target) and is_instance_valid(target.combat):
+		_recoil_recovery_sec = maxf(0.01, float(target.combat.current_def().get("recoilRecoverySec", 0.14)))
+
+func _recover_recoil(dt: float) -> void:
+	# Return 95% over the weapon's authored recovery time, independently of FPS.
+	# Mouse look stays separate, so recovery does not erase the player's input.
+	var decay := exp(-3.0 * dt / _recoil_recovery_sec)
+	recoil_pitch *= decay
+	recoil_yaw *= decay
 
 ## World direction from the muzzle to whatever the crosshair is on (camera-convergent aim).
 func aim_direction(ch: Character) -> Vector3:
@@ -93,10 +111,15 @@ static func _decay(a: float, b: float, k: float, dt: float) -> float:
 	return lerpf(a, b, 1.0 - exp(-k * dt))
 
 func _process(dt: float) -> void:
+	_recover_recoil(dt)
 	if target == null or not is_instance_valid(target):
 		return
 	if _bound != target:
+		if is_instance_valid(_bound) and _bound.fired.is_connected(kick):
+			_bound.fired.disconnect(kick)
 		_bound = target
+		recoil_pitch = 0.0
+		recoil_yaw = 0.0
 		target.fired.connect(kick)
 	if not Input.is_action_pressed("free_look"):
 		free_look_yaw = _decay(free_look_yaw, 0.0, float(cfg.get("freeLookReturn", 10.0)), dt)
@@ -118,8 +141,8 @@ func _process(dt: float) -> void:
 	var side := 0.0 if fp else (float(cfg["shoulderAim"]) if aiming else float(cfg["shoulder"]))
 	var origin: Vector3 = target.get_global_transform_interpolated().origin if get_tree().physics_interpolation else target.global_position
 	global_position = origin + Vector3(0, target.height() + float(cfg["pivotOffset"]), 0)
-	rotation = Vector3(pitch, yaw + free_look_yaw, 0)
-	shoulder.position.x = side
+	rotation = Vector3(view_pitch(), yaw + free_look_yaw + recoil_yaw, 0)
+	shoulder.position.x = _decay(shoulder.position.x, side * shoulder_side, 14.0, dt)
 	arm.spring_length = _decay(arm.spring_length, length, float(cfg.get("armSmoothing", 18.0)), dt)
 	var fov := float(cfg["fovScope"]) if scoped else (float(cfg["fovAim"]) if aiming else float(cfg["fov"]))
 	camera.fov = _decay(camera.fov, fov, float(cfg.get("fovSmoothing", 14.0)), dt)
@@ -129,7 +152,7 @@ func _process(dt: float) -> void:
 		if camera.global_position.y < min_y:
 			camera.global_position.y = min_y
 	# hide the local body in first person / scope via the visual layer
-	target.visual.visible = not fp and not target.in_vehicle()
+	target.visual.visible = target.alive() and not fp
 
 func is_first_person_view() -> bool:
 	return (first_person or scoped) and target != null and target.mode != Character.Mode.PARACHUTE

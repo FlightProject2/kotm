@@ -3,7 +3,7 @@ extends SubViewportContainer
 ## 3D character preview for the menus: the mannequin with the current cosmetic loadout, a gun in
 ## hand (optionally skinned), slowly turning on a lit pedestal in its own World3D.
 
-const MANNEQUIN := preload("res://assets/characters/mannequiny/mannequiny-0.3.0.glb")
+const MANNEQUIN := preload("res://assets/characters/kotm/KOTM_Character.glb")
 
 var viewport: SubViewport
 var pivot: Node3D
@@ -17,6 +17,7 @@ var loadout: Dictionary = {}
 var weapon_id: String = "ar15"
 var spin: float = 0.0
 var auto_spin := true
+var studio_rig: KOTMCharacterRig
 var drag_spin := 0.0
 
 func _ready() -> void:
@@ -94,52 +95,52 @@ func set_weapon(id: String) -> void:
 	_mount_gun()
 
 func rebuild() -> void:
+	if pivot == null:
+		return
 	if mannequin:
 		mannequin.queue_free()
 		mannequin = null
+	gun_mount = null
+	hand_mount = null
+	arm_pose = null
+	if studio_rig:
+		studio_rig.queue_free()
+		studio_rig = null
 	mannequin = MANNEQUIN.instantiate()
 	pivot.add_child(mannequin)
-	var skels := mannequin.find_children("*", "Skeleton3D", true, false)
-	skeleton = skels[0] if not skels.is_empty() else null
-	SkinSystem.apply_to_character(mannequin, loadout)
-	var att := SkinSystem.build_attachments(loadout)
-	if skeleton:
-		var head := BoneAttachment3D.new()
-		head.bone_name = "head"
-		skeleton.add_child(head)
-		for m in mannequin.find_children("*", "MeshInstance3D", true, false):
-			if (m as MeshInstance3D).skin != null:
-				head.add_child(SkinSystem.build_face(skeleton, (m as MeshInstance3D).mesh, loadout))
-				break
-		if att["hat"]:
-			att["hat"].position = Vector3(0, 0.04, 0)
-			head.add_child(att["hat"])
-		if att["mask"]:
-			head.add_child(att["mask"])
-		var chest := BoneAttachment3D.new()
-		chest.bone_name = "spine_02"
-		skeleton.add_child(chest)
-		if att["back"]:
-			chest.add_child(att["back"])
-		arm_pose = ArmPoseModifier.new()
-		arm_pose.aim_dir = Vector3(0.15, -0.3, 1.0)
-		skeleton.add_child(arm_pose)
-		hand_mount = BoneAttachment3D.new()
-		hand_mount.bone_name = "hand.r"
-		skeleton.add_child(hand_mount)
-		gun_mount = Node3D.new()
-		hand_mount.add_child(gun_mount)
-		skeleton.skeleton_updated.connect(_align_gun)
-	var players := mannequin.find_children("*", "AnimationPlayer", true, false)
-	if not players.is_empty():
-		var ap: AnimationPlayer = players[0]
-		var clip := "fight_idle" if ap.has_animation("fight_idle") else "idle"
-		if ap.has_animation(clip):
-			ap.play(clip)
-			ap.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
+	studio_rig = KOTMCharacterRig.new()
+	add_child(studio_rig)
+	studio_rig.setup(mannequin)
+	skeleton = studio_rig.skeleton
+	studio_rig.apply_loadout(loadout)
+	studio_rig.finish_modifiers()
 	_mount_gun()
+	return
 
 func _mount_gun() -> void:
+	if studio_rig:
+		studio_rig.set_weapon(weapon_id)
+		studio_rig.contact_enabled = KOTMCharacterRig.WEAPONS.has(weapon_id)
+		if arm_pose:
+			arm_pose.active = not studio_rig.contact_enabled
+			if studio_rig.contact_enabled:
+				arm_pose.weight = 0
+		studio_rig.play("KOTM_" + KOTMCharacterRig.WEAPONS[weapon_id] + "_Ready" if studio_rig.contact_enabled else "KOTM_Idle")
+		if studio_rig.contact_enabled or weapon_id in ["", "fists"]:
+			if gun_mount:
+				gun_mount.queue_free()
+				gun_mount = null
+			return
+		if gun_mount == null:
+			hand_mount = BoneAttachment3D.new()
+			hand_mount.bone_name = "hand.r"
+			skeleton.add_child(hand_mount)
+			gun_mount = Node3D.new()
+			hand_mount.add_child(gun_mount)
+			arm_pose = ArmPoseModifier.new()
+			arm_pose.aim_dir = Vector3(0.15, -0.3, 1.0)
+			skeleton.add_child(arm_pose)
+			skeleton.skeleton_updated.connect(_align_gun)
 	if gun_mount == null:
 		return
 	for c in gun_mount.get_children():

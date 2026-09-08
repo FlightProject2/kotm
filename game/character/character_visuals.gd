@@ -16,6 +16,9 @@ var anim: AnimationDriver
 var hat: Node3D
 var mask: Node3D
 var canopy: Node3D
+var studio_rig: KOTMCharacterRig
+var leg_ik: SkeletonModifier3D
+var vehicle_contact: SkeletonModifier3D
 
 func _ready() -> void:
 	character = get_parent() as Character
@@ -25,6 +28,9 @@ func _ready() -> void:
 	skeleton = skels[0]
 	if character.cosmetics.is_empty():
 		character.cosmetics = SkinSystem.default_loadout()
+	if find_child("KOTM_Character_Rig", true, false) or find_child("EQ_AR75", true, false):
+		_setup_studio()
+		return
 	SkinSystem.apply_to_character(self, character.cosmetics)
 	crouch_pose = CrouchPoseModifier.new()
 	crouch_pose.name = "CrouchPose"
@@ -77,10 +83,14 @@ func _ready() -> void:
 
 func _physics_process(_dt: float) -> void:
 	if character:
-		rotation.y = character.yaw
+		if studio_rig == null or not KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id):
+			rotation.y = character.yaw
 
 func _process(dt: float) -> void:
 	if character == null:
+		return
+	if studio_rig:
+		_process_studio()
 		return
 	if crouch_pose:
 		crouch_pose.crouching = character.crouching and character.mode == Character.Mode.GROUND
@@ -209,3 +219,69 @@ func show_weapon(weapon_id: String, weapon_class: String) -> void:
 		weapon_holder.set_weapon(weapon_id, weapon_class)
 	if anim:
 		anim.armed = weapon_class != "melee" and weapon_id != ""
+		if studio_rig:
+			anim.weapon_changed()
+
+func _setup_studio() -> void:
+	studio_rig = KOTMCharacterRig.new()
+	studio_rig.name = "StudioRig"
+	add_child(studio_rig)
+	studio_rig.setup(get_node("Model"))
+	studio_rig.apply_loadout(character.cosmetics)
+	var lower_layer := preload("res://game/character/locomotion_layer.gd").new()
+	lower_layer.character = character
+	lower_layer.rig = studio_rig
+	skeleton.add_child(lower_layer)
+	aim_spine = AimSpineModifier.new()
+	aim_spine.weights = {"spine_01": 0.35, "spine_02": 0.65, "head": 0.0}
+	skeleton.add_child(aim_spine)
+	# Other weapon classes retain the existing procedural hold until their own fitted clips
+	# are authored. This modifier is disabled for both studio rifles.
+	arm_pose = ArmPoseModifier.new()
+	skeleton.add_child(arm_pose)
+	var facing := preload("res://game/character/kotm_pose_modifier.gd").new()
+	facing.character = character
+	facing.rig = studio_rig
+	facing.visual = self
+	skeleton.add_child(facing)
+	leg_ik = preload("res://game/character/directional_leg_ik.gd").new()
+	leg_ik.character = character
+	leg_ik.rig = studio_rig
+	skeleton.add_child(leg_ik)
+	studio_rig.finish_modifiers()
+	vehicle_contact = preload("res://game/character/vehicle_contact_ik.gd").new()
+	vehicle_contact.name = "VehicleContact"
+	vehicle_contact.character = character
+	vehicle_contact.rig = studio_rig
+	skeleton.add_child(vehicle_contact)
+	weapon_holder = WeaponHolder.new()
+	weapon_holder.name = "HandR"
+	weapon_holder.bone_name = "hand.r"
+	weapon_holder.character = character
+	weapon_holder.studio_rig = studio_rig
+	skeleton.add_child(weapon_holder)
+	character.fired.connect(func(_v: float, _h: float) -> void: weapon_holder.fire_effects())
+	hat = studio_rig.roots.get(studio_rig.wardrobe.head)
+	mask = studio_rig.roots.get(studio_rig.wardrobe.face)
+	_build_canopy()
+	anim = AnimationDriver.new()
+	anim.name = "Anim"
+	character.add_child.call_deferred(anim)
+
+func _process_studio() -> void:
+	var seated := character.in_vehicle()
+	var parachuting := character.mode == Character.Mode.PARACHUTE
+	var fitted := KOTMCharacterRig.WEAPONS.has(studio_rig.weapon_id)
+	aim_spine.pitch = 0.0 if fitted or seated or parachuting else clampf(character.pitch, -0.9, 0.9)
+	arm_pose.active = not fitted and not seated
+	if fitted:
+		arm_pose.weight = 0.0
+	arm_pose.weapon_class = _held_class if not fitted and not seated and not parachuting else ""
+	var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
+	arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
+	studio_rig.contact_enabled = fitted and not seated and not parachuting and character.combat.reload_t <= 0
+	studio_rig.set_equipment(character.health.has_helmet(), character.health.has_armor(), character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != "")
+	if fitted:
+		studio_rig.weapon_root(studio_rig.weapon_id).visible = not seated and not parachuting
+	weapon_holder.mount.visible = not seated and not parachuting
+	canopy.visible = parachuting

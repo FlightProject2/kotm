@@ -1,0 +1,13 @@
+{
+	"asset_sha256": "f8a221ac70170a5c9ef451d939e375f20204e92840bee6ca2e3f063d399a22ab",
+	"characters": 30,
+	"close_range": true,
+	"draw_calls": 893.0,
+	"engine": "4.6.3-stable (official)",
+	"mean_frame_ms": 25.3834111111111,
+	"memory_static_mb": 163.231349945068,
+	"p95_frame_ms": 45.934,
+	"primitives": 276342.0,
+	"rendered_objects": 3180.0,
+	"spawn_ms": 557.348
+}

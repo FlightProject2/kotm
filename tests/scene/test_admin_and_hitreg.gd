@@ -61,7 +61,7 @@ func test_vehicle_faces_forward() -> void:
 	v.setup("pickup_truck", null)
 	await settle(1)
 	assert_true(v.model != null, "truck model loaded")
-	assert_true(absf(v.model.rotation.y - PI * 0.5) < 0.01, "long axis turned so the nose points -Z")
+	assert_true(absf(v.model.rotation.y - PI) < 0.01, "authored +Z nose points toward gameplay -Z")
 	assert_true(v.reverse_max <= 5.0, "reverse capped")
 	v.queue_free()
 	await settle(1)

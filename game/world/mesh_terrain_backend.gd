@@ -13,6 +13,8 @@ static func build(world: World) -> Node3D:
 	var hf := world.height_field
 	var body := StaticBody3D.new()
 	body.name = "Collision"
+	# No dedicated snow recording was supplied; use the soft grass step outdoors.
+	body.set_meta("audio_surface", "grass")
 	body.collision_layer = 1
 	body.collision_mask = 0
 	var shape := HeightMapShape3D.new()

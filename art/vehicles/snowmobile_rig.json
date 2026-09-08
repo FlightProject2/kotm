@@ -1,0 +1,14 @@
+{
+  "source": "Snow-mobile-utv.blend",
+  "ground_shift": -0.00900140032172203,
+  "treads": 48,
+  "wheel_pivots": 5,
+  "track_radius": 0.171,
+  "track_length": 1.2599997605974498,
+  "driver_root_blender": [
+    0,
+    0.19,
+    -0.00900140032172203
+  ],
+  "animation": "Drive"
+}
