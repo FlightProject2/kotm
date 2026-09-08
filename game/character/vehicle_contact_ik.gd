@@ -61,6 +61,19 @@ func _process_modification() -> void:
 		if marker == null:
 			continue
 		var target := skel.global_transform.affine_inverse() * marker.global_transform
+		if socket.begins_with("HandGrip") and _vehicle.seated_animation() == "KOTM_Truck_Seated":
+			var side := "l" if socket.ends_with("L") else "r"
+			var sign := 1.0 if side == "l" else -1.0
+			# Marker is the rim contact, not the wrist. Palms face down over the rim,
+			# thumbs face inward and the fingers close around its cross-section.
+			var wheel: Basis = skel.global_basis.inverse() * marker.get_parent().global_basis
+			var y := wheel.z.normalized()
+			var z := wheel.x.normalized() * sign
+			target.basis = Basis(y.cross(z), y, z)
+			target.origin -= target.basis * HandPoses.palm(side)
+			_solve(skel, bones, target, socket)
+			HandPoses.curl(skel, side, 1.0)
+			continue
 		if not _orientation_offsets.has(socket):
 			_orientation_offsets[socket] = target.basis.inverse() * skel.get_bone_global_pose(bones[2]).basis
 		target.basis *= _orientation_offsets[socket]
