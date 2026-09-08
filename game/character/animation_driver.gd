@@ -154,10 +154,9 @@ func _pick_studio_clip() -> void:
 	if character.in_vehicle():
 		clip = character.vehicle.seated_animation()
 	elif character.mode == Character.Mode.PARACHUTE:
-		# This library has no parachute-specific clip yet; keep its airborne articulation
-		# beneath the existing canopy. Motor, steering and landing remain unchanged.
-		clip = "KOTM_Jump"
-		speed = 0.25
+		# Keep the torso hanging steadily while the arm modifier holds both risers.
+		clip = "KOTM_Idle"
+		speed = 0.5
 	elif fitted and character.combat.reload_t > 0:
 		clip = prefix + "Reload"
 		if not reload_started:
