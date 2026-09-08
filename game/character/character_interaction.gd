@@ -47,7 +47,7 @@ func _find_vehicle() -> Vehicle:
 		var veh := v as Vehicle
 		if veh == null or not veh.can_enter():
 			continue
-		var d := veh.global_position.distance_to(c.global_position)
+		var d := veh.distance_to_body(c.global_position)
 		if d < bd:
 			bd = d
 			best = veh
