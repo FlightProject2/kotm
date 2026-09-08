@@ -191,11 +191,11 @@ func _assert_contacts(driver: Character, context: String) -> void:
 	assert_true(modifier != null, context + " contact modifier exists")
 	if modifier == null:
 		return
-	var samples := {"count": 0, "max_error": 0.0}
+	var samples := {"count": 0, "max_error": 0.0, "knee_width": 0.0, "knee_angles": []}
 	var sockets := {"HandGrip_L": "hand.l", "HandGrip_R": "hand.r", "FootRest_L": "foot.l", "FootRest_R": "foot.r"}
 	# Measure the final posed bones when the modifier completes, before the engine restores
 	# its animation input pose; ordinary get_bone_global_pose after the frame misses IK.
-	modifier.modification_processed.connect(func() -> void:
+	var measure := func() -> void:
 		var skeleton: Skeleton3D = driver.visual.studio_rig.skeleton
 		for socket: String in sockets:
 			var marker: Node3D = driver.vehicle.call("contact_marker", socket)
@@ -205,10 +205,24 @@ func _assert_contacts(driver: Character, context: String) -> void:
 			var pose := skeleton.get_bone_global_pose(bone)
 			var point := skeleton.global_transform * (pose * HandPoses.palm("l" if socket.ends_with("L") else "r") if socket.begins_with("HandGrip") and driver.vehicle.seated_animation() == "KOTM_Truck_Seated" else pose.origin)
 			samples.max_error = maxf(samples.max_error, point.distance_to(marker.global_position))
-			samples.count += 1,
-		Object.CONNECT_ONE_SHOT)
+			samples.count += 1
+		if driver.vehicle.seated_animation() == "KOTM_Truck_Seated":
+			var pelvis := skeleton.get_bone_global_pose(skeleton.find_bone("pelvis"))
+			var left_knee := skeleton.get_bone_global_pose(skeleton.find_bone("calf.l")).origin
+			var right_knee := skeleton.get_bone_global_pose(skeleton.find_bone("calf.r")).origin
+			samples.knee_width = absf((left_knee - right_knee).dot(pelvis.basis.x.normalized()))
+			for side in ["l", "r"]:
+				var hip := skeleton.get_bone_global_pose(skeleton.find_bone("thigh." + side)).origin
+				var knee := skeleton.get_bone_global_pose(skeleton.find_bone("calf." + side)).origin
+				var ankle := skeleton.get_bone_global_pose(skeleton.find_bone("foot." + side)).origin
+				samples.knee_angles.append((hip - knee).angle_to(ankle - knee))
+	modifier.modification_processed.connect(measure, Object.CONNECT_ONE_SHOT)
 	await tree.process_frame
 	await tree.process_frame
 	assert_eq(samples.count, 4, context + " sampled both hand contacts and ankles")
 	assert_true(samples.max_error < 0.002, "%s contact error %.5f m" % [context, samples.max_error])
 	assert_true(int(modifier.get("solve_count")) > 0, context + " contact solver evaluated")
+	if driver.vehicle.seated_animation() == "KOTM_Truck_Seated":
+		assert_between(float(samples.knee_width), 0.10, 0.35, context + " knees stay aligned with the footwell")
+		for angle: float in samples.knee_angles:
+			assert_between(rad_to_deg(angle), 70.0, 125.0, context + " keeps a natural seated knee bend")

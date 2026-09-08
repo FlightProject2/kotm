@@ -7,7 +7,27 @@ func test_screens_and_customize() -> void:
 	Progress.reset_for_tests()
 	var m: Menus = load("res://game/ui/menus.gd").new()
 	await add_to_tree(m)
+	await settle(2)
 	assert_eq(m.current, "main")
+	var main: Control = m.screens.main
+	var player_stage := main.find_child("MainPlayerStage", true, false) as Control
+	assert_true(player_stage != null and is_equal_approx(player_stage.anchor_left, 0.5), "main menu reserves the exact centre for the live player")
+	assert_true(main.find_child("MainNavigation", true, false) != null, "reference top navigation is present")
+	assert_true(main.find_child("MatchmakingColumn", true, false) != null, "matchmaking panels occupy the left column")
+	assert_true(main.find_child("SeasonPartyColumn", true, false) != null, "season and party panels occupy the right column")
+	var editor := m.ui_layout_editor
+	assert_true(editor != null and editor.targets.size() >= 6, "lobby UI modifier finds every editable section")
+	editor.open_editor()
+	assert_true(editor.is_open(), "UI modifier can be opened from the lobby")
+	var saved_layout := editor.capture_layout()
+	var original_stage_x: float = player_stage.position.x
+	var changed_layout := saved_layout.duplicate(true)
+	changed_layout["MainPlayerStage"]["rect"][0] = float(changed_layout["MainPlayerStage"]["rect"][0]) + 0.01
+	editor.apply_layout(changed_layout)
+	assert_true(player_stage.position.x > original_stage_x, "pasted layout moves an editable section")
+	editor.apply_layout(saved_layout)
+	editor.close_editor()
+	assert_false(editor.is_open(), "UI modifier closes without changing screens")
 	for s in ["customize", "market", "stats", "settings", "pause", "end", "main"]:
 		m.show_screen(s)
 		await settle(1)

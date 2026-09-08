@@ -24,6 +24,13 @@ func _process_modification() -> void:
 			return
 	if not rig.clips.has(key):
 		return
+	# A forward clip played backwards gives a readable back-pedal: the lifted knee and
+	# planting foot now lead travel instead of moonwalking while S is held.
+	var planar := Vector3(character.velocity.x, 0.0, character.velocity.z)
+	if planar.length_squared() > 0.0225:
+		var local_motion := rig.skeleton.global_basis.inverse() * planar.normalized()
+		if local_motion.z < -0.05:
+			phase = fposmod(1.0 - phase, 1.0)
 	var animation := rig.player.get_animation(rig.clips[key])
 	if not _tracks.has(key):
 		_tracks[key] = []
