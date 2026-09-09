@@ -55,6 +55,11 @@ func _ready() -> void:
 	add_to_group("characters")
 	set_collision_layer_value(2, true)
 	collision_mask = 1 | 2 | 16
+	# The scene's capsule is a subresource. Give each character its own copy so
+	# crouch/prone resizing never leaks into the next spawned player.
+	if collision.shape:
+		collision.shape = collision.shape.duplicate()
+		motor.set_stance_shape()
 	player_audio = CharacterAudio.new()
 	player_audio.name = "PlayerAudio"
 	add_child(player_audio)

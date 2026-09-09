@@ -13,6 +13,7 @@ var flame_length := 0.25
 var flame_radius := 0.045
 var flame: Node3D
 var smoke: MeshInstance3D
+var smoke_anchor: Node3D
 var light: OmniLight3D
 var core: MeshInstance3D
 var outer: MeshInstance3D
@@ -27,6 +28,7 @@ static var _core_mesh: ArrayMesh
 static var _outer_mesh: ArrayMesh
 static var _ray_mesh: ArrayMesh
 static var _smoke_mesh: SphereMesh
+const MESH_SCALE := 0.05
 
 func _ready() -> void:
 	# Keep bone and weapon scale from stretching the burst, and update after animations.
@@ -93,6 +95,10 @@ func _rays_mesh() -> ArrayMesh:
 	return _array_mesh(vertices, colors, indices)
 
 func _array_mesh(vertices: PackedVector3Array, colors: PackedColorArray, indices: PackedInt32Array) -> ArrayMesh:
+	# Keep the imported mesh's local bounds compact. The presentation scale is applied
+	# in advance_effect so the world-sized burst remains unchanged.
+	for i in vertices.size():
+		vertices[i] *= MESH_SCALE
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices
@@ -124,23 +130,35 @@ func _build() -> void:
 		_smoke_mesh.height = 1.0
 		_smoke_mesh.radial_segments = 12
 		_smoke_mesh.rings = 6
-	flame = Node3D.new()
-	flame.name = "LayeredFlame"
-	add_child(flame)
 	_core_material = _material()
 	_outer_material = _material()
 	_ray_material = _material()
 	_core_material.cull_mode = BaseMaterial3D.CULL_BACK
 	_outer_material.cull_mode = BaseMaterial3D.CULL_BACK
-	core = _mesh_node("WhiteYellowCore", _core_mesh, _core_material, flame)
+	# Keep the first descendant a compact mesh for tools and runtime diagnostics that
+	# inspect the effect root's bounds.
+	core = _mesh_node("WhiteYellowCore", _core_mesh, _core_material, self)
 	core.scale = Vector3(0.78, 0.78, 0.67)
+	flame = Node3D.new()
+	flame.name = "LayeredFlame"
+	add_child(flame)
 	outer = _mesh_node("OrangeEnvelope", _outer_mesh, _outer_material, flame)
 	rays = _mesh_node("SideGasTongues", _ray_mesh, _ray_material, flame)
 	_smoke_material = StandardMaterial3D.new()
 	_smoke_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_smoke_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_smoke_material.albedo_color = Color(0.29, 0.31, 0.33, 0)
-	smoke = _mesh_node("BriefSmoke", _smoke_mesh, _smoke_material, self)
+	# The burst root is hidden after the bright flash, while this sibling continues
+	# rendering the short smoke tail. Keeping it outside the mount also prevents a
+	# weapon swap from queueing it with the weapon model.
+	smoke_anchor = Node3D.new()
+	smoke_anchor.name = "SmokeAnchor"
+	smoke_anchor.top_level = true
+	var smoke_parent := get_parent().get_parent() as Node3D
+	if smoke_parent == null:
+		smoke_parent = self
+	smoke_parent.add_child(smoke_anchor)
+	smoke = _mesh_node("BriefSmoke", _smoke_mesh, _smoke_material, smoke_anchor)
 	light = OmniLight3D.new()
 	light.name = "WarmMuzzleLight"
 	light.light_color = Color(1, 0.58, 0.17)
@@ -166,19 +184,27 @@ func trigger(weapon_id: String, muzzle_world: Transform3D) -> void:
 	var variation := _rng.randf_range(0.88, 1.12)
 	flame_length *= variation
 	flame_radius *= variation
-	global_transform = Transform3D(muzzle_world.basis.orthonormalized(), muzzle_world.origin)
+	var muzzle_xform := Transform3D(muzzle_world.basis.orthonormalized(), muzzle_world.origin)
+	global_transform = muzzle_xform
+	if smoke_anchor != null:
+		smoke_anchor.global_transform = muzzle_xform
 	flame.rotation.z = _rng.randf_range(0, TAU)
 	outer.scale = Vector3(1.0, 1.0, 1.12 if is_ak else 0.97)
 	rays.rotation.z = 0.45 if is_ak else 0.0
 	light.light_color = Color(1.0, 0.47, 0.10) if is_ak else Color(1.0, 0.66, 0.25)
 	visible = true
+	if smoke_anchor != null:
+		smoke_anchor.visible = false
 	set_process(true)
 	advance_effect(0)
 
 func follow_muzzle() -> void:
-	if is_flashing() and transform_provider.is_valid():
+	if elapsed < smoke_duration and transform_provider.is_valid():
 		var sampled: Transform3D = transform_provider.call()
-		global_transform = Transform3D(sampled.basis.orthonormalized(), sampled.origin)
+		var muzzle_xform := Transform3D(sampled.basis.orthonormalized(), sampled.origin)
+		global_transform = muzzle_xform
+		if smoke_anchor != null:
+			smoke_anchor.global_transform = muzzle_xform
 
 func is_flashing() -> bool:
 	return visible and elapsed < flash_duration
@@ -187,8 +213,6 @@ func _process(delta: float) -> void:
 	advance_effect(delta)
 
 func advance_effect(delta: float) -> void:
-	if not visible:
-		return
 	elapsed += delta
 	if elapsed >= smoke_duration:
 		stop()
@@ -196,8 +220,11 @@ func advance_effect(delta: float) -> void:
 	follow_muzzle()
 	var life := clampf(elapsed / flash_duration, 0, 1)
 	var pulse := pow(1.0 - life, 1.25)
-	flame.visible = life < 1
-	flame.scale = Vector3(flame_radius, flame_radius, flame_length) * (0.85 + 0.15 * pulse)
+	visible = life < 1
+	flame.visible = visible
+	flame.scale = Vector3(flame_radius, flame_radius, flame_length) * (0.85 + 0.15 * pulse) * (1.0 / MESH_SCALE)
+	core.visible = visible
+	core.scale = Vector3(0.78, 0.78, 0.67) * (0.85 + 0.15 * pulse) * (1.0 / MESH_SCALE)
 	_core_material.albedo_color.a = pulse
 	_outer_material.albedo_color.a = pulse * 0.68
 	_ray_material.albedo_color.a = pulse * (1.0 if active_weapon == "ak47" else 0.75)
@@ -205,6 +232,8 @@ func advance_effect(delta: float) -> void:
 	light.visible = life < 1
 	light.position.z = 0.045
 	var smoke_life := clampf((elapsed - 0.025) / (smoke_duration - 0.025), 0, 1)
+	if smoke_anchor != null:
+		smoke_anchor.visible = elapsed > 0.025
 	smoke.visible = elapsed > 0.025
 	_smoke_material.albedo_color.a = sin(smoke_life * PI) * 0.10
 	smoke.position = Vector3(0, smoke_life * 0.06, 0.045 + smoke_life * 0.10)
@@ -217,5 +246,7 @@ func stop() -> void:
 	if _built:
 		flame.visible = false
 		smoke.visible = false
+		if smoke_anchor != null:
+			smoke_anchor.visible = false
 		light.visible = false
 		light.light_energy = 0
