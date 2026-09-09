@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "pois": [
+    {
+      "id": "glacier_lodge",
+      "name": "Glacier Lodge",
+      "x": 520,
+      "z": 553,
+      "padRadius": 0,
+      "type": "resort",
+      "existingPad": "ashford"
+    }
+  ],
+  "buildings": [
+    {
+      "prefab": "frontier_resort_timber_cabin",
+      "x": 480,
+      "z": 532,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_rental_cabin",
+      "x": 500,
+      "z": 532,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_timber_cabin",
+      "x": 520,
+      "z": 532,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_rental_cabin",
+      "x": 540,
+      "z": 532,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_timber_cabin",
+      "x": 560,
+      "z": 532,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_timber_cabin",
+      "x": 481,
+      "z": 559,
+      "baseY": 32.14,
+      "yaw": 1.5707963267948966,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_rental_cabin",
+      "x": 561,
+      "z": 559,
+      "baseY": 32.14,
+      "yaw": -1.5707963267948966,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_timber_cabin",
+      "x": 580,
+      "z": 555,
+      "baseY": 32.14,
+      "yaw": -1.5707963267948966,
+      "poi": "glacier_lodge",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_resort_ice_rink",
+      "x": 520,
+      "z": 562,
+      "baseY": 32.14,
+      "yaw": 0,
+      "poi": "glacier_lodge",
+      "nodeClass": "commercial",
+      "frontier": true
+    }
+  ],
+  "props": [
+    {
+      "id": "resort_snowboard_rack",
+      "x": 477.1,
+      "z": 537.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 497.1,
+      "z": 537.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 517.1,
+      "z": 537.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 537.1,
+      "z": 537.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 557.1,
+      "z": 537.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 486.3,
+      "z": 556,
+      "y": 32.14,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 555.3,
+      "z": 556,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "resort_snowboard_rack",
+      "x": 574.5,
+      "z": 552.4,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "resort_vending_machine",
+      "x": 517.7,
+      "z": 537.1,
+      "y": 32.32,
+      "yaw": 0
+    },
+    {
+      "id": "resort_vending_machine",
+      "x": 558.1,
+      "z": 537.1,
+      "y": 32.32,
+      "yaw": 0
+    },
+    {
+      "id": "resort_wrecked_sedan",
+      "x": 589.5,
+      "z": 526,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_wrecked_sedan",
+      "x": 476,
+      "z": 550,
+      "y": 32.14,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "resort_wrecked_sedan",
+      "x": 570,
+      "z": 552,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "resort_wrecked_sedan",
+      "x": 494,
+      "z": 522,
+      "y": 32.14,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "container_red",
+      "x": 468,
+      "z": 528,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "container_blue_open",
+      "x": 573,
+      "z": 562,
+      "y": 32.14,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "container_blue_open",
+      "x": 592,
+      "z": 538,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 474,
+      "z": 525,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 506,
+      "z": 527,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 526,
+      "z": 528,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 545,
+      "z": 527,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 564,
+      "z": 526,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 478,
+      "z": 552,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 565,
+      "z": 566,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 572.6,
+      "z": 549,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": 494,
+      "z": 538.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": 530,
+      "z": 538.2,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": 568,
+      "z": 548.5,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": 546,
+      "z": 569,
+      "y": 32.14,
+      "yaw": 0
+    }
+  ],
+  "roads": [
+    {
+      "id": "glacier_main",
+      "type": "asphalt",
+      "points": [
+        [
+          598,
+          497
+        ],
+        [
+          582,
+          510
+        ],
+        [
+          582,
+          543
+        ],
+        [
+          468,
+          543
+        ]
+      ],
+      "width": 8,
+      "profileHeightsM": [
+        32.14,
+        32.14,
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "glacier_west_service",
+      "type": "asphalt",
+      "points": [
+        [
+          490,
+          543
+        ],
+        [
+          490,
+          571
+        ]
+      ],
+      "width": 5.5,
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "glacier_east_service",
+      "type": "asphalt",
+      "points": [
+        [
+          550,
+          543
+        ],
+        [
+          550,
+          571
+        ]
+      ],
+      "width": 5.5,
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    }
+  ],
+  "tracks": []
+}

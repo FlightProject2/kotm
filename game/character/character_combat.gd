@@ -20,6 +20,7 @@ var rng := RandomNumberGenerator.new()
 const SEMI_BUFFER_SEC := 0.08
 var _pending_fire_until := -1.0
 var _pending_fire_id := ""
+const GRENADE_SYSTEM := preload("res://game/combat/grenade_system.gd")
 var bloom := 0.0
 var bloom_rest := 0.0
 var _recoil_side := 1.0
@@ -38,11 +39,6 @@ func current_is_scoped() -> bool:
 
 func tick(dt: float) -> void:
 	time += dt
-	var tune := current_def()
-	var delay := float(tune.get("bloomRecoveryDelaySec", 0.14))
-	var before := maxf(0.0, bloom_rest - delay)
-	bloom_rest += dt
-	bloom = move_toward(bloom, 0.0, (maxf(0.0, bloom_rest - delay) - before) * float(tune.get("bloomRecoveryDegPerSec", 2.2)))
 	var inp := c.input
 	if inp.slot >= 0 and inp.slot != inv.cur and inp.slot < inv.slots.size():
 		if inv.select(inp.slot):
@@ -67,6 +63,11 @@ func tick(dt: float) -> void:
 		start_reload()
 	var want_fire := inp.pressed(CharacterInput.B_FIRE)
 	var edge := want_fire and not c.prev_input.pressed(CharacterInput.B_FIRE)
+	if ItemCatalog.get_item(id).get("kind", "") == "throwable":
+		_clear_fire_buffer()
+		if edge:
+			try_fire(false)
+		return
 	var mode: String = def.get("fireMode", "semi")
 	if mode == "semi" and not is_melee:
 		# Retain one early click across the last 80 ms of the cadence gate. Holding
@@ -98,6 +99,8 @@ func try_fire(is_melee: bool) -> bool:
 		return false
 	var def := current_def()
 	var id := inv.current_id()
+	if ItemCatalog.get_item(id).get("kind", "") == "throwable":
+		return _throw_frag(id)
 	var rpm := float(def.get("rpmCap", def.get("rpm", 120)))
 	if is_melee:
 		rpm = 60.0 / float(def.get("swingSec", 0.5))
@@ -124,7 +127,7 @@ func try_fire(is_melee: bool) -> bool:
 	var aiming := c.input.pressed(CharacterInput.B_AIM)
 	var moving := Vector2(c.velocity.x, c.velocity.z).length_squared() > 1.0
 	var airborne := not c.is_on_floor()
-	var spread := float(def["adsSpreadDeg"] if aiming else def["hipSpreadDeg"]) + bloom
+	var spread := float(def["adsSpreadDeg"] if aiming else def["hipSpreadDeg"])
 	if c.has_meta("spread_override"):
 		spread = float(c.get_meta("spread_override"))   # bots and tests set their own accuracy
 	if moving:
@@ -135,25 +138,26 @@ func try_fire(is_melee: bool) -> bool:
 	var origin := muzzle_position()
 	var base_dir := c.input.aim_dir.normalized() if c.input.aim_dir.length_squared() > 0.5 else c.forward()
 	var ps := ProjectileSystem.instance
-	# A barrel penetrating cover must strike that cover, even when the camera sees over it.
-	var obstruction_query := PhysicsRayQueryParameters3D.create(c.eye_position(), origin, 1 | 32)
-	obstruction_query.hit_from_inside = true
-	var obstruction := c.get_world_3d().direct_space_state.intersect_ray(obstruction_query)
-	var pattern_rotation := rng.randf() * TAU if pellets > 1 else 0.0
 	for i in pellets:
-		var dir := Ballistics.pellet_direction(base_dir, spread, i, pellets, pattern_rotation) if pellets > 1 else Ballistics.jitter(base_dir, spread, rng)
+		var dir := Ballistics.jitter(base_dir, spread, rng)
 		if ps:
-			ps.fire(c, origin, dir, def, shot_id, pellets > 1, obstruction)
-	var vertical := float(def.get("recoilVertical", 1.0))
-	var horizontal := float(def.get("recoilHorizontal", 0.3)) * rng.randf_range(-1.0, 1.0)
-	if id == "ar15":
-		horizontal = float(def["recoilHorizontal"]) * _recoil_side
-		_recoil_side *= -1.0
-		vertical += maxf(0.0, bloom - 0.5) * 0.25
-	bloom = minf(float(def.get("bloomMaxDeg", 0.0)), bloom + float(def.get("bloomPerShotDeg", 0.0)))
-	bloom_rest = 0.0
-	c.fired.emit(vertical, horizontal)
+			ps.fire(c, origin, dir, def, shot_id, pellets > 1)
+	c.fired.emit(float(def.get("recoilVertical", 1.0)), float(def.get("recoilHorizontal", 0.3)) * rng.randf_range(-1.0, 1.0))
 	Net.fx_all("gunshot", [origin, id, c.character_id])
+	return true
+
+func _throw_frag(id: String) -> bool:
+	if not c.is_authority() or id != "frag_grenade" or int(inv.throwables.get(id, 0)) <= 0:
+		return false
+	var system = GRENADE_SYSTEM.instance
+	if not is_instance_valid(system):
+		return false
+	if system.throw_frag(c) < 0:
+		return false
+	inv.throwables[id] = int(inv.throwables[id]) - 1
+	fire_times[id] = time
+	cycle_t = 0.65
+	inv.changed.emit()
 	return true
 
 func muzzle_position() -> Vector3:
@@ -190,6 +194,9 @@ func _finish_reload() -> void:
 
 func _melee(def: Dictionary) -> void:
 	var reach := float(def.get("reachM", melee_cfg["reachM"]))
+	if WindowManager.instance != null:
+		var aim := c.input.aim_dir.normalized() if c.input.aim_dir.length_squared() > .5 else c.forward()
+		WindowManager.instance.melee(c.global_position+Vector3(0,minf(1.4,c.height()-.15),0),aim,reach,[c.get_rid()])
 	var f := c.forward()
 	var cos_half := cos(deg_to_rad(float(melee_cfg["arcDeg"]) * 0.5))
 	for other in get_tree().get_nodes_in_group("characters"):
@@ -218,8 +225,6 @@ func _on_inventory_changed() -> void:
 	var id := inv.current_id()
 	if id != last_slot_id:
 		last_slot_id = id
-		bloom = 0.0
-		bloom_rest = 0.0
 		c.show_weapon(id, ItemCatalog.get_item(id).get("class", "melee"))
 	if c.is_local():
 		Events.inventory_changed.emit(c.character_id)

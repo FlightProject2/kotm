@@ -11,11 +11,13 @@ if not re.fullmatch(r"[0-9a-f]{40}", revision):
     raise SystemExit("Expected a full Git commit SHA")
 pack = out / "index.pck"
 payload = pack.read_bytes()
+# PCK's unencrypted directory contains the canonical source/import paths.
 for required in (b"KOTM_Character.glb", b"asset_manifest.json", b"kotm_character_rig.gd",
                  b"KOTM_SnowTruck.glb", b"KOTM_Snowmobile.glb"):
     if required not in payload:
         raise SystemExit(f"Export is missing required runtime asset: {required!r}")
-info = json.loads(Path("assets/characters/kotm/asset_manifest.json").read_text())
+manifest = Path("assets/characters/kotm/asset_manifest.json")
+info = json.loads(manifest.read_text())
 if len(info["animations"]) < 42:
     raise SystemExit("Character animation manifest is incomplete")
 build = {"commit": revision, "pck_sha256": hashlib.sha256(payload).hexdigest(),

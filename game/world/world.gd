@@ -9,6 +9,7 @@ var height_field: HeightField
 var terrain: Node3D
 var backend_name: String = ""
 var colormap: Image
+var surface_mask: Texture2D
 var loot_registry: LootRegistry
 var loot_nodes: Array = []
 var tree_bodies: Array[RID] = []
@@ -35,6 +36,8 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		var tex: Texture2D = load(layout.colormap_path)
 		if tex:
 			colormap = tex.get_image()
+	if layout.surface_mask_path != "":
+		surface_mask = load(layout.surface_mask_path) as Texture2D
 	# one terrain, ours: chunked mesh from the baked HeightField (see MeshTerrainBackend)
 	terrain = MeshTerrainBackend.build(self)
 	backend_name = "mesh"
@@ -62,6 +65,8 @@ func setup(mode: String = "auto", map_layout: MapLayout = null, build_content: b
 		var t0 := Time.get_ticks_msec()
 		build_stats = WorldBuilder.build(self)
 		build_stats.merge(TreePlacer.build(self, trees))
+		if not "--no-static-batching" in OS.get_cmdline_user_args():
+			build_stats.merge(preload("res://game/world/static_world_batcher.gd").build(self))
 		build_stats["ms"] = Time.get_ticks_msec() - t0
 		print("World: built %s" % [build_stats])
 
@@ -77,17 +82,18 @@ func _configure_environment() -> void:
 	if "plain" in flags:
 		flags.append_array(PackedStringArray(["nofog", "linear", "ambientcolor"]))
 	var web := OS.has_feature("web")
-	if web:
+	var compatibility := RenderingServer.get_current_rendering_method() == "gl_compatibility"
+	if web or compatibility:
 		# the WebGL renderer over-exposes sky ambient + ACES: calmer, deterministic lighting
 		env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-		env.tonemap_exposure = 1.0
+		env.tonemap_exposure = 0.85
 		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 		env.ambient_light_color = Color(0.62, 0.66, 0.74)
 		env.ambient_light_energy = 0.45
 		var sun := get_node_or_null("Sun") as DirectionalLight3D
 		if sun:
-			sun.light_energy = 1.1
-	if web or "depthfog" in flags:
+			sun.light_energy = 0.8
+	if web or compatibility or "depthfog" in flags:
 		env.fog_mode = Environment.FOG_MODE_DEPTH
 		env.fog_depth_begin = 220.0
 		env.fog_depth_end = 1900.0
@@ -117,6 +123,13 @@ func _exit_tree() -> void:
 
 func height_at(x: float, z: float) -> float:
 	return height_field.height_at(x, z)
+
+## Spawn road vehicles on a bridge deck; normal terrain queries stay below bridges
+## so walking under one never teleports a character onto its roof.
+func road_height_at(x: float, z: float) -> float:
+	var terrain_y := height_field.height_at(x, z)
+	var bridge_y := MapLandmarks.bridge_top_at(layout.bridges, x, z)
+	return maxf(terrain_y, bridge_y) if not is_nan(bridge_y) else terrain_y
 
 func height_at_v(p: Vector3) -> float:
 	return height_field.height_at(p.x, p.z)

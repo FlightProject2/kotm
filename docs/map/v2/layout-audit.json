@@ -1,0 +1,1131 @@
+{
+  "source": "E:\\Users\\Scott\\Documents\\ChatGPT\\KOTM assets\\kotm-live\\design\\map\\slice_2km.json",
+  "method": "Planar segment geometry, authored road widths, rotated metadata/footprint rectangles; railway excluded from road access/obstruction checks.",
+  "limitations": [
+    "Footprints are authored metadata approximations, not actual model mesh or collision bounds.",
+    "Roof overhangs, snow dressing, props, fences, wrecks and terrain/bridge elevations are not tested.",
+    "Connectivity is planar at 0.35 m centerline tolerance; separate terrain/grade checks are required.",
+    "Small clearances below 1 m need visual inspection for overhangs and decoration."
+  ],
+  "counts": {
+    "buildings": 111,
+    "pois": 12,
+    "non_rail_routes": 26,
+    "road_components": 1,
+    "building_road_overlaps": 0,
+    "building_building_overlaps": 0,
+    "out_of_bounds_road_points": 0
+  },
+  "road_components": [
+    [
+      "ring",
+      "spoke_ashford",
+      "spoke_cranmoor",
+      "spoke_bumjick_farm",
+      "spoke_hollis_farm",
+      "spoke_rail_yard",
+      "spoke_gas_station",
+      "spoke_hilltop_cabins",
+      "north_distributor",
+      "riverbank_distributor",
+      "frostmere_lodge_access",
+      "riverside_mill_loop",
+      "riverside_mill_access",
+      "north_radar_access",
+      "east_ranger_loop",
+      "mountain_switchback",
+      "summit_south_trail",
+      "ashford_main",
+      "ashford_cross",
+      "ashford_west",
+      "ashford_east",
+      "ashford_north",
+      "ashford_market_lane",
+      "ashford_square_east",
+      "cranmoor_main",
+      "cranmoor_motel_court"
+    ]
+  ],
+  "poi_access": [
+    {
+      "poi": "the_mountain",
+      "road": "mountain_switchback",
+      "center_to_road_edge_m": 20.931
+    },
+    {
+      "poi": "ashford",
+      "road": "ashford_cross",
+      "center_to_road_edge_m": 14.0
+    },
+    {
+      "poi": "cranmoor",
+      "road": "cranmoor_main",
+      "center_to_road_edge_m": 0
+    },
+    {
+      "poi": "bumjick_farm",
+      "road": "riverside_mill_loop",
+      "center_to_road_edge_m": 11.449
+    },
+    {
+      "poi": "hollis_farm",
+      "road": "ring",
+      "center_to_road_edge_m": 0.772
+    },
+    {
+      "poi": "rail_yard",
+      "road": "spoke_rail_yard",
+      "center_to_road_edge_m": 41.78
+    },
+    {
+      "poi": "gas_station",
+      "road": "spoke_gas_station",
+      "center_to_road_edge_m": 15.028
+    },
+    {
+      "poi": "hilltop_cabins",
+      "road": "spoke_hilltop_cabins",
+      "center_to_road_edge_m": 62.264
+    },
+    {
+      "poi": "frostmere_lodge",
+      "road": "frostmere_lodge_access",
+      "center_to_road_edge_m": 32.536
+    },
+    {
+      "poi": "riverside_mill",
+      "road": "riverside_mill_access",
+      "center_to_road_edge_m": 10.538
+    },
+    {
+      "poi": "north_radar",
+      "road": "north_radar_access",
+      "center_to_road_edge_m": 26.5
+    },
+    {
+      "poi": "east_ranger_camp",
+      "road": "east_ranger_loop",
+      "center_to_road_edge_m": 27.478
+    }
+  ],
+  "building_road_clearances": [
+    {
+      "index": 40,
+      "prefab": "house_small",
+      "poi": "hollis_farm",
+      "x": 455.0,
+      "z": -595.0,
+      "road": "spoke_hollis_farm",
+      "clearance_m": 0.5472
+    },
+    {
+      "index": 28,
+      "prefab": "shop",
+      "poi": "cranmoor",
+      "x": -500.0,
+      "z": -284.0,
+      "road": "cranmoor_motel_court",
+      "clearance_m": 2.0063
+    },
+    {
+      "index": 20,
+      "prefab": "house_small",
+      "poi": "cranmoor",
+      "x": -620.0,
+      "z": -284.0,
+      "road": "cranmoor_motel_court",
+      "clearance_m": 2.3
+    },
+    {
+      "index": 55,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 734.8,
+      "z": -712.3,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 2.3926
+    },
+    {
+      "index": 33,
+      "prefab": "quat_watertower",
+      "poi": "bumjick_farm",
+      "x": -580.0,
+      "z": 550.0,
+      "road": "spoke_bumjick_farm",
+      "clearance_m": 2.4299
+    },
+    {
+      "index": 38,
+      "prefab": "quat_silo",
+      "poi": "hollis_farm",
+      "x": 530.0,
+      "z": -532.0,
+      "road": "ring",
+      "clearance_m": 2.465
+    },
+    {
+      "index": 67,
+      "prefab": "shed",
+      "poi": "ashford",
+      "x": 591.0,
+      "z": 475.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 3.8238
+    },
+    {
+      "index": 85,
+      "prefab": "shed",
+      "poi": "east_ranger_camp",
+      "x": 741.0,
+      "z": 62.0,
+      "road": "east_ranger_loop",
+      "clearance_m": 4.5617
+    },
+    {
+      "index": 105,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 356.3,
+      "z": -607.4,
+      "road": "ring",
+      "clearance_m": 4.7028
+    },
+    {
+      "index": 21,
+      "prefab": "diner",
+      "poi": "cranmoor",
+      "x": -608.0,
+      "z": -316.0,
+      "road": "ring",
+      "clearance_m": 4.9974
+    },
+    {
+      "index": 30,
+      "prefab": "quat_bigbarn",
+      "poi": "bumjick_farm",
+      "x": -540.0,
+      "z": 520.0,
+      "road": "riverside_mill_loop",
+      "clearance_m": 5.8076
+    },
+    {
+      "index": 12,
+      "prefab": "church",
+      "poi": "ashford",
+      "x": 520.0,
+      "z": 462.0,
+      "road": "spoke_ashford",
+      "clearance_m": 5.9984
+    },
+    {
+      "index": 101,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 496.6,
+      "z": -294.1,
+      "road": "north_distributor",
+      "clearance_m": 6.2281
+    },
+    {
+      "index": 86,
+      "prefab": "hunting_stand",
+      "poi": "east_ranger_camp",
+      "x": 710.0,
+      "z": 68.0,
+      "road": "east_ranger_loop",
+      "clearance_m": 6.552
+    },
+    {
+      "index": 8,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 546.0,
+      "z": 399.0,
+      "road": "ashford_cross",
+      "clearance_m": 7.0
+    },
+    {
+      "index": 109,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": -518.8,
+      "z": 664.4,
+      "road": "ring",
+      "clearance_m": 7.2583
+    },
+    {
+      "index": 49,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -692.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 7.976
+    },
+    {
+      "index": 13,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 546.0,
+      "z": 462.0,
+      "road": "spoke_ashford",
+      "clearance_m": 7.9984
+    },
+    {
+      "index": 5,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 468.0,
+      "z": 399.0,
+      "road": "ashford_cross",
+      "clearance_m": 8.0
+    },
+    {
+      "index": 6,
+      "prefab": "diner",
+      "poi": "ashford",
+      "x": 494.0,
+      "z": 399.0,
+      "road": "ashford_cross",
+      "clearance_m": 8.0
+    },
+    {
+      "index": 7,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 520.0,
+      "z": 399.0,
+      "road": "ashford_cross",
+      "clearance_m": 8.0
+    },
+    {
+      "index": 9,
+      "prefab": "shop",
+      "poi": "ashford",
+      "x": 572.0,
+      "z": 399.0,
+      "road": "ashford_cross",
+      "clearance_m": 8.0
+    },
+    {
+      "index": 32,
+      "prefab": "quat_silo",
+      "poi": "bumjick_farm",
+      "x": -510.0,
+      "z": 535.0,
+      "road": "riverside_mill_loop",
+      "clearance_m": 8.4231
+    },
+    {
+      "index": 36,
+      "prefab": "quat_bigbarn",
+      "poi": "hollis_farm",
+      "x": 500.0,
+      "z": -535.0,
+      "road": "ring",
+      "clearance_m": 8.9432
+    },
+    {
+      "index": 10,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 468.0,
+      "z": 462.0,
+      "road": "spoke_ashford",
+      "clearance_m": 8.9984
+    },
+    {
+      "index": 11,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 494.0,
+      "z": 462.0,
+      "road": "spoke_ashford",
+      "clearance_m": 8.9984
+    },
+    {
+      "index": 14,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 572.0,
+      "z": 462.0,
+      "road": "spoke_ashford",
+      "clearance_m": 8.9984
+    },
+    {
+      "index": 15,
+      "prefab": "police_station",
+      "poi": "ashford",
+      "x": 468.0,
+      "z": 481.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 9.0
+    },
+    {
+      "index": 17,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 520.0,
+      "z": 481.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 9.0
+    },
+    {
+      "index": 24,
+      "prefab": "house_two_storey",
+      "poi": "cranmoor",
+      "x": -560.0,
+      "z": -284.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 9.0
+    },
+    {
+      "index": 1,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 494.0,
+      "z": 379.0,
+      "road": "ashford_north",
+      "clearance_m": 9.0567
+    },
+    {
+      "index": 53,
+      "prefab": "radio_tower",
+      "poi": "the_mountain",
+      "x": 8.0,
+      "z": -6.0,
+      "road": "mountain_switchback",
+      "clearance_m": 9.3533
+    },
+    {
+      "index": 25,
+      "prefab": "motel",
+      "poi": "cranmoor",
+      "x": -560.0,
+      "z": -316.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 9.9967
+    },
+    {
+      "index": 2,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 520.0,
+      "z": 379.0,
+      "road": "ashford_north",
+      "clearance_m": 9.9984
+    },
+    {
+      "index": 23,
+      "prefab": "house_small",
+      "poi": "cranmoor",
+      "x": -590.0,
+      "z": -316.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 9.9984
+    },
+    {
+      "index": 27,
+      "prefab": "house_small",
+      "poi": "cranmoor",
+      "x": -530.0,
+      "z": -316.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 9.9984
+    },
+    {
+      "index": 29,
+      "prefab": "house_small",
+      "poi": "cranmoor",
+      "x": -500.0,
+      "z": -316.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 9.9984
+    },
+    {
+      "index": 3,
+      "prefab": "shop",
+      "poi": "ashford",
+      "x": 546.0,
+      "z": 379.0,
+      "road": "ashford_north",
+      "clearance_m": 9.9992
+    },
+    {
+      "index": 16,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 494.0,
+      "z": 481.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 10.0
+    },
+    {
+      "index": 18,
+      "prefab": "shop",
+      "poi": "ashford",
+      "x": 546.0,
+      "z": 481.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 10.0
+    },
+    {
+      "index": 19,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 572.0,
+      "z": 481.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 10.0
+    },
+    {
+      "index": 22,
+      "prefab": "shop",
+      "poi": "cranmoor",
+      "x": -590.0,
+      "z": -284.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 10.0
+    },
+    {
+      "index": 26,
+      "prefab": "house_small",
+      "poi": "cranmoor",
+      "x": -530.0,
+      "z": -284.0,
+      "road": "spoke_cranmoor",
+      "clearance_m": 10.0
+    },
+    {
+      "index": 63,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 570.0,
+      "z": 343.0,
+      "road": "ashford_north",
+      "clearance_m": 10.042
+    },
+    {
+      "index": 43,
+      "prefab": "warehouse",
+      "poi": "rail_yard",
+      "x": -555.0,
+      "z": -680.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 10.1445
+    },
+    {
+      "index": 104,
+      "prefab": "shed",
+      "poi": "",
+      "x": 98.5,
+      "z": 779.5,
+      "road": "ring",
+      "clearance_m": 10.2336
+    },
+    {
+      "index": 68,
+      "prefab": "shed",
+      "poi": "cranmoor",
+      "x": -612.0,
+      "z": -359.0,
+      "road": "ring",
+      "clearance_m": 10.745
+    },
+    {
+      "index": 60,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 475.0,
+      "z": 343.0,
+      "road": "ashford_north",
+      "clearance_m": 10.8158
+    },
+    {
+      "index": 56,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 664.7,
+      "z": -712.5,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 10.8278
+    },
+    {
+      "index": 4,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 572.0,
+      "z": 379.0,
+      "road": "ashford_north",
+      "clearance_m": 10.9563
+    },
+    {
+      "index": 51,
+      "prefab": "gas_station",
+      "poi": "gas_station",
+      "x": 300.0,
+      "z": -210.0,
+      "road": "spoke_gas_station",
+      "clearance_m": 11.4222
+    },
+    {
+      "index": 73,
+      "prefab": "cabin",
+      "poi": "frostmere_lodge",
+      "x": -754.0,
+      "z": -43.0,
+      "road": "frostmere_lodge_access",
+      "clearance_m": 11.9133
+    },
+    {
+      "index": 61,
+      "prefab": "house_two_storey",
+      "poi": "ashford",
+      "x": 500.0,
+      "z": 343.0,
+      "road": "ashford_north",
+      "clearance_m": 12.8129
+    },
+    {
+      "index": 0,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 468.0,
+      "z": 379.0,
+      "road": "ashford_north",
+      "clearance_m": 12.8752
+    },
+    {
+      "index": 50,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -650.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 13.281
+    },
+    {
+      "index": 72,
+      "prefab": "motel",
+      "poi": "frostmere_lodge",
+      "x": -784.0,
+      "z": -32.0,
+      "road": "frostmere_lodge_access",
+      "clearance_m": 13.4059
+    },
+    {
+      "index": 62,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 545.0,
+      "z": 343.0,
+      "road": "ashford_north",
+      "clearance_m": 13.9605
+    },
+    {
+      "index": 65,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 570.0,
+      "z": 518.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 14.4681
+    },
+    {
+      "index": 64,
+      "prefab": "house_small",
+      "poi": "ashford",
+      "x": 474.0,
+      "z": 518.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 14.6009
+    },
+    {
+      "index": 75,
+      "prefab": "warehouse",
+      "poi": "riverside_mill",
+      "x": -352.0,
+      "z": 515.0,
+      "road": "riverside_mill_access",
+      "clearance_m": 14.7627
+    },
+    {
+      "index": 66,
+      "prefab": "shop",
+      "poi": "ashford",
+      "x": 520.0,
+      "z": 518.0,
+      "road": "ashford_market_lane",
+      "clearance_m": 14.998
+    },
+    {
+      "index": 71,
+      "prefab": "motel",
+      "poi": "cranmoor",
+      "x": -558.0,
+      "z": -240.0,
+      "road": "cranmoor_motel_court",
+      "clearance_m": 15.0668
+    },
+    {
+      "index": 77,
+      "prefab": "barn_small",
+      "poi": "riverside_mill",
+      "x": -319.0,
+      "z": 543.0,
+      "road": "riverside_mill_access",
+      "clearance_m": 15.4988
+    },
+    {
+      "index": 83,
+      "prefab": "cabin",
+      "poi": "east_ranger_camp",
+      "x": 711.0,
+      "z": 84.0,
+      "road": "east_ranger_loop",
+      "clearance_m": 16.5311
+    },
+    {
+      "index": 69,
+      "prefab": "shed",
+      "poi": "cranmoor",
+      "x": -550.0,
+      "z": -356.0,
+      "road": "ring",
+      "clearance_m": 17.3468
+    },
+    {
+      "index": 52,
+      "prefab": "radio_hut",
+      "poi": "the_mountain",
+      "x": 0.0,
+      "z": 0.0,
+      "road": "mountain_switchback",
+      "clearance_m": 18.1155
+    },
+    {
+      "index": 96,
+      "prefab": "shed",
+      "poi": "",
+      "x": -256.4,
+      "z": -550.1,
+      "road": "ring",
+      "clearance_m": 20.3488
+    },
+    {
+      "index": 78,
+      "prefab": "shed",
+      "poi": "riverside_mill",
+      "x": -367.0,
+      "z": 547.0,
+      "road": "riverside_mill_access",
+      "clearance_m": 21.5
+    },
+    {
+      "index": 37,
+      "prefab": "quat_barn",
+      "poi": "hollis_farm",
+      "x": 542.0,
+      "z": -570.0,
+      "road": "ring",
+      "clearance_m": 22.272
+    },
+    {
+      "index": 79,
+      "prefab": "radio_tower",
+      "poi": "north_radar",
+      "x": 82.0,
+      "z": -691.0,
+      "road": "north_radar_access",
+      "clearance_m": 24.0
+    },
+    {
+      "index": 88,
+      "prefab": "hunting_stand",
+      "poi": "",
+      "x": 820.0,
+      "z": 120.0,
+      "road": "east_ranger_loop",
+      "clearance_m": 24.4162
+    },
+    {
+      "index": 108,
+      "prefab": "shed",
+      "poi": "",
+      "x": -433.3,
+      "z": -532.7,
+      "road": "spoke_rail_yard",
+      "clearance_m": 26.3582
+    },
+    {
+      "index": 80,
+      "prefab": "radio_hut",
+      "poi": "north_radar",
+      "x": 100.0,
+      "z": -691.0,
+      "road": "north_radar_access",
+      "clearance_m": 26.5689
+    },
+    {
+      "index": 99,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 475.0,
+      "z": 771.5,
+      "road": "ring",
+      "clearance_m": 26.5999
+    },
+    {
+      "index": 39,
+      "prefab": "quat_watertower",
+      "poi": "hollis_farm",
+      "x": 460.0,
+      "z": -530.0,
+      "road": "spoke_hollis_farm",
+      "clearance_m": 27.2534
+    },
+    {
+      "index": 44,
+      "prefab": "shed",
+      "poi": "rail_yard",
+      "x": -640.0,
+      "z": -710.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 27.8699
+    },
+    {
+      "index": 48,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -714.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 29.3121
+    },
+    {
+      "index": 84,
+      "prefab": "cabin",
+      "poi": "east_ranger_camp",
+      "x": 739.0,
+      "z": 94.0,
+      "road": "east_ranger_loop",
+      "clearance_m": 29.9992
+    },
+    {
+      "index": 76,
+      "prefab": "shed",
+      "poi": "riverside_mill",
+      "x": -320.0,
+      "z": 505.0,
+      "road": "riverside_mill_access",
+      "clearance_m": 33.8598
+    },
+    {
+      "index": 34,
+      "prefab": "house_small",
+      "poi": "bumjick_farm",
+      "x": -585.0,
+      "z": 485.0,
+      "road": "spoke_bumjick_farm",
+      "clearance_m": 34.2464
+    },
+    {
+      "index": 31,
+      "prefab": "quat_barn",
+      "poi": "bumjick_farm",
+      "x": -498.0,
+      "z": 510.0,
+      "road": "riverside_mill_loop",
+      "clearance_m": 34.3886
+    },
+    {
+      "index": 97,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": -161.5,
+      "z": 774.6,
+      "road": "ring",
+      "clearance_m": 35.7879
+    },
+    {
+      "index": 81,
+      "prefab": "shed",
+      "poi": "north_radar",
+      "x": 68.0,
+      "z": -677.0,
+      "road": "north_radar_access",
+      "clearance_m": 38.1979
+    },
+    {
+      "index": 41,
+      "prefab": "quat_windmill",
+      "poi": "hollis_farm",
+      "x": 505.0,
+      "z": -615.0,
+      "road": "spoke_hollis_farm",
+      "clearance_m": 43.5542
+    },
+    {
+      "index": 82,
+      "prefab": "shed",
+      "poi": "north_radar",
+      "x": 104.0,
+      "z": -674.0,
+      "road": "north_radar_access",
+      "clearance_m": 43.7385
+    },
+    {
+      "index": 70,
+      "prefab": "shed",
+      "poi": "cranmoor",
+      "x": -498.0,
+      "z": -358.0,
+      "road": "north_distributor",
+      "clearance_m": 43.9575
+    },
+    {
+      "index": 74,
+      "prefab": "shed",
+      "poi": "frostmere_lodge",
+      "x": -757.0,
+      "z": -6.0,
+      "road": "frostmere_lodge_access",
+      "clearance_m": 44.5
+    },
+    {
+      "index": 54,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 770.0,
+      "z": -760.0,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 48.9782
+    },
+    {
+      "index": 47,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -736.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 50.6974
+    },
+    {
+      "index": 93,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": -630.0,
+      "z": 662.9,
+      "road": "ring",
+      "clearance_m": 55.2238
+    },
+    {
+      "index": 92,
+      "prefab": "shed",
+      "poi": "",
+      "x": 557.9,
+      "z": -325.6,
+      "road": "ring",
+      "clearance_m": 57.6925
+    },
+    {
+      "index": 98,
+      "prefab": "cabin",
+      "poi": "",
+      "x": -442.4,
+      "z": 35.8,
+      "road": "riverbank_distributor",
+      "clearance_m": 58.5437
+    },
+    {
+      "index": 106,
+      "prefab": "cabin",
+      "poi": "",
+      "x": -615.6,
+      "z": -169.6,
+      "road": "ring",
+      "clearance_m": 59.0176
+    },
+    {
+      "index": 35,
+      "prefab": "quat_windmill",
+      "poi": "bumjick_farm",
+      "x": -535.0,
+      "z": 465.0,
+      "road": "spoke_bumjick_farm",
+      "clearance_m": 60.4552
+    },
+    {
+      "index": 107,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 758.5,
+      "z": 334.8,
+      "road": "east_ranger_loop",
+      "clearance_m": 60.6987
+    },
+    {
+      "index": 57,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 630.0,
+      "z": -760.5,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 68.458
+    },
+    {
+      "index": 90,
+      "prefab": "hunting_stand",
+      "poi": "",
+      "x": 200.0,
+      "z": 850.0,
+      "road": "ring",
+      "clearance_m": 70.407
+    },
+    {
+      "index": 46,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -758.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 72.1373
+    },
+    {
+      "index": 103,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 428.2,
+      "z": -194.9,
+      "road": "spoke_gas_station",
+      "clearance_m": 73.6049
+    },
+    {
+      "index": 42,
+      "prefab": "warehouse",
+      "poi": "rail_yard",
+      "x": -555.0,
+      "z": -750.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 74.8923
+    },
+    {
+      "index": 95,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": 337.3,
+      "z": 486.4,
+      "road": "riverbank_distributor",
+      "clearance_m": 77.776
+    },
+    {
+      "index": 89,
+      "prefab": "hunting_stand",
+      "poi": "",
+      "x": -895.0,
+      "z": -20.0,
+      "road": "frostmere_lodge_access",
+      "clearance_m": 83.0625
+    },
+    {
+      "index": 100,
+      "prefab": "shed",
+      "poi": "",
+      "x": -212.1,
+      "z": 812.9,
+      "road": "ring",
+      "clearance_m": 84.9333
+    },
+    {
+      "index": 87,
+      "prefab": "hunting_stand",
+      "poi": "",
+      "x": -300.0,
+      "z": 800.0,
+      "road": "ring",
+      "clearance_m": 89.4875
+    },
+    {
+      "index": 59,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 735.8,
+      "z": -807.2,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 91.2632
+    },
+    {
+      "index": 45,
+      "prefab": "railcar",
+      "poi": "rail_yard",
+      "x": -600.0,
+      "z": -780.0,
+      "road": "spoke_rail_yard",
+      "clearance_m": 93.4569
+    },
+    {
+      "index": 58,
+      "prefab": "cabin",
+      "poi": "hilltop_cabins",
+      "x": 665.7,
+      "z": -807.9,
+      "road": "spoke_hilltop_cabins",
+      "clearance_m": 103.6284
+    },
+    {
+      "index": 102,
+      "prefab": "cabin",
+      "poi": "",
+      "x": 741.4,
+      "z": -437.1,
+      "road": "ring",
+      "clearance_m": 115.6518
+    },
+    {
+      "index": 91,
+      "prefab": "barn_small",
+      "poi": "",
+      "x": -678.4,
+      "z": -498.2,
+      "road": "ring",
+      "clearance_m": 157.9269
+    },
+    {
+      "index": 94,
+      "prefab": "cabin",
+      "poi": "",
+      "x": -809.6,
+      "z": -725.7,
+      "road": "spoke_rail_yard",
+      "clearance_m": 182.9382
+    },
+    {
+      "index": 110,
+      "prefab": "cabin",
+      "poi": "",
+      "x": -818.2,
+      "z": 676.4,
+      "road": "ring",
+      "clearance_m": 197.9403
+    }
+  ],
+  "building_road_overlaps": [],
+  "building_building_overlaps": [],
+  "bridge_endpoints": [
+    {
+      "id": "frostmere_bridge",
+      "endpoint_to_road_center_m": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "stillwater_bridge",
+      "endpoint_to_road_center_m": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "out_of_bounds_road_points": []
+}

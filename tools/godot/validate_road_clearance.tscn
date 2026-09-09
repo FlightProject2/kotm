@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://tools/godot/validate_road_clearance.gd" id="1"]
+[node name="RoadClearanceValidation" type="Node"]
+script = ExtResource("1")

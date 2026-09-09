@@ -5,10 +5,15 @@ var character: Character
 var rig: KOTMCharacterRig
 var driver: AnimationDriver
 var _tracks: Dictionary = {}
+var _animations: Dictionary = {}
+var _skeleton: Skeleton3D
 const BONES := ["pelvis", "spine_01", "thigh.l", "calf.l", "foot.l", "ball.l", "thigh.r", "calf.r", "foot.r", "ball.r"]
 
+func _ready() -> void:
+	_skeleton = get_skeleton()
+
 func _process_modification() -> void:
-	if character == null or character.mode != Character.Mode.GROUND or character.in_vehicle():
+	if character == null or _skeleton == null or character.mode != Character.Mode.GROUND or character.in_vehicle():
 		return
 	if driver == null:
 		driver = character.visual.anim
@@ -31,7 +36,9 @@ func _process_modification() -> void:
 		var local_motion := rig.skeleton.global_basis.inverse() * planar.normalized()
 		if local_motion.z < -0.05:
 			phase = fposmod(1.0 - phase, 1.0)
-	var animation := rig.player.get_animation(rig.clips[key])
+	if not _animations.has(key):
+		_animations[key] = rig.player.get_animation(rig.clips[key])
+	var animation: Animation = _animations[key]
 	if not _tracks.has(key):
 		_tracks[key] = []
 		for index in animation.get_track_count():
@@ -40,12 +47,12 @@ func _process_modification() -> void:
 				continue
 			var bone := String(path.get_subname(path.get_subname_count() - 1))
 			if bone in BONES:
-				_tracks[key].append([index, get_skeleton().find_bone(bone)])
+				_tracks[key].append([index, _skeleton.find_bone(bone), animation.track_get_type(index)])
 	var time := phase * animation.length
 	for entry in _tracks[key]:
 		var track: int = entry[0]
 		var bone: int = entry[1]
-		match animation.track_get_type(track):
-			Animation.TYPE_POSITION_3D: get_skeleton().set_bone_pose_position(bone, animation.position_track_interpolate(track, time))
-			Animation.TYPE_ROTATION_3D: get_skeleton().set_bone_pose_rotation(bone, animation.rotation_track_interpolate(track, time))
-			Animation.TYPE_SCALE_3D: get_skeleton().set_bone_pose_scale(bone, animation.scale_track_interpolate(track, time))
+		match entry[2]:
+			Animation.TYPE_POSITION_3D: _skeleton.set_bone_pose_position(bone, animation.position_track_interpolate(track, time))
+			Animation.TYPE_ROTATION_3D: _skeleton.set_bone_pose_rotation(bone, animation.rotation_track_interpolate(track, time))
+			Animation.TYPE_SCALE_3D: _skeleton.set_bone_pose_scale(bone, animation.scale_track_interpolate(track, time))

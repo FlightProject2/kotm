@@ -12,7 +12,7 @@ static var _aabbs: Dictionary = {}      # id -> AABB
 static var _sockets: Dictionary = {}
 
 static func path(id: String) -> String:
-	return DIR + id + ".glb"
+	return KOTMWorldStyle.path(DIR + id + ".glb")
 
 static func exists(id: String) -> bool:
 	return ResourceLoader.exists(path(id))

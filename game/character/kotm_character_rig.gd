@@ -6,7 +6,8 @@ extends Node
 const SCENE_PATH := "res://assets/characters/kotm/KOTM_Character.glb"
 const MANIFEST_PATH := "res://assets/characters/kotm/asset_manifest.json"
 const SUPPORT_IK := preload("res://game/character/support_hand_ik.gd")
-const WEAPONS := {"ar15": "AR75", "hunting_rifle": "Hunting"}
+const WEAPONS := {"ar15": "AR75", "ak47": "AR75", "hunting_rifle": "Hunting"}
+const WEAPON_ROOTS := {"ar15": "AR75", "ak47": "AK47", "hunting_rifle": "HuntingRifle"}
 static var manifest: Dictionary = {}
 static var stride_centres: Dictionary = {}
 static var calibrated_wrists: Dictionary = {}
@@ -25,12 +26,13 @@ var support_hand: SkeletonModifier3D
 var weapon_id := ""
 var contact_enabled := false
 var loadout: Dictionary = {}
-var wardrobe := {"top": "DefaultTank", "bottom": "DefaultBoxers", "head": "None", "face": "None", "feet": "None"}
+var wardrobe := {"top": "DefaultTank", "bottom": "DefaultBoxers", "head": "None", "face": "None", "feet": "None", "hands": "None", "armour": "None"}
 var equipment := {"helmet": false, "armour": false, "backpack": false}
 var _pack_rest := Vector3.ZERO
 var _pack_offset := Vector3.ZERO
 var _pack_straps: Array[MeshInstance3D] = []
 var errors: Array[String] = []
+var body_composite = preload("res://game/character/body_composite.gd").new()
 
 func setup(model: Node3D) -> bool:
 	avatar = model
@@ -53,7 +55,7 @@ func setup(model: Node3D) -> bool:
 	# clip name distinct so truck-specific spine handling stays explicit.
 	if not clips.has("KOTM_Truck_Seated") and clips.has("KOTM_Snowmobile_Seated"):
 		clips["KOTM_Truck_Seated"] = clips["KOTM_Snowmobile_Seated"]
-	for key in ["Helmet", "Armour", "Backpack", "AR75", "HuntingRifle"]:
+	for key in ["Helmet", "Armour", "Backpack", "AR75", "AK47", "HuntingRifle"]:
 		roots[key] = avatar.find_child("EQ_" + key, true, false)
 	for key in manifest.get("templates", {}):
 		var info: Dictionary = manifest.templates[key]
@@ -71,6 +73,10 @@ func setup(model: Node3D) -> bool:
 		var mesh_name := String(mesh.name)
 		if mesh_name.begins_with("BODY_Region_"):
 			body_regions.append(mesh)
+		elif mesh_name.begins_with("Eyes_sclera") or mesh_name.begins_with("Iris") or mesh_name.begins_with("Limbal") or mesh_name.begins_with("Pupil") or mesh_name.begins_with("Eyebrow"):
+			mesh.visibility_range_end = 70.0
+			mesh.visibility_range_end_margin = 8.0
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		elif mesh_name.begins_with("Tank_"):
 			meshes.DefaultTank.append(mesh)
 		elif mesh_name.begins_with("Boxers_"):
@@ -81,7 +87,7 @@ func setup(model: Node3D) -> bool:
 		_pack_rest = roots.Backpack.position
 		_pack_offset = skeleton.get_bone_global_rest(skeleton.find_bone("chest")).basis.inverse() * Vector3(0, 0, -0.045)
 	for id in WEAPONS:
-		muzzle_nodes[id] = avatar.find_child("AR75_Muzzle" if id == "ar15" else "HuntingRifle_Muzzle", true, false)
+		muzzle_nodes[id] = avatar.find_child(String(WEAPON_ROOTS[id]) + "_Muzzle", true, false)
 		_cache_muzzle_binding(id)
 		var clip: String = "KOTM_" + WEAPONS[id] + "_Aim"
 		if calibrated_wrists.has(id):
@@ -100,6 +106,7 @@ func setup(model: Node3D) -> bool:
 	support_hand.target_provider = _contact_target
 	support_hand.enabled_provider = func() -> bool: return contact_enabled and wrist_offsets.has(weapon_id)
 	# Added after the game's pitch modifier by finish_modifiers().
+	body_composite.setup(body_regions)
 	apply_visibility()
 	return true
 
@@ -126,15 +133,16 @@ func play(clip: String, blend := 0.2) -> void:
 
 func set_weapon(id: String) -> void:
 	weapon_id = id
-	for key in ["AR75", "HuntingRifle"]:
+	for weapon_key in WEAPON_ROOTS:
+		var key: String = WEAPON_ROOTS[weapon_key]
 		if roots.get(key):
-			roots[key].visible = (id == "ar15" and key == "AR75") or (id == "hunting_rifle" and key == "HuntingRifle")
+			roots[key].visible = id == weapon_key
 	var skin: Dictionary = loadout.get("weapons", {})
 	if WEAPONS.has(id) and skin.has(id):
 		SkinSystem.apply_to_weapon(weapon_root(id), SkinSystem.weapon_skin(String(skin[id])))
 
 func weapon_root(id: String) -> Node3D:
-	return roots.get("AR75" if id == "ar15" else "HuntingRifle")
+	return roots.get(WEAPON_ROOTS.get(id, ""))
 
 func marker_world(id: String) -> Transform3D:
 	if muzzle_bindings.has(id):
@@ -158,13 +166,16 @@ func _cache_muzzle_binding(id: String) -> void:
 			muzzle_bindings[id] = {"bone": bone, "relative": relative}
 
 func _contact_target() -> Transform3D:
+	if muzzle_bindings.has(weapon_id):
+		# The common skeleton world transform cancels exactly for a bone-bound marker.
+		var binding: Dictionary = muzzle_bindings[weapon_id]
+		return skeleton.get_bone_global_pose(binding.bone) * binding.relative * wrist_offsets[weapon_id]
 	return skeleton.global_transform.affine_inverse() * marker_world(weapon_id) * wrist_offsets[weapon_id]
 
 func set_equipment(helmet: bool, armour: bool, backpack: bool) -> void:
-	var updated := {"helmet": helmet, "armour": armour, "backpack": backpack}
-	if updated == equipment:
+	if helmet == equipment.helmet and armour == equipment.armour and backpack == equipment.backpack:
 		return
-	equipment = updated
+	equipment = {"helmet": helmet, "armour": armour, "backpack": backpack}
 	apply_visibility()
 
 func apply_loadout(value: Dictionary) -> void:
@@ -175,17 +186,26 @@ func apply_loadout(value: Dictionary) -> void:
 	var feet := String(value.get("feet", ""))
 	var head := String(value.get("head", ""))
 	var face := String(value.get("face", ""))
+	var hands := String(value.get("hands", ""))
+	var armour_skin := String(value.get("armour", ""))
 	wardrobe.top = "DefaultTank" if chest in ["", String(defaults.chest)] else ("Hoodie" if chest.contains("hood") else "TShirt")
 	wardrobe.bottom = "DefaultBoxers" if legs in ["", String(defaults.legs)] else ("Shorts" if legs.contains("short") else "Leggings")
 	wardrobe.feet = "None" if feet in ["", String(defaults.feet)] else "Sneakers"
 	wardrobe.head = "None" if head.is_empty() else ("Beanie" if head.contains("beanie") else "BaseballCap")
 	wardrobe.face = "None" if face.is_empty() else ("Sunglasses" if face.contains("glass") else "FaceBandana")
+	wardrobe.hands = "None"
+	wardrobe.armour = "None"
+	# Authored equipment declares its actual mesh family in the cosmetic catalog.
+	for pair in [["top", chest], ["bottom", legs], ["feet", feet], ["head", head], ["face", face], ["hands", hands], ["armour", armour_skin]]:
+		var model_key := String(SkinSystem.item(String(pair[1])).get("model", ""))
+		if meshes.has(model_key):
+			wardrobe[pair[0]] = model_key
 	# Developer wardrobe overrides are explicit template names, independent of item stats.
 	for slot in value.get("kotm_wardrobe", {}):
 		var key := String(value.kotm_wardrobe[slot])
 		if wardrobe.has(slot) and (meshes.has(key) or key == "None"):
 			wardrobe[slot] = key
-	for pair in [["top", chest], ["bottom", legs], ["feet", feet], ["head", head], ["face", face]]:
+	for pair in [["top", chest], ["bottom", legs], ["feet", feet], ["head", head], ["face", face], ["hands", hands], ["armour", armour_skin]]:
 		var item := SkinSystem.item(pair[1])
 		var wearable: String = wardrobe[pair[0]]
 		var wearable_info: Dictionary = manifest.get("templates", {}).get(wearable, {})
@@ -193,7 +213,14 @@ func apply_loadout(value: Dictionary) -> void:
 			continue
 		var mat := SkinSystem.recipe_material(item.get("recipe", {}))
 		for mesh in meshes.get(wearable, []):
-			if wearable == "Sunglasses" and String(mesh.name).to_lower().contains("lens"):
+			if wearable == "Sunglasses":
+				# Runtime batching combines frame and lens islands in one mesh.
+				# Keep the dark lens finish while applying cosmetics to the frame.
+				mesh.material_override = null
+				for surface in mesh.mesh.get_surface_count():
+					var base_material: Material = mesh.mesh.surface_get_material(surface)
+					var lens := base_material != null and base_material.resource_name.to_lower().contains("lens")
+					mesh.set_surface_override_material(surface, null if lens else mat)
 				continue
 			mesh.material_override = mat
 	apply_visibility()
@@ -225,6 +252,7 @@ func _apply_appearance() -> void:
 		hair.visible = hair.visible and recipe.get("style", "short") != "bald"
 		if String(loadout.get("hair", "")) != "hair_short_brown":
 			hair.material_override = SkinSystem.recipe_material(recipe)
+	body_composite.update()
 
 var worn_shoes := false
 
@@ -237,10 +265,10 @@ func apply_visibility() -> void:
 	var active: Array = wardrobe.values()
 	if worn_shoes:
 		active.append("Sneakers")
-	var helmet_on: bool = equipment.helmet or wardrobe.head == "MotorcycleHelmet"
+	var helmet_on: bool = equipment.helmet or wardrobe.head in ["MotorcycleHelmet", "TacticalSantaHat"]
 	for key in meshes:
 		var enabled: bool = key in active and not (key == "Sunglasses" and helmet_on)
-		if key in ["BaseballCap", "Beanie", "MotorcycleHelmet"] and equipment.helmet:
+		if key in ["BaseballCap", "Beanie", "MotorcycleHelmet", "TacticalSantaHat"] and equipment.helmet:
 			enabled = false
 		if roots.get(key):
 			roots[key].visible = enabled
@@ -248,7 +276,7 @@ func apply_visibility() -> void:
 			mesh.visible = enabled
 	for pair in [["Helmet", "helmet"], ["Armour", "armour"], ["Backpack", "backpack"]]:
 		if roots.get(pair[0]):
-			roots[pair[0]].visible = equipment[pair[1]]
+			roots[pair[0]].visible = equipment[pair[1]] and not (pair[0] == "Armour" and wardrobe.armour != "None")
 	for region in body_regions:
 		region.visible = true
 		for key in manifest.get("body_masks", {}).get(String(region.name), []):
@@ -258,6 +286,7 @@ func apply_visibility() -> void:
 	if hair:
 		hair.visible = not helmet_on and wardrobe.head == "None" and String(loadout.get("hair", "")) != "hair_bald"
 	if roots.get("Backpack"):
-		roots.Backpack.position = _pack_rest + (_pack_offset if equipment.armour else Vector3.ZERO)
+		roots.Backpack.position = _pack_rest + (_pack_offset if equipment.armour or wardrobe.armour == "KevlarVest" else Vector3.ZERO)
 	for strap in _pack_straps:
-		strap.visible = not equipment.armour
+		strap.visible = not (equipment.armour or wardrobe.armour == "KevlarVest")
+	body_composite.update()

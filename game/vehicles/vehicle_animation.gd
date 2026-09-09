@@ -17,6 +17,9 @@ var _body_lift := 0.0
 var _previous_speed := 0.0
 var _wiper_time := 0.0
 var _door_time := -1.0
+var _has_pose := false
+var _last_steer := 0.0
+var pose_update_count := 0
 
 func setup(model: Node3D) -> void:
 	# Exported demonstration clips are for DCC inspection; gameplay owns these pivots.
@@ -142,28 +145,24 @@ func update_motion(dt: float, speed: float, steer: float, occupied: bool, wrecke
 	if dt <= 0.0:
 		return
 	var moving_speed := 0.0 if wrecked else speed
+	var wiping := occupied and not wrecked and not wipers.is_empty()
+	var settled := _previous_speed == 0.0 and _body_pitch == 0.0 and _body_roll == 0.0 and _body_lift == 0.0
+	# Parked cars retain their exact final pose. Input, a door cycle, active wipers or
+	# remaining suspension travel wake the animator on this same call.
+	if _has_pose and moving_speed == 0.0 and steer == _last_steer and settled and not wiping and _wiper_time == 0.0 and _door_time < 0.0:
+		return
+	pose_update_count += 1
 	distance += moving_speed * dt
-	for part in wheels:
-		var node: Node3D = part.node
-		var rest: Transform3D = part.rest
-		node.transform = rest * Transform3D(Basis(Vector3.RIGHT, fposmod(distance / float(part.radius), TAU)), Vector3.ZERO)
-	for part in steering:
-		var node: Node3D = part.node
-		var rest: Transform3D = part.rest
-		node.transform = rest * Transform3D(Basis(part.axis, steer * float(part.limit)), Vector3.ZERO)
-	for track in tracks:
-		var reference: Node3D = track.reference
-		for tread: Dictionary in track.treads:
-			var sample := _sample_track(track, float(tread.phase) + distance)
-			var original_tangent: Vector3 = tread.tangent
-			var tangent: Vector3 = sample.tangent
-			var rotation_delta := Basis(Vector3.RIGHT, original_tangent.signed_angle_to(tangent, Vector3.RIGHT))
-			var rest: Transform3D = tread.rest
-			var posed := Transform3D(rotation_delta * rest.basis, sample.position + rotation_delta * tread.offset)
-			var node: Node3D = tread.node
-			node.transform = posed if node.get_parent() == reference else (node.get_parent() as Node3D).global_transform.affine_inverse() * reference.global_transform * posed
+	if not _has_pose or moving_speed != 0.0:
+		_pose_running_gear()
+	if not _has_pose or steer != _last_steer:
+		for part in steering:
+			var node: Node3D = part.node
+			var rest: Transform3D = part.rest
+			node.transform = rest * Transform3D(Basis(part.axis, steer * float(part.limit)), Vector3.ZERO)
+	_last_steer = steer
 	_update_body(dt, moving_speed, steer)
-	if occupied and not wrecked:
+	if wiping:
 		_wiper_time = fposmod(_wiper_time + dt, 2.4)
 	else:
 		_wiper_time = move_toward(_wiper_time, 0.0, dt * 4.0)
@@ -180,6 +179,24 @@ func update_motion(dt: float, speed: float, steer: float, occupied: bool, wrecke
 	for part in doors:
 		var rest: Transform3D = part.rest
 		(part.node as Node3D).transform = rest * Transform3D(Basis(Vector3.UP, opening * float(part.sign)), Vector3.ZERO)
+	_has_pose = true
+
+func _pose_running_gear() -> void:
+	for part in wheels:
+		var node: Node3D = part.node
+		var rest: Transform3D = part.rest
+		node.transform = rest * Transform3D(Basis(Vector3.RIGHT, fposmod(distance / float(part.radius), TAU)), Vector3.ZERO)
+	for track in tracks:
+		var reference: Node3D = track.reference
+		for tread: Dictionary in track.treads:
+			var sample := _sample_track(track, float(tread.phase) + distance)
+			var original_tangent: Vector3 = tread.tangent
+			var tangent: Vector3 = sample.tangent
+			var rotation_delta := Basis(Vector3.RIGHT, original_tangent.signed_angle_to(tangent, Vector3.RIGHT))
+			var rest: Transform3D = tread.rest
+			var posed := Transform3D(rotation_delta * rest.basis, sample.position + rotation_delta * tread.offset)
+			var node: Node3D = tread.node
+			node.transform = posed if node.get_parent() == reference else (node.get_parent() as Node3D).global_transform.affine_inverse() * reference.global_transform * posed
 
 func _update_body(dt: float, speed: float, steer: float) -> void:
 	var acceleration := clampf((speed - _previous_speed) / dt, -18.0, 12.0)
@@ -191,5 +208,13 @@ func _update_body(dt: float, speed: float, steer: float) -> void:
 	_body_pitch = lerpf(_body_pitch, -acceleration * 0.0018, smoothing)
 	_body_roll = lerpf(_body_roll, -steer * travel * 0.022, smoothing)
 	_body_lift = lerpf(_body_lift, sin(distance * 3.5) * travel * 0.014, smoothing)
+	if speed == 0.0:
+		# Exponential settling is asymptotic; snap only below micrometre/radian scale.
+		if absf(_body_pitch) < 0.000001:
+			_body_pitch = 0.0
+		if absf(_body_roll) < 0.000001:
+			_body_roll = 0.0
+		if absf(_body_lift) < 0.000001:
+			_body_lift = 0.0
 	var pose := Transform3D(Basis.from_euler(Vector3(_body_pitch, 0.0, _body_roll)), Vector3(0, _body_lift, 0))
 	body.transform = _body_rest * pose

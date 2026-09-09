@@ -38,6 +38,7 @@ var wheel_spin: float = 0.0
 var seat_offset := Vector3(-0.45, 0.6, 0.0)
 var driver_marker: Node3D
 var animator: VehicleAnimation
+var render_batches: RefCounted
 var contact_markers: Dictionary = {}
 var _collision_half_width := 1.05
 var _body_bounds := AABB(Vector3(-1.05, 0.1, -2.2), Vector3(2.1, 1.3, 4.4))
@@ -68,7 +69,7 @@ func setup(id: String, p_world: World) -> void:
 	var path: String = MODELS.get(id, MODELS["offroader"])
 	var fitted_path: String = FITTED_MODELS.get(id, "")
 	if not fitted_path.is_empty() and ResourceLoader.exists(fitted_path):
-		model = (load(fitted_path) as PackedScene).instantiate()
+		model = (load(KOTMWorldStyle.path(fitted_path)) as PackedScene).instantiate()
 		model.rotation.y = PI # authored forward +Z, game vehicle forward -Z
 		add_child(model)
 		driver_marker = model.find_child("SeatDriver", true, false) as Node3D
@@ -98,7 +99,7 @@ func setup(id: String, p_world: World) -> void:
 			cs.position = box.get_center()
 			seat_offset = Vector3(-box.size.x * 0.22, box.size.y * 0.45, 0.0)
 	elif ResourceLoader.exists(path):
-		var scene: PackedScene = load(path)
+		var scene: PackedScene = load(KOTMWorldStyle.path(path))
 		model = scene.instantiate()
 		model.scale = Vector3.ONE * MODEL_SCALE
 		add_child(model)
@@ -131,6 +132,10 @@ func setup(id: String, p_world: World) -> void:
 		animator.name = "VehicleAnimation"
 		add_child(animator)
 		animator.setup(model)
+		animator.update_motion(1.0/60.0, 0.0, 0.0, false, false)
+		if not has_meta("disable_render_batching"):
+			render_batches = preload("res://game/vehicles/vehicle_render_batches.gd").new()
+			set_meta("render_batch_stats", render_batches.setup(self))
 	# Update moving controls and the seat before the character's AnimationPlayer/modifiers.
 	process_priority = -20
 	set_meta("vehicle", true)
@@ -156,7 +161,7 @@ func _configure_truck_glass() -> void:
 				glass.albedo_color = tint
 			mesh.set_surface_override_material(surface, glass)
 
-## Horizontal distance to the fitted body so large vehicles can be entered at their doors.
+## Horizontal distance to the fitted body, so large vehicles can be entered at their doors.
 func distance_to_body(p: Vector3) -> float:
 	var local := global_transform.affine_inverse() * p
 	var nearest := local.clamp(_body_bounds.position, _body_bounds.end)
@@ -207,6 +212,8 @@ func contact_marker(socket: String) -> Node3D:
 func _process(dt: float) -> void:
 	if animator:
 		animator.update_motion(dt, speed, steer, occupied(), wrecked)
+		if render_batches:
+			render_batches.update(animator.distance)
 
 ## Called by the driver's Character during its physics step (same tick, deterministic order).
 func drive(dt: float, inp: CharacterInput) -> void:

@@ -96,8 +96,9 @@ func _update_transforms() -> void:
 		return
 	var skel_xf := skeleton.global_transform
 	for i in areas.size():
-		var pose := skel_xf * skeleton.get_bone_global_pose(_bone_idx[i])
-		areas[i].global_transform = pose.orthonormalized()
+		var pose := (skel_xf * skeleton.get_bone_global_pose(_bone_idx[i])).orthonormalized()
+		if areas[i].global_transform != pose:
+			areas[i].global_transform = pose
 
 func rids() -> Array[RID]:
 	var out: Array[RID] = []

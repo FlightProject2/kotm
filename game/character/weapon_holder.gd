@@ -6,16 +6,18 @@ extends BoneAttachment3D
 ## longest axis is the barrel, scaled to a per-class length, grip placed at the hand, and a
 ## "Muzzle" marker sits at the barrel tip for projectiles, tracers and the flash.
 
+const MUZZLE_FLASH := preload("res://game/character/muzzle_flash.gd")
+
 const TARGET_LENGTH := {"rifle": 0.82, "sniper": 1.1, "shotgun": 1.0, "smg": 0.58, "pistol": 0.26, "bow": 1.2, "melee": 0.4}
 const GRIP_FRACTION := {"rifle": 0.38, "sniper": 0.4, "shotgun": 0.4, "smg": 0.35, "pistol": 0.15, "bow": 0.5, "melee": 0.2}
 const MODELS := {
-	"ar15": "res://assets/models/ar75.glb", "ak47": "res://assets/kenney/weapon/machinegun.glb",
+	"ar15": "res://assets/models/kotm/KOTM_AR15.glb", "ak47": "res://assets/models/kotm/KOTM_AK47.glb",
 	"hunting_rifle": "res://assets/kenney/weapon/sniper.glb", "shotgun_12g": "res://assets/kenney/weapon/shotgun.glb",
 	"hellfire": "res://assets/kenney/weapon/uzi.glb", "m9": "res://assets/kenney/weapon/pistol.glb",
 	"r380": "res://assets/kenney/weapon/pistol.glb", "m1911": "res://assets/kenney/weapon/pistol.glb",
 	"magnum44": "res://assets/quaternius/guns/Revolver.fbx", "combat_knife": "res://assets/kenney/weapon/knife_sharp.glb",
 }
-const TINTS := {"ak47": Color(0.45, 0.3, 0.18), "r380": Color(0.6, 0.6, 0.62), "m1911": Color(0.35, 0.3, 0.25)}
+const TINTS := {"r380": Color(0.6, 0.6, 0.62), "m1911": Color(0.35, 0.3, 0.25)}
 ## Where the grip sits relative to the hand bone (hand space). Tune in the editor.
 @export var grip_offset := Vector3(0.0, -0.02, 0.0)
 ## Max angle the gun may deviate from the arm's natural direction while tracking the aim.
@@ -23,13 +25,11 @@ const TINTS := {"ak47": Color(0.45, 0.3, 0.18), "r380": Color(0.6, 0.6, 0.62), "
 
 var mount: Node3D
 var muzzle: Marker3D
-var flash: Node3D
+var flash
 var current_id: String = ""
 var current_class: String = ""
 var character: Node
 var length: float = 0.0
-var _flash_t: float = 0.0
-var _flash_scale := 1.0
 var _kick: float = 0.0
 var _last_dir: Vector3 = Vector3.FORWARD
 var studio_rig: KOTMCharacterRig
@@ -42,68 +42,29 @@ func _ready() -> void:
 	muzzle.name = "Muzzle"
 	mount.add_child(muzzle)
 	_build_flash()
+	set_process(false) # The independent flash child enables itself only during a shot.
 	var skel := get_parent() as Skeleton3D
 	if skel:
 		skel.skeleton_updated.connect(_align)
 
 func _build_flash() -> void:
-	flash = Node3D.new()
+	flash = MUZZLE_FLASH.new()
 	flash.name = "MuzzleFlash"
-	# Two compact additive stars read as a brief muzzle burst instead of the old
-	# opaque square. Their world size stays below the width of a character head.
-	for layer in [
-		{"radius": 0.070, "points": 8, "color": Color(1.0, 0.55, 0.12, 0.95)},
-		{"radius": 0.043, "points": 6, "color": Color(1.0, 0.94, 0.68, 1.0)},
-	]:
-		var burst := MeshInstance3D.new()
-		var burst_color: Color = layer.color
-		burst.mesh = _star_mesh(float(layer.radius), int(layer.points))
-		var material := StandardMaterial3D.new()
-		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-		material.albedo_color = burst_color
-		material.emission_enabled = true
-		material.emission = burst_color
-		material.emission_energy_multiplier = 3.0
-		material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		burst.material_override = material
-		burst.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		burst.rotation.z = PI / float(layer.points)
-		flash.add_child(burst)
-	var flash_light := OmniLight3D.new()
-	flash_light.name = "FlashLight"
-	flash_light.light_color = Color(1.0, 0.62, 0.24)
-	flash_light.light_energy = 0.55
-	flash_light.omni_range = 1.1
-	flash_light.shadow_enabled = false
-	flash.add_child(flash_light)
-	flash.visible = false
+	flash.transform_provider = _flash_transform
 	mount.add_child(flash)
 
-static func _star_mesh(radius: float, point_count: int) -> ArrayMesh:
-	var vertices := PackedVector3Array()
-	var corners := point_count * 2
-	for index in corners:
-		var angle_a := TAU * float(index) / float(corners)
-		var angle_b := TAU * float(index + 1) / float(corners)
-		var radius_a := radius if index % 2 == 0 else radius * 0.32
-		var radius_b := radius if (index + 1) % 2 == 0 else radius * 0.32
-		vertices.append(Vector3.ZERO)
-		vertices.append(Vector3(cos(angle_a) * radius_a, sin(angle_a) * radius_a, 0.0))
-		vertices.append(Vector3(cos(angle_b) * radius_b, sin(angle_b) * radius_b, 0.0))
-	var arrays := []
-	arrays.resize(Mesh.ARRAY_MAX)
-	arrays[Mesh.ARRAY_VERTEX] = vertices
-	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	return mesh
+func _flash_transform() -> Transform3D:
+	if studio_rig and KOTMCharacterRig.WEAPONS.has(current_id):
+		return studio_rig.marker_world(current_id)
+	# Imported canonical markers point +Z; legacy auto-fit weapons point -Z.
+	return Transform3D((muzzle.global_basis * Basis(Vector3.UP, PI)).orthonormalized(), muzzle.global_position)
 
 func set_weapon(weapon_id: String, weapon_class: String) -> void:
 	if weapon_id == current_id:
 		return
 	current_id = weapon_id
 	current_class = weapon_class
+	flash.stop()
 	for c in mount.get_children():
 		if c != muzzle and c != flash:
 			c.queue_free()
@@ -116,7 +77,7 @@ func set_weapon(weapon_id: String, weapon_class: String) -> void:
 			return
 	if weapon_id == "" or weapon_id == "fists" or not MODELS.has(weapon_id):
 		return
-	var scene: PackedScene = load(MODELS[weapon_id])
+	var scene: PackedScene = load(KOTMWorldStyle.path(MODELS[weapon_id]))
 	if scene == null:
 		return
 	var model: Node3D = scene.instantiate()
@@ -124,7 +85,6 @@ func set_weapon(weapon_id: String, weapon_class: String) -> void:
 	var fit := fit_model(model, weapon_class)
 	length = fit["length"]
 	muzzle.position = fit["muzzle"]
-	flash.position = fit["muzzle"]
 	if TINTS.has(weapon_id):
 		_tint(model, TINTS[weapon_id])
 	if character and character.get("cosmetics") != null:
@@ -142,29 +102,23 @@ func muzzle_global() -> Vector3:
 
 ## Fires the flash and a small kick; called from the character's fired signal.
 func fire_effects() -> void:
-	_flash_t = 0.035
-	_flash_scale = randf_range(0.82, 1.08)
+	if length <= 0.0 or current_class in ["melee", "bow"]:
+		return
 	_kick = 0.05
-	flash.visible = true
-	flash.rotation.z = randf() * TAU
-	flash.scale = Vector3.ONE * _flash_scale
+	set_process(true)
+	flash.trigger(current_id, _flash_transform())
 
 func _process(dt: float) -> void:
-	if _flash_t > 0.0:
-		_flash_t -= dt
-		if _flash_t <= 0.0:
-			flash.visible = false
 	_kick = maxf(0.0, _kick - dt * 0.6)
+	if _kick <= 0.0:
+		set_process(false)
 
 ## Orient the mount so its -Z follows the aim direction, at the hand position.
 func _align() -> void:
 	if character == null or not is_inside_tree():
 		return
 	if studio_rig and KOTMCharacterRig.WEAPONS.has(current_id):
-		if _flash_t > 0:
-			var marker := studio_rig.marker_world(current_id)
-			marker.basis = marker.basis.orthonormalized().scaled(Vector3.ONE * _flash_scale)
-			flash.global_transform = marker
+		flash.follow_muzzle()
 		return
 	var dir: Vector3 = _last_dir
 	var inp = character.get("input")

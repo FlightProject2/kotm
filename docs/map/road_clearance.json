@@ -1,0 +1,956 @@
+{
+	"blocking_static_objects": [],
+	"build_stats": {
+		"bridge_collision_shapes": 92,
+		"bridge_meshes": 2,
+		"bridges": 2,
+		"buildings": 129,
+		"chunks": 177,
+		"frontier_batches": 42,
+		"frontier_props": 130,
+		"frontier_roads": 16,
+		"loot_nodes": 326,
+		"ms": 11152,
+		"placeholders": 0,
+		"props": 276,
+		"static_chunks": 74,
+		"static_meshes_batched": 494,
+		"static_surfaces_after": 448,
+		"static_surfaces_before": 1262,
+		"trees": 8200,
+		"vehicles": 16,
+		"window_batches": 34,
+		"window_physics_bodies": 34,
+		"windows": 431,
+		"wrecks": 14
+	},
+	"disconnected_roads": [],
+	"endpoints": [
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_gas_station",
+			"position": [
+				450.0,
+				0.0
+			],
+			"road": "ring",
+			"width": 8.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_gas_station",
+			"position": [
+				450.0,
+				0.0
+			],
+			"road": "ring",
+			"width": 8.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				598.0,
+				447.0
+			],
+			"road": "spoke_ashford",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "riverbank_distributor",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "spoke_ashford",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-640.0,
+				-300.0
+			],
+			"road": "spoke_cranmoor",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "north_distributor",
+			"position": [
+				-480.0,
+				-300.0
+			],
+			"road": "spoke_cranmoor",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-560.0,
+				630.0
+			],
+			"road": "spoke_bumjick_farm",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "riverside_mill_loop",
+			"position": [
+				-568.0,
+				522.0
+			],
+			"road": "spoke_bumjick_farm",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				420.0,
+				-580.0
+			],
+			"road": "spoke_hollis_farm",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 6.65776252746582,
+			"nearest_road": "ring",
+			"position": [
+				480.0,
+				-555.0
+			],
+			"road": "spoke_hollis_farm",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-420.0,
+				-460.0
+			],
+			"road": "spoke_rail_yard",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "coldwater_access",
+			"position": [
+				-625.0,
+				-680.0
+			],
+			"road": "spoke_rail_yard",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				450.0,
+				0.0
+			],
+			"road": "spoke_gas_station",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "switchback_forecourt",
+			"position": [
+				315.0,
+				-200.0
+			],
+			"road": "spoke_gas_station",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				600.0,
+				-480.0
+			],
+			"road": "spoke_hilltop_cabins",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 261.530609130859,
+			"nearest_road": "ring",
+			"position": [
+				746.0,
+				-710.0
+			],
+			"road": "spoke_hilltop_cabins",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_cranmoor",
+			"position": [
+				-480.0,
+				-300.0
+			],
+			"road": "north_distributor",
+			"width": 7.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				605.0,
+				-230.0
+			],
+			"road": "north_distributor",
+			"width": 7.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-700.0,
+				105.0
+			],
+			"road": "riverbank_distributor",
+			"width": 7.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_ashford",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "riverbank_distributor",
+			"width": 7.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-700.0,
+				-40.0
+			],
+			"road": "frostmere_lodge_access",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 102.305725097656,
+			"nearest_road": "ring",
+			"position": [
+				-806.0,
+				-7.0
+			],
+			"road": "frostmere_lodge_access",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_bumjick_farm",
+			"position": [
+				-568.0,
+				522.0
+			],
+			"road": "riverside_mill_loop",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-130.0,
+				735.0
+			],
+			"road": "riverside_mill_loop",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "riverside_mill_loop",
+			"position": [
+				-341.0,
+				575.0
+			],
+			"road": "riverside_mill_access",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 36.5602416992188,
+			"nearest_road": "riverside_mill_loop",
+			"position": [
+				-341.0,
+				538.0
+			],
+			"road": "riverside_mill_access",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				175.0,
+				-600.0
+			],
+			"road": "north_radar_access",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 126.969703674316,
+			"nearest_road": "ring",
+			"position": [
+				85.0,
+				-719.0
+			],
+			"road": "north_radar_access",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				495.0,
+				150.0
+			],
+			"road": "east_ranger_loop",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				595.0,
+				280.0
+			],
+			"road": "east_ranger_loop",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "north_distributor",
+			"position": [
+				-400.0,
+				-370.0
+			],
+			"road": "mountain_switchback",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 92.6498794555664,
+			"nearest_road": "summit_south_trail",
+			"position": [
+				15.0,
+				-18.0
+			],
+			"road": "mountain_switchback",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "riverbank_distributor",
+			"position": [
+				230.0,
+				380.0
+			],
+			"road": "summit_south_trail",
+			"width": 3.5
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "mountain_switchback",
+			"position": [
+				-75.0,
+				-40.0
+			],
+			"road": "summit_south_trail",
+			"width": 3.5
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_ashford",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "ashford_main",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				598.0,
+				447.0
+			],
+			"road": "ashford_main",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_west",
+			"position": [
+				440.0,
+				413.0
+			],
+			"road": "ashford_cross",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_east",
+			"position": [
+				598.0,
+				413.0
+			],
+			"road": "ashford_cross",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				440.0,
+				413.0
+			],
+			"road": "ashford_west",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_ashford",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "ashford_west",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				598.0,
+				413.0
+			],
+			"road": "ashford_east",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				598.0,
+				447.0
+			],
+			"road": "ashford_east",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				440.0,
+				413.0
+			],
+			"road": "ashford_north",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				598.0,
+				413.0
+			],
+			"road": "ashford_north",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_ashford",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "ashford_market_lane",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				598.0,
+				447.0
+			],
+			"road": "ashford_market_lane",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				598.0,
+				413.0
+			],
+			"road": "ashford_square_east",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				598.0,
+				447.0
+			],
+			"road": "ashford_square_east",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ring",
+			"position": [
+				-640.0,
+				-300.0
+			],
+			"road": "cranmoor_main",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_cranmoor",
+			"position": [
+				-480.0,
+				-300.0
+			],
+			"road": "cranmoor_main",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_cranmoor",
+			"position": [
+				-610.0,
+				-300.0
+			],
+			"road": "cranmoor_motel_court",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_cranmoor",
+			"position": [
+				-510.0,
+				-300.0
+			],
+			"road": "cranmoor_motel_court",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 14.0,
+			"nearest_road": "oakridge_drive_w0",
+			"position": [
+				418.0,
+				365.0
+			],
+			"road": "oakridge_street",
+			"width": 5.5
+		},
+		{
+			"connected": false,
+			"gap_m": 14.0,
+			"nearest_road": "oakridge_drive_w3",
+			"position": [
+				418.0,
+				495.0
+			],
+			"road": "oakridge_street",
+			"width": 5.5
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				413.0
+			],
+			"road": "oakridge_north_link",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_cross",
+			"position": [
+				440.0,
+				413.0
+			],
+			"road": "oakridge_north_link",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				447.0
+			],
+			"road": "oakridge_south_link",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_ashford",
+			"position": [
+				440.0,
+				447.0
+			],
+			"road": "oakridge_south_link",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 10.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				408.0,
+				379.0
+			],
+			"road": "oakridge_drive_w0",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				379.0
+			],
+			"road": "oakridge_drive_w0",
+			"width": 2.8
+		},
+		{
+			"connected": false,
+			"gap_m": 10.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				408.0,
+				400.0
+			],
+			"road": "oakridge_drive_w1",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				400.0
+			],
+			"road": "oakridge_drive_w1",
+			"width": 2.8
+		},
+		{
+			"connected": false,
+			"gap_m": 10.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				408.0,
+				451.0
+			],
+			"road": "oakridge_drive_w2",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				451.0
+			],
+			"road": "oakridge_drive_w2",
+			"width": 2.8
+		},
+		{
+			"connected": false,
+			"gap_m": 10.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				408.0,
+				481.0
+			],
+			"road": "oakridge_drive_w3",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				481.0
+			],
+			"road": "oakridge_drive_w3",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				380.0
+			],
+			"road": "oakridge_drive_e0",
+			"width": 2.8
+		},
+		{
+			"connected": false,
+			"gap_m": 5.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				423.0,
+				380.0
+			],
+			"road": "oakridge_drive_e0",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				418.0,
+				480.0
+			],
+			"road": "oakridge_drive_e1",
+			"width": 2.8
+		},
+		{
+			"connected": false,
+			"gap_m": 5.0,
+			"nearest_road": "oakridge_street",
+			"position": [
+				423.0,
+				480.0
+			],
+			"road": "oakridge_drive_e1",
+			"width": 2.8
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_rail_yard",
+			"position": [
+				-625.0,
+				-680.0
+			],
+			"road": "coldwater_access",
+			"width": 6.0
+		},
+		{
+			"connected": false,
+			"gap_m": 14.0,
+			"nearest_road": "coldwater_apron",
+			"position": [
+				-666.0,
+				-734.0
+			],
+			"road": "coldwater_access",
+			"width": 6.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "coldwater_access",
+			"position": [
+				-666.0,
+				-720.0
+			],
+			"road": "coldwater_apron",
+			"width": 5.0
+		},
+		{
+			"connected": false,
+			"gap_m": 62.6418380737305,
+			"nearest_road": "coldwater_access",
+			"position": [
+				-648.0,
+				-794.0
+			],
+			"road": "coldwater_apron",
+			"width": 5.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_cranmoor",
+			"position": [
+				-577.0,
+				-300.0
+			],
+			"road": "pinewatch_access",
+			"width": 4.0
+		},
+		{
+			"connected": false,
+			"gap_m": 23.5973339080811,
+			"nearest_road": "ring",
+			"position": [
+				-576.0,
+				-336.0
+			],
+			"road": "pinewatch_access",
+			"width": 4.0
+		},
+		{
+			"connected": false,
+			"gap_m": 35.341194152832,
+			"nearest_road": "spoke_gas_station",
+			"position": [
+				283.0,
+				-215.0
+			],
+			"road": "switchback_forecourt",
+			"width": 4.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "spoke_gas_station",
+			"position": [
+				315.0,
+				-200.0
+			],
+			"road": "switchback_forecourt",
+			"width": 4.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "ashford_market_lane",
+			"position": [
+				598.0,
+				497.0
+			],
+			"road": "glacier_main",
+			"width": 8.0
+		},
+		{
+			"connected": false,
+			"gap_m": 22.0,
+			"nearest_road": "glacier_west_service",
+			"position": [
+				468.0,
+				543.0
+			],
+			"road": "glacier_main",
+			"width": 8.0
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "glacier_main",
+			"position": [
+				490.0,
+				543.0
+			],
+			"road": "glacier_west_service",
+			"width": 5.5
+		},
+		{
+			"connected": false,
+			"gap_m": 28.0,
+			"nearest_road": "glacier_main",
+			"position": [
+				490.0,
+				571.0
+			],
+			"road": "glacier_west_service",
+			"width": 5.5
+		},
+		{
+			"connected": true,
+			"gap_m": 0.0,
+			"nearest_road": "glacier_main",
+			"position": [
+				550.0,
+				543.0
+			],
+			"road": "glacier_east_service",
+			"width": 5.5
+		},
+		{
+			"connected": false,
+			"gap_m": 28.0,
+			"nearest_road": "glacier_main",
+			"position": [
+				550.0,
+				571.0
+			],
+			"road": "glacier_east_service",
+			"width": 5.5
+		}
+	],
+	"road_count": 42,
+	"sweep_samples": 15705
+}

@@ -1,6 +1,6 @@
 class_name LootRegistry
 extends Node3D
-## All loot on the ground: a spatial grid for queries plus one MultiMesh per visual kind.
+## All loot on the ground: a spatial grid for queries plus dense spatial MultiMeshes for nearby loot.
 ## The server owns add/remove; clients mirror through loot_added/loot_removed events.
 
 class Entry:
@@ -8,16 +8,20 @@ class Entry:
 	var item: Dictionary          # {kind, id, qty} or {kind: "bag", owner, items: []}
 	var pos: Vector3
 	var key: String               # visual key
-	var slot: int = -1            # instance index in the multimesh
+	var slot: int = -1            # dense index in its visual chunk
+	var batch_key: String = ""
+	var visual_transform: Transform3D
 
 const CELL := 32.0
-const CAPACITY := 1024
+const CAPACITY := 128
+const VISUAL_CELL := 96.0
+const VISUAL_RANGE := 280.0
 const WEAPON_MODEL_LENGTH := 0.75
 
 var entries: Dictionary = {}          # id -> Entry
 var grid: Dictionary = {}             # Vector2i -> Array[int]
 var _mm: Dictionary = {}              # key -> MultiMeshInstance3D
-var _free: Dictionary = {}            # key -> Array[int]
+var _batch_entries: Dictionary = {}   # visual chunk -> dense Array[Entry]
 var _next_id: int = 1
 
 func _cell(p: Vector3) -> Vector2i:
@@ -82,11 +86,12 @@ func _key_for(item: Dictionary) -> String:
 		"bag": return "bag"
 		_: return item["kind"]
 
-func _ensure_mm(key: String) -> MultiMeshInstance3D:
-	if _mm.has(key):
-		return _mm[key]
+func _ensure_mm(key: String, batch: String, center: Vector3) -> MultiMeshInstance3D:
+	if _mm.has(batch):
+		return _mm[batch]
 	var mmi := MultiMeshInstance3D.new()
-	mmi.name = "MM_" + key.replace(":", "_")
+	mmi.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	mmi.name = "MM_" + batch.replace(":", "_").replace("@", "_").replace(",", "_")
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.instance_count = CAPACITY
@@ -97,15 +102,12 @@ func _ensure_mm(key: String) -> MultiMeshInstance3D:
 	if built[1] != null:
 		mmi.material_override = built[1]
 	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mmi.position = center
+	mmi.visibility_range_end = VISUAL_RANGE
+	mmi.visibility_range_end_margin = 24.0
 	add_child(mmi)
-	_mm[key] = mmi
-	var free: Array = []
-	for i in range(CAPACITY - 1, -1, -1):
-		free.append(i)
-	_free[key] = free
-	# park all instances far away
-	for i in CAPACITY:
-		mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3.ZERO), Vector3(0, -1000, 0)))
+	_mm[batch] = mmi
+	_batch_entries[batch] = []
 	return mmi
 
 const STUDIO_MODELS := {"helmet": ["motorcycle_helmet", 0.34], "backpack": ["military_backpack", 0.5]}
@@ -124,14 +126,14 @@ func _mesh_for(key: String) -> Array:
 		var wid := key.substr(7)
 		var path: String = WeaponHolder.MODELS.get(wid, "")
 		if path.begins_with(ModelLib.DIR):
-			var id := path.get_file().get_basename()
+			var id := path.trim_prefix(ModelLib.DIR).trim_suffix(".glb")
 			var m := ModelLib.mesh(id)
 			if m:
 				var sz := ModelLib.aabb(id).size
 				_mesh_scale[key] = WEAPON_MODEL_LENGTH / maxf(maxf(sz.x, sz.y), sz.z)
 				return [m, null]
 		if path != "":
-			var scene: PackedScene = load(path)
+			var scene: PackedScene = load(KOTMWorldStyle.path(path))
 			if scene:
 				var inst := scene.instantiate()
 				var mis := inst.find_children("*", "MeshInstance3D", true, false)
@@ -167,21 +169,37 @@ func _mesh_for(key: String) -> Array:
 var _mesh_scale: Dictionary = {}
 
 func _show(e: Entry) -> void:
-	var mmi := _ensure_mm(e.key)
-	var free: Array = _free[e.key]
-	if free.is_empty():
-		return
-	e.slot = free.pop_back()
+	var cell := Vector2i(floori(e.pos.x / VISUAL_CELL), floori(e.pos.z / VISUAL_CELL))
+	e.batch_key = "%s@%d,%d" % [e.key, cell.x, cell.y]
+	var center := Vector3((cell.x + 0.5) * VISUAL_CELL, 0, (cell.y + 0.5) * VISUAL_CELL)
+	var mmi := _ensure_mm(e.key, e.batch_key, center)
+	var active: Array = _batch_entries[e.batch_key]
+	var mm := mmi.multimesh
+	if active.size() == mm.instance_count:
+		mm.instance_count *= 2
+		for index in active.size():
+			mm.set_instance_transform(index, active[index].visual_transform)
+	e.slot = active.size()
+	active.append(e)
 	var s: float = _mesh_scale.get(e.key, 1.0)
 	var basis := Basis(Vector3.UP, float(e.id % 360) * 0.0174).scaled(Vector3.ONE * s)
 	var lift := 0.05 if e.key.begins_with("weapon:") else 0.15
-	mmi.multimesh.set_instance_transform(e.slot, Transform3D(basis, e.pos + Vector3(0, lift, 0)))
-	mmi.multimesh.visible_instance_count = CAPACITY
+	e.visual_transform = Transform3D(basis, e.pos - center + Vector3(0, lift, 0))
+	mm.set_instance_transform(e.slot, e.visual_transform)
+	mm.visible_instance_count = active.size()
 
 func _hide(e: Entry) -> void:
-	if e.slot < 0 or not _mm.has(e.key):
+	if e.slot < 0 or not _mm.has(e.batch_key):
 		return
-	var mmi: MultiMeshInstance3D = _mm[e.key]
-	mmi.multimesh.set_instance_transform(e.slot, Transform3D(Basis().scaled(Vector3.ZERO), Vector3(0, -1000, 0)))
-	_free[e.key].append(e.slot)
+	var mmi: MultiMeshInstance3D = _mm[e.batch_key]
+	var active: Array = _batch_entries[e.batch_key]
+	var last := active.size() - 1
+	if e.slot != last:
+		var moved: Entry = active[last]
+		mmi.multimesh.set_instance_transform(e.slot, moved.visual_transform)
+		active[e.slot] = moved
+		moved.slot = e.slot
+	active.pop_back()
+	mmi.multimesh.visible_instance_count = active.size()
 	e.slot = -1
+	e.batch_key = ""

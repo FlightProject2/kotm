@@ -38,3 +38,21 @@ func test_pickup_swap_and_bag() -> void:
 	assert_true(bag.item["items"].any(func(e): return e["kind"] == "helmet"), "bag holds the helmet")
 	ch.queue_free(); reg.queue_free(); fl.queue_free()
 	await settle(1)
+
+func test_bot_direct_pickup_without_prompt_query() -> void:
+	var reg := LootRegistry.new()
+	await add_to_tree(reg)
+	var ch: Character = load("res://game/character/character.tscn").instantiate()
+	ch.is_bot = true
+	await add_to_tree(ch)
+	ch.interaction.registry = reg
+	reg.add({"kind": "ammo", "id": "223", "qty": 37}, ch.global_position)
+	var entry := reg.nearest(ch.global_position, 2.2)
+	ch.interaction.tick()
+	assert_true(ch.interaction.nearest == null, "bot has no unused prompt lookup")
+	assert_true(ch.interaction.take(entry), "BotBrain's direct pickup remains available")
+	assert_eq(ch.inventory.ammo["223"], 37, "direct pickup applies the complete item")
+	assert_eq(reg.count(), 0, "direct pickup removes the world entry once")
+	assert_true(not ch.interaction.take(entry), "duplicate pickup cannot award more ammo")
+	ch.queue_free(); reg.queue_free()
+	await settle(1)
