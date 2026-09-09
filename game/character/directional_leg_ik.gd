@@ -15,7 +15,7 @@ func _ready() -> void:
 		_chains.append([skel.find_bone("thigh." + side), skel.find_bone("calf." + side), skel.find_bone("foot." + side)])
 
 func _process_modification() -> void:
-	if character == null or character.in_vehicle() or character.mode != Character.Mode.GROUND:
+	if character == null or character.in_vehicle() or character.mode != Character.Mode.GROUND or character.prone or character.rolling:
 		return
 	var key: String = character.visual.anim.lower_gait_clip if character.visual.anim else ""
 	if not KOTMCharacterRig.stride_centres.has(key):

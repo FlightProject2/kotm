@@ -48,6 +48,32 @@ func test_sprint_walk_crouch_speeds() -> void:
 	ch.queue_free(); f.queue_free()
 	await settle(1)
 
+func test_prone_crawl_and_side_roll() -> void:
+	var f := _floor()
+	await add_to_tree(f)
+	var ch := _spawn(Vector3(0, 0.1, 0))
+	await settle(5)
+	await _drive(ch, 30, func(i: CharacterInput) -> void:
+		i.move = Vector2(0, 1)
+		i.set_button(CharacterInput.B_PRONE, true))
+	assert_true(ch.prone, "prone input lowers the character")
+	assert_false(ch.crouching, "prone and crouch are mutually exclusive")
+	assert_near(ch.height(), 0.55, 0.001, "prone height")
+	assert_near((ch.collision.shape as CapsuleShape3D).height, 0.55, 0.001, "prone capsule follows the pose")
+	assert_near(Vector2(ch.velocity.x, ch.velocity.z).length(), 1.0, 0.15, "crawl speed")
+	await _drive(ch, 2, func(i: CharacterInput) -> void: i.set_button(CharacterInput.B_PRONE, true))
+	await _drive(ch, 2, func(i: CharacterInput) -> void:
+		i.move = Vector2(1, 0)
+		i.set_button(CharacterInput.B_PRONE, true))
+	assert_true(ch.rolling, "fresh prone strafe starts a roll")
+	assert_true(ch.roll_side > 0.0, "D rolls right")
+	assert_true(ch.velocity.x > 1.5, "roll carries the body sideways")
+	await _drive(ch, 55, func(i: CharacterInput) -> void: i.set_button(CharacterInput.B_PRONE, true))
+	assert_false(ch.rolling, "roll ends")
+	assert_true(ch.prone, "roll returns to prone")
+	ch.queue_free(); f.queue_free()
+	await settle(1)
+
 func test_jump_apex() -> void:
 	var f := _floor()
 	await add_to_tree(f)

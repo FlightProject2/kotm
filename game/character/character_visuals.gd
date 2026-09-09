@@ -16,6 +16,7 @@ var anim: AnimationDriver
 var hat: Node3D
 var mask: Node3D
 var canopy: Node3D
+var canopy_model: Node3D
 var studio_rig: KOTMCharacterRig
 var leg_ik: SkeletonModifier3D
 var vehicle_contact: SkeletonModifier3D
@@ -104,6 +105,7 @@ func _process(dt: float) -> void:
 		arm_pose.aim_dir = skeleton.global_transform.basis.inverse() * aim
 	if canopy:
 		canopy.visible = character.mode == Character.Mode.PARACHUTE
+		_animate_canopy()
 	if hat:
 		hat.visible = not character.health.has_helmet()
 	if helmet_mesh:
@@ -121,19 +123,36 @@ func _process(dt: float) -> void:
 func _build_canopy() -> void:
 	canopy = Node3D.new()
 	canopy.name = "Parachute"
-	var mi := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 2.4
-	sm.height = 1.3
-	sm.is_hemisphere = true
-	mi.mesh = sm
-	var m := StandardMaterial3D.new()
-	m.albedo_color = SkinSystem.parachute_color(character.cosmetics)
-	m.cull_mode = BaseMaterial3D.CULL_DISABLED
-	m.roughness = 0.9
-	mi.material_override = m
-	mi.position.y = 4.2
-	canopy.add_child(mi)
+	var imported_canopy := false
+	var packed := load("res://assets/models/kotm/KOTM_Parachute.glb") as PackedScene
+	if packed:
+		var imported := packed.instantiate()
+		canopy_model = imported.find_child("KOTM_Parachute_Root", true, false) as Node3D
+		if canopy_model:
+			var old_parent := canopy_model.get_parent()
+			old_parent.remove_child(canopy_model)
+			canopy_model.owner = null
+			canopy.add_child(canopy_model)
+			imported.free()
+			canopy.position.y = 4.5
+			canopy.scale = Vector3.ONE * 0.78
+			imported_canopy = true
+		else:
+			imported.free()
+	if not imported_canopy:
+		var mi := MeshInstance3D.new()
+		var sm := SphereMesh.new()
+		sm.radius = 2.4
+		sm.height = 1.3
+		sm.is_hemisphere = true
+		mi.mesh = sm
+		var m := StandardMaterial3D.new()
+		m.albedo_color = SkinSystem.parachute_color(character.cosmetics)
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		m.roughness = 0.9
+		mi.material_override = m
+		mi.position.y = 4.2
+		canopy.add_child(mi)
 	if studio_rig:
 		for side in ["l", "r"]:
 			var riser := MeshInstance3D.new()
@@ -164,6 +183,15 @@ func _build_canopy() -> void:
 	canopy.visible = false
 	add_child(canopy)
 	skeleton.skeleton_updated.connect(_update_canopy_lines.bind(im))
+
+func _animate_canopy() -> void:
+	if canopy_model == null or character.mode != Character.Mode.PARACHUTE:
+		return
+	var deploy := smoothstep(0.0, 0.55, character.motor.parachute_age)
+	var overshoot := 1.0 + 0.08 * sin(deploy * PI) * deploy
+	canopy.scale = Vector3.ONE * 0.78 * lerpf(0.12, overshoot, deploy)
+	canopy.rotation.z = lerp_angle(canopy.rotation.z, -character.input.move.x * deg_to_rad(10.0), 0.12)
+	canopy.rotation.x = lerp_angle(canopy.rotation.x, character.input.move.y * deg_to_rad(3.0), 0.08)
 
 func _update_canopy_lines(im: ImmediateMesh) -> void:
 	if not canopy.visible:
@@ -326,6 +354,7 @@ func _process_studio() -> void:
 	studio_rig.set_worn_shoes(character.health.shoes_id not in ["", "barefoot"])
 	studio_rig.set_equipment(character.health.has_helmet(), character.health.has_armor(), character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != "")
 	if fitted:
-		studio_rig.weapon_root(studio_rig.weapon_id).visible = not seated and not parachuting
+		studio_rig.weapon_root(studio_rig.weapon_id).visible = not seated and not parachuting and not character.rolling
 	weapon_holder.mount.visible = not seated and not parachuting
 	canopy.visible = parachuting
+	_animate_canopy()

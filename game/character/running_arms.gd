@@ -3,7 +3,7 @@ extends SkeletonModifier3D
 var character: Character
 
 func _process_modification() -> void:
-	if character == null or character.mode != Character.Mode.GROUND or character.in_vehicle() or character.crouching:
+	if character == null or character.mode != Character.Mode.GROUND or character.in_vehicle() or character.crouching or character.prone or character.rolling:
 		return
 	if character.inventory.current_id() != "fists" or character.visual.anim == null:
 		return

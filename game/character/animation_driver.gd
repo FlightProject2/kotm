@@ -35,7 +35,7 @@ func audio_gait_state() -> Dictionary:
 
 func _advance_lower_gait(dt: float) -> void:
 	var velocity_mps := Vector2(character.velocity.x, character.velocity.z).length()
-	if character.mode != Character.Mode.GROUND or character.in_vehicle() or velocity_mps <= 0.15:
+	if character.mode != Character.Mode.GROUND or character.in_vehicle() or character.prone or character.rolling or velocity_mps <= 0.15:
 		lower_gait_clip = ""
 		return
 	var gait := "Crouch_Walk" if character.crouching else ("Run" if velocity_mps > 4.8 else ("Jog" if velocity_mps > 2.0 and studio.clips.has("KOTM_Jog") else "Walk"))
@@ -156,9 +156,18 @@ func _pick_studio_clip() -> void:
 	if character.in_vehicle():
 		clip = character.vehicle.seated_animation()
 	elif character.mode == Character.Mode.PARACHUTE:
-		# Keep the torso hanging steadily while the arm modifier holds both risers.
-		clip = "KOTM_Idle"
-		speed = 0.5
+		clip = "KOTM_Parachute_Glide" if studio.clips.has("KOTM_Parachute_Glide") else "KOTM_Idle"
+		speed = 1.0
+	elif character.rolling:
+		clip = "KOTM_Prone_Roll_R" if character.roll_side > 0.0 else "KOTM_Prone_Roll_L"
+	elif character.prone:
+		if fitted:
+			var prone_state := "Prone_Aim" if aiming else "Prone_Ready"
+			clip = prefix + prone_state + ("_Crawl" if moving else "")
+		else:
+			clip = "KOTM_Prone_Crawl" if moving else "KOTM_Prone_Idle"
+		if moving:
+			speed = _native_speed_scale(clip, planar)
 	elif fitted and character.combat.reload_t > 0:
 		clip = prefix + "Reload"
 		if not reload_started:
@@ -192,7 +201,7 @@ func _pick_studio_clip() -> void:
 		var phase := fposmod(player.current_animation_position / maxf(player.current_animation_length, 0.01), 1.0) if was_gait else 0.0
 		# Seat clips define the fitted pelvis position; blending from standing would put
 		# the body through the roof or track until the interpolation finishes.
-		studio.play(clip, 0.0 if draw_pending or clip.ends_with("Seated") else (0.08 if clip.ends_with("Fire") else 0.2))
+		studio.play(clip, 0.0 if draw_pending or clip.ends_with("Seated") or clip.contains("Prone_Roll") else (0.08 if clip.ends_with("Fire") else 0.2))
 		if was_gait and is_gait:
 			player.seek(phase * _clip_duration(clip), false)
 		current = clip

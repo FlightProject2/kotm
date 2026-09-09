@@ -13,6 +13,9 @@ var _was_on_floor: bool = false
 var _fall_start_y: float = 0.0
 var _jump_buffer_t: float = 0.0
 var _coyote_t: float = 0.0
+var roll_time: float = 0.0
+var roll_cooldown: float = 0.0
+var parachute_age: float = 0.0
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -22,6 +25,7 @@ func _ready() -> void:
 func simulate(dt: float) -> void:
 	c.stun = maxf(0.0, c.stun - dt)
 	if c.mode == Character.Mode.PARACHUTE:
+		parachute_age += dt
 		recover_stamina(dt)
 		_parachute(dt)
 	else:
@@ -32,24 +36,39 @@ func _ground_air(dt: float) -> void:
 	var inp := c.input
 	var f := c.forward()
 	var r := c.right()
-	var want_crouch := inp.pressed(CharacterInput.B_CROUCH)
+	if inp.pressed(CharacterInput.B_PRONE) != c.prone:
+		set_prone(inp.pressed(CharacterInput.B_PRONE))
+	var want_crouch := inp.pressed(CharacterInput.B_CROUCH) and not c.prone
 	if want_crouch != c.crouching:
 		set_crouch(want_crouch)
+	roll_time = maxf(0.0, roll_time - dt)
+	roll_cooldown = maxf(0.0, roll_cooldown - dt)
+	if c.prone and roll_time <= 0.0 and roll_cooldown <= 0.0 and absf(inp.move.x) > 0.65 and absf(c.prev_input.move.x) <= 0.65 and absf(inp.move.y) < 0.55:
+		roll_time = float(cfg.get("proneRollSec", 0.72))
+		roll_cooldown = roll_time + float(cfg.get("proneRollCooldownSec", 0.18))
+		c.roll_side = signf(inp.move.x)
+	c.rolling = c.prone and roll_time > 0.0
+	if not c.rolling:
+		c.roll_side = 0.0
 	var aiming := inp.pressed(CharacterInput.B_AIM)
 	var forward_ish: bool = inp.move.y > 0.1 and inp.move.y >= absf(inp.move.x)
-	var can_sprint := inp.pressed(CharacterInput.B_SPRINT) and not aiming and not c.crouching and not c.healing_blocks_sprint() and forward_ish
+	var can_sprint := inp.pressed(CharacterInput.B_SPRINT) and not aiming and not c.crouching and not c.prone and not c.healing_blocks_sprint() and forward_ish
 	can_sprint = stamina.tick(dt, can_sprint, c.is_on_floor() and inp.move.length_squared() > 0.01 and Vector2(c.velocity.x, c.velocity.z).length() > 0.2 and c.stun <= 0.0, c.health.has_running_shoes(), cfg["stamina"])
 	sprinting = can_sprint
 	var speed: float
 	if c.stun > 0.0 or c.healing_blocks_movement():
 		speed = 0.0
+	elif c.rolling:
+		speed = float(cfg.get("proneRollSpeed", 2.4))
+	elif c.prone:
+		speed = float(cfg.get("proneSpeed", 1.0))
 	elif c.crouching:
 		speed = float(cfg["crouchSpeed"])
 	elif can_sprint:
 		speed = float(cfg["sprintSpeed"])
 	else:
 		speed = float(cfg["stamina"]["exhaustedSpeed"]) if stamina.exhausted else float(cfg["walkSpeed"])
-	var wish_dir := f * inp.move.y + r * inp.move.x
+	var wish_dir := r * c.roll_side if c.rolling else (f * inp.move.y + r * inp.move.x)
 	var has_wish: bool = wish_dir.length_squared() > 0.0001 and speed > 0.0
 	var wish := wish_dir.normalized() * speed if has_wish else Vector3.ZERO
 	var on_floor := c.is_on_floor()
@@ -72,7 +91,7 @@ func _ground_air(dt: float) -> void:
 	else:
 		_jump_buffer_t = maxf(0.0, _jump_buffer_t - dt)
 	_coyote_t = float(cfg["coyoteSec"]) if on_floor else maxf(0.0, _coyote_t - dt)
-	if _jump_buffer_t > 0.0 and (on_floor or _coyote_t > 0.0) and c.stun <= 0.0 and c.velocity.y <= 0.5:
+	if _jump_buffer_t > 0.0 and (on_floor or _coyote_t > 0.0) and not c.prone and c.stun <= 0.0 and c.velocity.y <= 0.5:
 		c.velocity.y = float(cfg["jumpVelocity"])
 		c.jumped.emit()
 		_jump_buffer_t = 0.0
@@ -154,7 +173,21 @@ func _clamp_to_map() -> void:
 		c.global_position = clamped
 
 func set_crouch(on: bool) -> void:
+	if on and c.prone:
+		set_prone(false)
 	c.crouching = on
+	set_stance_shape()
+
+func set_prone(on: bool) -> void:
+	c.prone = on
+	c.rolling = false
+	c.roll_side = 0.0
+	roll_time = 0.0
+	if on:
+		c.crouching = false
+	set_stance_shape()
+
+func set_stance_shape() -> void:
 	var shape := c.collision.shape as CapsuleShape3D
 	var h := c.height()
 	shape.height = h
@@ -166,6 +199,11 @@ func start_parachute(pos: Vector3, yaw: float) -> void:
 	c.yaw = yaw
 	c.velocity = Vector3.ZERO
 	c.mode = Character.Mode.PARACHUTE
+	c.crouching = false
+	c.prone = false
+	c.rolling = false
+	set_stance_shape()
+	parachute_age = 0.0
 	_was_on_floor = false
 	_jump_buffer_t = 0.0
 	_coyote_t = 0.0
