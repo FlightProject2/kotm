@@ -39,6 +39,11 @@ func current_is_scoped() -> bool:
 
 func tick(dt: float) -> void:
 	time += dt
+	var tune := current_def()
+	var delay := float(tune.get("bloomRecoveryDelaySec", 0.14))
+	var before := maxf(0.0, bloom_rest - delay)
+	bloom_rest += dt
+	bloom = move_toward(bloom, 0.0, (maxf(0.0, bloom_rest - delay) - before) * float(tune.get("bloomRecoveryDegPerSec", 2.2)))
 	var inp := c.input
 	if inp.slot >= 0 and inp.slot != inv.cur and inp.slot < inv.slots.size():
 		if inv.select(inp.slot):
@@ -127,7 +132,7 @@ func try_fire(is_melee: bool) -> bool:
 	var aiming := c.input.pressed(CharacterInput.B_AIM)
 	var moving := Vector2(c.velocity.x, c.velocity.z).length_squared() > 1.0
 	var airborne := not c.is_on_floor()
-	var spread := float(def["adsSpreadDeg"] if aiming else def["hipSpreadDeg"])
+	var spread := float(def["adsSpreadDeg"] if aiming else def["hipSpreadDeg"]) + bloom
 	if c.has_meta("spread_override"):
 		spread = float(c.get_meta("spread_override"))   # bots and tests set their own accuracy
 	if moving:
@@ -138,11 +143,24 @@ func try_fire(is_melee: bool) -> bool:
 	var origin := muzzle_position()
 	var base_dir := c.input.aim_dir.normalized() if c.input.aim_dir.length_squared() > 0.5 else c.forward()
 	var ps := ProjectileSystem.instance
+	# A barrel penetrating cover must strike that cover, even when the camera sees over it.
+	var obstruction_query := PhysicsRayQueryParameters3D.create(c.eye_position(), origin, 1 | 32)
+	obstruction_query.hit_from_inside = true
+	var obstruction := c.get_world_3d().direct_space_state.intersect_ray(obstruction_query)
+	var pattern_rotation := rng.randf() * TAU if pellets > 1 else 0.0
 	for i in pellets:
-		var dir := Ballistics.jitter(base_dir, spread, rng)
+		var dir := Ballistics.pellet_direction(base_dir, spread, i, pellets, pattern_rotation) if pellets > 1 else Ballistics.jitter(base_dir, spread, rng)
 		if ps:
-			ps.fire(c, origin, dir, def, shot_id, pellets > 1)
-	c.fired.emit(float(def.get("recoilVertical", 1.0)), float(def.get("recoilHorizontal", 0.3)) * rng.randf_range(-1.0, 1.0))
+			ps.fire(c, origin, dir, def, shot_id, pellets > 1, obstruction)
+	var vertical := float(def.get("recoilVertical", 1.0))
+	var horizontal := float(def.get("recoilHorizontal", 0.3)) * rng.randf_range(-1.0, 1.0)
+	if id == "ar15":
+		horizontal = float(def["recoilHorizontal"]) * _recoil_side
+		_recoil_side *= -1.0
+		vertical += maxf(0.0, bloom - 0.5) * 0.25
+	bloom = minf(float(def.get("bloomMaxDeg", 0.0)), bloom + float(def.get("bloomPerShotDeg", 0.0)))
+	bloom_rest = 0.0
+	c.fired.emit(vertical, horizontal)
 	Net.fx_all("gunshot", [origin, id, c.character_id])
 	return true
 
@@ -225,6 +243,8 @@ func _on_inventory_changed() -> void:
 	var id := inv.current_id()
 	if id != last_slot_id:
 		last_slot_id = id
+		bloom = 0.0
+		bloom_rest = 0.0
 		c.show_weapon(id, ItemCatalog.get_item(id).get("class", "melee"))
 	if c.is_local():
 		Events.inventory_changed.emit(c.character_id)

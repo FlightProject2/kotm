@@ -173,7 +173,7 @@ func _build_hud() -> void:
 	_view_label.add_theme_color_override("font_color", Color(0.65, 0.85, 0.96))
 	lines.add_child(_view_label)
 	var controls := Label.new()
-	controls.text = "WASD fly  /  Q down  /  E up  /  Shift boost\nHold right mouse to look  /  Esc release mouse\n1–5 original views  /  6 lodge  /  7 mill  /  8 radar  /  9 bridge\nM layout plan"
+	controls.text = "WASD fly  /  Q down  /  E up  /  Shift boost\nHold right mouse to look  /  Esc release mouse\n1–9 locations  /  0 Oakridge  /  [ ] cycle every view\nM layout plan"
 	controls.add_theme_font_size_override("font_size", 15)
 	controls.add_theme_color_override("font_color", Color(0.81, 0.85, 0.88))
 	lines.add_child(controls)
@@ -222,6 +222,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif key >= KEY_1 and key <= KEY_9:
 			select_view(key - KEY_1)
+			get_viewport().set_input_as_handled()
+		elif key == KEY_0:
+			# The number row has ten usable keys; 0 opens the first expansion district.
+			select_view(9)
+			get_viewport().set_input_as_handled()
+		elif key == KEY_BRACKETLEFT or key == KEY_BRACKETRIGHT:
+			var step := -1 if key == KEY_BRACKETLEFT else 1
+			select_view(posmod(_current_view + step, _views.size()))
 			get_viewport().set_input_as_handled()
 		elif key == KEY_ESCAPE:
 			set_tactical_view(false)

@@ -8,6 +8,7 @@ const MANIFEST_PATH := "res://assets/characters/kotm/asset_manifest.json"
 const SUPPORT_IK := preload("res://game/character/support_hand_ik.gd")
 const WEAPONS := {"ar15": "AR75", "ak47": "AR75", "hunting_rifle": "Hunting"}
 const WEAPON_ROOTS := {"ar15": "AR75", "ak47": "AK47", "hunting_rifle": "HuntingRifle"}
+const TEMPLATE_DIR := "res://assets/characters/kotm/templates/"
 const REQUIRED_TEMPLATES := [
 	"MotorcycleHelmet", "BaseballCap", "Sunglasses", "FaceBandana", "TankTop",
 	"TShirt", "Hoodie", "Leggings", "Shorts", "Sneakers", "Beanie"
@@ -27,6 +28,7 @@ var muzzle_nodes: Dictionary = {}
 var muzzle_bindings: Dictionary = {}
 var wrist_offsets: Dictionary = {}
 var support_hand: SkeletonModifier3D
+var grafted_template_keys: Dictionary = {}
 var weapon_id := ""
 var contact_enabled := false
 var loadout: Dictionary = {}
@@ -74,6 +76,8 @@ func setup(model: Node3D) -> bool:
 				meshes[key].append(mesh)
 			elif roots[key] == null and key in REQUIRED_TEMPLATES:
 				errors.append("Missing wearable mesh: " + str(source_name))
+	_restore_template_geometry()
+	_hide_unbatched_template_geometry()
 	meshes["DefaultTank"] = []
 	meshes["DefaultBoxers"] = []
 	for mesh in avatar.find_children("*", "MeshInstance3D", true, false):
@@ -116,6 +120,84 @@ func setup(model: Node3D) -> bool:
 	body_composite.setup(body_regions)
 	apply_visibility()
 	return true
+
+func _restore_template_geometry() -> void:
+	# The movement export can contain the authored wardrobe placeholders without
+	# the compact RT_* mesh nodes. Reuse the small, skin-compatible template GLBs
+	# and bind their meshes to this character's shared 54-bone skeleton.
+	for key in manifest.get("templates", {}):
+		var info: Dictionary = manifest.templates[key]
+		var root_name := String(info.get("root", ""))
+		var root := avatar.find_child(root_name, true, false) as Node3D
+		var expected: Array = info.get("meshes", [])
+		var complete := root != null
+		for source_name in expected:
+			if avatar.find_child(String(source_name).replace(".", "_"), true, false) == null:
+				complete = false
+				break
+		if complete:
+			continue
+		_attach_template_geometry(String(key), root_name, expected, root)
+
+func _attach_template_geometry(key: String, root_name: String, expected: Array, existing_root: Node3D) -> void:
+	if grafted_template_keys.has(key):
+		return
+	var path := TEMPLATE_DIR + "KOTM_Template_" + key + ".glb"
+	if not ResourceLoader.exists(path) and key == "Beanie":
+		path = TEMPLATE_DIR + "KOTM_Beanie.glb"
+	if not ResourceLoader.exists(path):
+		errors.append("Missing template scene: " + key)
+		return
+	var packed: PackedScene = load(path)
+	if packed == null:
+		errors.append("Unable to load template scene: " + key)
+		return
+	var instance := packed.instantiate()
+	var source_skeleton := instance.find_child("Skeleton3D", true, false) as Skeleton3D
+	if source_skeleton == null or source_skeleton.get_bone_count() != skeleton.get_bone_count():
+		instance.queue_free()
+		errors.append("Template skeleton mismatch: " + key)
+		return
+	for bone_index in skeleton.get_bone_count():
+		if source_skeleton.get_bone_name(bone_index) != skeleton.get_bone_name(bone_index):
+			instance.queue_free()
+			errors.append("Template bone order mismatch: " + key)
+			return
+	var root := existing_root
+	if root == null:
+		root = Node3D.new()
+		root.name = root_name
+		avatar.add_child(root)
+	var attached := 0
+	for source_name in expected:
+		var source_mesh := instance.find_child(String(source_name), true, false) as MeshInstance3D
+		if source_mesh == null:
+			continue
+		var local_transform := source_mesh.transform
+		var source_parent := source_mesh.get_parent()
+		if source_parent:
+			source_parent.remove_child(source_mesh)
+		source_mesh.owner = null
+		skeleton.add_child(source_mesh)
+		source_mesh.skeleton = NodePath("..")
+		source_mesh.transform = local_transform
+		meshes[key].append(source_mesh)
+		attached += 1
+	if attached > 0:
+		roots[key] = root
+		grafted_template_keys[key] = true
+	else:
+		errors.append("Template contains no expected meshes: " + key)
+	instance.queue_free()
+
+func _hide_unbatched_template_geometry() -> void:
+	# Authoring exports may leave neutral template parts directly under the
+	# skeleton. The runtime uses the compact meshes above, so keep those parts
+	# from showing through every outfit.
+	for mesh in avatar.find_children("*", "MeshInstance3D", true, false):
+		var mesh_name := String(mesh.name)
+		if mesh_name.begins_with("Template_") or mesh_name.begins_with("EQ_Template_") or mesh_name in ["Leggings_BlankShell", "Shorts_BlankShell", "Sneaker_Blank_l", "Sneaker_Blank_r", "Sneaker_LacesEyelets_l", "Sneaker_LacesEyelets_r", "Sneaker_Tongue_l", "Sneaker_Tongue_r"]:
+			mesh.visible = false
 
 func _ensure_ar75_geometry() -> void:
 	# The authored character export keeps the hand-mounted socket but may omit the
