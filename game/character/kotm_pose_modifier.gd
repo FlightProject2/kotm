@@ -14,12 +14,16 @@ func _process_modification() -> void:
 	var dt := clampf((now - _last_tick) / 1000000.0, 0, 0.1) if _last_tick > 0 else 0.016
 	_last_tick = now
 	if character.in_vehicle():
-		visual.global_transform = character.vehicle.seat_transform()
+		var seat := character.vehicle.seat_transform()
+		if visual.global_transform != seat:
+			visual.global_transform = seat
 		return
 	# Clear the seat's local offset and terrain/body tilt when returning to foot movement.
-	visual.position = Vector3.ZERO
-	visual.rotation.x = 0.0
-	visual.rotation.z = 0.0
+	var upright := visual.rotation
+	if upright.x != 0.0 or upright.z != 0.0:
+		upright.x = 0.0
+		upright.z = 0.0
+		visual.rotation = upright
 	if KOTMCharacterRig.WEAPONS.has(rig.weapon_id) and character.mode != Character.Mode.PARACHUTE and character.combat.reload_t <= 0:
 		var skel := get_skeleton()
 		var aim_vector := character.input.aim_dir
@@ -39,12 +43,16 @@ func _process_modification() -> void:
 		var direction := visual.global_basis.inverse() * rig.marker_world(rig.weapon_id).basis.z
 		var aim := character.input.aim_dir
 		var yaw := atan2(-aim.x, -aim.z) if aim.length_squared() > 0.5 else character.yaw
-		visual.rotation.y = lerp_angle(character.yaw, yaw - atan2(-direction.x, -direction.z), aim_weight)
+		var facing := lerp_angle(character.yaw, yaw - atan2(-direction.x, -direction.z), aim_weight)
+		if visual.rotation.y != facing:
+			visual.rotation.y = facing
 	# Physics owns the jump trajectory. Remove just the airborne lift baked into this clip;
 	# anticipation and landing knee flex remain in the animation.
-	visual.position.y = 0
+	var position := Vector3.ZERO
 	if character.mode == Character.Mode.AIR and String(rig.player.current_animation).ends_with("Jump"):
 		var t := rig.player.current_animation_position / 1.4
 		if t > 0.28 and t < 0.80:
 			var u := (t - 0.28) / 0.52
-			visual.position.y = -0.34 * 4.0 * u * (1.0 - u)
+			position.y = -0.34 * 4.0 * u * (1.0 - u)
+	if visual.position != position:
+		visual.position = position

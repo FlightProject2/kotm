@@ -1,0 +1,215 @@
+{
+	"assets": [
+		{
+			"bounds": "[P: (-5.285449, -0.23, -4.35), S: (10.5709, 5.255, 10.235)]",
+			"id": "house_ranch_sage",
+			"surfaces": 8
+		},
+		{
+			"bounds": "[P: (-4.287602, -0.23, -4.35), S: (8.575205, 5.255, 10.235)]",
+			"id": "house_cottage_ochre",
+			"surfaces": 8
+		},
+		{
+			"bounds": "[P: (-4.790189, -0.23, -4.85), S: (11.19019, 5.69, 11.235)]",
+			"id": "house_gable_slate",
+			"surfaces": 8
+		},
+		{
+			"bounds": "[P: (-10.22891, -0.23, -12.29), S: (20.45782, 7.29, 27.59)]",
+			"id": "freight_warehouse",
+			"surfaces": 9
+		},
+		{
+			"bounds": "[P: (-7.230502, -0.23, -8.29), S: (14.461, 7.29, 19.59)]",
+			"id": "utility_workshop",
+			"surfaces": 9
+		},
+		{
+			"bounds": "[P: (-6.2, -0.23, -4.7), S: (12.4, 5.13, 10.5)]",
+			"id": "service_store",
+			"surfaces": 10
+		},
+		{
+			"bounds": "[P: (-1.3025, 0.03, -3.17), S: (2.605, 2.8675, 6.24)]",
+			"id": "container_red",
+			"surfaces": 3
+		},
+		{
+			"bounds": "[P: (-1.35, 0.03, -3.17), S: (2.7, 2.8675, 6.22)]",
+			"id": "container_blue_open",
+			"surfaces": 3
+		},
+		{
+			"bounds": "[P: (-1.45, 0.0, -7.65), S: (2.9, 4.5, 15.3)]",
+			"id": "rail_locomotive",
+			"surfaces": 7
+		},
+		{
+			"bounds": "[P: (-1.565, 0.0, -7.65), S: (3.13, 4.175, 15.3)]",
+			"id": "rail_boxcar",
+			"surfaces": 4
+		},
+		{
+			"bounds": "[P: (-1.380001, 0.0, -7.65), S: (2.760001, 4.53, 15.3)]",
+			"id": "rail_tanker",
+			"surfaces": 2
+		},
+		{
+			"bounds": "[P: (-1.35, 0.0, -7.65), S: (2.7, 2.27, 15.3)]",
+			"id": "rail_flatcar",
+			"surfaces": 2
+		},
+		{
+			"bounds": "[P: (-3.36, 0.0, -3.36), S: (6.72, 15.14, 6.72)]",
+			"id": "water_tower",
+			"surfaces": 4
+		},
+		{
+			"bounds": "[P: (-2.565, 0.0, -0.125), S: (5.13, 2.25, 0.19)]",
+			"id": "yard_fence",
+			"surfaces": 1
+		},
+		{
+			"bounds": "[P: (-0.775, 0.04, -0.64), S: (1.55, 1.165, 1.28)]",
+			"id": "supply_cache",
+			"surfaces": 3
+		},
+		{
+			"bounds": "[P: (-0.085, 0.0, -0.175), S: (1.11, 5.125487, 0.35)]",
+			"id": "street_lamp",
+			"surfaces": 2
+		},
+		{
+			"bounds": "[P: (-1.5, 0.0, -0.325), S: (3.0, 0.7, 0.675)]",
+			"id": "service_barrier",
+			"surfaces": 2
+		},
+		{
+			"bounds": "[P: (-4.287602, -0.23, -4.35), S: (8.575205, 5.255, 10.235)]",
+			"id": "resort_timber_cabin",
+			"surfaces": 7
+		},
+		{
+			"bounds": "[P: (-4.790189, -0.23, -4.85), S: (11.19019, 5.69, 11.235)]",
+			"id": "resort_rental_cabin",
+			"surfaces": 7
+		},
+		{
+			"bounds": "[P: (-0.56, 0.04, -0.47), S: (1.12, 2.01, 1.025)]",
+			"id": "resort_vending_machine",
+			"surfaces": 9
+		},
+		{
+			"bounds": "[P: (-0.8, -0.007417, -0.24), S: (1.6, 1.614835, 0.415)]",
+			"id": "resort_snowboard_rack",
+			"surfaces": 5
+		},
+		{
+			"bounds": "[P: (-24.13, 0.0105, -14.13), S: (48.26, 1.337, 28.26)]",
+			"id": "resort_ice_rink",
+			"surfaces": 8
+		},
+		{
+			"bounds": "[P: (-1.323529, 0.0, -2.25), S: (2.647059, 2.293249, 4.5)]",
+			"id": "resort_wrecked_sedan",
+			"surfaces": 6
+		}
+	],
+	"buildings": [
+		{
+			"id": "house_ranch_sage",
+			"position": "(402.0, 32.14, 379.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "house_cottage_ochre",
+			"position": "(402.0, 32.14, 409.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "house_gable_slate",
+			"position": "(402.0, 32.14, 451.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "house_ranch_sage",
+			"position": "(402.0, 32.14, 481.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "house_cottage_ochre",
+			"position": "(432.0, 32.14, 380.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "house_gable_slate",
+			"position": "(432.0, 32.14, 480.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "freight_warehouse",
+			"position": "(-666.0, 50.56, -751.0)",
+			"terrain_delta": 0.000064849853515625
+		},
+		{
+			"id": "utility_workshop",
+			"position": "(-576.0, 23.24, -346.0)",
+			"terrain_delta": 0.000352859497070313
+		},
+		{
+			"id": "service_store",
+			"position": "(277.0, 46.5, -215.0)",
+			"terrain_delta": 0.00196456909179688
+		},
+		{
+			"id": "resort_timber_cabin",
+			"position": "(480.0, 32.14, 532.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_rental_cabin",
+			"position": "(500.0, 32.14, 532.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_timber_cabin",
+			"position": "(520.0, 32.14, 532.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_rental_cabin",
+			"position": "(540.0, 32.14, 532.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_timber_cabin",
+			"position": "(560.0, 32.14, 532.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_timber_cabin",
+			"position": "(481.0, 32.14, 559.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_rental_cabin",
+			"position": "(561.0, 32.14, 559.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_timber_cabin",
+			"position": "(580.0, 32.14, 555.0)",
+			"terrain_delta": 0.00020599365234375
+		},
+		{
+			"id": "resort_ice_rink",
+			"position": "(520.0, 32.14, 562.0)",
+			"terrain_delta": 0.00020599365234375
+		}
+	],
+	"entrances_checked": 19,
+	"errors": [],
+	"prop_loot_markers": 20,
+	"road_max_height_error": 0.00196456909179688
+}

@@ -25,6 +25,8 @@ var reload_speed := 1.0
 var draw_pending := false
 var lower_gait_clip := ""
 var lower_gait_phase := 0.0
+var _clip_durations: Dictionary = {}
+var _authored_speeds: Dictionary = {}
 
 func audio_gait_state() -> Dictionary:
 	if lower_gait_clip.is_empty():
@@ -39,7 +41,7 @@ func _advance_lower_gait(dt: float) -> void:
 	var gait := "Crouch_Walk" if character.crouching else ("Run" if velocity_mps > 4.8 else ("Jog" if velocity_mps > 2.0 and studio.clips.has("KOTM_Jog") else "Walk"))
 	lower_gait_clip = "KOTM_" + gait
 	if studio.clips.has(lower_gait_clip):
-		var duration := player.get_animation(studio.clips[lower_gait_clip]).length
+		var duration := _clip_duration(lower_gait_clip)
 		lower_gait_phase = fposmod(lower_gait_phase + dt * _native_speed_scale(lower_gait_clip, velocity_mps) / duration, 1.0)
 
 func weapon_changed() -> void:
@@ -160,7 +162,7 @@ func _pick_studio_clip() -> void:
 	elif fitted and character.combat.reload_t > 0:
 		clip = prefix + "Reload"
 		if not reload_started:
-			reload_speed = player.get_animation(studio.clips[clip]).length / maxf(character.combat.reload_t, 0.1)
+			reload_speed = _clip_duration(clip) / maxf(character.combat.reload_t, 0.1)
 			reload_started = true
 		speed = reload_speed
 	elif character.mode == Character.Mode.AIR:
@@ -192,12 +194,19 @@ func _pick_studio_clip() -> void:
 		# the body through the roof or track until the interpolation finishes.
 		studio.play(clip, 0.0 if draw_pending or clip.ends_with("Seated") else (0.08 if clip.ends_with("Fire") else 0.2))
 		if was_gait and is_gait:
-			player.seek(phase * player.get_animation(studio.clips[clip]).length, false)
+			player.seek(phase * _clip_duration(clip), false)
 		current = clip
 		draw_pending = false
 	player.speed_scale = speed
 
+func _clip_duration(clip: String) -> float:
+	if not _clip_durations.has(clip):
+		_clip_durations[clip] = player.get_animation(studio.clips[clip]).length
+	return float(_clip_durations[clip])
+
 func _native_speed_scale(clip: String, velocity_mps: float) -> float:
-	var info: Dictionary = KOTMCharacterRig.manifest.get("animations", {}).get(clip, {})
-	var authored := float(info.get("recommended_controller_speed_mps", info.get("speed_mps", 0)))
+	if not _authored_speeds.has(clip):
+		var info: Dictionary = KOTMCharacterRig.manifest.get("animations", {}).get(clip, {})
+		_authored_speeds[clip] = float(info.get("recommended_controller_speed_mps", info.get("speed_mps", 0)))
+	var authored := float(_authored_speeds[clip])
 	return clampf(velocity_mps / authored, 0.25, 1.5) if authored > 0.01 else 1.0

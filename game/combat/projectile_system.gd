@@ -25,6 +25,11 @@ var _exclude_cache: Dictionary = {}
 func _enter_tree() -> void:
 	instance = self
 
+func _ready() -> void:
+	var grenades = preload("res://game/combat/grenade_system.gd").new()
+	grenades.name = "Grenades"
+	add_child(grenades)
+
 func _exit_tree() -> void:
 	if instance == self:
 		instance = null
@@ -154,6 +159,9 @@ static func _capsule_basis(dir: Vector3) -> Basis:
 	return Basis(x, y, z)
 
 func _impact(p: Proj, hit: Dictionary) -> void:
+	if WindowManager.instance != null and WindowManager.instance.pane_for_hit(hit) >= 0:
+		WindowManager.instance.break_hit(hit,"bullet")
+		return
 	var collider: Object = hit.get("collider")
 	var victim := HitboxRig.character_of(collider)
 	var normal: Vector3 = hit.get("normal", Vector3.UP)

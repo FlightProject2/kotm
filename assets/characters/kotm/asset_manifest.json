@@ -430,6 +430,12 @@
     "MotorcycleHelmet": {
       "root": "EQ_Template_MotorcycleHelmet",
       "meshes": [
+        "RT_Template_MotorcycleHelmet_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/templates/KOTM_Template_MotorcycleHelmet.glb",
+      "triangles": 9658,
+      "authoring_meshes": [
         "Template_Helmet__GEAR_HELMET_Helmet_VisorPivot.001",
         "Template_Helmet__GEAR_HELMET_Helmet_VisorPivot",
         "Template_Helmet__GEAR_HELMET_Helmet_Visor",
@@ -453,14 +459,17 @@
         "Template_Helmet__GEAR_HELMET_Helmet_NeckRoll",
         "Template_Helmet__GEAR_HELMET_Helmet_EyeportTrim",
         "Template_Helmet__GEAR_HELMET_Helmet_ChinVent"
-      ],
-      "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_MotorcycleHelmet.glb",
-      "triangles": 9658
+      ]
     },
     "BaseballCap": {
       "root": "EQ_Template_BaseballCap",
       "meshes": [
+        "RT_Template_BaseballCap_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/templates/KOTM_Template_BaseballCap.glb",
+      "triangles": 3648,
+      "authoring_meshes": [
         "Template_Cap_crown",
         "Template_Cap_sweatband",
         "Template_Cap_panel_seam_0",
@@ -471,14 +480,17 @@
         "Template_Cap_panel_seam_5",
         "Template_Cap_curved_bill",
         "Template_Cap_bill_edge"
-      ],
-      "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_BaseballCap.glb",
-      "triangles": 3648
+      ]
     },
     "Sunglasses": {
       "root": "EQ_Template_Sunglasses",
       "meshes": [
+        "RT_Template_Sunglasses_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/templates/KOTM_Template_Sunglasses.glb",
+      "triangles": 1168,
+      "authoring_meshes": [
         "Template_Glasses_frame_1",
         "Template_Glasses_lens_1",
         "Template_Glasses_temple_1",
@@ -486,102 +498,395 @@
         "Template_Glasses_lens_-1",
         "Template_Glasses_temple_-1",
         "Template_Glasses_bridge"
-      ],
-      "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Sunglasses.glb",
-      "triangles": 1168
+      ]
     },
     "FaceBandana": {
       "root": "EQ_Template_FaceBandana",
       "meshes": [
+        "RT_Template_FaceBandana_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/templates/KOTM_Template_FaceBandana.glb",
+      "triangles": 4056,
+      "authoring_meshes": [
         "Template_Bandana_lower_face",
         "Template_Bandana_top_binding",
         "Template_Bandana_hem",
         "Template_Bandana_tie_-1",
         "Template_Bandana_tie_1"
-      ],
-      "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_FaceBandana.glb",
-      "triangles": 4056
+      ]
     },
     "TankTop": {
       "root": "EQ_Template_TankTop",
       "meshes": [
-        "EQ_Template_TankTop_Cloth"
+        "RT_Template_TankTop_Batch_00"
       ],
       "hidden_body_faces": 452,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_TankTop.glb",
-      "triangles": 3320
+      "glb": "exports/templates/KOTM_Template_TankTop.glb",
+      "triangles": 3320,
+      "authoring_meshes": [
+        "EQ_Template_TankTop_Cloth"
+      ]
     },
     "TShirt": {
       "root": "EQ_Template_TShirt",
       "meshes": [
-        "EQ_Template_TShirt_Cloth"
+        "RT_Template_TShirt_Batch_00"
       ],
       "hidden_body_faces": 927,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_TShirt.glb",
-      "triangles": 5008
+      "glb": "exports/templates/KOTM_Template_TShirt.glb",
+      "triangles": 5008,
+      "authoring_meshes": [
+        "EQ_Template_TShirt_Cloth"
+      ]
     },
     "Hoodie": {
       "root": "EQ_Template_Hoodie",
       "meshes": [
-        "EQ_Template_Hoodie_Cloth",
-        "EQ_Template_Hoodie_HoodDown"
+        "RT_Template_Hoodie_Batch_00"
       ],
       "hidden_body_faces": 1721,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Hoodie.glb",
-      "triangles": 8488
+      "glb": "exports/templates/KOTM_Template_Hoodie.glb",
+      "triangles": 8488,
+      "authoring_meshes": [
+        "EQ_Template_Hoodie_Cloth",
+        "EQ_Template_Hoodie_HoodDown"
+      ]
     },
     "Leggings": {
       "root": "EQ_Template_Leggings",
       "meshes": [
-        "Leggings_BlankShell"
+        "RT_Template_Leggings_Batch_00"
       ],
       "hidden_body_faces": 918,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Leggings.glb",
-      "triangles": 2408
+      "glb": "exports/templates/KOTM_Template_Leggings.glb",
+      "triangles": 2408,
+      "authoring_meshes": [
+        "Leggings_BlankShell"
+      ]
     },
     "Shorts": {
       "root": "EQ_Template_Shorts",
       "meshes": [
-        "Shorts_BlankShell"
+        "RT_Template_Shorts_Batch_00"
       ],
       "hidden_body_faces": 252,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Shorts.glb",
-      "triangles": 1034
+      "glb": "exports/templates/KOTM_Template_Shorts.glb",
+      "triangles": 1034,
+      "authoring_meshes": [
+        "Shorts_BlankShell"
+      ]
     },
     "Sneakers": {
       "root": "EQ_Template_Sneakers",
       "meshes": [
+        "RT_Template_Sneakers_Batch_00"
+      ],
+      "hidden_body_faces": 2264,
+      "glb": "exports/templates/KOTM_Template_Sneakers.glb",
+      "triangles": 1064,
+      "authoring_meshes": [
         "Sneaker_Blank.l",
         "Sneaker_Tongue.l",
         "Sneaker_LacesEyelets.l",
         "Sneaker_Blank.r",
         "Sneaker_Tongue.r",
         "Sneaker_LacesEyelets.r"
-      ],
-      "hidden_body_faces": 2264,
-      "glb": "assets/characters/kotm/templates/KOTM_Template_Sneakers.glb",
-      "triangles": 1064
+      ]
     },
     "Beanie": {
       "root": "EQ_Beanie",
       "meshes": [
+        "RT_Beanie_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/KOTM_Beanie.glb",
+      "finished_material": true,
+      "triangles": 3420,
+      "authoring_meshes": [
         "Beanie_KnitCrown",
         "Beanie_FoldedCuff",
         "Beanie_KOTM_Badge",
         "Beanie_KOTM_Embroidery",
         "Beanie_BadgeStitching"
+      ]
+    },
+    "HoodieZip": {
+      "root": "EQ_HoodieZip",
+      "meshes": [
+        "RT_HoodieZip_Batch_00"
+      ],
+      "hidden_body_faces": 1563,
+      "glb": "exports/templates/KOTM_Template_HoodieZip.glb",
+      "triangles": 12899,
+      "finished_material": true,
+      "authoring_meshes": [
+        "HoodieZip_Aglet_-1",
+        "HoodieZip_Aglet_1",
+        "HoodieZip_AlpineEmblem_0",
+        "HoodieZip_AlpineEmblem_1",
+        "HoodieZip_AlpineEmblem_2",
+        "HoodieZip_Cloth",
+        "HoodieZip_DrapedHood",
+        "HoodieZip_Drawcord_-1",
+        "HoodieZip_Drawcord_1",
+        "HoodieZip_NeckBinding",
+        "HoodieZip_Pocket_-1",
+        "HoodieZip_Pocket_1",
+        "HoodieZip_PocketOpening_-1",
+        "HoodieZip_PocketOpening_1",
+        "HoodieZip_PocketSeam_-1",
+        "HoodieZip_PocketSeam_1",
+        "HoodieZip_RibbedCuff.l",
+        "HoodieZip_RibbedCuff.r",
+        "HoodieZip_RibbedWaist",
+        "HoodieZip_ZipperPull",
+        "HoodieZip_ZipperTape",
+        "HoodieZip_ZipperTeeth_-1",
+        "HoodieZip_ZipperTeeth_1"
+      ]
+    },
+    "ShortShorts": {
+      "root": "EQ_ShortShorts",
+      "meshes": [
+        "RT_ShortShorts_Batch_00"
+      ],
+      "hidden_body_faces": 100,
+      "glb": "exports/templates/KOTM_Template_ShortShorts.glb",
+      "triangles": 9528,
+      "finished_material": true,
+      "authoring_meshes": [
+        "ShortShorts_BeltLoop_-1_0.083",
+        "ShortShorts_BeltLoop_-1_0.168",
+        "ShortShorts_BeltLoop_1_0.083",
+        "ShortShorts_BeltLoop_1_0.168",
+        "ShortShorts_Buckle",
+        "ShortShorts_BucklePin",
+        "ShortShorts_CanvasBelt",
+        "ShortShorts_DenimShell",
+        "ShortShorts_FlySeam",
+        "ShortShorts_FoldedHem_0",
+        "ShortShorts_FoldedHem_2",
+        "ShortShorts_FrontPocket_-1",
+        "ShortShorts_FrontPocket_1",
+        "ShortShorts_HemStitch_0",
+        "ShortShorts_HemStitch_2",
+        "ShortShorts_SideSeam_-1",
+        "ShortShorts_SideSeam_1",
+        "ShortShorts_Waistband"
+      ]
+    },
+    "FingerlessGloves": {
+      "root": "EQ_FingerlessGloves",
+      "meshes": [
+        "RT_FingerlessGloves_Batch_00"
+      ],
+      "hidden_body_faces": 610,
+      "glb": "exports/templates/KOTM_Template_FingerlessGloves.glb",
+      "triangles": 18464,
+      "finished_material": true,
+      "authoring_meshes": [
+        "FingerlessGloves_BackPanelBinding.l",
+        "FingerlessGloves_BackPanelBinding.r",
+        "FingerlessGloves_BoundOpening.l_0",
+        "FingerlessGloves_BoundOpening.l_1",
+        "FingerlessGloves_BoundOpening.l_2",
+        "FingerlessGloves_BoundOpening.l_3",
+        "FingerlessGloves_BoundOpening.l_4",
+        "FingerlessGloves_BoundOpening.l_5",
+        "FingerlessGloves_BoundOpening.r_0",
+        "FingerlessGloves_BoundOpening.r_1",
+        "FingerlessGloves_BoundOpening.r_2",
+        "FingerlessGloves_BoundOpening.r_3",
+        "FingerlessGloves_BoundOpening.r_4",
+        "FingerlessGloves_BoundOpening.r_5",
+        "FingerlessGloves_LeatherShell.l",
+        "FingerlessGloves_LeatherShell.r",
+        "FingerlessGloves_LimeMeshPanel.l",
+        "FingerlessGloves_LimeMeshPanel.r",
+        "FingerlessGloves_RedStud_index.l",
+        "FingerlessGloves_RedStud_index.r",
+        "FingerlessGloves_RedStud_middle.l",
+        "FingerlessGloves_RedStud_middle.r",
+        "FingerlessGloves_RedStud_pinky.l",
+        "FingerlessGloves_RedStud_pinky.r",
+        "FingerlessGloves_RedStud_ring.l",
+        "FingerlessGloves_RedStud_ring.r",
+        "FingerlessGloves_WristRivet.l_-0.015",
+        "FingerlessGloves_WristRivet.l_0.002",
+        "FingerlessGloves_WristRivet.l_0.019",
+        "FingerlessGloves_WristRivet.r_-0.015",
+        "FingerlessGloves_WristRivet.r_0.002",
+        "FingerlessGloves_WristRivet.r_0.019",
+        "FingerlessGloves_WristStrap.l",
+        "FingerlessGloves_WristStrap.r"
+      ]
+    },
+    "KevlarVest": {
+      "root": "EQ_KevlarVest",
+      "meshes": [
+        "RT_KevlarVest_Batch_00"
       ],
       "hidden_body_faces": 0,
-      "glb": "assets/characters/kotm/templates/KOTM_Beanie.glb",
+      "glb": "exports/templates/KOTM_Template_KevlarVest.glb",
+      "triangles": 8110,
       "finished_material": true,
-      "triangles": 3420
+      "authoring_meshes": [
+        "Kevlar_Back_carrier",
+        "Kevlar_Back_closure_base_0",
+        "Kevlar_Back_closure_base_1",
+        "Kevlar_Back_closure_tab_0_-1",
+        "Kevlar_Back_closure_tab_0_1",
+        "Kevlar_Back_closure_tab_1_-1",
+        "Kevlar_Back_closure_tab_1_1",
+        "Kevlar_Back_ID_patch",
+        "Kevlar_Back_MOLLE_row_00",
+        "Kevlar_Back_MOLLE_row_01",
+        "Kevlar_Back_MOLLE_tack_0_1",
+        "Kevlar_Back_MOLLE_tack_0_2",
+        "Kevlar_Back_MOLLE_tack_0_3",
+        "Kevlar_Back_MOLLE_tack_0_4",
+        "Kevlar_Back_MOLLE_tack_0_5",
+        "Kevlar_Back_MOLLE_tack_1_1",
+        "Kevlar_Back_MOLLE_tack_1_2",
+        "Kevlar_Back_MOLLE_tack_1_3",
+        "Kevlar_Back_MOLLE_tack_1_4",
+        "Kevlar_Back_MOLLE_tack_1_5",
+        "Kevlar_Front_carrier",
+        "Kevlar_Front_closure_base_0",
+        "Kevlar_Front_closure_base_1",
+        "Kevlar_Front_closure_tab_0_-1",
+        "Kevlar_Front_closure_tab_0_1",
+        "Kevlar_Front_closure_tab_1_-1",
+        "Kevlar_Front_closure_tab_1_1",
+        "Kevlar_Front_ID_patch",
+        "Kevlar_Front_MOLLE_row_00",
+        "Kevlar_Front_MOLLE_row_01",
+        "Kevlar_Front_MOLLE_row_02",
+        "Kevlar_Front_MOLLE_tack_0_1",
+        "Kevlar_Front_MOLLE_tack_0_2",
+        "Kevlar_Front_MOLLE_tack_0_3",
+        "Kevlar_Front_MOLLE_tack_0_4",
+        "Kevlar_Front_MOLLE_tack_0_5",
+        "Kevlar_Front_MOLLE_tack_1_1",
+        "Kevlar_Front_MOLLE_tack_1_2",
+        "Kevlar_Front_MOLLE_tack_1_3",
+        "Kevlar_Front_MOLLE_tack_1_4",
+        "Kevlar_Front_MOLLE_tack_1_5",
+        "Kevlar_Front_MOLLE_tack_2_1",
+        "Kevlar_Front_MOLLE_tack_2_2",
+        "Kevlar_Front_MOLLE_tack_2_3",
+        "Kevlar_Front_MOLLE_tack_2_4",
+        "Kevlar_Front_MOLLE_tack_2_5",
+        "Kevlar_Shoulder_L",
+        "Kevlar_Shoulder_R",
+        "Kevlar_SideBand_L_0",
+        "Kevlar_SideBand_L_1",
+        "Kevlar_SideBand_R_0",
+        "Kevlar_SideBand_R_1"
+      ]
+    },
+    "TacticalSantaHat": {
+      "root": "EQ_TacticalSantaHat",
+      "meshes": [
+        "RT_TacticalSantaHat_Batch_00"
+      ],
+      "hidden_body_faces": 0,
+      "glb": "exports/templates/KOTM_Template_TacticalSantaHat.glb",
+      "triangles": 2134,
+      "finished_material": true,
+      "authoring_meshes": [
+        "Santa_Cloth_panel_seam_01",
+        "Santa_Cloth_panel_seam_02",
+        "Santa_Cream_faceted_pompom",
+        "Santa_Cream_padded_cuff",
+        "Santa_Helmet_hollow_shell",
+        "Santa_Helmet_opening_rubber_binding",
+        "Santa_Helmet_short_forehead_peak",
+        "Santa_Red_folded_crown",
+        "Santa_Red_hanging_tail"
+      ]
+    },
+    "CanvasShoes": {
+      "root": "EQ_CanvasShoes",
+      "meshes": [
+        "RT_CanvasShoes_Batch_00",
+        "RT_CanvasShoes_Batch_01"
+      ],
+      "hidden_body_faces": 2264,
+      "glb": "exports/templates/KOTM_Template_CanvasShoes.glb",
+      "triangles": 4220,
+      "finished_material": true,
+      "authoring_meshes": [
+        "CanvasShoe_BowKnot.l",
+        "CanvasShoe_BowLoop_Inner.l",
+        "CanvasShoe_BowLoop_Outer.l",
+        "CanvasShoe_CanvasUpper.l",
+        "CanvasShoe_CollarBinding.l",
+        "CanvasShoe_Eyelet_01_Inner.l",
+        "CanvasShoe_Eyelet_01_Outer.l",
+        "CanvasShoe_Eyelet_02_Inner.l",
+        "CanvasShoe_Eyelet_02_Outer.l",
+        "CanvasShoe_Eyelet_03_Inner.l",
+        "CanvasShoe_Eyelet_03_Outer.l",
+        "CanvasShoe_Eyelet_04_Inner.l",
+        "CanvasShoe_Eyelet_04_Outer.l",
+        "CanvasShoe_Eyestay_Inner.l",
+        "CanvasShoe_Eyestay_Outer.l",
+        "CanvasShoe_Footbed.l",
+        "CanvasShoe_FoxingRim.l",
+        "CanvasShoe_HeelSeam.l",
+        "CanvasShoe_InnerLining.l",
+        "CanvasShoe_LaceBase.l",
+        "CanvasShoe_LaceCross_01_0.l",
+        "CanvasShoe_LaceCross_01_1.l",
+        "CanvasShoe_LaceCross_02_0.l",
+        "CanvasShoe_LaceCross_02_1.l",
+        "CanvasShoe_LaceCross_03_0.l",
+        "CanvasShoe_LaceCross_03_1.l",
+        "CanvasShoe_LaceTail_Inner.l",
+        "CanvasShoe_LaceTail_Outer.l",
+        "CanvasShoe_Outsole.l",
+        "CanvasShoe_PaddedTongue.l",
+        "CanvasShoe_RubberMidsole.l",
+        "CanvasShoe_BowKnot.r",
+        "CanvasShoe_BowLoop_Inner.r",
+        "CanvasShoe_BowLoop_Outer.r",
+        "CanvasShoe_CanvasUpper.r",
+        "CanvasShoe_CollarBinding.r",
+        "CanvasShoe_Eyelet_01_Inner.r",
+        "CanvasShoe_Eyelet_01_Outer.r",
+        "CanvasShoe_Eyelet_02_Inner.r",
+        "CanvasShoe_Eyelet_02_Outer.r",
+        "CanvasShoe_Eyelet_03_Inner.r",
+        "CanvasShoe_Eyelet_03_Outer.r",
+        "CanvasShoe_Eyelet_04_Inner.r",
+        "CanvasShoe_Eyelet_04_Outer.r",
+        "CanvasShoe_Eyestay_Inner.r",
+        "CanvasShoe_Eyestay_Outer.r",
+        "CanvasShoe_Footbed.r",
+        "CanvasShoe_FoxingRim.r",
+        "CanvasShoe_HeelSeam.r",
+        "CanvasShoe_InnerLining.r",
+        "CanvasShoe_LaceBase.r",
+        "CanvasShoe_LaceCross_01_0.r",
+        "CanvasShoe_LaceCross_01_1.r",
+        "CanvasShoe_LaceCross_02_0.r",
+        "CanvasShoe_LaceCross_02_1.r",
+        "CanvasShoe_LaceCross_03_0.r",
+        "CanvasShoe_LaceCross_03_1.r",
+        "CanvasShoe_LaceTail_Inner.r",
+        "CanvasShoe_LaceTail_Outer.r",
+        "CanvasShoe_Outsole.r",
+        "CanvasShoe_PaddedTongue.r",
+        "CanvasShoe_RubberMidsole.r"
+      ]
     }
   },
   "body_masks": {
     "BODY_Region_000": [],
     "BODY_Region_001": [
+      "CanvasShoes",
       "Sneakers"
     ],
     "BODY_Region_002": [
@@ -589,38 +894,43 @@
     ],
     "BODY_Region_003": [
       "Hoodie",
+      "HoodieZip",
       "TShirt"
     ],
     "BODY_Region_004": [
       "DefaultTank",
       "Hoodie",
+      "HoodieZip",
       "TShirt",
       "TankTop"
     ],
     "BODY_Region_005": [
-      "Hoodie"
+      "Hoodie",
+      "HoodieZip"
     ],
     "BODY_Region_006": [
-      "DefaultTank",
-      "Hoodie",
-      "TShirt",
-      "TankTop"
+      "DefaultBoxers",
+      "Leggings",
+      "ShortShorts",
+      "Shorts"
     ],
     "BODY_Region_007": [
-      "DefaultBoxers",
       "Leggings",
       "Shorts"
     ],
     "BODY_Region_008": [
+      "DefaultBoxers",
       "Leggings",
       "Shorts"
     ],
     "BODY_Region_009": [
-      "Hoodie",
-      "TShirt"
+      "Hoodie"
     ],
     "BODY_Region_010": [
       "DefaultBoxers"
+    ],
+    "BODY_Region_011": [
+      "FingerlessGloves"
     ]
   },
   "equipment_roots": [
@@ -628,7 +938,8 @@
     "EQ_Armour",
     "EQ_Backpack",
     "EQ_AR75",
-    "EQ_HuntingRifle"
+    "EQ_HuntingRifle",
+    "EQ_AK47"
   ],
   "seat_driver": [
     0.0,
@@ -651,13 +962,13 @@
       ],
       "yaw_degrees": 45,
       "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
-      "ready_yaw_degrees": 75,
+      "ready_yaw_degrees": 68,
       "ready_origin": [
         0,
-        -0.34,
-        1.17
+        -0.245,
+        1.19
       ],
-      "ready_pitch_degrees": 25,
+      "ready_pitch_degrees": 32,
       "chest_yaw_degrees": -10,
       "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
       "neck_aim_rotation_degrees": [
@@ -667,7 +978,14 @@
       ],
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 0.45,
-      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips.",
+      "origin": [
+        0.103,
+        -0.322,
+        1.455
+      ],
+      "ads_revision": "Shouldered sight-line stance: buttpad seated on the shoulder, cheek welded, right eye behind the sights, elbows bent and both palms fixed to their grips."
     },
     "HuntingRifle": {
       "scale": 0.8,
@@ -683,13 +1001,13 @@
       ],
       "yaw_degrees": 65,
       "forward_axis": "Blender -Y, rotated about +Z by yaw_degrees",
-      "ready_yaw_degrees": 75,
+      "ready_yaw_degrees": 68,
       "ready_origin": [
         0,
-        -0.39,
-        1.18
+        -0.275,
+        1.2
       ],
-      "ready_pitch_degrees": 25,
+      "ready_pitch_degrees": 32,
       "chest_yaw_degrees": -10,
       "head_aim_world_orientation": "yaw * local Y cant(-3deg) * local X pitch(12deg)",
       "neck_aim_rotation_degrees": [
@@ -699,7 +1017,14 @@
       ],
       "recoil_response": "Upper chest and shoulders receive the same translation as the stock",
       "recoil_input_gain": 1.0,
-      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear."
+      "crossfade_requirement": "Support-hand IK preserves left palm contact during ordinary FK crossfades; right-hand/gun trajectory is clear.",
+      "carry_revision": "Relaxed torso carry: stock tucked, neutral wrists, both hands and fingers on their grips.",
+      "origin": [
+        0.322,
+        -0.327,
+        1.508
+      ],
+      "ads_revision": "Shouldered sight-line stance: buttpad seated on the shoulder, cheek welded, right eye behind the sights, elbows bent and both palms fixed to their grips."
     }
   },
   "garment_polish": {
@@ -729,5 +1054,454 @@
     "window_ray_checks_passed": true,
     "ray_checks": 10,
     "maximum_outer_surface_change_m": 1e-06
+  },
+  "style_revision": {
+    "name": "Grounded cartoon",
+    "body_topology_preserved": true,
+    "new_wardrobe": [
+      "HoodieZip",
+      "ShortShorts",
+      "FingerlessGloves",
+      "KevlarVest",
+      "TacticalSantaHat",
+      "CanvasShoes"
+    ],
+    "weapon_roots": {
+      "ar15": "EQ_AR75",
+      "ak47": "EQ_AK47"
+    },
+    "ak_animation_family": "AR75",
+    "originals": "style_revision/backups",
+    "runtime_batching": "51 meshes / 144 material primitives; editable source parts retained in Blender"
+  },
+  "runtime_optimization": {
+    "strategy": "Equipment-root batching with material surface deduplication",
+    "editable_source": "KOTM_Character_Enhanced.blend",
+    "default_mesh_prefixes": [
+      "Tank_",
+      "Boxers_"
+    ],
+    "backpack_front_harness_prefix": "GEAR_BACKPACK_Pack_Strap_RT_",
+    "body_masks_preserved": true,
+    "root_stats": {
+      "EQ_Default_TankTop": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 3320
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 3320
+        },
+        "meshes": [
+          "Tank_RT_Batch_00"
+        ]
+      },
+      "EQ_Default_Boxers": {
+        "before": {
+          "mesh_nodes": 7,
+          "material_surfaces": 7,
+          "triangles": 1424
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 3,
+          "triangles": 1424
+        },
+        "meshes": [
+          "Boxers_RT_Batch_00"
+        ]
+      },
+      "EQ_Helmet": {
+        "before": {
+          "mesh_nodes": 23,
+          "material_surfaces": 23,
+          "triangles": 9658
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 6,
+          "triangles": 9658
+        },
+        "meshes": [
+          "RT_Helmet_Batch_00"
+        ]
+      },
+      "EQ_Armour": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 5,
+          "triangles": 7836
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 5,
+          "triangles": 7836
+        },
+        "meshes": [
+          "RT_Armour_Batch_00"
+        ]
+      },
+      "EQ_Backpack": {
+        "before": {
+          "mesh_nodes": 46,
+          "material_surfaces": 46,
+          "triangles": 4296
+        },
+        "after": {
+          "mesh_nodes": 2,
+          "material_surfaces": 17,
+          "triangles": 4296
+        },
+        "meshes": [
+          "GEAR_BACKPACK_RT_Body_00",
+          "GEAR_BACKPACK_Pack_Strap_RT_01"
+        ]
+      },
+      "EQ_AR75": {
+        "before": {
+          "mesh_nodes": 123,
+          "material_surfaces": 123,
+          "triangles": 16884
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 6,
+          "triangles": 16884
+        },
+        "meshes": [
+          "RT_AR75_Batch_00"
+        ]
+      },
+      "EQ_AK47": {
+        "before": {
+          "mesh_nodes": 85,
+          "material_surfaces": 85,
+          "triangles": 13216
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 7,
+          "triangles": 13216
+        },
+        "meshes": [
+          "RT_AK47_Batch_00"
+        ]
+      },
+      "EQ_HuntingRifle": {
+        "before": {
+          "mesh_nodes": 45,
+          "material_surfaces": 45,
+          "triangles": 5680
+        },
+        "after": {
+          "mesh_nodes": 2,
+          "material_surfaces": 7,
+          "triangles": 5680
+        },
+        "meshes": [
+          "RT_HuntingRifle_Batch_00",
+          "RT_HuntingRifle_Batch_01"
+        ]
+      },
+      "EQ_Template_MotorcycleHelmet": {
+        "before": {
+          "mesh_nodes": 23,
+          "material_surfaces": 23,
+          "triangles": 9658
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 2,
+          "triangles": 9658
+        },
+        "meshes": [
+          "RT_Template_MotorcycleHelmet_Batch_00"
+        ]
+      },
+      "EQ_Template_BaseballCap": {
+        "before": {
+          "mesh_nodes": 10,
+          "material_surfaces": 10,
+          "triangles": 3648
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 2,
+          "triangles": 3648
+        },
+        "meshes": [
+          "RT_Template_BaseballCap_Batch_00"
+        ]
+      },
+      "EQ_Template_Sunglasses": {
+        "before": {
+          "mesh_nodes": 7,
+          "material_surfaces": 7,
+          "triangles": 1168
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 2,
+          "triangles": 1168
+        },
+        "meshes": [
+          "RT_Template_Sunglasses_Batch_00"
+        ]
+      },
+      "EQ_Template_FaceBandana": {
+        "before": {
+          "mesh_nodes": 5,
+          "material_surfaces": 5,
+          "triangles": 4056
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 2,
+          "triangles": 4056
+        },
+        "meshes": [
+          "RT_Template_FaceBandana_Batch_00"
+        ]
+      },
+      "EQ_Template_TankTop": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 3320
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 3320
+        },
+        "meshes": [
+          "RT_Template_TankTop_Batch_00"
+        ]
+      },
+      "EQ_Template_TShirt": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 5008
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 5008
+        },
+        "meshes": [
+          "RT_Template_TShirt_Batch_00"
+        ]
+      },
+      "EQ_Template_Hoodie": {
+        "before": {
+          "mesh_nodes": 2,
+          "material_surfaces": 2,
+          "triangles": 8488
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 8488
+        },
+        "meshes": [
+          "RT_Template_Hoodie_Batch_00"
+        ]
+      },
+      "EQ_Template_Leggings": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 2408
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 2408
+        },
+        "meshes": [
+          "RT_Template_Leggings_Batch_00"
+        ]
+      },
+      "EQ_Template_Shorts": {
+        "before": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 1034
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 1,
+          "triangles": 1034
+        },
+        "meshes": [
+          "RT_Template_Shorts_Batch_00"
+        ]
+      },
+      "EQ_Template_Sneakers": {
+        "before": {
+          "mesh_nodes": 6,
+          "material_surfaces": 8,
+          "triangles": 1064
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 2,
+          "triangles": 1064
+        },
+        "meshes": [
+          "RT_Template_Sneakers_Batch_00"
+        ]
+      },
+      "EQ_Beanie": {
+        "before": {
+          "mesh_nodes": 5,
+          "material_surfaces": 6,
+          "triangles": 3420
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 5,
+          "triangles": 3420
+        },
+        "meshes": [
+          "RT_Beanie_Batch_00"
+        ]
+      },
+      "EQ_HoodieZip": {
+        "before": {
+          "mesh_nodes": 23,
+          "material_surfaces": 23,
+          "triangles": 12899
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 9,
+          "triangles": 12899
+        },
+        "meshes": [
+          "RT_HoodieZip_Batch_00"
+        ]
+      },
+      "EQ_ShortShorts": {
+        "before": {
+          "mesh_nodes": 18,
+          "material_surfaces": 19,
+          "triangles": 9528
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 8,
+          "triangles": 9528
+        },
+        "meshes": [
+          "RT_ShortShorts_Batch_00"
+        ]
+      },
+      "EQ_FingerlessGloves": {
+        "before": {
+          "mesh_nodes": 34,
+          "material_surfaces": 34,
+          "triangles": 18464
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 4,
+          "triangles": 18464
+        },
+        "meshes": [
+          "RT_FingerlessGloves_Batch_00"
+        ]
+      },
+      "EQ_KevlarVest": {
+        "before": {
+          "mesh_nodes": 52,
+          "material_surfaces": 52,
+          "triangles": 2468
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 4,
+          "triangles": 8110
+        },
+        "meshes": [
+          "RT_KevlarVest_Batch_00"
+        ]
+      },
+      "EQ_TacticalSantaHat": {
+        "before": {
+          "mesh_nodes": 9,
+          "material_surfaces": 9,
+          "triangles": 2134
+        },
+        "after": {
+          "mesh_nodes": 1,
+          "material_surfaces": 5,
+          "triangles": 2134
+        },
+        "meshes": [
+          "RT_TacticalSantaHat_Batch_00"
+        ]
+      },
+      "EQ_CanvasShoes": {
+        "before": {
+          "mesh_nodes": 62,
+          "material_surfaces": 62,
+          "triangles": 4220
+        },
+        "after": {
+          "mesh_nodes": 2,
+          "material_surfaces": 18,
+          "triangles": 4220
+        },
+        "meshes": [
+          "RT_CanvasShoes_Batch_00",
+          "RT_CanvasShoes_Batch_01"
+        ]
+      }
+    }
+  },
+  "concurrent_merge": {
+    "source": "Concurrent canonical ADS rebake at 2026-09-08 23:24",
+    "changed_actions": [
+      "KOTM_AR75_Aim",
+      "KOTM_AR75_Aim_Jog",
+      "KOTM_AR75_Aim_Run",
+      "KOTM_AR75_Aim_Walk",
+      "KOTM_AR75_Crouch",
+      "KOTM_AR75_Crouch_Aim",
+      "KOTM_AR75_Crouch_Aim_Walk",
+      "KOTM_AR75_Crouch_Fire",
+      "KOTM_AR75_Crouch_Ready",
+      "KOTM_AR75_Crouch_Walk",
+      "KOTM_AR75_Fire",
+      "KOTM_AR75_Jog",
+      "KOTM_AR75_Jump",
+      "KOTM_AR75_Ready",
+      "KOTM_AR75_Reload",
+      "KOTM_AR75_Run",
+      "KOTM_AR75_Walk",
+      "KOTM_Hunting_Aim",
+      "KOTM_Hunting_Aim_Jog",
+      "KOTM_Hunting_Aim_Run",
+      "KOTM_Hunting_Aim_Walk",
+      "KOTM_Hunting_Crouch",
+      "KOTM_Hunting_Crouch_Aim",
+      "KOTM_Hunting_Crouch_Aim_Walk",
+      "KOTM_Hunting_Crouch_Fire",
+      "KOTM_Hunting_Crouch_Ready",
+      "KOTM_Hunting_Crouch_Walk",
+      "KOTM_Hunting_Fire",
+      "KOTM_Hunting_Jog",
+      "KOTM_Hunting_Jump",
+      "KOTM_Hunting_Ready",
+      "KOTM_Hunting_Reload",
+      "KOTM_Hunting_Run",
+      "KOTM_Hunting_Walk"
+    ],
+    "unchanged_geometry_rig_roots": true
   }
 }

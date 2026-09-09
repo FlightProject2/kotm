@@ -11,6 +11,8 @@ it (`project.godot` at the root), and the original **browser prototype**.
 
 ## Play it
 
+The current slice has an [enhanced snowy valley layout](docs/map/v2/layout-v2.md), with twelve locations, two river bridges and two summit approaches. Run `RUN_SNOW_MAP.cmd` from the parent KOTM assets folder for a free-camera tour; press **M** for the layout plan or **1–9** for location views. The normal Play action loads the same revised map.
+
 ### In the browser (no install)
 
 The **Build and publish playable game** workflow tests and exports the merged game source, then
@@ -45,6 +47,11 @@ WASD move, Shift sprint, Space jump, C crouch (knees bend, feet stay planted), r
 hotbar, H bandage, J first aid kit, T first-person toggle, M map, F10 admin/test menu, Esc pause.
 Under the parachute: W dives (faster descent), S flares, A/D strafe the canopy, mouse steers. In a
 car: W/S throttle and reverse, A/D steer, Space handbrake.
+
+Pick up a **Frag Grenade** with F, select hotbar **6**, then click **left mouse** to throw one.
+The grenade bounces and explodes four seconds after the throw. Its blast deals full damage
+within 3 m and falls to zero at 8 m; solid walls provide cover. Nearby breakable windows shatter.
+Holding fire does not repeatedly throw grenades.
 
 ### Headless checks (contributors)
 

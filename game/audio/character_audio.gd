@@ -3,6 +3,9 @@ extends Node
 ## Authority decides WHEN a sound happens. Each peer selects/mixes a nearby 3D recording.
 signal sound_requested(event: String, position: Vector3, volume: float)
 const COOLDOWNS := {"hurt": 0.75, "jump": 0.25, "punch": 0.2, "fence": 1.25, "door_locked": 1.5, "exertion": 6.0}
+const DEFAULT_CONTACTS := {"left": 0.0, "right": 0.5}
+const FOOT_SIDES := ["left", "right"]
+static var parsed_contacts: Dictionary = {}
 var c: Character
 var clock := 0.0
 var _last: Dictionary = {}
@@ -53,13 +56,9 @@ func _tick_steps(travelled: float, speed: float, sprinting: bool) -> void:
 		if _gait_phase >= 0.0:
 			var delta := fposmod(phase - _gait_phase, 1.0)
 			var info: Dictionary = state.get("info", {})
-			var contacts: Variant = info.get("foot_contact_phases", {"left": 0.0, "right": 0.5})
-			if contacts is String:
-				contacts = JSON.parse_string(contacts) if contacts.strip_edges().begins_with("{") else null
-			if not contacts is Dictionary:
-				contacts = {"left": 0.0, "right": 0.5}
+			var contacts := foot_contacts(info)
 			if delta > 0.00001 and delta < 0.75: # No catch-up burst after a stalled/reset animation.
-				for foot in ["left", "right"]:
+				for foot in FOOT_SIDES:
 					var distance := fposmod(float(contacts.get(foot, 0.0 if foot == "left" else 0.5)) - _gait_phase, 1.0)
 					if distance > 0.00001 and distance <= delta + 0.00001:
 						_step(foot == "left", sprinting)
@@ -75,6 +74,17 @@ func _tick_steps(travelled: float, speed: float, sprinting: bool) -> void:
 		_step_distance = fmod(_step_distance, stride)
 		_step(_left, sprinting)
 		_left = not _left
+
+static func foot_contacts(info: Dictionary) -> Dictionary:
+	var contacts: Variant = info.get("foot_contact_phases", DEFAULT_CONTACTS)
+	if contacts is Dictionary:
+		return contacts
+	if contacts is String:
+		if not parsed_contacts.has(contacts):
+			var parsed: Variant = JSON.parse_string(contacts) if contacts.strip_edges().begins_with("{") else null
+			parsed_contacts[contacts] = parsed if parsed is Dictionary else DEFAULT_CONTACTS
+		return parsed_contacts[contacts]
+	return DEFAULT_CONTACTS
 
 func _step(left: bool, sprinting: bool) -> void:
 	if clock - _last_step_clock < 0.08:

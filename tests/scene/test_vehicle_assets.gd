@@ -20,7 +20,7 @@ func test_imported_parts_and_transparent_truck_windows() -> void:
 		if not ResourceLoader.exists(FILES[id]):
 			continue
 		var vehicle := _make_vehicle(id)
-		assert_true(vehicle.model.scene_file_path == FILES[id], "runtime uses the authored model")
+		assert_true(vehicle.model.scene_file_path == KOTMWorldStyle.path(FILES[id]), "runtime uses the authored visual revision")
 		assert_true(vehicle.driver_marker != null, "driver seat socket imported")
 		for socket in ["HandGrip_L", "HandGrip_R", "FootRest_L", "FootRest_R"]:
 			assert_true(vehicle.model.find_child(socket, true, false) is Node3D, "imported contact " + socket)
@@ -185,6 +185,44 @@ func test_fitted_drivers_in_both_vehicles() -> void:
 		await settle(1)
 	floor.queue_free()
 	await settle(1)
+
+func test_idle_mechanics_sleep_and_wake_without_pose_drift() -> void:
+	for id: String in VARIANTS:
+		var vehicle := _make_vehicle(id)
+		var animator := vehicle.get("animator") as VehicleAnimation
+		animator.update_motion(.1, 8.0, .7, true, false)
+		for frame in 240:
+			animator.update_motion(1.0 / 60.0, 0.0, 0.0, false, false)
+		var count := animator.pose_update_count
+		var poses: Dictionary = {}
+		for node: Node3D in vehicle.model.find_children("*", "Node3D", true, false):
+			poses[node] = node.transform
+		for frame in 240:
+			animator.update_motion(1.0 / 60.0, 0.0, 0.0, false, false)
+		assert_eq(animator.pose_update_count, count, "settled parked mechanisms perform no pose work")
+		for node: Node3D in poses:
+			assert_true(node.transform == poses[node], "idle pose retained exactly: " + String(node.name))
+		animator.update_motion(.1, 0.0, .8, false, false)
+		assert_true(animator.pose_update_count > count, "stationary steering wakes immediately")
+		for part: Dictionary in animator.steering:
+			assert_false((part.node as Node3D).transform.is_equal_approx(part.rest), "stationary steering is applied")
+		animator.play_door_cycle()
+		animator.update_motion(.4, 0.0, 0.0, false, false)
+		for part: Dictionary in animator.doors:
+			assert_false((part.node as Node3D).transform.is_equal_approx(part.rest), "unoccupied door cycle wakes")
+		for frame in 240:
+			animator.update_motion(1.0 / 60.0, 0.0, 0.0, false, false)
+		var parked_distance := animator.distance
+		animator.update_motion(.1, 8.0, 0.0, true, true)
+		assert_near(animator.distance, parked_distance, .00001, "wrecked speed does not restart travel")
+		animator.update_motion(.1, -3.0, 0.0, true, false)
+		assert_near(animator.distance, parked_distance - .3, .00001, "reverse wakes and retains accumulated belt phase")
+		if not animator.wipers.is_empty():
+			animator.update_motion(.3, 0.0, 0.0, true, false)
+			for part: Dictionary in animator.wipers:
+				assert_false((part.node as Node3D).transform.is_equal_approx(part.rest), "occupied wipers continue while stationary")
+		vehicle.queue_free()
+		await settle(1)
 
 func _assert_contacts(driver: Character, context: String) -> void:
 	var modifier: SkeletonModifier3D = driver.visual.get("vehicle_contact")

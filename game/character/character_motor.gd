@@ -142,8 +142,11 @@ func _clamp_to_map() -> void:
 	if c.world == null:
 		return
 	var half := c.world.half_size() - 2.0
-	c.global_position.x = clampf(c.global_position.x, -half, half)
-	c.global_position.z = clampf(c.global_position.z, -half, half)
+	var position := c.global_position
+	var clamped := Vector3(clampf(position.x, -half, half), position.y, clampf(position.z, -half, half))
+	# An unchanged assignment still dirties the complete skin/hitbox subtree.
+	if clamped != position:
+		c.global_position = clamped
 
 func set_crouch(on: bool) -> void:
 	c.crouching = on

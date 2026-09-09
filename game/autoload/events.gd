@@ -23,3 +23,7 @@ signal gunshot(position: Vector3, weapon_id: String, shooter_id: int)
 signal player_sound(event: String, position: Vector3, character_id: int, volume: float)
 signal local_character_changed(character: Node)
 signal local_stat(kind: String, amount: float)   # progression: kill, headshot, damage, pickup, drive
+signal window_broken(window_id: int, position: Vector3, normal: Vector3, cause: String)
+signal grenade_thrown(grenade_id: int, shooter_id: int, origin: Vector3, velocity: Vector3, fuse: float)
+signal grenade_state(grenade_id: int, position: Vector3, velocity: Vector3, remaining: float)
+signal grenade_exploded(grenade_id: int, position: Vector3, radius: float)

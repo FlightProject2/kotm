@@ -22,6 +22,12 @@ func tick() -> void:
 		nearest_vehicle = null
 		return
 	var just_pressed := c.input.pressed(CharacterInput.B_INTERACT) and not c.prev_input.pressed(CharacterInput.B_INTERACT)
+	# BotBrain already selects and takes its target entry through take(). It has
+	# no interaction prompt, so repeated nearest-item queries provide no result.
+	if c.is_bot and not just_pressed:
+		nearest = null
+		nearest_vehicle = null
+		return
 	if c.in_vehicle():
 		nearest = null
 		nearest_vehicle = null

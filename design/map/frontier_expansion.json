@@ -1,0 +1,1270 @@
+{
+  "version": 1,
+  "pois": [
+    {
+      "id": "oakridge_terrace",
+      "name": "Oakridge Terrace",
+      "x": 410,
+      "z": 430,
+      "padRadius": 0,
+      "type": "village",
+      "existingPad": "ashford"
+    },
+    {
+      "id": "coldwater_freight",
+      "name": "Coldwater Freight",
+      "x": -658,
+      "z": -752,
+      "padRadius": 0,
+      "type": "industrial",
+      "existingPad": "rail_yard"
+    },
+    {
+      "id": "pinewatch_waterworks",
+      "name": "Pinewatch Waterworks",
+      "x": -574,
+      "z": -356,
+      "padRadius": 0,
+      "type": "industrial",
+      "existingPad": "cranmoor"
+    },
+    {
+      "id": "switchback_services",
+      "name": "Switchback Services",
+      "x": 277,
+      "z": -213,
+      "padRadius": 0,
+      "type": "commercial",
+      "existingPad": "gas_station"
+    }
+  ],
+  "buildings": [
+    {
+      "prefab": "frontier_house_ranch_sage",
+      "x": 402,
+      "z": 379,
+      "baseY": 32.14,
+      "yaw": 1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_house_cottage_ochre",
+      "x": 402,
+      "z": 400,
+      "baseY": 32.14,
+      "yaw": 1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_house_gable_slate",
+      "x": 402,
+      "z": 451,
+      "baseY": 32.14,
+      "yaw": 1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_house_ranch_sage",
+      "x": 402,
+      "z": 481,
+      "baseY": 32.14,
+      "yaw": 1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_house_cottage_ochre",
+      "x": 429,
+      "z": 380,
+      "baseY": 32.14,
+      "yaw": -1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_house_gable_slate",
+      "x": 429,
+      "z": 480,
+      "baseY": 32.14,
+      "yaw": -1.5707963267948966,
+      "poi": "oakridge_terrace",
+      "nodeClass": "residential",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_freight_warehouse",
+      "x": -666,
+      "z": -751,
+      "baseY": 50.56,
+      "yaw": 0,
+      "poi": "coldwater_freight",
+      "nodeClass": "industrial",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_utility_workshop",
+      "x": -576,
+      "z": -346,
+      "baseY": 23.24,
+      "yaw": 0,
+      "poi": "pinewatch_waterworks",
+      "nodeClass": "industrial",
+      "frontier": true
+    },
+    {
+      "prefab": "frontier_service_store",
+      "x": 277,
+      "z": -215,
+      "baseY": 46.5,
+      "yaw": 1.5707963267948966,
+      "poi": "switchback_services",
+      "nodeClass": "commercial",
+      "frontier": true
+    }
+  ],
+  "props": [
+    {
+      "id": "yard_fence",
+      "x": 396.5,
+      "z": 369.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 403.5,
+      "z": 369.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 371.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 376.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 381.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 386.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 396.5,
+      "z": 390.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 403.5,
+      "z": 390.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 392.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 397.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 402.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 396.5,
+      "z": 441.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 403.5,
+      "z": 441.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 443.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 448.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 453.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 458.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 396.5,
+      "z": 471.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 403.5,
+      "z": 471.0,
+      "y": 32.14,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 473.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 478.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 483.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": 393.0,
+      "z": 488.5,
+      "y": 32.14,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "supply_cache",
+      "x": 407,
+      "z": 429,
+      "y": 32.14,
+      "yaw": 0
+    },
+    {
+      "id": "rail_locomotive",
+      "x": -620,
+      "z": -796,
+      "y": 50.73,
+      "yaw": 0
+    },
+    {
+      "id": "rail_boxcar",
+      "x": -620,
+      "z": -778,
+      "y": 50.73,
+      "yaw": 0
+    },
+    {
+      "id": "rail_tanker",
+      "x": -620,
+      "z": -760,
+      "y": 50.73,
+      "yaw": 0
+    },
+    {
+      "id": "rail_flatcar",
+      "x": -620,
+      "z": -742,
+      "y": 50.73,
+      "yaw": 0
+    },
+    {
+      "id": "container_blue_open",
+      "x": -638,
+      "z": -789,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "container_blue_open",
+      "x": -632,
+      "z": -789,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "container_red",
+      "x": -638,
+      "z": -778,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "container_red",
+      "x": -632,
+      "z": -778,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "container_red",
+      "x": -638,
+      "z": -778,
+      "y": 53.46,
+      "yaw": 0
+    },
+    {
+      "id": "container_red",
+      "x": -678,
+      "z": -779,
+      "y": 50.56,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "container_blue_open",
+      "x": -678,
+      "z": -791,
+      "y": 50.56,
+      "yaw": 1.5707963267948966
+    },
+    {
+      "id": "supply_cache",
+      "x": -659,
+      "z": -731,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": -655,
+      "z": -779,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": -631,
+      "z": -709,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "yard_fence",
+      "x": -682.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -677.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -672.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -667.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -662.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -657.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -652.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -647.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -642.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -637.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -632.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -627.5,
+      "z": -802.0,
+      "y": 50.56,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -799.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -794.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -789.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -784.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -779.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -774.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -769.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -764.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -759.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -754.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -749.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -744.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -739.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -734.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -729.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -685.0,
+      "z": -724.5,
+      "y": 50.56,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "street_lamp",
+      "x": -675,
+      "z": -696,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": -655,
+      "z": -696,
+      "y": 50.56,
+      "yaw": 0
+    },
+    {
+      "id": "water_tower",
+      "x": -575,
+      "z": -373,
+      "y": 23.24,
+      "yaw": 0
+    },
+    {
+      "id": "container_blue_open",
+      "x": -588,
+      "z": -369,
+      "y": 23.24,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": -563,
+      "z": -373,
+      "y": 23.24,
+      "yaw": 0
+    },
+    {
+      "id": "yard_fence",
+      "x": -593.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -588.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -583.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -578.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -573.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -568.5,
+      "z": -383.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -380.44444444444446,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -375.3333333333333,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -370.22222222222223,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -365.1111111111111,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -360.0,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -596.0,
+      "z": -339.55555555555554,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -370.22222222222223,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -365.1111111111111,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -360.0,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -354.8888888888889,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -349.77777777777777,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -344.6666666666667,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -556.0,
+      "z": -339.55555555555554,
+      "y": 23.24,
+      "yaw": -1.5707963267948966
+    },
+    {
+      "id": "yard_fence",
+      "x": -593.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -588.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -583.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -568.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -563.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "yard_fence",
+      "x": -558.5,
+      "z": -332.0,
+      "y": 23.24,
+      "yaw": 0.0
+    },
+    {
+      "id": "service_barrier",
+      "x": -565,
+      "z": -335,
+      "y": 23.24,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": -581,
+      "z": -330,
+      "y": 23.24,
+      "yaw": 0
+    },
+    {
+      "id": "service_barrier",
+      "x": 280,
+      "z": -202,
+      "y": 46.5,
+      "yaw": 0
+    },
+    {
+      "id": "supply_cache",
+      "x": 270,
+      "z": -218,
+      "y": 46.5,
+      "yaw": 0
+    },
+    {
+      "id": "street_lamp",
+      "x": 286,
+      "z": -222,
+      "y": 46.5,
+      "yaw": 0
+    }
+  ],
+  "roads": [
+    {
+      "id": "oakridge_street",
+      "type": "asphalt",
+      "width": 5.5,
+      "points": [
+        [
+          418,
+          365
+        ],
+        [
+          418,
+          495
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_north_link",
+      "type": "asphalt",
+      "width": 5,
+      "points": [
+        [
+          418,
+          413
+        ],
+        [
+          440,
+          413
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_south_link",
+      "type": "asphalt",
+      "width": 5,
+      "points": [
+        [
+          418,
+          447
+        ],
+        [
+          440,
+          447
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_w0",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+        410,
+          379
+        ],
+        [
+          418,
+          379
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_w1",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+        410,
+          400
+        ],
+        [
+          418,
+          400
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_w2",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+        410,
+          451
+        ],
+        [
+          418,
+          451
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_w3",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+        410,
+          481
+        ],
+        [
+          418,
+          481
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_e0",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+          418,
+          380
+        ],
+        [
+          423,
+          380
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "oakridge_drive_e1",
+      "type": "asphalt",
+      "width": 2.8,
+      "points": [
+        [
+          418,
+          480
+        ],
+        [
+          423,
+          480
+        ]
+      ],
+      "profileHeightsM": [
+        32.14,
+        32.14
+      ],
+      "frontier": true
+    },
+    {
+      "id": "coldwater_access",
+      "type": "asphalt",
+      "width": 6,
+      "points": [
+        [
+          -625,
+          -680
+        ],
+        [
+          -666,
+          -680
+        ],
+        [
+          -666,
+          -734
+        ]
+      ],
+      "profileHeightsM": [
+        50.56,
+        50.56,
+        50.56
+      ],
+      "frontier": true
+    },
+    {
+      "id": "coldwater_apron",
+      "type": "asphalt",
+      "width": 5,
+      "points": [
+        [
+          -666,
+          -720
+        ],
+        [
+          -648,
+          -720
+        ],
+        [
+          -648,
+          -794
+        ]
+      ],
+      "profileHeightsM": [
+        50.56,
+        50.56,
+        50.56
+      ],
+      "frontier": true
+    },
+    {
+      "id": "pinewatch_access",
+      "type": "asphalt",
+      "width": 4,
+      "points": [
+        [
+          -577,
+          -300
+        ],
+        [
+          -576,
+          -330
+        ],
+        [
+          -576,
+          -336
+        ]
+      ],
+      "profileHeightsM": [
+        23.24,
+        23.24,
+        23.24
+      ],
+      "frontier": true
+    },
+    {
+      "id": "switchback_forecourt",
+      "type": "asphalt",
+      "width": 4,
+      "points": [
+        [
+          283,
+          -215
+        ],
+        [
+          289,
+          -215
+        ],
+        [
+          289,
+          -200
+        ],
+        [
+          315,
+          -200
+        ]
+      ],
+      "profileHeightsM": [
+        46.5,
+        46.5,
+        46.5,
+        46.5
+      ],
+      "frontier": true
+    }
+  ],
+  "tracks": [
+    {
+      "points": [
+        [
+          -600,
+          -812
+        ],
+        [
+          -620,
+          -809
+        ],
+        [
+          -620,
+          -724
+        ]
+      ],
+      "y": 50.56
+    }
+  ],
+  "clearance_openings": [
+    {
+      "asset": "street_lamp",
+      "x": 421,
+      "z": 386,
+      "road": "oakridge_street"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 393.0,
+      "z": 407.5,
+      "road": "riverbank_distributor"
+    },
+    {
+      "asset": "street_lamp",
+      "x": 421,
+      "z": 407,
+      "road": "oakridge_street"
+    },
+    {
+      "asset": "street_lamp",
+      "x": 421,
+      "z": 458,
+      "road": "oakridge_street"
+    },
+    {
+      "asset": "street_lamp",
+      "x": 421,
+      "z": 488,
+      "road": "oakridge_street"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 372.5,
+      "road": "ashford_north"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 377.5,
+      "road": "ashford_north"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 382.5,
+      "road": "ashford_north"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 387.5,
+      "road": "ashford_north"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 472.5,
+      "road": "ashford_market_lane"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 477.5,
+      "road": "ashford_market_lane"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 482.5,
+      "road": "ashford_market_lane"
+    },
+    {
+      "asset": "yard_fence",
+      "x": 438.0,
+      "z": 487.5,
+      "road": "ashford_market_lane"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -563.5,
+      "z": -383.0,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -558.5,
+      "z": -383.0,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -596.0,
+      "z": -354.8888888888889,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -596.0,
+      "z": -349.77777777777777,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -596.0,
+      "z": -344.6666666666667,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -556.0,
+      "z": -380.44444444444446,
+      "road": "ring"
+    },
+    {
+      "asset": "yard_fence",
+      "x": -556.0,
+      "z": -375.3333333333333,
+      "road": "ring"
+    }
+  ]
+}

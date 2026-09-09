@@ -6,15 +6,21 @@ extends RefCounted
 const PREFAB_DIR := "res://world/prefabs/buildings/"
 const CAR_SCALE := 1.6
 const PROP_SCALE := 2.5
+const SLICE_VEHICLE_BUDGET := 16
+const SLICE_WRECK_BUDGET := 128
 
 static func build(world: World) -> Dictionary:
 	var layout := world.layout
 	var rng := RandomNumberGenerator.new()
 	rng.seed = layout.seed + 11
 	var stats := {"buildings": 0, "placeholders": 0, "props": 0, "wrecks": 0, "loot_nodes": 0}
+	var windows := WindowManager.new()
+	world.add_child(windows)
+	stats.merge(MapLandmarks.build(world))
 	var cache: Dictionary = {}
 	for b in layout.buildings:
 		var id: String = b["prefab"]
+		id = FrontierExpansion.replacement_prefab(id, b)
 		var base := layout.building_base_height(b)
 		var x := float(b["x"])
 		var z := float(b["z"])
@@ -23,11 +29,19 @@ static func build(world: World) -> Dictionary:
 		var xf := Transform3D(Basis(Vector3.UP, yaw), Vector3(x, y, z))
 		var scene: PackedScene = cache.get(id)
 		if scene == null and not cache.has(id):
-			scene = load(PREFAB_DIR + id + ".tscn") if ResourceLoader.exists(PREFAB_DIR + id + ".tscn") else null
+			scene = load(KOTMWorldStyle.path(PREFAB_DIR + id + ".tscn")) if ResourceLoader.exists(PREFAB_DIR + id + ".tscn") else null
 			cache[id] = scene
 		var node: Node3D
-		if scene:
+		var panes: Array = []
+		if FrontierExpansion.recognizes(id):
+			node = FrontierExpansion.instantiate_asset(id)
+			panes = WindowAssetAdapter.prepare(node)
+			merge_meshes(node, id)
+			stats["buildings"] += 1
+		elif scene:
 			node = scene.instantiate()
+			WinterBuildings.dress(node, id)
+			panes = WindowAssetAdapter.prepare(node)
 			merge_meshes(node, id)
 			stats["buildings"] += 1
 		else:
@@ -36,6 +50,7 @@ static func build(world: World) -> Dictionary:
 		node.name = "%s_%d" % [id, stats["buildings"] + stats["placeholders"]]
 		world.buildings.add_child(node)
 		node.global_transform = xf
+		windows.register_building(node,panes)
 		node.set_meta("node_class", b.get("nodeClass", "residential"))
 		if id in ["cabin", "barn_small"]:
 			node.set_meta("audio_surface", "wood")
@@ -46,9 +61,16 @@ static func build(world: World) -> Dictionary:
 				world.loot_nodes.append({"pos": p, "class": b.get("nodeClass", "residential")})
 				stats["loot_nodes"] += 1
 		_props_for(world, b, node, rng, stats)
+	# Additive districts are authored once per map, not once per building. Repeating this
+	# registration inflated physics bodies and loot markers until the Jolt body cap was hit.
+	stats.merge(FrontierExpansion.build_details(world))
+	# Additive districts append their loot markers directly to the shared array. Keep the
+	# published build statistic in sync so diagnostics and content tests count every marker.
+	stats["loot_nodes"] = world.loot_nodes.size()
 	_wrecks(world, rng, stats)
 	_farm_fences(world, rng, stats)
 	stats["vehicles"] = _vehicles(world, rng)
+	stats.merge(windows.finish_registration())
 	return stats
 
 ## Drivable cars parked beside dirt roads near buildings, weighted by vehicles.json spawnWeight.
@@ -62,6 +84,8 @@ static func _vehicles(world: World, rng: RandomNumberGenerator) -> int:
 	var count := 0
 	var acc := 0.0
 	for road in world.layout.roads:
+		if road.get("type", "") == "rail":
+			continue
 		var pts: Array = road["points"]
 		for i in range(pts.size() - 1):
 			var a := Vector2(pts[i][0], pts[i][1])
@@ -79,14 +103,24 @@ static func _vehicles(world: World, rng: RandomNumberGenerator) -> int:
 				if pick <= 0.0:
 					chosen = v
 					break
+			var center := a.lerp(b, 0.5)
+			var on_bridge := false
+			for bridge: Dictionary in world.layout.bridges:
+				if MapLandmarks.bridge_contains(bridge, center.x, center.y, 6.0):
+					on_bridge = true
+					break
+			if on_bridge:
+				continue # Keep parked cars out of bridge railings and abutments.
 			var dir := (b - a).normalized()
 			var side := Vector2(-dir.y, dir.x) * 4.5 * (1.0 if rng.randf() < 0.5 else -1.0)
 			var p := a.lerp(b, rng.randf_range(0.3, 0.7)) + side
 			var veh := Vehicle.new()
 			world.vehicles.add_child(veh)
 			veh.setup(String(chosen["id"]), world)
-			veh.global_transform = Transform3D(Basis(Vector3.UP, atan2(-dir.x, -dir.y)), Vector3(p.x, world.height_at(p.x, p.y), p.y))
+			veh.global_transform = Transform3D(Basis(Vector3.UP, atan2(-dir.x, -dir.y)), Vector3(p.x, world.road_height_at(p.x, p.y), p.y))
 			count += 1
+			if count >= SLICE_VEHICLE_BUDGET:
+				return count
 	return count
 
 static var _merged_cache: Dictionary = {}   # prefab id -> {mesh: ArrayMesh, xf: Transform3D}
@@ -98,7 +132,7 @@ static func merge_meshes(node: Node3D, id: String) -> void:
 	var pieces: Array = []
 	for m in node.find_children("*", "MeshInstance3D", true, false):
 		var mi := m as MeshInstance3D
-		if mi.mesh == null:
+		if mi.mesh == null or mi.has_meta("breakable_window"):
 			continue
 		pieces.append(mi)
 	if pieces.is_empty():
@@ -135,6 +169,9 @@ static func merge_meshes(node: Node3D, id: String) -> void:
 	var out := MeshInstance3D.new()
 	out.name = "MergedMesh"
 	out.mesh = merged
+	if id.begins_with("frontier_"):
+		out.visibility_range_end = FrontierExpansion.VISUAL_RANGE
+		out.visibility_range_end_margin = 35.0
 	out.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	node.add_child(out)
 
@@ -173,7 +210,7 @@ static func _placeholder(id: String) -> Node3D:
 	return body
 
 static func _prop(world: World, scene_path: String, pos: Vector3, yaw: float, scale: float, with_collision := true) -> Node3D:
-	var scene: PackedScene = load(scene_path)
+	var scene: PackedScene = load(KOTMWorldStyle.path(scene_path))
 	if scene == null:
 		return null
 	var root: Node3D
@@ -184,6 +221,12 @@ static func _prop(world: World, scene_path: String, pos: Vector3, yaw: float, sc
 		body.collision_layer = 1 | 32
 		body.add_child(inst)
 		var aabb := _aabb(inst, scale)
+		var road := world.layout.nearest_road(pos.x, pos.z)
+		var footprint_radius := Vector2(aabb.size.x, aabb.size.z).length() * 0.5
+		footprint_radius += Vector2(aabb.get_center().x, aabb.get_center().z).length()
+		if float(road[0]) < float(road[1]) * 0.5 + footprint_radius + 0.5:
+			body.free()
+			return null # Leave farm gates and travel lanes clear of fixed scenery.
 		var cs := CollisionShape3D.new()
 		var bs := BoxShape3D.new(); bs.size = aabb.size; cs.shape = bs
 		cs.position = aabb.get_center()
@@ -247,6 +290,8 @@ static func _props_for(world: World, b: Dictionary, node: Node3D, rng: RandomNum
 static func _wrecks(world: World, rng: RandomNumberGenerator, stats: Dictionary) -> void:
 	var cars := ["police", "sedan", "truck", "suv", "van"]
 	for road in world.layout.roads:
+		if stats["wrecks"] >= SLICE_WRECK_BUDGET:
+			return
 		if road["type"] != "dirt":
 			continue
 		var pts: Array = road["points"]
@@ -258,9 +303,11 @@ static func _wrecks(world: World, rng: RandomNumberGenerator, stats: Dictionary)
 			acc += seg
 			if acc >= 150.0:
 				acc = 0.0
+				if stats["wrecks"] >= SLICE_WRECK_BUDGET:
+					return
 				if rng.randf() < 0.35:
 					var dir := (b - a).normalized()
-					var side := Vector2(-dir.y, dir.x) * rng.randf_range(2.0, 4.0) * (1.0 if rng.randf() < 0.5 else -1.0)
+					var side := Vector2(-dir.y, dir.x) * (float(road["width"]) * 0.5 + rng.randf_range(4.0, 6.0)) * (1.0 if rng.randf() < 0.5 else -1.0)
 					var p := a.lerp(b, 0.5) + side
 					var yaw := atan2(-dir.x, -dir.y) + rng.randf_range(-0.4, 0.4)
 					if _prop(world, "res://assets/kenney/car/%s.glb" % cars[rng.randi_range(0, cars.size() - 1)], Vector3(p.x, 0, p.y), yaw, CAR_SCALE):

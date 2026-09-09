@@ -38,7 +38,7 @@ static func random_loadout(rng: RandomNumberGenerator) -> Dictionary:
 		var options := items_for_slot(slot)
 		if options.is_empty():
 			continue
-		var optional: bool = slot in ["head", "face", "hands", "back"]
+		var optional: bool = slot in ["head", "face", "hands", "back", "armour"]
 		if optional and rng.randf() < 0.45:
 			l[slot] = ""
 		else:

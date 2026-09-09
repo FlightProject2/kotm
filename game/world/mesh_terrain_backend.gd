@@ -91,8 +91,10 @@ static func _visual(world: World) -> Node3D:
 			for j in h:
 				for i in w:
 					var a := j * stride + i
-					idx[q] = a; idx[q + 1] = a + stride; idx[q + 2] = a + 1
-					idx[q + 3] = a + 1; idx[q + 4] = a + stride; idx[q + 5] = a + stride + 1
+					# Godot uses clockwise front faces. Upward faces must match the authored normals;
+					# otherwise two-sided rendering flips them and lights snow from below.
+					idx[q] = a; idx[q + 1] = a + 1; idx[q + 2] = a + stride
+					idx[q + 3] = a + 1; idx[q + 4] = a + stride + 1; idx[q + 5] = a + stride
 					q += 6
 			var arrays := []
 			arrays.resize(Mesh.ARRAY_MAX)
@@ -135,7 +137,7 @@ static func _pick_material(world: World = null) -> Material:
 		"none":
 			return null
 		_:
-			return make_material(world.colormap if world else null, world.height_field.half if world else 1024.0)
+			return make_material(world.colormap if world else null, world.height_field.half if world else 1024.0, world.surface_mask if world else null)
 
 static var _noise_tex: ImageTexture
 
@@ -154,9 +156,7 @@ static func noise_texture() -> ImageTexture:
 	_noise_tex = ImageTexture.create_from_image(img)
 	return _noise_tex
 
-static var _colormap_tex: ImageTexture
-
-static func make_material(colormap: Image = null, half_size := 1024.0) -> ShaderMaterial:
+static func make_material(colormap: Image = null, half_size := 1024.0, surface_mask: Texture2D = null) -> ShaderMaterial:
 	var sh := Shader.new()
 	sh.code = """
 shader_type spatial;
@@ -164,6 +164,8 @@ render_mode cull_disabled, diffuse_lambert, specular_schlick_ggx;   // two-sided
 
 uniform sampler2D noise_tex : filter_linear_mipmap, repeat_enable;
 uniform sampler2D colormap_tex : filter_linear, repeat_disable;
+uniform sampler2D surface_mask_tex : filter_linear, repeat_disable;
+uniform bool use_surface_mask = false;
 uniform float half_size = 1024.0;
 uniform float use_colormap = 0.0;
 uniform float macro_scale = 0.010;
@@ -208,7 +210,23 @@ void fragment() {
 	float roadness = clamp((tint.r - tint.g) * 7.0 + 0.45, 0.0, 1.0);
 	float grey = 1.0 - clamp((abs(tint.r - tint.g) + abs(tint.g - tint.b)) * 12.0, 0.0, 1.0);
 	float railness = grey * step(0.35, tint.r) * (1.0 - roadness);
+	float iceness = 0.0;
+	if (use_surface_mask) {
+		// Authored linear data: R road, G rail bed, B solid frozen water.
+		vec3 masks = texture(surface_mask_tex, (v_world.xz + vec2(half_size)) / (2.0 * half_size)).rgb;
+		roadness = masks.r;
+		railness = masks.g;
+		iceness = masks.b * (1.0 - roadness);
+	}
 	vec3 col = mix(snow, mix(packed_road, mud_road, 0.35 + 0.4 * det.r), roadness * 0.85);
+	if (use_surface_mask) {
+		vec3 asphalt = mix(vec3(0.13, 0.16, 0.19), vec3(0.26, 0.29, 0.31), det.r);
+		// Brown authored road tint identifies narrow snow-packed tracks and foot approaches.
+		float track_type = smoothstep(0.02, 0.08, tint.r - tint.b);
+		vec3 track = mix(vec3(0.48, 0.46, 0.42), snow, 0.45 + 0.25 * det.g);
+		vec3 road_surface = mix(asphalt, track, track_type);
+		col = mix(snow, mix(road_surface, snow, smoothstep(0.62, 0.83, macro.g) * 0.5), roadness);
+	}
 	col = mix(col, packed_road * (0.9 + 0.2 * det.g), railness * 0.7);
 
 	// thaw patches in low ground, rock where it is too steep for snow to hold
@@ -219,9 +237,13 @@ void fragment() {
 	// snow still clings to ledges: keep a dusting on rock facing up
 	rock_col = mix(rock_col, snow_a, (1.0 - slope) * 0.25);
 	col = mix(col, rock_col, rockness);
+	// Ice shares the terrain mesh and collider; there is no unsupported water plane.
+	vec3 ice = mix(vec3(0.24, 0.43, 0.52), vec3(0.58, 0.73, 0.79), macro.g);
+	ice = mix(ice, snow, smoothstep(0.59, 0.78, macro.r + det.b * 0.10) * 0.75);
+	col = mix(col, ice, iceness);
 
 	ALBEDO = col;
-	ROUGHNESS = mix(0.55, 0.9, rockness);   // fresh snow is slightly glossy
+	ROUGHNESS = mix(mix(0.78, 0.94, rockness), 0.3, iceness);
 	SPECULAR = 0.25;
 }
 """
@@ -229,12 +251,13 @@ void fragment() {
 	mat.shader = sh
 	mat.set_shader_parameter("noise_tex", noise_texture())
 	mat.set_shader_parameter("half_size", half_size)
+	if surface_mask != null:
+		mat.set_shader_parameter("surface_mask_tex", surface_mask)
+		mat.set_shader_parameter("use_surface_mask", true)
 	if colormap != null:
-		if _colormap_tex == null:
-			var img := colormap.duplicate() as Image
-			if img.get_format() != Image.FORMAT_RGB8 and img.get_format() != Image.FORMAT_RGBA8:
-				img.convert(Image.FORMAT_RGBA8)
-			_colormap_tex = ImageTexture.create_from_image(img)
-		mat.set_shader_parameter("colormap_tex", _colormap_tex)
+		var img := colormap.duplicate() as Image
+		if img.get_format() != Image.FORMAT_RGB8 and img.get_format() != Image.FORMAT_RGBA8:
+			img.convert(Image.FORMAT_RGBA8)
+		mat.set_shader_parameter("colormap_tex", ImageTexture.create_from_image(img))
 		mat.set_shader_parameter("use_colormap", 1.0)
 	return mat

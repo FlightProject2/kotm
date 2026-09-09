@@ -20,6 +20,7 @@ var rng := RandomNumberGenerator.new()
 const SEMI_BUFFER_SEC := 0.08
 var _pending_fire_until := -1.0
 var _pending_fire_id := ""
+const GRENADE_SYSTEM := preload("res://game/combat/grenade_system.gd")
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -59,6 +60,11 @@ func tick(dt: float) -> void:
 		start_reload()
 	var want_fire := inp.pressed(CharacterInput.B_FIRE)
 	var edge := want_fire and not c.prev_input.pressed(CharacterInput.B_FIRE)
+	if ItemCatalog.get_item(id).get("kind", "") == "throwable":
+		_clear_fire_buffer()
+		if edge:
+			try_fire(false)
+		return
 	var mode: String = def.get("fireMode", "semi")
 	if mode == "semi" and not is_melee:
 		# Retain one early click across the last 80 ms of the cadence gate. Holding
@@ -90,6 +96,8 @@ func try_fire(is_melee: bool) -> bool:
 		return false
 	var def := current_def()
 	var id := inv.current_id()
+	if ItemCatalog.get_item(id).get("kind", "") == "throwable":
+		return _throw_frag(id)
 	var rpm := float(def.get("rpmCap", def.get("rpm", 120)))
 	if is_melee:
 		rpm = 60.0 / float(def.get("swingSec", 0.5))
@@ -135,6 +143,20 @@ func try_fire(is_melee: bool) -> bool:
 	Net.fx_all("gunshot", [origin, id, c.character_id])
 	return true
 
+func _throw_frag(id: String) -> bool:
+	if not c.is_authority() or id != "frag_grenade" or int(inv.throwables.get(id, 0)) <= 0:
+		return false
+	var system = GRENADE_SYSTEM.instance
+	if not is_instance_valid(system):
+		return false
+	if system.throw_frag(c) < 0:
+		return false
+	inv.throwables[id] = int(inv.throwables[id]) - 1
+	fire_times[id] = time
+	cycle_t = 0.65
+	inv.changed.emit()
+	return true
+
 func muzzle_position() -> Vector3:
 	var vis: Node = c.get_node_or_null("Visual")
 	if vis and vis.get("weapon_holder") != null and vis.weapon_holder.has_weapon_model():
@@ -169,6 +191,9 @@ func _finish_reload() -> void:
 
 func _melee(def: Dictionary) -> void:
 	var reach := float(def.get("reachM", melee_cfg["reachM"]))
+	if WindowManager.instance != null:
+		var aim := c.input.aim_dir.normalized() if c.input.aim_dir.length_squared() > .5 else c.forward()
+		WindowManager.instance.melee(c.global_position+Vector3(0,minf(1.4,c.height()-.15),0),aim,reach,[c.get_rid()])
 	var f := c.forward()
 	var cos_half := cos(deg_to_rad(float(melee_cfg["arcDeg"]) * 0.5))
 	for other in get_tree().get_nodes_in_group("characters"):

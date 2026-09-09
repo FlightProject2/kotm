@@ -1,0 +1,4166 @@
+{
+  "errors": [],
+  "models": 160,
+  "results": [
+    {
+      "bounds_delta_m": 0.000394924514694139,
+      "bounds_derived": [
+        -0.0750000029802322,
+        -0.414673805236816,
+        -0.627597749233246,
+        0.0,
+        1.04500436782837,
+        0.627597868442535
+      ],
+      "bounds_source": [
+        -0.0750000029802322,
+        -0.414929956197739,
+        -0.627898335456848,
+        0.0,
+        1.04525136947632,
+        0.627898335456848
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-doorway-a.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-doorway-a.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000380824261810631,
+      "bounds_derived": [
+        -0.0750000029802322,
+        -0.488067805767059,
+        -0.627482950687408,
+        0.0,
+        1.09500432014465,
+        0.627482950687408
+      ],
+      "bounds_source": [
+        -0.0750000029802322,
+        -0.488209754228592,
+        -0.627772808074951,
+        0.0,
+        1.0952513217926,
+        0.627772808074951
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-doorway-b.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-doorway-b.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000695871072821319,
+      "bounds_derived": [
+        -0.100000001490116,
+        -0.565340161323547,
+        -0.627386271953583,
+        0.0,
+        1.18095695972443,
+        0.627386271953583
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        -0.565662384033203,
+        -0.627772808074951,
+        0.0,
+        1.18153560161591,
+        0.627772808074951
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-doorway-c.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-doorway-c.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0750000029802322,
+        0.0850700512528419,
+        -0.627898335456848,
+        0.0,
+        1.04525136947632,
+        0.627898335456848
+      ],
+      "bounds_source": [
+        -0.0750000029802322,
+        0.0850700512528419,
+        -0.627898335456848,
+        0.0,
+        1.04525136947632,
+        0.627898335456848
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-window-a.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-window-a.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0750000029802322,
+        0.0117902643978596,
+        -0.627772808074951,
+        0.0,
+        1.0952513217926,
+        0.627772808074951
+      ],
+      "bounds_source": [
+        -0.0750000029802322,
+        0.0117902643978596,
+        -0.627772808074951,
+        0.0,
+        1.0952513217926,
+        0.627772808074951
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-window-b.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-window-b.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        -0.126106843352318,
+        -0.627772808074951,
+        0.0,
+        1.22982776165009,
+        0.627772808074951
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        -0.126106843352318,
+        -0.627772808074951,
+        0.0,
+        1.22982776165009,
+        0.627772808074951
+      ],
+      "derived": "res://assets/styled/kenney/building/barricade-window-c.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/barricade-window-c.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.00000000000000000855184646754888,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        0.00000000000000000855184646754888,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-corner-diagonal.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-corner-diagonal.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000000000000974775815620887,
+      "bounds_derived": [
+        -1.0,
+        -0.00000000153667611968444,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        -0.00000000153677359726601,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-corner-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-corner-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000166327021176616,
+      "bounds_derived": [
+        0.00000000000000166327021176616,
+        0.0000000000000000000000001680831,
+        0.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        0.0,
+        0.0000000000000000000000001680831,
+        0.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-corner-small.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-corner-small.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0000000000000000000000001680831,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0000000000000000000000001680831,
+        -1.0,
+        1.20000004768372,
+        0.300000011920929,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-corner.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-corner.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-high-corner-diagonal.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-high-corner-diagonal.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000000000000974775815620887,
+      "bounds_derived": [
+        -1.0,
+        -0.00000000153667611968444,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        -0.00000000153677359726601,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-high-corner-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-high-corner-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000166327042352439,
+      "bounds_derived": [
+        0.00000000000000166327042352439,
+        0.0000000000000000225597315877445,
+        0.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        0.0,
+        0.0000000000000000225597315877445,
+        0.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-high-corner-small.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-high-corner-small.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0000000000000000225597315877445,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0000000000000000225597315877445,
+        -1.0,
+        1.20000004768372,
+        0.5,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/border-high-corner.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-high-corner.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        0.0499999821186066,
+        0.0,
+        -1.0,
+        0.249999970197678,
+        0.5,
+        1.0
+      ],
+      "bounds_source": [
+        0.0499999821186066,
+        0.0,
+        -1.0,
+        0.249999970197678,
+        0.5,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/border-high.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border-high.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        0.0499999821186066,
+        0.0,
+        -1.0,
+        0.249999970197678,
+        0.300000011920929,
+        1.0
+      ],
+      "bounds_source": [
+        0.0499999821186066,
+        0.0,
+        -1.0,
+        0.249999970197678,
+        0.300000011920929,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/border.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/border.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.200000002980232,
+        0.0,
+        -0.200000002980232,
+        0.200000002980232,
+        2.40000009536743,
+        0.200000002980232
+      ],
+      "bounds_source": [
+        -0.200000002980232,
+        0.0,
+        -0.200000002980232,
+        0.200000002980232,
+        2.40000009536743,
+        0.200000002980232
+      ],
+      "derived": "res://assets/styled/kenney/building/column-thin.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/column-thin.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.349999994039536,
+        0.0,
+        -0.349999994039536,
+        0.349999994039536,
+        2.40000009536743,
+        0.349999994039536
+      ],
+      "bounds_source": [
+        -0.349999994039536,
+        0.0,
+        -0.349999994039536,
+        0.349999994039536,
+        2.40000009536743,
+        0.349999994039536
+      ],
+      "derived": "res://assets/styled/kenney/building/column-wide.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/column-wide.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000479221343994141,
+      "bounds_derived": [
+        -0.250047922134399,
+        0.0,
+        -0.25,
+        0.250047922134399,
+        2.40000009536743,
+        0.25
+      ],
+      "bounds_source": [
+        -0.25,
+        0.0,
+        -0.25,
+        0.25,
+        2.40000009536743,
+        0.25
+      ],
+      "derived": "res://assets/styled/kenney/building/column.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/column.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000896126264706254,
+      "bounds_derived": [
+        -0.216446325182915,
+        0.0,
+        -0.216446325182915,
+        0.216446325182915,
+        0.427679985761642,
+        0.216446325182915
+      ],
+      "bounds_source": [
+        -0.217079982161522,
+        0.0,
+        -0.217079982161522,
+        0.217079982161522,
+        0.427679985761642,
+        0.217079982161522
+      ],
+      "derived": "res://assets/styled/kenney/building/detail-pipe.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/detail-pipe.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-round-a.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-round-a.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-round-b.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-round-b.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-round-c.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-round-c.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-round-d.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-round-d.glb",
+      "source_meshes": 3,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.00000000000000000079440440796123,
+      "bounds_derived": [
+        -0.125,
+        -0.0000000000000000612448562175651,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        -0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-square-a.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-square-a.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.00000000000000000079440440796123,
+      "bounds_derived": [
+        -0.125,
+        -0.0000000000000000612448562175651,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        -0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-square-b.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-square-b.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.00000000000000000079440440796123,
+      "bounds_derived": [
+        -0.125,
+        -0.0000000000000000612448562175651,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        -0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-square-c.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-square-c.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.00000000000000000079440440796123,
+      "bounds_derived": [
+        -0.125,
+        -0.0000000000000000612448562175651,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "bounds_source": [
+        -0.125,
+        -0.0000000000000000620392606255263,
+        -0.0249999538064003,
+        0.125,
+        2.09999990463257,
+        0.899999976158142
+      ],
+      "derived": "res://assets/styled/kenney/building/door-rotate-square-d.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/door-rotate-square-d.glb",
+      "source_meshes": 3,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/floor-corner-diagonal.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/floor-corner-diagonal.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000490757927764207,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        0.999652981758118,
+        0.100000001490116,
+        0.999652981758118
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/floor-corner-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/floor-corner-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.5,
+        0.0,
+        -1.0,
+        0.5,
+        0.100000001490116,
+        1.0
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        -1.0,
+        0.5,
+        0.100000001490116,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/floor-half.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/floor-half.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.5,
+        0.0,
+        -1.0,
+        0.5,
+        0.100000001490116,
+        0.0
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        -1.0,
+        0.5,
+        0.100000001490116,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/floor-quarter.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/floor-quarter.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/floor.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/floor.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000373946939362213,
+      "bounds_derived": [
+        -0.0997402369976044,
+        -0.299750864505768,
+        -0.200000002980232,
+        0.0997402369976044,
+        0.0,
+        0.0997310131788254
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        -0.300000011920929,
+        -0.200000002980232,
+        0.100000001490116,
+        0.0,
+        0.100000008940697
+      ],
+      "derived": "res://assets/styled/kenney/building/gutter-vertical-bottom.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/gutter-vertical-bottom.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00136153283528984,
+      "bounds_derived": [
+        -0.153156861662865,
+        0.0,
+        -0.153156861662865,
+        0.153156861662865,
+        1.0,
+        0.153156861662865
+      ],
+      "bounds_source": [
+        -0.154119610786438,
+        0.0,
+        -0.154119610786438,
+        0.154119610786438,
+        1.0,
+        0.154119610786438
+      ],
+      "derived": "res://assets/styled/kenney/building/gutter-vertical-short.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/gutter-vertical-short.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000359933386789635,
+      "bounds_derived": [
+        -0.0997441709041595,
+        0.0,
+        -0.0997508689761162,
+        0.0997402369976044,
+        0.299750864505768,
+        0.199999988079071
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -0.100000008940697,
+        0.100000001490116,
+        0.300000011920929,
+        0.200000002980232
+      ],
+      "derived": "res://assets/styled/kenney/building/gutter-vertical-top.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/gutter-vertical-top.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00326761370524764,
+      "bounds_derived": [
+        -0.151809051632881,
+        0.0,
+        -0.151809066534042,
+        0.151809051632881,
+        2.40000009536743,
+        0.151809066534042
+      ],
+      "bounds_source": [
+        -0.154119610786438,
+        0.0,
+        -0.154119610786438,
+        0.154119610786438,
+        2.40000009536743,
+        0.154119610786438
+      ],
+      "derived": "res://assets/styled/kenney/building/gutter-vertical-wall.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/gutter-vertical-wall.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00272300257347524,
+      "bounds_derived": [
+        -0.152194157242775,
+        0.0,
+        -0.152194157242775,
+        0.152194157242775,
+        2.0,
+        0.152194157242775
+      ],
+      "bounds_source": [
+        -0.154119610786438,
+        0.0,
+        -0.154119610786438,
+        0.154119610786438,
+        2.0,
+        0.154119610786438
+      ],
+      "derived": "res://assets/styled/kenney/building/gutter-vertical.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/gutter-vertical.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000116714554450478,
+      "bounds_derived": [
+        -0.0750000178813934,
+        0.00000000000000116714554450478,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        1.0
+      ],
+      "bounds_source": [
+        -0.0750000178813934,
+        0.0,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/plating-detailed-wide.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/plating-detailed-wide.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000212993634367145,
+      "bounds_derived": [
+        -0.0750000178813934,
+        0.00000000000000212993634367145,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        0.0
+      ],
+      "bounds_source": [
+        -0.0750000178813934,
+        0.0,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/plating-detailed.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/plating-detailed.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000000000000933716393252174,
+      "bounds_derived": [
+        -0.050000011920929,
+        0.000000000000000933716393252174,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        1.0
+      ],
+      "bounds_source": [
+        -0.050000011920929,
+        0.0,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/plating-wide.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/plating-wide.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000186368233637214,
+      "bounds_derived": [
+        -0.050000011920929,
+        0.00000000000000186368233637214,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        0.0
+      ],
+      "bounds_source": [
+        -0.050000011920929,
+        0.0,
+        -1.0,
+        0.050000011920929,
+        1.0,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/plating.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/plating.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        0.100000001490116,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-center.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-center.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00879999995231628,
+      "bounds_derived": [
+        -1.0,
+        -0.00879999995231628,
+        -1.0,
+        1.19999980926514,
+        0.5,
+        1.19999980926514
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.19999980926514,
+        0.5,
+        1.19999980926514
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-corner-inner.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-corner-inner.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00963990762829781,
+      "bounds_derived": [
+        -1.0,
+        -0.00879999995231628,
+        -1.00393545627594,
+        1.20000004768372,
+        0.400000005960464,
+        1.20000016689301
+      ],
+      "bounds_source": [
+        -1.0,
+        -0.00000000000000270716769788511,
+        -1.0,
+        1.20000004768372,
+        0.400000005960464,
+        1.20000004768372
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-corner.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-corner.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.800000011920929,
+        0.0,
+        -0.800000011920929,
+        0.800000011920929,
+        0.0500000007450581,
+        0.800000011920929
+      ],
+      "bounds_source": [
+        -0.800000011920929,
+        0.0,
+        -0.800000011920929,
+        0.800000011920929,
+        0.0500000007450581,
+        0.800000011920929
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-patch-large.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-patch-large.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.550000011920929,
+        0.0,
+        -0.550000011920929,
+        0.550000011920929,
+        0.0500000007450581,
+        0.550000011920929
+      ],
+      "bounds_source": [
+        -0.550000011920929,
+        0.0,
+        -0.550000011920929,
+        0.550000011920929,
+        0.0500000007450581,
+        0.550000011920929
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-patch.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-patch.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0104043325409293,
+      "bounds_derived": [
+        -1.0,
+        -0.0104043325409293,
+        -1.0,
+        1.19999980926514,
+        0.400000005960464,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.19999980926514,
+        0.400000005960464,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-side.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-side.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.1972576379776,
+        0.0,
+        -1.1972576379776,
+        1.1972576379776,
+        0.400000005960464,
+        1.1972576379776
+      ],
+      "bounds_source": [
+        -1.1972576379776,
+        0.0,
+        -1.1972576379776,
+        1.1972576379776,
+        0.400000005960464,
+        1.1972576379776
+      ],
+      "derived": "res://assets/styled/kenney/building/roof-flat-square.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/roof-flat-square.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.649999976158142,
+        0.000000000000000315836245537145,
+        -2.0,
+        0.649999976158142,
+        1.30000007152557,
+        0.0
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.000000000000000315836245537145,
+        -2.0,
+        0.649999976158142,
+        1.30000007152557,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-center-short.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-center-short.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.649999976158142,
+        0.000000000000000315836245537145,
+        -2.0,
+        0.649999976158142,
+        2.5,
+        2.0
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.000000000000000315836245537145,
+        -2.0,
+        0.649999976158142,
+        2.5,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-center.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-center.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000292001942625575,
+      "bounds_derived": [
+        -0.650000095367432,
+        -0.000000113649605282262,
+        -2.00000023841858,
+        0.650000095367432,
+        1.30000019073486,
+        0.000000238418579101563
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.000000000000000285756596802707,
+        -2.0,
+        0.649999976158142,
+        1.30000007152557,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-closed-short.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-closed-short.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000299006416071279,
+      "bounds_derived": [
+        -0.650000095367432,
+        -0.000000135464233608218,
+        -2.00000023841858,
+        0.650000095367432,
+        2.5,
+        2.00000023841858
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.000000000000000360955705403911,
+        -2.0,
+        0.649999976158142,
+        2.5,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-closed.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-closed.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.649999976158142,
+        0.0,
+        -2.0,
+        0.649999976158142,
+        1.30000007152557,
+        0.0
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.0,
+        -2.0,
+        0.649999976158142,
+        1.30000007152557,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-open-short.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-open-short.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.649999976158142,
+        0.0,
+        -2.0,
+        0.649999976158142,
+        2.5,
+        2.0
+      ],
+      "bounds_source": [
+        -0.649999976158142,
+        0.0,
+        -2.0,
+        0.649999976158142,
+        2.5,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-open.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-open.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00000000000000395151118992793,
+      "bounds_derived": [
+        -0.75,
+        0.0000000000000000866120172976186,
+        -2.0,
+        0.75,
+        1.34999990463257,
+        0.0
+      ],
+      "bounds_source": [
+        -0.75,
+        -0.00000000000000386489910645586,
+        -2.0,
+        0.75,
+        1.34999990463257,
+        0.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-sides-short.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-sides-short.glb",
+      "source_meshes": 3,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.00000000000000153043479920859,
+      "bounds_derived": [
+        -0.75,
+        0.0000000000000000866120172976186,
+        -2.0,
+        0.75,
+        2.54999995231628,
+        2.0
+      ],
+      "bounds_source": [
+        -0.75,
+        -0.00000000000000144382282161564,
+        -2.0,
+        0.75,
+        2.54999995231628,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/stairs-sides.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/stairs-sides.glb",
+      "source_meshes": 3,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.125,
+        2.40000009536743,
+        1.125
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.125,
+        2.40000009536743,
+        1.125
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-column-bottom.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-column-bottom.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000168587391158326,
+      "bounds_derived": [
+        -0.000000000199378291654284,
+        0.0,
+        -0.00000000000000866293714145211,
+        1.12500011920929,
+        2.40000009536743,
+        1.12500011920929
+      ],
+      "bounds_source": [
+        0.00000000000000216573428536303,
+        0.0,
+        -0.00000000000000866293714145211,
+        1.125,
+        2.40000009536743,
+        1.125
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-column-small-bottom.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-column-small-bottom.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        0.00000000000000216573428536303,
+        0.0,
+        -0.00000000000000866293714145211,
+        1.07499992847443,
+        2.40000009536743,
+        1.07774233818054
+      ],
+      "bounds_source": [
+        0.00000000000000216573428536303,
+        0.0,
+        -0.00000000000000866293714145211,
+        1.07499992847443,
+        2.40000009536743,
+        1.07774233818054
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-column-small.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-column-small.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000476837158203125,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.07500028610229,
+        2.40000009536743,
+        1.07499980926514
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.07499980926514,
+        2.40000009536743,
+        1.07499980926514
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-column.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-column.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-diagonal.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-diagonal.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000631802366115153,
+      "bounds_derived": [
+        -1.0,
+        0.00000000000000000216573007005062,
+        -1.0,
+        0.999929666519165,
+        2.40000009536743,
+        0.999372124671936
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-corner.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-corner.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-doorway-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-doorway-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000000000000000126334964082979,
+      "bounds_derived": [
+        -0.100000068545341,
+        -0.00000000000000720648092930728,
+        -1.00000011920929,
+        0.100000098347664,
+        2.40000009536743,
+        1.00000011920929
+      ],
+      "bounds_source": [
+        -0.100000068545341,
+        -0.00000000000000721911442571558,
+        -1.00000011920929,
+        0.100000098347664,
+        2.40000009536743,
+        1.00000011920929
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-doorway-square.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-doorway-square.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000635782896551973,
+      "bounds_derived": [
+        -0.100000001490116,
+        -0.000000635782896551973,
+        -2.0,
+        0.100000016391277,
+        2.40000009536743,
+        2.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -2.0,
+        0.100000001490116,
+        2.40000009536743,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-doorway-wide-round.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-doorway-wide-round.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000000000000000126334964082979,
+      "bounds_derived": [
+        -0.100000202655792,
+        -0.00000000000000684552503861491,
+        -2.00000023841858,
+        0.100000202655792,
+        2.40000009536743,
+        2.00000023841858
+      ],
+      "bounds_source": [
+        -0.100000202655792,
+        -0.00000000000000685815853502321,
+        -2.00000023841858,
+        0.100000202655792,
+        2.40000009536743,
+        2.00000023841858
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-doorway-wide-square.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-doorway-wide-square.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0500000193715096,
+        0.0,
+        -0.5,
+        0.0500000193715096,
+        2.40000009536743,
+        0.5
+      ],
+      "bounds_source": [
+        -0.0500000193715096,
+        0.0,
+        -0.5,
+        0.0500000193715096,
+        2.40000009536743,
+        0.5
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-half.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-half.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0500000193715096,
+        0.0,
+        -1.0,
+        0.0500000044703484,
+        1.20000004768372,
+        1.0
+      ],
+      "bounds_source": [
+        -0.0500000193715096,
+        0.0,
+        -1.0,
+        0.0500000044703484,
+        1.20000004768372,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-low.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-low.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-round-detailed.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-round-detailed.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-round.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-round.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-square-detailed.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-square-detailed.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -1.0,
+        0.100000001490116,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-square.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-square.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000016391277,
+        0.0,
+        -2.0,
+        0.0999999716877937,
+        2.40000009536743,
+        2.0
+      ],
+      "bounds_source": [
+        -0.100000016391277,
+        0.0,
+        -2.0,
+        0.0999999716877937,
+        2.40000009536743,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-wide-round-detailed.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-wide-round-detailed.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000016391277,
+        0.0,
+        -2.0,
+        0.0999999716877937,
+        2.40000009536743,
+        2.0
+      ],
+      "bounds_source": [
+        -0.100000016391277,
+        0.0,
+        -2.0,
+        0.0999999716877937,
+        2.40000009536743,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-wide-round.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-wide-round.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -2.0,
+        0.100000001490116,
+        2.40000009536743,
+        2.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -2.0,
+        0.100000001490116,
+        2.40000009536743,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-wide-square-detailed.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-wide-square-detailed.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.100000001490116,
+        0.0,
+        -2.0,
+        0.100000001490116,
+        2.40000009536743,
+        2.0
+      ],
+      "bounds_source": [
+        -0.100000001490116,
+        0.0,
+        -2.0,
+        0.100000001490116,
+        2.40000009536743,
+        2.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall-window-wide-square.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall-window-wide-square.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0500000193715096,
+        0.0,
+        -1.0,
+        0.0500000193715096,
+        2.40000009536743,
+        1.0
+      ],
+      "bounds_source": [
+        -0.0500000193715096,
+        0.0,
+        -1.0,
+        0.0500000193715096,
+        2.40000009536743,
+        1.0
+      ],
+      "derived": "res://assets/styled/kenney/building/wall.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/building/wall.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.238097235560417,
+        0.0,
+        -0.238097235560417,
+        0.238097235560417,
+        0.595243096351624,
+        0.238097235560417
+      ],
+      "bounds_source": [
+        -0.238097235560417,
+        0.0,
+        -0.238097235560417,
+        0.238097235560417,
+        0.595243096351624,
+        0.238097235560417
+      ],
+      "derived": "res://assets/styled/kenney/car/cone.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/cone.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.174999997019768,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.174999997019768,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "bounds_source": [
+        -0.174999997019768,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.174999997019768,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "derived": "res://assets/styled/kenney/car/debris-tire.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/debris-tire.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000000337174782316652,
+      "bounds_derived": [
+        -0.750000238418579,
+        0.0,
+        -1.55000019073486,
+        0.750000238418579,
+        1.30000019073486,
+        1.54999971389771
+      ],
+      "bounds_source": [
+        -0.75,
+        0.0,
+        -1.54999995231628,
+        0.75,
+        1.30000007152557,
+        1.54999971389771
+      ],
+      "derived": "res://assets/styled/kenney/car/police.glb",
+      "derived_meshes": 6,
+      "derived_surfaces": 6,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/police.glb",
+      "source_meshes": 6,
+      "source_surfaces": 6
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.75,
+        0.0,
+        -1.29999995231628,
+        0.75,
+        1.29999995231628,
+        1.25
+      ],
+      "bounds_source": [
+        -0.75,
+        0.0,
+        -1.29999995231628,
+        0.75,
+        1.29999995231628,
+        1.25
+      ],
+      "derived": "res://assets/styled/kenney/car/sedan.glb",
+      "derived_meshes": 5,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/sedan.glb",
+      "source_meshes": 5,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.000000546285605196317,
+      "bounds_derived": [
+        -0.750000238418579,
+        0.0,
+        -1.34999990463257,
+        0.750000238418579,
+        1.30000019073486,
+        1.35000038146973
+      ],
+      "bounds_source": [
+        -0.75,
+        0.0,
+        -1.34999990463257,
+        0.75,
+        1.30000007152557,
+        1.34999990463257
+      ],
+      "derived": "res://assets/styled/kenney/car/suv.glb",
+      "derived_meshes": 6,
+      "derived_surfaces": 6,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/suv.glb",
+      "source_meshes": 6,
+      "source_surfaces": 6
+    },
+    {
+      "bounds_delta_m": 0.000000357627868652344,
+      "bounds_derived": [
+        -0.75000011920929,
+        0.0,
+        -1.5,
+        0.75000011920929,
+        1.30000019073486,
+        1.45000004768372
+      ],
+      "bounds_source": [
+        -0.75,
+        0.0,
+        -1.49999976158142,
+        0.75,
+        1.29999995231628,
+        1.44999980926514
+      ],
+      "derived": "res://assets/styled/kenney/car/truck.glb",
+      "derived_meshes": 5,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/truck.glb",
+      "source_meshes": 5,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.000000546285605196317,
+      "bounds_derived": [
+        -0.750000238418579,
+        0.0,
+        -1.40000033378601,
+        0.750000238418579,
+        1.35000014305115,
+        1.35000061988831
+      ],
+      "bounds_source": [
+        -0.75,
+        0.0,
+        -1.40000009536743,
+        0.75,
+        1.35000002384186,
+        1.35000014305115
+      ],
+      "derived": "res://assets/styled/kenney/car/van.glb",
+      "derived_meshes": 5,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/van.glb",
+      "source_meshes": 5,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.200000002980232,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.200000002980232,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "bounds_source": [
+        -0.200000002980232,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.200000002980232,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "derived": "res://assets/styled/kenney/car/wheel-default.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/wheel-default.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.174999997019768,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.17500002682209,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "bounds_source": [
+        -0.174999997019768,
+        -0.300000011920929,
+        -0.300000011920929,
+        0.17500002682209,
+        0.300000011920929,
+        0.300000011920929
+      ],
+      "derived": "res://assets/styled/kenney/car/wheel-truck.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/car/wheel-truck.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.198836594820023,
+        -0.0500000007450581,
+        -0.239338755607605,
+        0.182237416505814,
+        0.204000011086464,
+        0.152844041585922
+      ],
+      "bounds_source": [
+        -0.198836594820023,
+        -0.0500000007450581,
+        -0.239338755607605,
+        0.182237416505814,
+        0.204000011086464,
+        0.152844041585922
+      ],
+      "derived": "res://assets/styled/kenney/nature/grass.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/grass.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.199141770601273,
+        -0.0500000007450581,
+        -0.212095484137535,
+        0.209856063127518,
+        0.204000011086464,
+        0.195793494582176
+      ],
+      "bounds_source": [
+        -0.199141770601273,
+        -0.0500000007450581,
+        -0.212095484137535,
+        0.209856063127518,
+        0.204000011086464,
+        0.195793494582176
+      ],
+      "derived": "res://assets/styled/kenney/nature/grass_large.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/grass_large.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.109243854880333,
+        -0.0500000007450581,
+        -0.354999989271164,
+        0.12471716105938,
+        0.123205095529556,
+        0.354999989271164
+      ],
+      "bounds_source": [
+        -0.109243854880333,
+        -0.0500000007450581,
+        -0.354999989271164,
+        0.12471716105938,
+        0.123205095529556,
+        0.354999989271164
+      ],
+      "derived": "res://assets/styled/kenney/nature/log.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/log.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.197999998927116,
+        -0.0500000007450581,
+        -0.197999998927116,
+        0.197999998927116,
+        0.194443583488464,
+        0.197999998927116
+      ],
+      "bounds_source": [
+        -0.197999998927116,
+        -0.0500000007450581,
+        -0.197999998927116,
+        0.197999998927116,
+        0.194443583488464,
+        0.197999998927116
+      ],
+      "derived": "res://assets/styled/kenney/nature/plant_bush.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/plant_bush.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.187154993414879,
+        -0.0500000007450581,
+        -0.167843893170357,
+        0.187154993414879,
+        0.192933022975922,
+        0.167843893170357
+      ],
+      "bounds_source": [
+        -0.187154993414879,
+        -0.0500000007450581,
+        -0.167843893170357,
+        0.187154993414879,
+        0.192933022975922,
+        0.167843893170357
+      ],
+      "derived": "res://assets/styled/kenney/nature/plant_bushLarge.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/plant_bushLarge.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.392453342676163,
+        -0.0500000007450581,
+        -0.507730722427368,
+        0.392453342676163,
+        0.209785982966423,
+        0.507730722427368
+      ],
+      "bounds_source": [
+        -0.392453342676163,
+        -0.0500000007450581,
+        -0.507730722427368,
+        0.392453342676163,
+        0.209785982966423,
+        0.507730722427368
+      ],
+      "derived": "res://assets/styled/kenney/nature/rock_largeA.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/rock_largeA.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.383357554674149,
+        -0.0500000007450581,
+        -0.507730722427368,
+        0.383357554674149,
+        0.380264014005661,
+        0.507730722427368
+      ],
+      "bounds_source": [
+        -0.383357554674149,
+        -0.0500000007450581,
+        -0.507730722427368,
+        0.383357554674149,
+        0.380264014005661,
+        0.507730722427368
+      ],
+      "derived": "res://assets/styled/kenney/nature/rock_largeB.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/rock_largeB.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.180399999022484,
+        -0.0500000007450581,
+        -0.180399999022484,
+        0.180399999022484,
+        0.141234010457993,
+        0.180399999022484
+      ],
+      "bounds_source": [
+        -0.180399999022484,
+        -0.0500000007450581,
+        -0.180399999022484,
+        0.180399999022484,
+        0.141234010457993,
+        0.180399999022484
+      ],
+      "derived": "res://assets/styled/kenney/nature/rock_smallA.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/rock_smallA.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.180399999022484,
+        -0.0500000007450581,
+        -0.180399999022484,
+        0.180399999022484,
+        0.126802012324333,
+        0.180399999022484
+      ],
+      "bounds_source": [
+        -0.180399999022484,
+        -0.0500000007450581,
+        -0.180399999022484,
+        0.180399999022484,
+        0.126802012324333,
+        0.180399999022484
+      ],
+      "derived": "res://assets/styled/kenney/nature/rock_smallB.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/rock_smallB.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.160647705197334,
+        -0.0500000007450581,
+        -0.185499995946884,
+        0.19587929546833,
+        0.216499969363213,
+        0.185499995946884
+      ],
+      "bounds_source": [
+        -0.160647705197334,
+        -0.0500000007450581,
+        -0.185499995946884,
+        0.19587929546833,
+        0.216499969363213,
+        0.185499995946884
+      ],
+      "derived": "res://assets/styled/kenney/nature/stump_old.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/stump_old.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.377500027418137,
+        -0.0500000007450581,
+        -0.326924502849579,
+        0.377500027418137,
+        1.65788745880127,
+        0.326924502849579
+      ],
+      "bounds_source": [
+        -0.377500027418137,
+        -0.0500000007450581,
+        -0.326924502849579,
+        0.377500027418137,
+        1.65788745880127,
+        0.326924502849579
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_default.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_default.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.432482600212097,
+        -0.0500000007450581,
+        -0.37213596701622,
+        0.414632439613342,
+        1.2824170589447,
+        0.389466553926468
+      ],
+      "bounds_source": [
+        -0.432482600212097,
+        -0.0500000007450581,
+        -0.37213596701622,
+        0.414632439613342,
+        1.2824170589447,
+        0.389466553926468
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_detailed.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_detailed.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.320277065038681,
+        -0.0500000007450581,
+        -0.36982399225235,
+        0.320276945829391,
+        1.17623996734619,
+        0.36982399225235
+      ],
+      "bounds_source": [
+        -0.320277065038681,
+        -0.0500000007450581,
+        -0.36982399225235,
+        0.320276945829391,
+        1.17623996734619,
+        0.36982399225235
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_oak.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_oak.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.265980005264282,
+        -0.0500000007450581,
+        -0.265980005264282,
+        0.265980005264282,
+        1.49583554267883,
+        0.265980005264282
+      ],
+      "bounds_source": [
+        -0.265980005264282,
+        -0.0500000007450581,
+        -0.265980005264282,
+        0.265980005264282,
+        1.49583554267883,
+        0.265980005264282
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_pineDefaultA.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_pineDefaultA.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.308509409427643,
+        -0.0500000007450581,
+        -0.356236010789871,
+        0.308509409427643,
+        1.31643724441528,
+        0.356236010789871
+      ],
+      "bounds_source": [
+        -0.308509409427643,
+        -0.0500000007450581,
+        -0.356236010789871,
+        0.308509409427643,
+        1.31643724441528,
+        0.356236010789871
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_pineRoundA.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_pineRoundA.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.179179430007935,
+        -0.0500000007450581,
+        -0.193913504481316,
+        0.207093477249146,
+        1.47960603237152,
+        0.198036506772041
+      ],
+      "bounds_source": [
+        -0.179179430007935,
+        -0.0500000007450581,
+        -0.193913504481316,
+        0.207093477249146,
+        1.47960603237152,
+        0.198036506772041
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_pineTallA.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_pineTallA.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.199791625142097,
+        -0.0500000007450581,
+        -0.230699509382248,
+        0.199791625142097,
+        1.63771891593933,
+        0.230699509382248
+      ],
+      "bounds_source": [
+        -0.199791625142097,
+        -0.0500000007450581,
+        -0.230699509382248,
+        0.199791625142097,
+        1.63771891593933,
+        0.230699509382248
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_tall.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_tall.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.257449716329575,
+        -0.0500000007450581,
+        -0.251473873853683,
+        0.422986775636673,
+        1.44029796123505,
+        0.365048676729202
+      ],
+      "bounds_source": [
+        -0.257449716329575,
+        -0.0500000007450581,
+        -0.251473873853683,
+        0.422986775636673,
+        1.44029796123505,
+        0.365048676729202
+      ],
+      "derived": "res://assets/styled/kenney/nature/tree_thin.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/nature/tree_thin.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000000842936955791629,
+      "bounds_derived": [
+        -0.216500073671341,
+        0.0,
+        -0.0669999942183495,
+        0.216500073671341,
+        0.400000065565109,
+        0.0669999942183495
+      ],
+      "bounds_source": [
+        -0.216500014066696,
+        0.0,
+        -0.0669999942183495,
+        0.216500014066696,
+        0.400000005960464,
+        0.0669999942183495
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/detail-barrier-type-a.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/detail-barrier-type-a.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.00104808830656111,
+      "bounds_derived": [
+        -0.301950007677078,
+        0.0,
+        -0.161062493920326,
+        0.301950007677078,
+        0.408689737319946,
+        0.160094782710075
+      ],
+      "bounds_source": [
+        -0.301950007677078,
+        0.0,
+        -0.161062493920326,
+        0.301950007677078,
+        0.40909218788147,
+        0.161062523722649
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/detail-bench.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/detail-bench.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0034398902207613,
+      "bounds_derived": [
+        -0.300138473510742,
+        0.0,
+        -0.252794861793518,
+        0.300000011920929,
+        0.543816983699799,
+        0.203318864107132
+      ],
+      "bounds_source": [
+        -0.300000011920929,
+        0.0,
+        -0.253665626049042,
+        0.300000011920929,
+        0.544721364974976,
+        0.199999988079071
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/detail-dumpster-closed.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/detail-dumpster-closed.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.000685170292854309,
+      "bounds_derived": [
+        -0.0430999994277954,
+        0.0,
+        -0.220414817333221,
+        0.0430999994277954,
+        0.960000038146973,
+        0.220414817333221
+      ],
+      "bounds_source": [
+        -0.0430999994277954,
+        0.0,
+        -0.221099987626076,
+        0.0430999994277954,
+        0.960000038146973,
+        0.221099987626076
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/detail-light-double.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/detail-light-double.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000685170292854309,
+      "bounds_derived": [
+        -0.0430999994277954,
+        0.0,
+        -0.220414817333221,
+        0.0430999994277954,
+        0.960000038146973,
+        0.0430999994277954
+      ],
+      "bounds_source": [
+        -0.0430999994277954,
+        0.0,
+        -0.221099987626076,
+        0.0430999994277954,
+        0.960000038146973,
+        0.0430999845266342
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/detail-light-single.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/detail-light-single.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00565686589106917,
+      "bounds_derived": [
+        -0.504000008106232,
+        0.00000000000000552248795060743,
+        -0.504000008106232,
+        0.499999940395355,
+        0.150000005960464,
+        0.499999940395355
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        -0.5,
+        0.5,
+        0.150000005960464,
+        0.5
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/pallet.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/pallet.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.5,
+        0.0,
+        -0.5,
+        0.5,
+        0.699999988079071,
+        0.5
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        -0.5,
+        0.5,
+        0.699999988079071,
+        0.5
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/roof-metal-poles.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/roof-metal-poles.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000000000000000082093192476968,
+      "bounds_derived": [
+        -0.56858217716217,
+        0.0000000000000000082093192476968,
+        -0.5,
+        0.56858217716217,
+        0.5,
+        0.5
+      ],
+      "bounds_source": [
+        -0.56858217716217,
+        0.0,
+        -0.5,
+        0.56858217716217,
+        0.5,
+        0.5
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/roof-metal-type-a.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/roof-metal-type-a.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000000000000000748114983836065,
+      "bounds_derived": [
+        -0.41499999165535,
+        0.0000000000000000748114983836065,
+        -0.821700036525726,
+        0.41499999165535,
+        1.00595998764038,
+        0.821700036525726
+      ],
+      "bounds_source": [
+        -0.41499999165535,
+        0.0,
+        -0.821700036525726,
+        0.41499999165535,
+        1.00595998764038,
+        0.821700036525726
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/truck-flat.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/truck-flat.glb",
+      "source_meshes": 1,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000000000000000748114983836065,
+      "bounds_derived": [
+        -0.41499999165535,
+        0.0000000000000000748114983836065,
+        -0.821700036525726,
+        0.41499999165535,
+        1.00595998764038,
+        0.821700036525726
+      ],
+      "bounds_source": [
+        -0.41499999165535,
+        0.0,
+        -0.821700036525726,
+        0.41499999165535,
+        1.00595998764038,
+        0.821700036525726
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/truck-green.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/truck-green.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.5,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        0.100000001490116
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        0.100000001490116
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/wall-a-flat-garage.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/wall-a-flat-garage.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.5,
+        0.0,
+        -0.5,
+        0.5,
+        1.0,
+        0.5
+      ],
+      "bounds_source": [
+        -0.5,
+        0.0,
+        -0.5,
+        0.5,
+        1.0,
+        0.5
+      ],
+      "derived": "res://assets/styled/kenney/retro-urban/wall-a-garage.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/retro-urban/wall-a-garage.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.118249997496605,
+        0.0,
+        -0.118249997496605,
+        0.118249997496605,
+        0.34400001168251,
+        0.118249997496605
+      ],
+      "bounds_source": [
+        -0.118249997496605,
+        0.0,
+        -0.118249997496605,
+        0.118249997496605,
+        0.34400001168251,
+        0.118249997496605
+      ],
+      "derived": "res://assets/styled/kenney/survival/barrel-open.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/barrel-open.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.118249997496605,
+        0.0,
+        -0.118249997496605,
+        0.118249997496605,
+        0.34400001168251,
+        0.118249997496605
+      ],
+      "bounds_source": [
+        -0.118249997496605,
+        0.0,
+        -0.118249997496605,
+        0.118249997496605,
+        0.34400001168251,
+        0.118249997496605
+      ],
+      "derived": "res://assets/styled/kenney/survival/barrel.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/barrel.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00054482469568029,
+      "bounds_derived": [
+        -0.124514929950237,
+        0.00000000000000000009498836152669,
+        -0.249751925468445,
+        0.124514929950237,
+        0.25,
+        0.249751925468445
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0,
+        -0.25,
+        0.125,
+        0.25,
+        0.25
+      ],
+      "derived": "res://assets/styled/kenney/survival/box-large.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/box-large.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000272415665676817,
+      "bounds_derived": [
+        -0.124757461249828,
+        0.0,
+        -0.124875962734222,
+        0.124757461249828,
+        0.25,
+        0.124875962734222
+      ],
+      "bounds_source": [
+        -0.125,
+        0.0,
+        -0.125,
+        0.125,
+        0.25,
+        0.125
+      ],
+      "derived": "res://assets/styled/kenney/survival/box.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/box.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000539911852683872,
+      "bounds_derived": [
+        -0.138884291052818,
+        -0.000000000502041075378656,
+        -0.13431940972805,
+        0.138486936688423,
+        0.109002530574799,
+        0.134255841374397
+      ],
+      "bounds_source": [
+        -0.138884291052818,
+        0.0,
+        -0.134615913033485,
+        0.138884291052818,
+        0.109065480530262,
+        0.134615913033485
+      ],
+      "derived": "res://assets/styled/kenney/survival/campfire-pit.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/campfire-pit.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000000333200098623365,
+      "bounds_derived": [
+        -0.130200013518333,
+        -0.0000000225338716575152,
+        -0.141825005412102,
+        0.130200013518333,
+        0.257191479206085,
+        0.130200013518333
+      ],
+      "bounds_source": [
+        -0.130199998617172,
+        0.0,
+        -0.141825005412102,
+        0.130199998617172,
+        0.257191479206085,
+        0.130199983716011
+      ],
+      "derived": "res://assets/styled/kenney/survival/chest.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/chest.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000154674053192139,
+      "bounds_derived": [
+        -0.249984532594681,
+        0.0,
+        -0.252673745155334,
+        0.249984532594681,
+        0.517466902732849,
+        -0.204546242952347
+      ],
+      "bounds_source": [
+        -0.25,
+        0.0,
+        -0.252673745155334,
+        0.25,
+        0.517466902732849,
+        -0.204546242952347
+      ],
+      "derived": "res://assets/styled/kenney/survival/fence-doorway.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 2,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/fence-doorway.glb",
+      "source_meshes": 2,
+      "source_surfaces": 2
+    },
+    {
+      "bounds_delta_m": 0.0000271004228125094,
+      "bounds_derived": [
+        -0.249980837106705,
+        0.0,
+        -0.249980837106705,
+        0.249980837106705,
+        0.517466843128204,
+        -0.196984976530075
+      ],
+      "bounds_source": [
+        -0.25,
+        0.0,
+        -0.25,
+        0.25,
+        0.517466843128204,
+        -0.196984976530075
+      ],
+      "derived": "res://assets/styled/kenney/survival/fence-fortified.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/fence-fortified.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0000218742152355844,
+      "bounds_derived": [
+        -0.249984532594681,
+        0.0,
+        -0.249984532594681,
+        0.249984532594681,
+        0.517466843128204,
+        -0.207235455513
+      ],
+      "bounds_source": [
+        -0.25,
+        0.0,
+        -0.25,
+        0.25,
+        0.517466843128204,
+        -0.207219988107681
+      ],
+      "derived": "res://assets/styled/kenney/survival/fence.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/fence.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.699999988079071,
+        0.0,
+        -0.600000023841858,
+        0.699999988079071,
+        0.00000999999974737875,
+        0.600000023841858
+      ],
+      "bounds_source": [
+        -0.699999988079071,
+        0.0,
+        -0.600000023841858,
+        0.699999988079071,
+        0.00000999999974737875,
+        0.600000023841858
+      ],
+      "derived": "res://assets/styled/kenney/survival/patch-grass-large.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/patch-grass-large.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.000744070741347969,
+      "bounds_derived": [
+        -0.111533559858799,
+        0.0,
+        -0.0179788172245026,
+        0.101104013621807,
+        0.460079997777939,
+        0.0249777995049953
+      ],
+      "bounds_source": [
+        -0.112277328968048,
+        0.0,
+        -0.0180000010877848,
+        0.101844638586044,
+        0.460079997777939,
+        0.0249778013676405
+      ],
+      "derived": "res://assets/styled/kenney/survival/signpost.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/signpost.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.00142344320192933,
+      "bounds_derived": [
+        -0.279473930597305,
+        0.000907262263353914,
+        -0.275000005960464,
+        0.279473930597305,
+        0.490271419286728,
+        0.286000043153763
+      ],
+      "bounds_source": [
+        -0.280381083488464,
+        -0.00000000186264514923096,
+        -0.275000005960464,
+        0.280381083488464,
+        0.491368353366852,
+        0.286000043153763
+      ],
+      "derived": "res://assets/styled/kenney/survival/tent.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/tent.glb",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.147826239466667,
+        0.0,
+        -0.147826239466667,
+        0.17782624065876,
+        0.286590695381165,
+        0.147826239466667
+      ],
+      "bounds_source": [
+        -0.147826239466667,
+        0.0,
+        -0.147826239466667,
+        0.17782624065876,
+        0.286590695381165,
+        0.147826239466667
+      ],
+      "derived": "res://assets/styled/kenney/survival/workbench.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/survival/workbench.glb",
+      "source_meshes": 3,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0000000156118105110181,
+      "bounds_derived": [
+        -0.0146507080644369,
+        -0.00000000186264514923096,
+        -0.0146507024765015,
+        0.014650721102953,
+        0.0938108712434769,
+        0.0146507173776627
+      ],
+      "bounds_source": [
+        -0.0146507117897272,
+        0.00000000745058059692383,
+        -0.014650703407824,
+        0.0146507173776627,
+        0.0938108861446381,
+        0.0146507201716304
+      ],
+      "derived": "res://assets/styled/kenney/weapon/ammo_machinegun.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/ammo_machinegun.glb",
+      "source_meshes": 2,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.0153120001778007,
+        0.0,
+        -0.0153120001778007,
+        0.0153120001778007,
+        0.0765600055456162,
+        0.0153120001778007
+      ],
+      "bounds_source": [
+        -0.0153120001778007,
+        0.0,
+        -0.0153120001778007,
+        0.0153120001778007,
+        0.0765600055456162,
+        0.0153120001778007
+      ],
+      "derived": "res://assets/styled/kenney/weapon/ammo_shotgun.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/ammo_shotgun.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.00000000263417798684884,
+      "bounds_derived": [
+        -0.0210539977997541,
+        0.0,
+        -0.0210540015250444,
+        0.0210540015250444,
+        0.135894015431404,
+        0.0210539977997541
+      ],
+      "bounds_source": [
+        -0.0210539996623993,
+        0.0,
+        -0.0210539996623993,
+        0.0210539996623993,
+        0.135894015431404,
+        0.0210539996623993
+      ],
+      "derived": "res://assets/styled/kenney/weapon/ammo_sniper.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/ammo_sniper.glb",
+      "source_meshes": 2,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.00000000263417798684884,
+      "bounds_derived": [
+        -0.0127644697204232,
+        -0.0325379706919193,
+        -0.0255289077758789,
+        0.0127644641324878,
+        0.0325380377471447,
+        0.0000000149011611938477
+      ],
+      "bounds_source": [
+        -0.0127644678577781,
+        -0.0325379706919193,
+        -0.0255289077758789,
+        0.0127644659951329,
+        0.0325380377471447,
+        0.0000000167638063430786
+      ],
+      "derived": "res://assets/styled/kenney/weapon/ammo_uzi.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/ammo_uzi.glb",
+      "source_meshes": 2,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0000584125518798828,
+      "bounds_derived": [
+        -0.0504756234586239,
+        0.0,
+        -0.0567700192332268,
+        0.0504756234586239,
+        0.172259986400604,
+        0.0568284317851067
+      ],
+      "bounds_source": [
+        -0.0504756234586239,
+        0.0,
+        -0.0568284317851067,
+        0.0504756234586239,
+        0.172259986400604,
+        0.0568284317851067
+      ],
+      "derived": "res://assets/styled/kenney/weapon/grenade.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 4,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/grenade.glb",
+      "source_meshes": 2,
+      "source_surfaces": 4
+    },
+    {
+      "bounds_delta_m": 0.0000468641519546509,
+      "bounds_derived": [
+        -0.0382800027728081,
+        0.0,
+        -0.0468557626008987,
+        0.0382800027728081,
+        0.19522799551487,
+        0.0469026193022728
+      ],
+      "bounds_source": [
+        -0.0382800027728081,
+        0.0,
+        -0.0469026267528534,
+        0.0382800027728081,
+        0.195228010416031,
+        0.0469026193022728
+      ],
+      "derived": "res://assets/styled/kenney/weapon/grenadeSmoke.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/grenadeSmoke.glb",
+      "source_meshes": 2,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0000000298023223876953,
+      "bounds_derived": [
+        -0.0287099983543158,
+        0.0,
+        -0.0382800027728081,
+        0.0287099983543158,
+        0.352175980806351,
+        0.0382800027728081
+      ],
+      "bounds_source": [
+        -0.0287099983543158,
+        0.0,
+        -0.0382800027728081,
+        0.0287099983543158,
+        0.352176010608673,
+        0.0382800027728081
+      ],
+      "derived": "res://assets/styled/kenney/weapon/knife_sharp.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/knife_sharp.glb",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.0000000307531493604074,
+      "bounds_derived": [
+        -0.0287100076675415,
+        -0.00000000513349984743172,
+        -0.298584043979645,
+        0.0287100076675415,
+        0.264131993055344,
+        0.298584043979645
+      ],
+      "bounds_source": [
+        -0.0287100020796061,
+        0.0,
+        -0.298584014177322,
+        0.0287100020796061,
+        0.264131993055344,
+        0.298584014177322
+      ],
+      "derived": "res://assets/styled/kenney/weapon/machinegun.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 6,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/machinegun.glb",
+      "source_meshes": 2,
+      "source_surfaces": 6
+    },
+    {
+      "bounds_delta_m": 0.00000000416500123279206,
+      "bounds_derived": [
+        -0.0287099983543158,
+        -0.00000000186264514923096,
+        -0.147377982735634,
+        0.0287100058048964,
+        0.229680016636848,
+        0.147378012537956
+      ],
+      "bounds_source": [
+        -0.0287100020796061,
+        0.0,
+        -0.147377982735634,
+        0.0287100020796061,
+        0.229680016636848,
+        0.147378012537956
+      ],
+      "derived": "res://assets/styled/kenney/weapon/pistol.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 4,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/pistol.glb",
+      "source_meshes": 2,
+      "source_surfaces": 4
+    },
+    {
+      "bounds_delta_m": 0.0000155758498294745,
+      "bounds_derived": [
+        -0.031100831925869,
+        0.0000154863810166717,
+        -0.282634019851685,
+        0.0311008170247078,
+        0.156948015093803,
+        0.282634019851685
+      ],
+      "bounds_source": [
+        -0.0311024989932776,
+        0.0,
+        -0.282634019851685,
+        0.0311024989932776,
+        0.156948015093803,
+        0.282634019851685
+      ],
+      "derived": "res://assets/styled/kenney/weapon/shotgun.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 6,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/shotgun.glb",
+      "source_meshes": 2,
+      "source_surfaces": 6
+    },
+    {
+      "bounds_delta_m": 0.000000178938165618092,
+      "bounds_derived": [
+        -0.0497639961540699,
+        -0.00000000552838486100882,
+        -0.520608186721802,
+        0.0497640036046505,
+        0.283271998167038,
+        0.520607948303223
+      ],
+      "bounds_source": [
+        -0.0497639998793602,
+        0.0,
+        -0.520608007907867,
+        0.0497639998793602,
+        0.283271998167038,
+        0.520608007907867
+      ],
+      "derived": "res://assets/styled/kenney/weapon/sniper.glb",
+      "derived_meshes": 4,
+      "derived_surfaces": 7,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/sniper.glb",
+      "source_meshes": 4,
+      "source_surfaces": 8
+    },
+    {
+      "bounds_delta_m": 0.0000000307195300308649,
+      "bounds_derived": [
+        -0.0325380004942417,
+        0.0000000149011611938477,
+        -0.134165018796921,
+        0.0325379930436611,
+        0.333036005496979,
+        0.134164988994598
+      ],
+      "bounds_source": [
+        -0.0325380004942417,
+        0.00000000745058059692383,
+        -0.134164988994598,
+        0.0325379930436611,
+        0.333036005496979,
+        0.134164988994598
+      ],
+      "derived": "res://assets/styled/kenney/weapon/uzi.glb",
+      "derived_meshes": 3,
+      "derived_surfaces": 4,
+      "markers_error_m": 0.0,
+      "source": "res://assets/kenney/weapon/uzi.glb",
+      "source_meshes": 3,
+      "source_surfaces": 4
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.566459953784943,
+        -0.189110070466995,
+        -0.0324000120162964,
+        0.566459953784943,
+        0.189110070466995,
+        0.0324000269174576
+      ],
+      "bounds_source": [
+        -0.566459953784943,
+        -0.189110070466995,
+        -0.0324000120162964,
+        0.566459953784943,
+        0.189110070466995,
+        0.0324000269174576
+      ],
+      "derived": "res://assets/styled/models/ar75_toxic_halloween.glb",
+      "derived_meshes": 100,
+      "derived_surfaces": 103,
+      "markers_error_m": 0.0000000300342506420748,
+      "source": "res://assets/models/ar75_toxic_halloween.glb",
+      "source_meshes": 100,
+      "source_surfaces": 103
+    },
+    {
+      "bounds_delta_m": 0.0019681453704834,
+      "bounds_derived": [
+        -0.522000074386597,
+        0.0,
+        -1.61549949645996,
+        0.521999835968018,
+        1.21049857139587,
+        2.05326533317566
+      ],
+      "bounds_source": [
+        -0.522000074386597,
+        0.0,
+        -1.61549949645996,
+        0.521999835968018,
+        1.21049857139587,
+        2.05523347854614
+      ],
+      "derived": "res://assets/styled/models/kotm/KOTM_Snowmobile.glb",
+      "derived_meshes": 139,
+      "derived_surfaces": 139,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/kotm/KOTM_Snowmobile.glb",
+      "source_meshes": 139,
+      "source_surfaces": 139
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.19500017166138,
+        -0.0000000209547579288483,
+        -2.25,
+        1.19500017166138,
+        2.27451038360596,
+        2.65999984741211
+      ],
+      "bounds_source": [
+        -1.19500017166138,
+        -0.0000000209547579288483,
+        -2.25,
+        1.19500017166138,
+        2.27451038360596,
+        2.65999984741211
+      ],
+      "derived": "res://assets/styled/models/kotm/KOTM_SnowTruck.glb",
+      "derived_meshes": 373,
+      "derived_surfaces": 376,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/kotm/KOTM_SnowTruck.glb",
+      "source_meshes": 373,
+      "source_surfaces": 376
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.185000002384186,
+        -0.250682413578033,
+        -0.223000004887581,
+        0.185000002384186,
+        0.250682294368744,
+        0.222999975085258
+      ],
+      "bounds_source": [
+        -0.185000002384186,
+        -0.250682413578033,
+        -0.223000004887581,
+        0.185000002384186,
+        0.250682294368744,
+        0.222999975085258
+      ],
+      "derived": "res://assets/styled/models/military_backpack.glb",
+      "derived_meshes": 46,
+      "derived_surfaces": 46,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/military_backpack.glb",
+      "source_meshes": 46,
+      "source_surfaces": 46
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -0.147272869944572,
+        -0.126285508275032,
+        -0.166695907711983,
+        0.14727284014225,
+        0.126285508275032,
+        0.16669587790966
+      ],
+      "bounds_source": [
+        -0.147272869944572,
+        -0.126285508275032,
+        -0.166695907711983,
+        0.14727284014225,
+        0.126285508275032,
+        0.16669587790966
+      ],
+      "derived": "res://assets/styled/models/motorcycle_helmet.glb",
+      "derived_meshes": 23,
+      "derived_surfaces": 23,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/motorcycle_helmet.glb",
+      "source_meshes": 23,
+      "source_surfaces": 23
+    },
+    {
+      "bounds_delta_m": 0.000000238418579101563,
+      "bounds_derived": [
+        -2.45499992370605,
+        -0.0000000596046447753906,
+        -1.19000005722046,
+        2.45499992370605,
+        2.27451062202454,
+        1.19000005722046
+      ],
+      "bounds_source": [
+        -2.45499992370605,
+        0.0000000149011611938477,
+        -1.19000005722046,
+        2.45499992370605,
+        2.27451086044312,
+        1.19000005722046
+      ],
+      "derived": "res://assets/styled/models/snow_truck.glb",
+      "derived_meshes": 242,
+      "derived_surfaces": 243,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/snow_truck.glb",
+      "source_meshes": 242,
+      "source_surfaces": 243
+    },
+    {
+      "bounds_delta_m": 0.000986576080322266,
+      "bounds_derived": [
+        -2.03929615020752,
+        0.0,
+        -0.579999983310699,
+        2.03831005096436,
+        1.34499847888947,
+        0.579999983310699
+      ],
+      "bounds_source": [
+        -2.03929615020752,
+        0.0,
+        -0.579999983310699,
+        2.03929662704468,
+        1.34499847888947,
+        0.579999983310699
+      ],
+      "derived": "res://assets/styled/models/snowmobile.glb",
+      "derived_meshes": 92,
+      "derived_surfaces": 92,
+      "markers_error_m": 0.0,
+      "source": "res://assets/models/snowmobile.glb",
+      "source_meshes": 92,
+      "source_surfaces": 92
+    },
+    {
+      "bounds_delta_m": 0.00052138976752758,
+      "bounds_derived": [
+        -3.86196708679199,
+        0.00197696685791016,
+        -3.98926377296448,
+        3.86410522460938,
+        6.01029348373413,
+        4.23318386077881
+      ],
+      "bounds_source": [
+        -3.86237764358521,
+        0.00197649095207453,
+        -3.98926377296448,
+        3.86451578140259,
+        6.01061487197876,
+        4.23318386077881
+      ],
+      "derived": "res://assets/styled/quaternius/farm/Barn.glb",
+      "derived_meshes": 5,
+      "derived_surfaces": 14,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/Barn.fbx",
+      "source_meshes": 5,
+      "source_surfaces": 14
+    },
+    {
+      "bounds_delta_m": 0.000530142628122121,
+      "bounds_derived": [
+        -3.86303400993347,
+        -0.00400447845458984,
+        -4.06255435943604,
+        3.8630383014679,
+        7.88243198394775,
+        4.15989303588867
+      ],
+      "bounds_source": [
+        -3.86344480514526,
+        -0.00400496274232864,
+        -4.06255435943604,
+        3.86344861984253,
+        7.88276767730713,
+        4.15989303588867
+      ],
+      "derived": "res://assets/styled/quaternius/farm/BigBarn.glb",
+      "derived_meshes": 5,
+      "derived_surfaces": 14,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/BigBarn.fbx",
+      "source_meshes": 5,
+      "source_surfaces": 14
+    },
+    {
+      "bounds_delta_m": 0.000000119572533208157,
+      "bounds_derived": [
+        -2.94506287574768,
+        -0.010822594165802,
+        -0.0827540755271912,
+        2.94506287574768,
+        1.08624029159546,
+        0.0827540755271912
+      ],
+      "bounds_source": [
+        -2.94506287574768,
+        -0.0108226034790277,
+        -0.0827541947364807,
+        2.94506287574768,
+        1.08624017238617,
+        0.0827540755271912
+      ],
+      "derived": "res://assets/styled/quaternius/farm/Fence.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 1,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/Fence.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 1
+    },
+    {
+      "bounds_delta_m": 0.010871653445065,
+      "bounds_derived": [
+        -2.83932256698608,
+        0.000953197479248047,
+        -3.08252215385437,
+        2.90443277359009,
+        4.73762702941895,
+        3.08252215385437
+      ],
+      "bounds_source": [
+        -2.83932256698608,
+        0.000952828966546804,
+        -3.09101986885071,
+        2.90443277359009,
+        4.74440860748291,
+        3.09101939201355
+      ],
+      "derived": "res://assets/styled/quaternius/farm/OpenBarn.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/OpenBarn.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.00424152612686157,
+      "bounds_derived": [
+        -1.75022530555725,
+        -0.0494462437927723,
+        -1.66456305980682,
+        1.91305565834045,
+        9.01918601989746,
+        1.84518921375275
+      ],
+      "bounds_source": [
+        -1.75022542476654,
+        -0.0494464375078678,
+        -1.66456401348114,
+        1.91729032993317,
+        9.01918601989746,
+        1.84543025493622
+      ],
+      "derived": "res://assets/styled/quaternius/farm/Silo.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/Silo.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.0124211367219687,
+      "bounds_derived": [
+        -3.0824921131134,
+        0.000161886215209961,
+        -3.11206293106079,
+        2.97925686836243,
+        4.95218944549561,
+        3.16182279586792
+      ],
+      "bounds_source": [
+        -3.09098958969116,
+        0.000161515214131214,
+        -3.11206340789795,
+        2.98772859573364,
+        4.96127319335938,
+        3.16182231903076
+      ],
+      "derived": "res://assets/styled/quaternius/farm/SmallBarn.glb",
+      "derived_meshes": 4,
+      "derived_surfaces": 11,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/SmallBarn.fbx",
+      "source_meshes": 4,
+      "source_surfaces": 11
+    },
+    {
+      "bounds_delta_m": 0.00428817700594664,
+      "bounds_derived": [
+        -1.19446074962616,
+        -0.0715675354003906,
+        -1.24413073062897,
+        1.33489739894867,
+        8.35703086853027,
+        1.24413073062897
+      ],
+      "bounds_source": [
+        -1.19311022758484,
+        -0.071567676961422,
+        -1.244744181633,
+        1.33914160728455,
+        8.35702991485596,
+        1.24474322795868
+      ],
+      "derived": "res://assets/styled/quaternius/farm/WaterTower.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 3,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/WaterTower.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 3
+    },
+    {
+      "bounds_delta_m": 0.00113046215847135,
+      "bounds_derived": [
+        -0.638371288776398,
+        -0.00707942852750421,
+        -0.68658846616745,
+        0.638371288776398,
+        2.13738799095154,
+        0.799730479717255
+      ],
+      "bounds_source": [
+        -0.638371765613556,
+        -0.00718419766053557,
+        -0.68658858537674,
+        0.638371765613556,
+        2.13836765289307,
+        0.800294578075409
+      ],
+      "derived": "res://assets/styled/quaternius/farm/Well.glb",
+      "derived_meshes": 1,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/Well.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 5
+    },
+    {
+      "bounds_delta_m": 0.00184778589755297,
+      "bounds_derived": [
+        -2.25771856307983,
+        0.00244569778442383,
+        -0.947978973388672,
+        4.24836397171021,
+        11.1970176696777,
+        0.947978973388672
+      ],
+      "bounds_source": [
+        -2.25930428504944,
+        0.00244558439590037,
+        -0.948926627635956,
+        4.24836349487305,
+        11.1986045837402,
+        0.94892555475235
+      ],
+      "derived": "res://assets/styled/quaternius/farm/Windmill.glb",
+      "derived_meshes": 2,
+      "derived_surfaces": 4,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/farm/Windmill.fbx",
+      "source_meshes": 2,
+      "source_surfaces": 4
+    },
+    {
+      "bounds_delta_m": 0.0,
+      "bounds_derived": [
+        -1.38392949104309,
+        -4.95386648178101,
+        -1.32603049278259,
+        1.47712063789368,
+        4.65423440933228,
+        3.90334725379944
+      ],
+      "bounds_source": [
+        -1.38392949104309,
+        -4.95386648178101,
+        -1.32603049278259,
+        1.47712063789368,
+        4.65423440933228,
+        3.90334725379944
+      ],
+      "derived": "res://assets/styled/quaternius/guns/Revolver.tscn",
+      "derived_meshes": 1,
+      "derived_surfaces": 5,
+      "markers_error_m": 0.0,
+      "source": "res://assets/quaternius/guns/Revolver.fbx",
+      "source_meshes": 1,
+      "source_surfaces": 5
+    }
+  ]
+}

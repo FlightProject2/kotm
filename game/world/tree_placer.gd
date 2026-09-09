@@ -9,11 +9,14 @@ const TRUNK_RADIUS := 0.32
 const TRUNK_HEIGHT := 6.0
 const VIS_RANGE := 700.0
 
+static var _snow_foliage_material: ShaderMaterial
+
 static func build(world: World, parent: Node3D) -> Dictionary:
 	var trees: Array = world.layout.trees
 	var by_key: Dictionary = {}     # "species|cx|cz" -> Array[Transform3D]
 	var meshes: Dictionary = {}
 	var placed := 0
+	var trunk_bodies: Dictionary = {}
 	for t in trees:
 		var x := float(t[0])
 		var z := float(t[1])
@@ -30,7 +33,12 @@ static func build(world: World, parent: Node3D) -> Dictionary:
 			by_key[key] = []
 		var xf := Transform3D(Basis(Vector3.UP, rot).scaled(Vector3.ONE * s), Vector3(x, y + 0.05 * s * 0.5, z))
 		by_key[key].append(xf)
-		_trunk_body(world, Vector3(x, y, z), s)
+		var trunk_cell := Vector2i(floori(x / CHUNK), floori(z / CHUNK))
+		if not trunk_bodies.has(trunk_cell):
+			var origin := Vector3(trunk_cell.x * CHUNK, 0.0, trunk_cell.y * CHUNK)
+			trunk_bodies[trunk_cell] = {"body": _create_trunk_body(world, origin), "origin": origin}
+		var trunk_info: Dictionary = trunk_bodies[trunk_cell]
+		_trunk_shape(world, trunk_info["body"], Vector3(x, y, z) - trunk_info["origin"], s)
 		placed += 1
 	for key in by_key:
 		var species: String = key.split("|")[0]
@@ -51,7 +59,9 @@ static func build(world: World, parent: Node3D) -> Dictionary:
 	return {"trees": placed, "chunks": by_key.size()}
 
 static func _mesh_for(species: String) -> Mesh:
-	var scene: PackedScene = load("res://assets/kenney/nature/%s.glb" % species)
+	var source_path := "res://assets/kenney/nature/%s.glb" % species
+	var selected_path := KOTMWorldStyle.path(source_path)
+	var scene: PackedScene = load(selected_path)
 	if scene == null:
 		return null
 	var inst := scene.instantiate()
@@ -61,6 +71,10 @@ static func _mesh_for(species: String) -> Mesh:
 		return null
 	var mi := mis[0] as MeshInstance3D
 	var mesh: Mesh = mi.mesh.duplicate()
+	if selected_path != source_path:
+		# Styled glTF bakes the winter palette and upper-branch snow into vertex colours.
+		inst.free()
+		return mesh
 	# Kenney Nature Kit ships metallicFactor 1: force plain lit surfaces.
 	for i in mesh.get_surface_count():
 		var m := mesh.surface_get_material(i)
@@ -81,7 +95,8 @@ static func _mesh_for(species: String) -> Mesh:
 				c = Color(acc.r, acc.g, acc.b, 1.0) * c
 			mm.vertex_color_use_as_albedo = false
 			if c.g >= c.r and c.g >= c.b * 0.9 and c.g > 0.3:
-				mm.albedo_color = Color(0.20, 0.34, 0.24)      # spruce foliage under snow light
+				mesh.surface_set_material(i, _foliage_material())
+				continue
 			elif c.r > c.g and c.g > c.b:
 				mm.albedo_color = Color(0.33, 0.25, 0.18)      # trunk / wood
 			else:
@@ -90,16 +105,48 @@ static func _mesh_for(species: String) -> Mesh:
 	inst.free()
 	return mesh
 
-static func _trunk_body(world: World, pos: Vector3, s: float) -> void:
-	var space := world.get_world_3d().space
+static func _foliage_material() -> ShaderMaterial:
+	if _snow_foliage_material:
+		return _snow_foliage_material
+	var shader := Shader.new()
+	shader.code = """
+shader_type spatial;
+render_mode diffuse_lambert;
+
+uniform vec3 spruce : source_color = vec3(0.12, 0.23, 0.18);
+uniform vec3 snow : source_color = vec3(0.88, 0.93, 0.97);
+varying vec3 local_normal;
+
+void vertex() {
+	// Trees rotate only around Y and scale uniformly, so local up remains world up.
+	local_normal = NORMAL;
+}
+
+void fragment() {
+	// Accumulation follows the upper branch faces; undersides retain dark needles.
+	float coverage = smoothstep(0.10, 0.48, normalize(local_normal).y);
+	ALBEDO = mix(spruce, snow, coverage);
+	METALLIC = 0.0;
+	ROUGHNESS = 0.97;
+	SPECULAR = 0.18;
+}
+"""
+	_snow_foliage_material = ShaderMaterial.new()
+	_snow_foliage_material.shader = shader
+	return _snow_foliage_material
+
+static func _create_trunk_body(world: World, origin: Vector3) -> RID:
 	var body := PhysicsServer3D.body_create()
 	PhysicsServer3D.body_set_mode(body, PhysicsServer3D.BODY_MODE_STATIC)
-	var shape := PhysicsServer3D.cylinder_shape_create()
-	PhysicsServer3D.shape_set_data(shape, {"radius": TRUNK_RADIUS * s / SPECIES_SCALE, "height": TRUNK_HEIGHT})
-	PhysicsServer3D.body_add_shape(body, shape, Transform3D(Basis(), Vector3(0, TRUNK_HEIGHT * 0.5, 0)))
 	PhysicsServer3D.body_set_collision_layer(body, 1 | 32)
 	PhysicsServer3D.body_set_collision_mask(body, 0)
-	PhysicsServer3D.body_set_state(body, PhysicsServer3D.BODY_STATE_TRANSFORM, Transform3D(Basis(), pos))
-	PhysicsServer3D.body_set_space(body, space)
+	PhysicsServer3D.body_set_state(body, PhysicsServer3D.BODY_STATE_TRANSFORM, Transform3D(Basis.IDENTITY, origin))
+	PhysicsServer3D.body_set_space(body, world.get_world_3d().space)
 	world.tree_bodies.append(body)
+	return body
+
+static func _trunk_shape(world: World, body: RID, pos: Vector3, s: float) -> void:
+	var shape := PhysicsServer3D.cylinder_shape_create()
+	PhysicsServer3D.shape_set_data(shape, {"radius": TRUNK_RADIUS * s / SPECIES_SCALE, "height": TRUNK_HEIGHT})
+	PhysicsServer3D.body_add_shape(body, shape, Transform3D(Basis(), pos + Vector3(0, TRUNK_HEIGHT * 0.5, 0)))
 	world.tree_shapes.append(shape)

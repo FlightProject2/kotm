@@ -56,4 +56,13 @@ static func unpack(bytes: PackedByteArray) -> CharacterInput:
 	return i
 
 func duplicate_input() -> CharacterInput:
-	return CharacterInput.unpack(pack())
+	var copy := CharacterInput.new()
+	copy.tick = tick
+	copy.move = move
+	copy.yaw = yaw
+	copy.pitch = pitch
+	copy.aim_dir = aim_dir
+	copy.buttons = buttons
+	copy.slot = slot
+	copy.use_med = use_med
+	return copy

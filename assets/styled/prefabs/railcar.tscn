@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_drhe7"]
+albedo_color = Color(0.3529412, 0.2901961, 0.22745098, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_oiuc4"]
+size = Vector3(2.6, 2.6, 13)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgkfa"]
+albedo_color = Color(0.16470589, 0.16470589, 0.16470589, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_0f5l8"]
+size = Vector3(2.2, 0.7, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pmq12"]
+size = Vector3(2.6, 2.6, 13)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yovod"]
+size = Vector3(2.2, 0.7, 12)
+
+[node name="Railcar" type="StaticBody3D" unique_id=985454396]
+collision_layer = 33
+collision_mask = 0
+metadata/footprint = Vector2(2.6, 13)
+metadata/prefab_id = "railcar"
+
+[node name="Visual" type="Node3D" parent="." unique_id=2027592046]
+
+[node name="@MeshInstance3D@970" type="MeshInstance3D" parent="Visual" unique_id=699921482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+material_override = SubResource("StandardMaterial3D_drhe7")
+mesh = SubResource("BoxMesh_oiuc4")
+
+[node name="@MeshInstance3D@971" type="MeshInstance3D" parent="Visual" unique_id=1336916087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+material_override = SubResource("StandardMaterial3D_bgkfa")
+mesh = SubResource("BoxMesh_0f5l8")
+
+[node name="LootNodes" type="Node3D" parent="." unique_id=1777950081]
+
+[node name="Loot0" type="Marker3D" parent="LootNodes" unique_id=1775310008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.15, 0)
+
+[node name="Col2" type="CollisionShape3D" parent="." unique_id=875947125]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_pmq12")
+
+[node name="Col3" type="CollisionShape3D" parent="." unique_id=970613003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+shape = SubResource("BoxShape3D_yovod")

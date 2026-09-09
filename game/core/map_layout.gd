@@ -9,10 +9,13 @@ var vertex_spacing: float = 1.0
 var region_size: int = 512
 var heightmap_path: String
 var colormap_path: String
+var surface_mask_path: String = ""
 var preview_path: String
 var pois: Array = []
 var buildings: Array = []
 var roads: Array = []
+var frontier: Dictionary = {}
+var bridges: Array = []
 var pads: Array = []
 var trees: Array = []
 var spawn_max_height: float = 110.0
@@ -31,10 +34,12 @@ static func load_from(path: String) -> MapLayout:
 	m.region_size = int(d.get("regionSize", 512))
 	m.heightmap_path = d["heightmap"]
 	m.colormap_path = d.get("colormap", "")
+	m.surface_mask_path = d.get("surfaceMask", "")
 	m.preview_path = d.get("preview", "")
 	m.pois = d["pois"]
 	m.buildings = d["buildings"]
 	m.roads = d["roads"]
+	m.bridges = d.get("bridges", [])
 	m.spawn_max_height = float(d.get("spawnMaxHeightM", 110.0))
 	var pf := FileAccess.open(d["pads"], FileAccess.READ)
 	if pf:
@@ -42,6 +47,20 @@ static func load_from(path: String) -> MapLayout:
 	var tf := FileAccess.open(d["trees"], FileAccess.READ)
 	if tf:
 		m.trees = JSON.parse_string(tf.get_as_text())["trees"]
+	# Additive districts use this checkout's pad elevations and leave the authored map intact.
+	var expansion_path := "res://design/map/frontier_expansion.json"
+	if m.id == "slice_2km" and FileAccess.file_exists(expansion_path):
+		m.frontier = JSON.parse_string(FileAccess.get_file_as_string(expansion_path))
+		var resort_path := "res://design/map/resort_expansion.json"
+		if FileAccess.file_exists(resort_path):
+			var resort: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(resort_path))
+			for key in ["pois", "buildings", "props", "roads", "tracks"]:
+				if not m.frontier.has(key):
+					m.frontier[key] = []
+				m.frontier[key].append_array(resort.get(key, []))
+		m.pois.append_array(m.frontier.get("pois", []))
+		m.buildings.append_array(m.frontier.get("buildings", []))
+		m.roads.append_array(m.frontier.get("roads", []))
 	return m
 
 static func load_default() -> MapLayout:
@@ -61,6 +80,8 @@ func pad_height(pad_id: String) -> float:
 
 ## Height a building should sit at: its POI pad, else the pad baked at its own position, else NAN.
 func building_base_height(b: Dictionary) -> float:
+	if b.has("baseY"):
+		return float(b["baseY"])
 	if b.get("poi", "") != "":
 		var h := pad_height(b["poi"])
 		if not is_nan(h):

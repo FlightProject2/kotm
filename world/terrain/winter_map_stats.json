@@ -1,0 +1,144 @@
+{
+  "seed": 20160218,
+  "resolution": 2048,
+  "minHeightM": 17.988838176793507,
+  "maxHeightM": 255.14501301450005,
+  "meanHeightM": 82.50166244110636,
+  "summitHeightM": 160.0000000000085,
+  "buildings": 111,
+  "roads": 27,
+  "trees": 8200,
+  "pads": 41,
+  "iceAreaM2": 90538,
+  "bridges": 2,
+  "pointsOfInterest": 12,
+  "lowlandFraction": 0.623197078704834,
+  "snowFraction": 0.8161249160766602,
+  "roadGrades": {
+    "ring": {
+      "max": 0.204,
+      "p95": 0.2
+    },
+    "spoke_ashford": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "spoke_cranmoor": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "spoke_bumjick_farm": {
+      "max": 0.039,
+      "p95": 0.017
+    },
+    "spoke_hollis_farm": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "spoke_rail_yard": {
+      "max": 0.201,
+      "p95": 0.2
+    },
+    "spoke_gas_station": {
+      "max": 0.136,
+      "p95": 0.126
+    },
+    "spoke_hilltop_cabins": {
+      "max": 0.201,
+      "p95": 0.2
+    },
+    "north_distributor": {
+      "max": 0.152,
+      "p95": 0.115
+    },
+    "riverbank_distributor": {
+      "max": 0.2,
+      "p95": 0.187
+    },
+    "frostmere_lodge_access": {
+      "max": 0.201,
+      "p95": 0.201
+    },
+    "riverside_mill_loop": {
+      "max": 0.168,
+      "p95": 0.144
+    },
+    "riverside_mill_access": {
+      "max": 0.046,
+      "p95": 0.044
+    },
+    "north_radar_access": {
+      "max": 0.203,
+      "p95": 0.2
+    },
+    "east_ranger_loop": {
+      "max": 0.201,
+      "p95": 0.2
+    },
+    "mountain_switchback": {
+      "max": 0.233,
+      "p95": 0.23
+    },
+    "summit_south_trail": {
+      "max": 0.292,
+      "p95": 0.29
+    },
+    "rail_line": {
+      "max": 0.096,
+      "p95": 0.095
+    },
+    "ashford_main": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_cross": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_west": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_east": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_north": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_market_lane": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "ashford_square_east": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "cranmoor_main": {
+      "max": 0.0,
+      "p95": 0.0
+    },
+    "cranmoor_motel_court": {
+      "max": 0.0,
+      "p95": 0.0
+    }
+  },
+  "surfaceMaskChannels": {
+    "R": "road",
+    "G": "rail",
+    "B": "frozen water"
+  },
+  "iceHeightRangeM": [
+    18.0,
+    18.0
+  ],
+  "maxPadCenterErrorM": 0.004941266794197929,
+  "maxBuildingGroundErrorM": 0.0049,
+  "worstBuildingGround": {
+    "prefab": "barn_small",
+    "x": 475.0,
+    "z": 771.5,
+    "errorM": 0.0049
+  }
+}

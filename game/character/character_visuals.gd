@@ -293,8 +293,9 @@ func _process_studio() -> void:
 	if fitted and not parachuting:
 		arm_pose.weight = 0.0
 	arm_pose.weapon_class = "parachute" if parachuting else (_held_class if not fitted and not seated else "")
-	var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
-	arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
+	if arm_pose.active:
+		var aim := character.input.aim_dir if character.input.aim_dir.length_squared() > 0.5 else character.forward()
+		arm_pose.aim_dir = skeleton.global_basis.inverse() * aim
 	studio_rig.contact_enabled = fitted and not seated and not parachuting and character.combat.reload_t <= 0
 	studio_rig.set_equipment(character.health.has_helmet(), character.health.has_armor(), character.inventory.backpack_id != "" or String(character.cosmetics.get("back", "")) != "")
 	if fitted:

@@ -21,10 +21,10 @@ const PANEL_SOLID := Color(0.07, 0.072, 0.085, 0.96)
 const TABS := {
 	"CLOTHING": ["chest", "legs", "feet", "hands"],
 	"HEAD": ["hair", "skin", "head", "face"],
-	"GEAR": ["back", "parachute"],
+	"GEAR": ["back", "armour", "parachute"],
 	"WEAPONS": [],
 }
-const SLOT_NAMES := {"head": "HAT", "face": "MASK", "chest": "SHIRT", "legs": "PANTS", "feet": "SHOES", "hands": "GLOVES", "back": "BACKPACK", "parachute": "PARACHUTE", "skin": "SKIN", "hair": "HAIR"}
+const SLOT_NAMES := {"head": "HAT", "face": "MASK", "chest": "SHIRT", "legs": "PANTS", "feet": "SHOES", "hands": "GLOVES", "back": "BACKPACK", "armour": "ARMOUR STYLE", "parachute": "PARACHUTE", "skin": "SKIN", "hair": "HAIR"}
 const PREVIEW_WEAPONS := ["ar15", "ak47", "hunting_rifle", "shotgun_12g", "hellfire", "m9", "magnum44"]
 const CONTROLS := [
 	["WASD", "Move"], ["Shift", "Sprint"], ["Space", "Jump"], ["C", "Crouch"], ["Mouse 1 / 2", "Fire / Aim"],
@@ -660,7 +660,7 @@ func _options_for(key: String) -> Array:
 			if not String(sk["id"]).ends_with("_standard"):
 				out.append(sk)
 		return out
-	var optional: bool = key in ["head", "face", "hands", "back"]
+	var optional: bool = key in ["head", "face", "hands", "back", "armour"]
 	var out: Array = [{"id": "", "name": "None", "rarity": "common", "recipe": {"color": "#333333"}}] if optional else []
 	out.append_array(SkinSystem.items_for_slot(key))
 	return out

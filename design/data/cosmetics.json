@@ -10,7 +10,8 @@
     "back",
     "parachute",
     "skin",
-    "hair"
+    "hair",
+    "armour"
   ],
   "rarities": {
     "common": "#f1ede6",
@@ -37,12 +38,40 @@
     "back": "",
     "parachute": "chute_red",
     "skin": "skin_medium",
-    "hair": "hair_short_brown"
+    "hair": "hair_short_brown",
+    "armour": ""
   },
   "items": [
-    {"id": "tank_white", "slot": "chest", "name": "White Tank Top", "rarity": "common", "recipe": {"target": "shirt", "color": "#f2f0e9"}},
-    {"id": "boxers_white", "slot": "legs", "name": "White Boxers", "rarity": "common", "recipe": {"target": "pants", "color": "#ffffff"}},
-    {"id": "feet_bare", "slot": "feet", "name": "Bare Feet", "rarity": "common", "recipe": {"target": "shoes", "color": "#d9a37a"}},
+    {
+      "id": "tank_white",
+      "slot": "chest",
+      "name": "White Tank Top",
+      "rarity": "common",
+      "recipe": {
+        "target": "shirt",
+        "color": "#f2f0e9"
+      }
+    },
+    {
+      "id": "boxers_white",
+      "slot": "legs",
+      "name": "White Boxers",
+      "rarity": "common",
+      "recipe": {
+        "target": "pants",
+        "color": "#ffffff"
+      }
+    },
+    {
+      "id": "feet_bare",
+      "slot": "feet",
+      "name": "Bare Feet",
+      "rarity": "common",
+      "recipe": {
+        "target": "shoes",
+        "color": "#d9a37a"
+      }
+    },
     {
       "id": "shirt_grey",
       "slot": "chest",
@@ -361,6 +390,84 @@
         "style": "bald",
         "color": "#000000"
       }
+    },
+    {
+      "id": "hoodie_zip_graphite",
+      "slot": "chest",
+      "name": "Graphite Zip Hoodie",
+      "rarity": "common",
+      "model": "HoodieZip",
+      "recipe": {
+        "target": "chest",
+        "color": "#303136",
+        "pattern": "solid"
+      },
+      "authored_materials": true
+    },
+    {
+      "id": "shortshorts_flag",
+      "slot": "legs",
+      "name": "Flag Denim Shorts",
+      "rarity": "common",
+      "model": "ShortShorts",
+      "recipe": {
+        "target": "legs",
+        "color": "#344361",
+        "pattern": "solid"
+      },
+      "authored_materials": true
+    },
+    {
+      "id": "gloves_studded_lime",
+      "slot": "hands",
+      "name": "Studded Fingerless Gloves",
+      "rarity": "common",
+      "model": "FingerlessGloves",
+      "recipe": {
+        "target": "hands",
+        "color": "#6dab31",
+        "pattern": "solid"
+      },
+      "authored_materials": true
+    },
+    {
+      "id": "santa_tactical",
+      "slot": "head",
+      "name": "Tactical Santa Hat",
+      "rarity": "common",
+      "model": "TacticalSantaHat",
+      "recipe": {
+        "target": "head",
+        "color": "#942b2e",
+        "pattern": "solid"
+      },
+      "authored_materials": true
+    },
+    {
+      "id": "canvas_oxblood",
+      "slot": "feet",
+      "name": "Oxblood Canvas Shoes",
+      "rarity": "common",
+      "model": "CanvasShoes",
+      "recipe": {
+        "target": "feet",
+        "color": "#752f29",
+        "pattern": "solid"
+      },
+      "authored_materials": true
+    },
+    {
+      "id": "vest_kevlar",
+      "slot": "armour",
+      "name": "Kevlar Carrier",
+      "rarity": "common",
+      "model": "KevlarVest",
+      "recipe": {
+        "target": "armour",
+        "color": "#303c36",
+        "pattern": "solid"
+      },
+      "authored_materials": true
     }
   ],
   "weaponSkins": [
