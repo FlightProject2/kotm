@@ -49,3 +49,15 @@ func test_studio_character_holds_both_risers() -> void:
 			assert_false(ch.visual.studio_rig.weapon_root("ar15").visible, "rifle is stowed under canopy")
 		ch.queue_free()
 		await settle(1)
+
+func test_ram_air_parachute_model_is_wired() -> void:
+	assert_true(ResourceLoader.exists("res://assets/models/kotm/KOTM_Parachute.glb"), "Higgsfield parachute GLB ships with the game")
+	var packed := load("res://assets/models/kotm/KOTM_Parachute.glb") as PackedScene
+	assert_true(packed != null, "parachute GLB loads")
+	var model := packed.instantiate()
+	assert_true(model.find_child("KOTM_Parachute_Root", true, false) != null, "named runtime root")
+	assert_true(model.find_child("HandSocket_L", true, false) != null, "left riser socket")
+	assert_true(model.find_child("HandSocket_R", true, false) != null, "right riser socket")
+	var players := model.find_children("*", "AnimationPlayer", true, false)
+	assert_false(players.is_empty(), "parachute contains exported animation actions")
+	model.free()

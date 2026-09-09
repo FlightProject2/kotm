@@ -22,6 +22,9 @@ var yaw: float = 0.0
 var pitch: float = 0.0
 var mode: int = Mode.GROUND
 var crouching: bool = false
+var prone: bool = false
+var rolling: bool = false
+var roll_side: float = 0.0
 var stun: float = 0.0
 var health: HealthState = HealthState.new()
 var inventory: Inventory = Inventory.new()
@@ -66,6 +69,8 @@ func alive() -> bool:
 	return health.alive
 
 func height() -> float:
+	if prone:
+		return float(cfg.get("proneHeight", 0.55))
 	return float(cfg["crouchHeight"]) if crouching else float(cfg["standHeight"])
 
 func eye_position() -> Vector3:
@@ -156,6 +161,8 @@ func enter_vehicle(v: Vehicle) -> bool:
 	set_collision_layer_value(2, false)   # players layer off: the car's body does the pushing
 	collision.disabled = true
 	crouching = false
+	prone = false
+	rolling = false
 	return true
 
 func leave_vehicle() -> void:
@@ -168,6 +175,9 @@ func leave_vehicle() -> void:
 	global_position = out
 	velocity = Vector3.ZERO
 	mode = Mode.GROUND
+	prone = false
+	rolling = false
+	motor.set_stance_shape()
 
 func _die(killer: Character, how: String, headshot: bool) -> void:
 	if _death_notified:

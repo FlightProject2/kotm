@@ -32,6 +32,13 @@ func test_keys_and_mouse_without_capture() -> void:
 	assert_true(ch.input.move.y > 0.9, "W reaches the character input")
 	assert_true(ch.input.pressed(CharacterInput.B_SPRINT), "Shift reaches the character input")
 	assert_true(Vector2(ch.velocity.x, ch.velocity.z).length() > 5.0, "character sprints (%.1f m/s)" % Vector2(ch.velocity.x, ch.velocity.z).length())
+	assert_true(rig.arm.spring_length > 2.8, "run camera pulls back (%.2f m)" % rig.arm.spring_length)
+	assert_true(rig.camera.fov > 74.0, "run camera widens the view (%.1f degrees)" % rig.camera.fov)
+	Input.action_press("prone")
+	await settle(2)
+	Input.action_release("prone")
+	await settle(2)
+	assert_true(ch.input.pressed(CharacterInput.B_PRONE), "Z toggles prone in the network input")
 	src.enabled = false
 	await settle(3)
 	assert_true(ch.input.move.length() < 0.01, "paused input source sends no movement")

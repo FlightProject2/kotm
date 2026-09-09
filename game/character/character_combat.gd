@@ -92,7 +92,7 @@ func _clear_fire_buffer() -> void:
 	_pending_fire_id = ""
 
 func can_fire() -> bool:
-	return c.alive() and c.stun <= 0.0 and c.mode != Character.Mode.PARACHUTE and reload_t <= 0.0 and cycle_t <= 0.0 and swap_t <= 0.0
+	return c.alive() and c.stun <= 0.0 and not c.rolling and c.mode != Character.Mode.PARACHUTE and reload_t <= 0.0 and cycle_t <= 0.0 and swap_t <= 0.0
 
 func try_fire(is_melee: bool) -> bool:
 	if not can_fire():

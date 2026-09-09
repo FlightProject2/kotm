@@ -5,6 +5,7 @@ extends Node
 var character: Character
 var camera_rig: CameraRig
 var crouch_toggle: bool = false
+var prone_toggle: bool = false
 var tick: int = 0
 var enabled: bool = true
 
@@ -20,10 +21,17 @@ func _physics_process(_dt: float) -> void:
 		idle.pitch = character.pitch
 		idle.aim_dir = character.forward()
 		idle.set_button(CharacterInput.B_CROUCH, crouch_toggle)
+		idle.set_button(CharacterInput.B_PRONE, prone_toggle)
 		character.submit_input(idle)
 		return
 	if Input.is_action_just_pressed("crouch"):
 		crouch_toggle = not crouch_toggle
+		if crouch_toggle:
+			prone_toggle = false
+	if Input.is_action_just_pressed("prone"):
+		prone_toggle = not prone_toggle
+		if prone_toggle:
+			crouch_toggle = false
 	var i := CharacterInput.new()
 	tick += 1
 	i.tick = tick
@@ -44,6 +52,7 @@ func _physics_process(_dt: float) -> void:
 		elif Input.is_action_just_pressed("use_medkit"):
 			i.use_med = 2
 	i.set_button(CharacterInput.B_CROUCH, crouch_toggle)
+	i.set_button(CharacterInput.B_PRONE, prone_toggle)
 	i.yaw = camera_rig.body_yaw()
 	i.pitch = camera_rig.view_pitch()
 	i.aim_dir = camera_rig.aim_direction(character)

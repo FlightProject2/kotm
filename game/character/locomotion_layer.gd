@@ -13,7 +13,7 @@ func _ready() -> void:
 	_skeleton = get_skeleton()
 
 func _process_modification() -> void:
-	if character == null or _skeleton == null or character.mode != Character.Mode.GROUND or character.in_vehicle():
+	if character == null or _skeleton == null or character.mode != Character.Mode.GROUND or character.in_vehicle() or character.prone or character.rolling:
 		return
 	if driver == null:
 		driver = character.visual.anim

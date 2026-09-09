@@ -60,185 +60,10 @@
     "ball.r"
   ],
   "animations": {
-    "KOTM_Idle": {
-      "duration_seconds": 3.0,
-      "loop": true,
-      "speed_mps": 0.0
-    },
-    "KOTM_Walk": {
-      "duration_seconds": 0.9333333333333333,
-      "loop": true,
-      "speed_mps": 1.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.57,
-      "steps_per_second": 2.142857142857143,
-      "step_length_m": 0.7,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_Jog": {
-      "duration_seconds": 0.7333333333333333,
-      "loop": true,
-      "speed_mps": 3.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.31,
-      "steps_per_second": 2.727272727272727,
-      "step_length_m": 1.2833333333333334,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_Run": {
-      "duration_seconds": 0.6,
-      "loop": true,
-      "speed_mps": 6.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.225,
-      "steps_per_second": 3.3333333333333335,
-      "step_length_m": 1.95,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_Crouch_Idle": {
-      "duration_seconds": 3.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_Jump": {
-      "duration_seconds": 1.4,
-      "loop": false,
-      "speed_mps": 0.0
-    },
     "KOTM_AR75_Aim": {
       "duration_seconds": 2.0,
       "loop": true,
       "speed_mps": 0
-    },
-    "KOTM_AR75_Fire": {
-      "duration_seconds": 0.4,
-      "loop": false,
-      "speed_mps": 0
-    },
-    "KOTM_Hunting_Aim": {
-      "duration_seconds": 2.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_Hunting_Fire": {
-      "duration_seconds": 0.4,
-      "loop": false,
-      "speed_mps": 0
-    },
-    "KOTM_AR75_Reload": {
-      "duration_seconds": 2.2,
-      "loop": false,
-      "speed_mps": 0
-    },
-    "KOTM_Snowmobile_Seated": {
-      "duration_seconds": 2.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_Hunting_Reload": {
-      "duration_seconds": 2.6,
-      "loop": false,
-      "speed_mps": 0
-    },
-    "KOTM_Crouch_Walk": {
-      "duration_seconds": 0.8,
-      "loop": true,
-      "speed_mps": 1.2,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.56,
-      "steps_per_second": 2.5,
-      "step_length_m": 0.4799999999999999
-    },
-    "KOTM_AR75_Ready": {
-      "duration_seconds": 3.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_AR75_Walk": {
-      "duration_seconds": 0.9333333333333333,
-      "loop": true,
-      "speed_mps": 1.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.57,
-      "steps_per_second": 2.142857142857143,
-      "step_length_m": 0.7,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_AR75_Jog": {
-      "duration_seconds": 0.7333333333333333,
-      "loop": true,
-      "speed_mps": 3.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.31,
-      "steps_per_second": 2.727272727272727,
-      "step_length_m": 1.2833333333333334,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_AR75_Run": {
-      "duration_seconds": 0.6,
-      "loop": true,
-      "speed_mps": 6.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.225,
-      "steps_per_second": 3.3333333333333335,
-      "step_length_m": 1.95,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
-    },
-    "KOTM_AR75_Crouch_Ready": {
-      "duration_seconds": 3.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_AR75_Crouch_Walk": {
-      "duration_seconds": 0.8,
-      "loop": true,
-      "speed_mps": 1.2,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.56,
-      "steps_per_second": 2.5,
-      "step_length_m": 0.4799999999999999
-    },
-    "KOTM_AR75_Jump": {
-      "duration_seconds": 1.4,
-      "loop": false,
-      "speed_mps": 0.0
-    },
-    "KOTM_AR75_Aim_Walk": {
-      "duration_seconds": 0.9333333333333333,
-      "loop": true,
-      "speed_mps": 1.5,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.57,
-      "steps_per_second": 2.142857142857143,
-      "step_length_m": 0.7,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     },
     "KOTM_AR75_Aim_Jog": {
       "duration_seconds": 0.7333333333333333,
@@ -266,6 +91,24 @@
       "step_length_m": 1.95,
       "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     },
+    "KOTM_AR75_Aim_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_AR75_Crouch": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
     "KOTM_AR75_Crouch_Aim": {
       "duration_seconds": 3.0,
       "loop": true,
@@ -288,30 +131,29 @@
       "loop": false,
       "speed_mps": 0
     },
-    "KOTM_AR75_Crouch": {
+    "KOTM_AR75_Crouch_Ready": {
       "duration_seconds": 3.0,
       "loop": true,
       "speed_mps": 0
     },
-    "KOTM_Hunting_Ready": {
-      "duration_seconds": 3.0,
+    "KOTM_AR75_Crouch_Walk": {
+      "duration_seconds": 0.8,
       "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_Hunting_Walk": {
-      "duration_seconds": 0.9333333333333333,
-      "loop": true,
-      "speed_mps": 1.5,
+      "speed_mps": 1.2,
       "foot_contact_phases": {
         "left": 0.0,
         "right": 0.5
       },
-      "stance_cycle_fraction": 0.57,
-      "steps_per_second": 2.142857142857143,
-      "step_length_m": 0.7,
-      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
     },
-    "KOTM_Hunting_Jog": {
+    "KOTM_AR75_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Jog": {
       "duration_seconds": 0.7333333333333333,
       "loop": true,
       "speed_mps": 3.5,
@@ -324,7 +166,46 @@
       "step_length_m": 1.2833333333333334,
       "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     },
-    "KOTM_Hunting_Run": {
+    "KOTM_AR75_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_AR75_Prone_Aim": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_AR75_Prone_Aim_Crawl": {
+      "duration_seconds": 1.2,
+      "loop": true,
+      "speed_mps": 1.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_AR75_Prone_Ready": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_AR75_Prone_Ready_Crawl": {
+      "duration_seconds": 1.2,
+      "loop": true,
+      "speed_mps": 1.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_AR75_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Reload": {
+      "duration_seconds": 2.2,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_AR75_Run": {
       "duration_seconds": 0.6,
       "loop": true,
       "speed_mps": 6.5,
@@ -337,29 +218,7 @@
       "step_length_m": 1.95,
       "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     },
-    "KOTM_Hunting_Crouch_Ready": {
-      "duration_seconds": 3.0,
-      "loop": true,
-      "speed_mps": 0
-    },
-    "KOTM_Hunting_Crouch_Walk": {
-      "duration_seconds": 0.8,
-      "loop": true,
-      "speed_mps": 1.2,
-      "foot_contact_phases": {
-        "left": 0.0,
-        "right": 0.5
-      },
-      "stance_cycle_fraction": 0.56,
-      "steps_per_second": 2.5,
-      "step_length_m": 0.4799999999999999
-    },
-    "KOTM_Hunting_Jump": {
-      "duration_seconds": 1.4,
-      "loop": false,
-      "speed_mps": 0.0
-    },
-    "KOTM_Hunting_Aim_Walk": {
+    "KOTM_AR75_Walk": {
       "duration_seconds": 0.9333333333333333,
       "loop": true,
       "speed_mps": 1.5,
@@ -371,6 +230,28 @@
       "steps_per_second": 2.142857142857143,
       "step_length_m": 0.7,
       "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Crouch_Idle": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Crouch_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_Hunting_Aim": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0
     },
     "KOTM_Hunting_Aim_Jog": {
       "duration_seconds": 0.7333333333333333,
@@ -398,6 +279,24 @@
       "step_length_m": 1.95,
       "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     },
+    "KOTM_Hunting_Aim_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Crouch": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
     "KOTM_Hunting_Crouch_Aim": {
       "duration_seconds": 3.0,
       "loop": true,
@@ -420,10 +319,179 @@
       "loop": false,
       "speed_mps": 0
     },
-    "KOTM_Hunting_Crouch": {
+    "KOTM_Hunting_Crouch_Ready": {
       "duration_seconds": 3.0,
       "loop": true,
       "speed_mps": 0
+    },
+    "KOTM_Hunting_Crouch_Walk": {
+      "duration_seconds": 0.8,
+      "loop": true,
+      "speed_mps": 1.2,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.56,
+      "steps_per_second": 2.5,
+      "step_length_m": 0.4799999999999999
+    },
+    "KOTM_Hunting_Fire": {
+      "duration_seconds": 0.4,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_Hunting_Prone_Aim": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_Hunting_Prone_Aim_Crawl": {
+      "duration_seconds": 1.2,
+      "loop": true,
+      "speed_mps": 1.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_Hunting_Prone_Ready": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_Hunting_Prone_Ready_Crawl": {
+      "duration_seconds": 1.2,
+      "loop": true,
+      "speed_mps": 1.0,
+      "gait_revision": "Prone rifle posture layered over the grounded crawl; support hand is contact-corrected in Godot."
+    },
+    "KOTM_Hunting_Ready": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Reload": {
+      "duration_seconds": 2.6,
+      "loop": false,
+      "speed_mps": 0
+    },
+    "KOTM_Hunting_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Hunting_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Idle": {
+      "duration_seconds": 3.0,
+      "loop": true,
+      "speed_mps": 0.0
+    },
+    "KOTM_Jog": {
+      "duration_seconds": 0.7333333333333333,
+      "loop": true,
+      "speed_mps": 3.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.31,
+      "steps_per_second": 2.727272727272727,
+      "step_length_m": 1.2833333333333334,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Jump": {
+      "duration_seconds": 1.4,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_Prone_Crawl": {
+      "duration_seconds": 1.2,
+      "loop": true,
+      "speed_mps": 1.0
+    },
+    "KOTM_Prone_Idle": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0.0
+    },
+    "KOTM_Prone_Roll_L": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_Prone_Roll_R": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": false,
+      "speed_mps": 0.0
+    },
+    "KOTM_Run": {
+      "duration_seconds": 0.6,
+      "loop": true,
+      "speed_mps": 6.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.225,
+      "steps_per_second": 3.3333333333333335,
+      "step_length_m": 1.95,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
+    },
+    "KOTM_Snowmobile_Seated": {
+      "duration_seconds": 2.0,
+      "loop": true,
+      "speed_mps": 0
+    },
+    "KOTM_Walk": {
+      "duration_seconds": 0.9333333333333333,
+      "loop": true,
+      "speed_mps": 1.5,
+      "foot_contact_phases": {
+        "left": 0.0,
+        "right": 0.5
+      },
+      "stance_cycle_fraction": 0.57,
+      "steps_per_second": 2.142857142857143,
+      "step_length_m": 0.7,
+      "gait_revision": "Anatomical forward knee hinge; matched native speed; heel/forefoot strike, toe-off, swing recovery"
     }
   },
   "templates": {
@@ -1503,5 +1571,11 @@
       "KOTM_Hunting_Walk"
     ],
     "unchanged_geometry_rig_roots": true
+  },
+  "locomotion_revision": {
+    "style": "Grounded 2016 survival battle-royale locomotion",
+    "run": "Close rib-level arm drive, relaxed hands, forward athletic lean and matched opposite arm/leg cadence.",
+    "prone": "0.55 m gameplay capsule with idle, crawl and left/right roll actions.",
+    "camera": "3.05 m run boom, 0.50 m shoulder offset and 76 degree run FOV."
   }
 }

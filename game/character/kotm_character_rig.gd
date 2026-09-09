@@ -8,6 +8,10 @@ const MANIFEST_PATH := "res://assets/characters/kotm/asset_manifest.json"
 const SUPPORT_IK := preload("res://game/character/support_hand_ik.gd")
 const WEAPONS := {"ar15": "AR75", "ak47": "AR75", "hunting_rifle": "Hunting"}
 const WEAPON_ROOTS := {"ar15": "AR75", "ak47": "AK47", "hunting_rifle": "HuntingRifle"}
+const REQUIRED_TEMPLATES := [
+	"MotorcycleHelmet", "BaseballCap", "Sunglasses", "FaceBandana", "TankTop",
+	"TShirt", "Hoodie", "Leggings", "Shorts", "Sneakers", "Beanie"
+]
 static var manifest: Dictionary = {}
 static var stride_centres: Dictionary = {}
 static var calibrated_wrists: Dictionary = {}
@@ -36,6 +40,8 @@ var body_composite = preload("res://game/character/body_composite.gd").new()
 
 func setup(model: Node3D) -> bool:
 	avatar = model
+	_ensure_ar75_geometry()
+	_ensure_ak47_geometry()
 	var skels := avatar.find_children("*", "Skeleton3D", true, false)
 	var players := avatar.find_children("*", "AnimationPlayer", true, false)
 	if skels.is_empty() or players.is_empty():
@@ -59,13 +65,14 @@ func setup(model: Node3D) -> bool:
 		roots[key] = avatar.find_child("EQ_" + key, true, false)
 	for key in manifest.get("templates", {}):
 		var info: Dictionary = manifest.templates[key]
-		roots[key] = avatar.find_child(info.root, true, false)
+		var template_root_name := String(info.get("root", ""))
+		roots[key] = avatar.find_child(template_root_name, true, false)
 		meshes[key] = []
 		for source_name in info.meshes:
 			var mesh := avatar.find_child(String(source_name).replace(".", "_"), true, false) as MeshInstance3D
 			if mesh:
 				meshes[key].append(mesh)
-			else:
+			elif roots[key] == null and key in REQUIRED_TEMPLATES:
 				errors.append("Missing wearable mesh: " + str(source_name))
 	meshes["DefaultTank"] = []
 	meshes["DefaultBoxers"] = []
@@ -109,6 +116,56 @@ func setup(model: Node3D) -> bool:
 	body_composite.setup(body_regions)
 	apply_visibility()
 	return true
+
+func _ensure_ar75_geometry() -> void:
+	# The authored character export keeps the hand-mounted socket but may omit the
+	# empty-only AR75 branch. Restore the standalone solid weapon and its sockets
+	# under the existing hand attachment so animation and contact stay authored.
+	var target := avatar.find_child("EQ_AR75", true, false) as Node3D
+	if target == null or target.find_child("AR75__Barrel", true, false) != null:
+		return
+	var packed: PackedScene = load("res://assets/models/kotm/KOTM_AR75.glb")
+	if packed == null:
+		return
+	var instance := packed.instantiate()
+	var source := instance.find_child("EQ_AR75", true, false) as Node3D
+	if source == null:
+		instance.queue_free()
+		return
+	for child in source.get_children():
+		source.remove_child(child)
+		child.owner = null
+		target.add_child(child)
+	instance.queue_free()
+
+func _ensure_ak47_geometry() -> void:
+	# The rebuilt animation export keeps the hand socket but stores the AK as a
+	# standalone model. Restore that solid weapon under the same hand attachment
+	# so the authored AR/AK clips share one bone-bound contact path.
+	var ar_target := avatar.find_child("EQ_AR75", true, false) as Node3D
+	if ar_target == null or ar_target.get_parent() == null:
+		return
+	var target := avatar.find_child("EQ_AK47", true, false) as Node3D
+	if target == null:
+		target = Node3D.new()
+		target.name = "EQ_AK47"
+		target.transform = ar_target.transform
+		ar_target.get_parent().add_child(target)
+	if target.find_child("AK47Rev__Barrel", true, false) != null:
+		return
+	var packed: PackedScene = load("res://assets/models/kotm/KOTM_AK47.glb")
+	if packed == null:
+		return
+	var instance := packed.instantiate()
+	var source := instance.find_child("EQ_AK47", true, false) as Node3D
+	if source == null:
+		instance.queue_free()
+		return
+	for child in source.get_children():
+		source.remove_child(child)
+		child.owner = null
+		target.add_child(child)
+	instance.queue_free()
 
 func _calibrate_stride_centres() -> void:
 	for key in clips:

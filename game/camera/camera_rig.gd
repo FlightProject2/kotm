@@ -126,6 +126,7 @@ func _process(dt: float) -> void:
 	aiming = target.input.pressed(CharacterInput.B_AIM) and target.mode != Character.Mode.PARACHUTE
 	scoped = aiming and target.has_method("current_weapon_scoped") and target.current_weapon_scoped()
 	var chute := target.mode == Character.Mode.PARACHUTE
+	var run_camera := target.mode == Character.Mode.GROUND and target.motor.sprinting and not target.prone and Vector2(target.velocity.x, target.velocity.z).length() > 4.0 and not aiming
 	var fp := (first_person or scoped) and not chute
 	var length: float
 	if chute:
@@ -136,15 +137,18 @@ func _process(dt: float) -> void:
 		length = 0.0
 	elif aiming:
 		length = float(cfg["armAim"])
+	elif run_camera:
+		length = float(cfg.get("armRun", cfg["armThirdPerson"]))
 	else:
 		length = float(cfg["armThirdPerson"])
-	var side := 0.0 if fp else (float(cfg["shoulderAim"]) if aiming else float(cfg["shoulder"]))
+	var side := 0.0 if fp else (float(cfg["shoulderAim"]) if aiming else (float(cfg.get("shoulderRun", cfg["shoulder"])) if run_camera else float(cfg["shoulder"])))
 	var origin: Vector3 = target.get_global_transform_interpolated().origin if get_tree().physics_interpolation else target.global_position
-	global_position = origin + Vector3(0, target.height() + float(cfg["pivotOffset"]), 0)
+	var stance_offset := float(cfg.get("pivotProneOffset", 0.32)) if target.prone else (float(cfg.get("pivotRunOffset", -0.08)) if run_camera else 0.0)
+	global_position = origin + Vector3(0, target.height() + float(cfg["pivotOffset"]) + stance_offset, 0)
 	rotation = Vector3(view_pitch(), yaw + free_look_yaw + recoil_yaw, 0)
 	shoulder.position.x = _decay(shoulder.position.x, side * shoulder_side, 14.0, dt)
 	arm.spring_length = _decay(arm.spring_length, length, float(cfg.get("armSmoothing", 18.0)), dt)
-	var fov := float(cfg["fovScope"]) if scoped else (float(cfg["fovAim"]) if aiming else float(cfg["fov"]))
+	var fov := float(cfg["fovScope"]) if scoped else (float(cfg["fovAim"]) if aiming else (float(cfg.get("fovRun", cfg["fov"])) if run_camera else float(cfg["fov"])))
 	camera.fov = _decay(camera.fov, fov, float(cfg.get("fovSmoothing", 14.0)), dt)
 	# keep the camera above the terrain
 	if target.world:
