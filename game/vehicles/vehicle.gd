@@ -54,7 +54,7 @@ func setup(id: String, p_world: World) -> void:
 	hp_max = float(def.get("hp", 1000))
 	hp = hp_max
 	top_speed = float(def.get("topSpeedKmh", 110)) * KMH
-	accel = maxf(6.0, (60.0 * KMH) / float(def.get("accel0to60Sec", 6.0)) * 2.6)
+	accel = (60.0 * KMH) / maxf(1.0, float(def.get("accel0to60Sec", 6.0)))
 	grip = float(def.get("gripDirt", 0.6))
 	name = "Vehicle_%s_%d" % [id, get_instance_id() % 10000]
 	add_to_group("vehicles")
@@ -113,12 +113,21 @@ func setup(id: String, p_world: World) -> void:
 	_body_bounds = AABB(cs.position - bs.size * 0.5, bs.size)
 	_collision_half_width = bs.size.x * 0.5
 	if model:
+		VehicleHitGeometry.attach(self)
 		if vehicle_id in ["police_car", "pickup_truck"]:
 			_configure_truck_glass()
 		for socket in ["HandGrip_L", "HandGrip_R", "FootRest_L", "FootRest_R"]:
 			var marker := model.find_child(socket, true, false) as Node3D
 			if marker:
 				contact_markers[socket] = marker
+		# The authored truck pedal markers were accidentally left at dashboard height,
+		# pulling both knees outward into a squat. Put them in the footwell, relative to
+		# the same seat basis used by the driver's visual.
+		if vehicle_id in ["police_car", "pickup_truck"] and driver_marker:
+			for side in [["FootRest_L", -0.14], ["FootRest_R", 0.14]]:
+				var pedal: Node3D = contact_markers.get(side[0])
+				if pedal:
+					pedal.global_position = seat_transform() * Vector3(side[1], 0.72, -0.48)
 		animator = ANIMATOR.new()
 		animator.name = "VehicleAnimation"
 		add_child(animator)
@@ -173,8 +182,7 @@ func enter(ch: Character) -> void:
 		animator.play_door_cycle()
 
 func exit() -> Vector3:
-	driver = null
-	speed = 0.0
+	driver = null # Preserve momentum; only braking or rolling resistance stops the car.
 	if animator:
 		animator.play_door_cycle()
 	# exit point: left of the car, on the ground
@@ -229,7 +237,7 @@ func drive(dt: float, inp: CharacterInput) -> void:
 		else:
 			speed = move_toward(speed, -reverse_max * -throttle, accel * 0.6 * dt)
 	else:
-		speed = move_toward(speed, 0.0, 3.0 * dt)
+		speed = move_toward(speed, 0.0, (0.9 + 0.002 * speed * speed) * dt)
 	# slope: gravity pulls along the forward axis on hills
 	var fwd := -global_transform.basis.z
 	speed -= fwd.y * 9.81 * 0.35 * dt
@@ -241,7 +249,9 @@ func drive(dt: float, inp: CharacterInput) -> void:
 	_step(dt)
 
 func _coast(dt: float) -> void:
-	speed = move_toward(speed, 0.0, 6.0 * dt)
+	speed = move_toward(speed, 0.0, (0.9 + 0.002 * speed * speed) * dt)
+	if absf(speed) > 0.05:
+		speed -= (-global_basis.z).y * 9.81 * 0.35 * dt
 	_step(dt)
 
 func _step(dt: float) -> void:

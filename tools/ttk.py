@@ -39,7 +39,7 @@ def shots_head(w, helmet=None):
         if has_helmet:
             has_helmet = False
             if not w.get("pierceHelmet"):
-                dmg *= helmet["wearerTakesFraction"]
+                dmg = w["bodyDamage"]
         hp -= dmg
     return n
 

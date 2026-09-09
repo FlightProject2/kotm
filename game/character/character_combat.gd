@@ -21,6 +21,9 @@ const SEMI_BUFFER_SEC := 0.08
 var _pending_fire_until := -1.0
 var _pending_fire_id := ""
 const GRENADE_SYSTEM := preload("res://game/combat/grenade_system.gd")
+var bloom := 0.0
+var bloom_rest := 0.0
+var _recoil_side := 1.0
 
 func _ready() -> void:
 	c = get_parent() as Character

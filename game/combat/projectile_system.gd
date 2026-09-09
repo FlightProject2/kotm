@@ -15,12 +15,14 @@ class Proj:
 	var pellet: bool = false
 	var g: float = 9.81
 	var alive: bool = true
+	var tracer_id: int = 0
 
 var projectiles: Array[Proj] = []
 var world: World
 var shots_fired: int = 0
 var hits: int = 0
 var _exclude_cache: Dictionary = {}
+var _targets: Array[Node] = []
 
 func _enter_tree() -> void:
 	instance = self
@@ -34,7 +36,7 @@ func _exit_tree() -> void:
 	if instance == self:
 		instance = null
 
-func fire(shooter: Character, origin: Vector3, dir: Vector3, def: Dictionary, shot_id: int, pellet: bool) -> void:
+func fire(shooter: Character, origin: Vector3, dir: Vector3, def: Dictionary, shot_id: int, pellet: bool, obstruction: Dictionary = {}) -> void:
 	var p := Proj.new()
 	p.pos = origin
 	p.vel = dir.normalized() * float(def["muzzleVelocity"])
@@ -45,7 +47,13 @@ func fire(shooter: Character, origin: Vector3, dir: Vector3, def: Dictionary, sh
 	p.g = Ballistics.gravity_for(def)
 	projectiles.append(p)
 	shots_fired += 1
-	Net.fx_all("tracer", [shooter.character_id, origin, p.vel, String(def["id"])])
+	p.tracer_id = shots_fired
+	Net.fx_all("projectile_tracer", [p.tracer_id, shooter.character_id, origin, p.vel, String(def["id"])])
+	if not obstruction.is_empty():
+		p.pos = obstruction.position
+		p.alive = false
+		_impact(p, obstruction)
+		Net.fx_all("projectile_impact", [p.tracer_id, p.pos])
 
 func _exclusions(shooter: Character) -> Array[RID]:
 	if _exclude_cache.has(shooter) and is_instance_valid(shooter):
@@ -61,6 +69,7 @@ func _physics_process(dt: float) -> void:
 	if projectiles.is_empty() or not multiplayer.is_server():
 		return
 	var space := get_viewport().get_world_3d().direct_space_state
+	_targets = get_tree().get_nodes_in_group("characters")
 	var max_range := 800.0
 	for p in projectiles:
 		if not p.alive:
@@ -71,9 +80,10 @@ func _physics_process(dt: float) -> void:
 			remaining -= sub
 			p.vel.y -= p.g * sub
 			var to := p.pos + p.vel * sub
-			var q := PhysicsRayQueryParameters3D.create(p.pos, to, 1 | 4 | 16)
+			var q := PhysicsRayQueryParameters3D.create(p.pos, to, 1 | 4 | 32)
 			q.collide_with_areas = true
 			q.collide_with_bodies = true
+			q.hit_from_inside = true
 			if is_instance_valid(p.shooter):
 				q.exclude = _exclusions(p.shooter)
 			var hit := space.intersect_ray(q)
@@ -96,6 +106,7 @@ func _physics_process(dt: float) -> void:
 				p.dist += p.pos.distance_to(hit["position"])
 				p.pos = hit["position"]
 				_impact(p, hit)
+				Net.fx_all("projectile_impact", [p.tracer_id, p.pos])
 				p.alive = false
 			else:
 				p.dist += p.pos.distance_to(to)
@@ -117,7 +128,7 @@ func _near_miss(space: PhysicsDirectSpaceState3D, p: Proj, to: Vector3) -> Dicti
 	# cheap gate: any living character within 3 m of the segment's midpoint?
 	var mid := (p.pos + to) * 0.5
 	var near_any := false
-	for c in get_tree().get_nodes_in_group("characters"):
+	for c in _targets:
 		var ch := c as Character
 		if ch and ch != p.shooter and ch.alive() and ch.global_position.distance_squared_to(mid) < (len * 0.5 + 3.0) * (len * 0.5 + 3.0):
 			near_any = true
@@ -163,20 +174,23 @@ func _impact(p: Proj, hit: Dictionary) -> void:
 		WindowManager.instance.break_hit(hit,"bullet")
 		return
 	var collider: Object = hit.get("collider")
+	if collider != null and collider.has_meta("vehicle_owner"):
+		collider = collider.get_meta("vehicle_owner")
 	var victim := HitboxRig.character_of(collider)
 	var normal: Vector3 = hit.get("normal", Vector3.UP)
 	if victim and victim != p.shooter and victim.alive():
 		var region := HitboxRig.region_of(collider)
+		var helmet_id := victim.health.helmet_id
 		var r := DamageModel.hit(p.def, region, p.dist, victim.health, p.pellet, p.shot_id)
 		hits += 1
 		victim.apply_hit(r, p.shooter, String(p.def["name"]))
-		if is_instance_valid(p.shooter) and p.shooter.is_local():
-			Events.hit_confirmed.emit(r.kind, r.killed)
+		if is_instance_valid(p.shooter) and not p.shooter.is_bot:
+			Net.event_to(p.shooter.owner_peer_id, "hit_confirmed", [r.kind, r.killed])
 		if victim.is_local():
 			Events.damaged.emit(r.damage, (p.shooter.global_position - victim.global_position).normalized() if is_instance_valid(p.shooter) else Vector3.ZERO, r.kind)
 		Net.fx_all("hit_fx", [p.pos, normal, "armor" if r.kind == DamageModel.KIND_ARMOR or r.kind == DamageModel.KIND_ARMOR_BREAK else ("helmet" if r.kind == DamageModel.KIND_HELMET_POP or r.helmet_destroyed else "flesh")])
 		if r.helmet_destroyed:
-			Net.fx_all("helmet_pop", [victim.global_position + Vector3(0, 1.6, 0), "helmet"])
+			Net.fx_all("helmet_pop", [(victim.get_node("Hitboxes") as HitboxRig).head_world(), helmet_id])
 	elif collider is Vehicle:
 		(collider as Vehicle).apply_damage(float(p.def.get("bodyDamage", 20)) * 0.6, p.shooter)
 		Net.fx_all("hit_fx", [p.pos, normal, "armor"])

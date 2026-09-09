@@ -124,6 +124,9 @@ func dump() -> Array:
 	for id in throwables:
 		if throwables[id] > 0:
 			out.append({"kind": "throwable", "id": id, "qty": throwables[id]})
+	for id in materials:
+		if materials[id] > 0:
+			out.append({"kind": "material", "id": id, "qty": materials[id]})
 	if backpack_id != "":
 		out.append({"kind": "backpack", "id": backpack_id})
 	return out

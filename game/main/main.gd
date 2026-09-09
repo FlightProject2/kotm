@@ -111,6 +111,8 @@ func _print_summary_and_quit() -> void:
 
 func _on_match_ended(won: bool, placement: int, killer_name: String, weapon: String, headshot: bool) -> void:
 	print("KOTM: match ended won=%s placement=%d killer=%s" % [won, placement, killer_name])
+	if hud and hud.inventory_panel and hud.inventory_panel.open:
+		hud.inventory_panel.set_open(false)
 	if sim:
 		_print_summary_and_quit()
 		return

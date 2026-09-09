@@ -1,5 +1,49 @@
 extends TestCase
 
+func test_eight_way_run_turns_the_hips_without_crossing_the_knees() -> void:
+	var ch: Character = load("res://game/character/character.tscn").instantiate()
+	await add_to_tree(ch)
+	ch.set_physics_process(false)
+	ch.mode = Character.Mode.GROUND
+	var vis: CharacterVisuals = ch.visual
+	var rig: KOTMCharacterRig = vis.studio_rig
+	vis.anim.set_process(false)
+	vis.anim.lower_gait_clip = "KOTM_Run"
+	rig.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	var poses := {}
+	var directions := {
+		"w": Vector3.FORWARD, "wa": Vector3(-1, 0, -1).normalized(), "wd": Vector3(1, 0, -1).normalized(),
+		"a": Vector3.LEFT, "d": Vector3.RIGHT, "sa": Vector3(-1, 0, 1).normalized(),
+		"sd": Vector3(1, 0, 1).normalized(), "s": Vector3.BACK,
+	}
+	var direction_index := 0
+	for key: String in directions:
+		ch.velocity = directions[key] * 5.2
+		vis.anim.lower_gait_phase = 0.25 + direction_index * 0.0005
+		rig.play("KOTM_Run", 0)
+		rig.player.seek(rig.player.current_animation_length * vis.anim.lower_gait_phase, true)
+		rig.player.advance(0)
+		vis.leg_ik._process_modification()
+		var skel: Skeleton3D = rig.skeleton
+		var pelvis := skel.get_bone_global_pose(skel.find_bone("pelvis"))
+		var lateral := pelvis.basis.x.normalized()
+		var left_knee := skel.get_bone_global_pose(skel.find_bone("calf.l")).origin
+		var right_knee := skel.get_bone_global_pose(skel.find_bone("calf.r")).origin
+		poses[key] = {
+			"yaw": atan2(pelvis.basis.z.x, pelvis.basis.z.z),
+			"left": (left_knee - pelvis.origin).dot(lateral),
+			"right": (right_knee - pelvis.origin).dot(lateral),
+		}
+		direction_index += 1
+	assert_eq(poses.size(), 8, "all WASD combinations evaluated")
+	for key: String in poses:
+		assert_true(float(poses[key].left) < -0.04 and float(poses[key].right) > 0.04, "%s keeps both knees on their anatomical sides" % key)
+	var forward_yaw := float(poses.w.yaw)
+	assert_true(absf(wrapf(float(poses.a.yaw) - forward_yaw, -PI, PI)) > 0.8, "strafe opens the hips toward travel")
+	assert_true(absf(wrapf(float(poses.s.yaw) - forward_yaw, -PI, PI)) < 0.15, "reverse uses a back-pedal instead of turning the pelvis backwards")
+	ch.queue_free()
+	await settle(1)
+
 func test_directional_legs_and_stationary_pose() -> void:
 	var ch: Character = load("res://game/character/character.tscn").instantiate()
 	await add_to_tree(ch)

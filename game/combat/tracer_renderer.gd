@@ -11,6 +11,8 @@ class Tracer:
 	var stopped: bool = false
 	var fade: float = 0.15
 	var dist: float = 0.0
+	var exclusions: Array[RID] = []
+	var projectile_id := -1
 
 var tracers: Array[Tracer] = []
 var world: World
@@ -29,14 +31,35 @@ func _ready() -> void:
 	material_override = m
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	Events.tracer.connect(_on_tracer)
+	Events.projectile_tracer.connect(_on_projectile_tracer)
+	Events.projectile_impact.connect(_on_projectile_impact)
 
-func _on_tracer(_shooter_id: int, origin: Vector3, velocity: Vector3, weapon_id: String) -> void:
+func _on_projectile_tracer(id: int, shooter: int, origin: Vector3, velocity: Vector3, weapon: String) -> void:
+	var before := tracers.size()
+	_on_tracer(shooter, origin, velocity, weapon)
+	if tracers.size() > before:
+		tracers[-1].projectile_id = id
+
+func _on_projectile_impact(id: int, position: Vector3) -> void:
+	for tracer in tracers:
+		if tracer.projectile_id == id:
+			tracer.pos = position
+			tracer.stopped = true
+			tracer.fade = 0.15
+			return
+
+func _on_tracer(shooter_id: int, origin: Vector3, velocity: Vector3, weapon_id: String) -> void:
 	if not Settings.tracers:
 		return
 	var t := Tracer.new()
 	t.start = origin
 	t.pos = origin
 	t.vel = velocity
+	for ch: Character in get_tree().get_nodes_in_group("characters"):
+		if ch.character_id == shooter_id:
+			t.exclusions.append(ch.get_rid())
+			t.exclusions.append_array((ch.get_node("Hitboxes") as HitboxRig).rids())
+			break
 	var def := ItemCatalog.weapon_def(weapon_id)
 	t.g = Ballistics.gravity_for(def) if not def.is_empty() else 9.81
 	tracers.append(t)
@@ -56,7 +79,9 @@ func _process(dt: float) -> void:
 			remaining -= sub
 			t.vel.y -= t.g * sub
 			var to := t.pos + t.vel * sub
-			var q := PhysicsRayQueryParameters3D.create(t.pos, to, 1 | 4 | 16)
+			var q := PhysicsRayQueryParameters3D.create(t.pos, to, 1 | 4 | 32)
+			q.exclude = t.exclusions
+			q.hit_from_inside = true
 			q.collide_with_areas = true
 			var hit := space.intersect_ray(q)
 			var tt := world.height_field.segment_hit(t.pos, to, 1.0) if world else -1.0

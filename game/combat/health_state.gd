@@ -12,7 +12,7 @@ var armor_id: String = ""
 var armor_absorb: float = 0.0
 var armor_dur: float = 0.0
 var armor_max: float = 0.0
-var shoes_id: String = "conveys"
+var shoes_id: String = "barefoot"
 ## Shot id that popped the helmet: other pellets of the same shot still get the reduction.
 var helmet_popped_by_shot: int = -1
 var helmet_popped_take: float = 1.0
@@ -88,3 +88,12 @@ func duplicate_state() -> HealthState:
 	s.armor_id = armor_id; s.armor_absorb = armor_absorb; s.armor_dur = armor_dur; s.armor_max = armor_max
 	s.shoes_id = shoes_id; s.helmet_popped_by_shot = helmet_popped_by_shot; s.helmet_popped_take = helmet_popped_take
 	return s
+
+func has_running_shoes() -> bool:
+	return bool(shoes().get("preventsSprintExhaustion", false))
+
+func set_shoes(id: String) -> bool:
+	if _gear("shoes", id).is_empty():
+		return false
+	shoes_id = id
+	return true

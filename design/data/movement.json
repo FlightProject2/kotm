@@ -1,7 +1,7 @@
 {
   "$schema_note": "Character locomotion, parachute and camera tuning for the Godot build (docs/game-plan/02 and 04).",
-  "walkSpeed": 3.5,
-  "sprintSpeed": 6.5,
+  "walkSpeed": 2.8,
+  "sprintSpeed": 5.2,
   "crouchSpeed": 1.2,
   "proneSpeed": 1,
   "jumpVelocity": 6.8,
@@ -31,12 +31,12 @@
   "camera": {
     "pivotOffset": -0.2,
     "armThirdPerson": 2.4,
-    "armAim": 1.3,
+    "armAim": 1.75,
     "armParachute": 6,
     "shoulder": 0.4,
-    "shoulderAim": 0.45,
+    "shoulderAim": 0.72,
     "fov": 72,
-    "fovAim": 55,
+    "fovAim": 58,
     "fovScope": 16,
     "aimSensMult": 0.8,
     "scopeSensMult": 0.35,
@@ -58,5 +58,13 @@
   },
   "groundDecel": 70,
   "jumpBufferSec": 0.12,
-  "coyoteSec": 0.1
+  "coyoteSec": 0.1,
+  "stamina": {
+    "capacity": 100,
+    "drainPerSec": 12.5,
+    "recoveryPerSec": 20,
+    "recoveryDelaySec": 0.8,
+    "resumeAt": 35,
+    "exhaustedSpeed": 2.4
+  }
 }

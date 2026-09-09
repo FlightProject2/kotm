@@ -254,8 +254,17 @@ func _apply_appearance() -> void:
 			hair.material_override = SkinSystem.recipe_material(recipe)
 	body_composite.update()
 
+var worn_shoes := false
+
+func set_worn_shoes(on: bool) -> void:
+	if on != worn_shoes:
+		worn_shoes = on
+		apply_visibility()
+
 func apply_visibility() -> void:
 	var active: Array = wardrobe.values()
+	if worn_shoes:
+		active.append("Sneakers")
 	var helmet_on: bool = equipment.helmet or wardrobe.head in ["MotorcycleHelmet", "TacticalSantaHat"]
 	for key in meshes:
 		var enabled: bool = key in active and not (key == "Sunglasses" and helmet_on)

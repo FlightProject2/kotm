@@ -10,8 +10,8 @@ func test_drop_matches_analytic_within_2_percent() -> void:
 
 func test_ar15_drop_is_visible_at_range() -> void:
 	var w: Dictionary = TestDamage.weapon("ar15")
-	assert_between(Ballistics.drop_at(150.0, w), 0.4, 0.6, "AR-15 drops ~0.46 m at 150 m")
-	assert_between(Ballistics.drop_at(300.0, w), 1.7, 2.0, "AR-15 drops ~1.8 m at 300 m")
+	assert_between(Ballistics.drop_at(150.0, w), 0.60, 0.61, "AR-15 drops ~0.603 m at 150 m")
+	assert_between(Ballistics.drop_at(300.0, w), 2.40, 2.42, "AR-15 drops ~2.412 m at 300 m")
 
 func test_jitter_stays_inside_cone() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -25,3 +25,13 @@ func test_jitter_stays_inside_cone() -> void:
 func test_shotgun_blast_sums_to_96() -> void:
 	var w: Dictionary = TestDamage.weapon("shotgun_12g")
 	assert_near(float(w["pellets"]) * float(w["pelletDamage"]), float(w["bodyDamage"]), 0.001)
+
+func test_shotgun_pattern_has_a_centre_and_separated_pellets() -> void:
+	var directions: Array[Vector3] = []
+	for i in 8:
+		var direction := Ballistics.pellet_direction(Vector3.FORWARD, 3.0, i, 8, 0.0)
+		assert_true(rad_to_deg(direction.angle_to(Vector3.FORWARD)) <= 3.0001)
+		for previous in directions:
+			assert_true(previous.distance_to(direction) > 0.01, "no pellet clumping")
+		directions.append(direction)
+	assert_eq(directions[0], Vector3.FORWARD)

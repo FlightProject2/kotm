@@ -104,6 +104,11 @@ func _apply(item: Dictionary, pos: Vector3) -> void:
 			if c.health.has_armor():
 				registry.add({"kind": "armor", "id": c.health.armor_id}, pos + Vector3(-0.6, 0, -0.3))
 			c.health.set_armor(item["id"])
+		"shoes":
+			c.health.set_shoes(item["id"])
+			c.motor.recover_stamina(0.0)
+			if c.visual.studio_rig:
+				c.visual.studio_rig.set_worn_shoes(c.health.shoes_id not in ["", "barefoot"])
 		"backpack":
 			if inv.backpack_id != "":
 				registry.add({"kind": "backpack", "id": inv.backpack_id}, pos + Vector3(0.3, 0, -0.6))
@@ -116,6 +121,8 @@ static func drop_bag(ch: Character, registry: LootRegistry) -> void:
 		items.append({"kind": "helmet", "id": ch.health.helmet_id})
 	if ch.health.has_armor():
 		items.append({"kind": "armor", "id": ch.health.armor_id})
+	if ch.health.shoes_id not in ["", "barefoot"]:
+		items.append({"kind": "shoes", "id": ch.health.shoes_id})
 	if items.is_empty():
 		return
 	var p := ch.global_position

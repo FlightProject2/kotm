@@ -150,7 +150,7 @@ func _pick_studio_clip() -> void:
 		prefix += KOTMCharacterRig.WEAPONS[studio.weapon_id] + "_"
 	var aiming := character.input.pressed(CharacterInput.B_AIM)
 	var moving := planar > 0.15
-	var sprinting := character.input.pressed(CharacterInput.B_SPRINT) and not aiming
+	var sprinting := character.motor.sprinting and planar > 4.8 and not aiming
 	var clip := "KOTM_Idle"
 	var speed := 1.0
 	if character.in_vehicle():
@@ -197,6 +197,9 @@ func _pick_studio_clip() -> void:
 			player.seek(phase * _clip_duration(clip), false)
 		current = clip
 		draw_pending = false
+	if clip.ends_with("Walk") or clip.ends_with("Jog") or clip.ends_with("Run"):
+		player.seek(lower_gait_phase * player.get_animation(studio.clips[clip]).length, true)
+		speed = 0.0
 	player.speed_scale = speed
 
 func _clip_duration(clip: String) -> float:

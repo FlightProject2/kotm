@@ -99,6 +99,7 @@ func _physics_process(dt: float) -> void:
 	var previous_position := global_position
 	if vehicle != null and is_instance_valid(vehicle):
 		var before := vehicle.global_position
+		motor.recover_stamina(dt)
 		vehicle.drive(dt, input)
 		if is_local():
 			Events.local_stat.emit("drive", vehicle.global_position.distance_to(before))
@@ -190,6 +191,8 @@ func start_heal(med_id: String) -> bool:
 		return false
 	for m in DataLib.armor()["medical"]:
 		if m["id"] == med_id:
+			combat.reload_t = 0.0
+			combat._clear_fire_buffer()
 			heal_timer = float(m["useSec"])
 			heal_pending = m
 			return true

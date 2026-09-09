@@ -3,6 +3,8 @@ extends Node
 ## Locomotion: ground/air movement, jump, fall damage, parachute descent (docs 02 and 04).
 ## Constants come from design/data/movement.json. Runs on the authority only.
 
+var stamina := SprintStamina.new()
+var sprinting := false
 var c: Character
 var cfg: Dictionary
 var pcfg: Dictionary
@@ -20,6 +22,7 @@ func _ready() -> void:
 func simulate(dt: float) -> void:
 	c.stun = maxf(0.0, c.stun - dt)
 	if c.mode == Character.Mode.PARACHUTE:
+		recover_stamina(dt)
 		_parachute(dt)
 	else:
 		_ground_air(dt)
@@ -35,6 +38,8 @@ func _ground_air(dt: float) -> void:
 	var aiming := inp.pressed(CharacterInput.B_AIM)
 	var forward_ish: bool = inp.move.y > 0.1 and inp.move.y >= absf(inp.move.x)
 	var can_sprint := inp.pressed(CharacterInput.B_SPRINT) and not aiming and not c.crouching and not c.healing_blocks_sprint() and forward_ish
+	can_sprint = stamina.tick(dt, can_sprint, c.is_on_floor() and inp.move.length_squared() > 0.01 and Vector2(c.velocity.x, c.velocity.z).length() > 0.2 and c.stun <= 0.0, c.health.has_running_shoes(), cfg["stamina"])
+	sprinting = can_sprint
 	var speed: float
 	if c.stun > 0.0 or c.healing_blocks_movement():
 		speed = 0.0
@@ -43,7 +48,7 @@ func _ground_air(dt: float) -> void:
 	elif can_sprint:
 		speed = float(cfg["sprintSpeed"])
 	else:
-		speed = float(cfg["walkSpeed"])
+		speed = float(cfg["stamina"]["exhaustedSpeed"]) if stamina.exhausted else float(cfg["walkSpeed"])
 	var wish_dir := f * inp.move.y + r * inp.move.x
 	var has_wish: bool = wish_dir.length_squared() > 0.0001 and speed > 0.0
 	var wish := wish_dir.normalized() * speed if has_wish else Vector3.ZERO
@@ -166,3 +171,7 @@ func start_parachute(pos: Vector3, yaw: float) -> void:
 	_coyote_t = 0.0
 	if c.is_inside_tree():
 		c.reset_physics_interpolation()
+
+func recover_stamina(dt: float) -> void:
+	sprinting = false
+	stamina.tick(dt, false, false, c.health.has_running_shoes(), cfg["stamina"])

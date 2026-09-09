@@ -52,6 +52,12 @@ Pick up a **Frag Grenade** with F, select hotbar **6**, then click **left mouse*
 The grenade bounces and explodes four seconds after the throw. Its blast deals full damage
 within 3 m and falls to zero at 8 m; solid walls provide cover. Nearby breakable windows shatter.
 Holding fire does not repeatedly throw grenades.
+Sprint now has eight seconds of stamina and a recovery period. Looted sneakers prevent exhaustion;
+cosmetic shoes do not grant that benefit. Moving cars coast after exit, so brake before parking.
+Pace AR clicks for accuracy: rapid fire expands the reticle's dispersion, which recovers during a pause.
+Tab supports nearby loot, medical use and recipes including coagulant and makeshift armour.
+See the [2016 reference and implementation audit](docs/h1z1-2016-reference.md) for primary sources,
+tested changes and the remaining gaps in historical parity and online validation.
 
 ### Headless checks (contributors)
 
