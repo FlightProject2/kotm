@@ -16,6 +16,7 @@ var _coyote_t: float = 0.0
 var roll_time: float = 0.0
 var roll_cooldown: float = 0.0
 var parachute_age: float = 0.0
+var _parachute_yaw_offset: float = 0.0
 
 func _ready() -> void:
 	c = get_parent() as Character
@@ -135,6 +136,11 @@ func _floor_clamp() -> void:
 
 func _parachute(dt: float) -> void:
 	var inp := c.input
+	# H1Z1's chute is an auto-glide: W pitches into a faster descent, S flares,
+	# and A/D turns the canopy rather than strafing the hanging character.
+	# Keep steering relative to the camera/body yaw so free-look remains useful.
+	_parachute_yaw_offset += clampf(inp.move.x, -1.0, 1.0) * float(pcfg.get("turnRateRad", 1.0)) * dt
+	c.yaw = inp.yaw + _parachute_yaw_offset
 	var f := c.forward()
 	var fwd := inp.move.y
 	var speed: float
@@ -145,11 +151,12 @@ func _parachute(dt: float) -> void:
 		speed = float(pcfg["flareSpeed"]); descent = float(pcfg["flareDescent"])
 	else:
 		speed = float(pcfg["neutralSpeed"]); descent = float(pcfg["neutralDescent"])
-	var k := minf(1.0, float(pcfg["horizontalLerp"]) * dt)
-	var r := c.right()
-	var side := inp.move.x * float(pcfg.get("strafeSpeed", 5.0))
-	c.velocity.x = lerpf(c.velocity.x, f.x * speed + r.x * side, k)
-	c.velocity.z = lerpf(c.velocity.z, f.z * speed + r.z * side, k)
+	var planar := Vector3(c.velocity.x, 0.0, c.velocity.z)
+	var target := f * speed
+	var accel := float(pcfg.get("horizontalAccel", pcfg.get("horizontalLerp", 6.0)))
+	planar = planar.move_toward(target, accel * dt)
+	c.velocity.x = planar.x
+	c.velocity.z = planar.z
 	c.velocity.y = lerpf(c.velocity.y, -descent, minf(1.0, 3.0 * dt))
 	c.move_and_slide()
 	var ground := c.world.height_at(c.global_position.x, c.global_position.z) if c.world else 0.0
@@ -204,6 +211,7 @@ func start_parachute(pos: Vector3, yaw: float) -> void:
 	c.rolling = false
 	set_stance_shape()
 	parachute_age = 0.0
+	_parachute_yaw_offset = 0.0
 	_was_on_floor = false
 	_jump_buffer_t = 0.0
 	_coyote_t = 0.0

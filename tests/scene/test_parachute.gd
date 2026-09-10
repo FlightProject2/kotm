@@ -50,6 +50,28 @@ func test_studio_character_holds_both_risers() -> void:
 		ch.queue_free()
 		await settle(1)
 
+func test_parachute_steering_turns_heading_without_strafing() -> void:
+	var world: World = load("res://game/world/world.tscn").instantiate()
+	await add_to_tree(world)
+	world.setup("mesh")
+	await settle(2)
+	var ch: Character = load("res://game/character/character.tscn").instantiate()
+	ch.world = world
+	world.characters.add_child(ch)
+	var ground := world.height_at(300, 300)
+	ch.motor.start_parachute(Vector3(300, ground + 60.0, 300), 0.0)
+	var i := CharacterInput.new()
+	i.move = Vector2(1, 0)
+	i.yaw = 0.0
+	for _frame in 60:
+		ch.submit_input(i)
+		await tree.physics_frame
+	assert_true(absf(ch.yaw) > 0.25, "A turns the parachute heading")
+	var planar := Vector2(ch.velocity.x, ch.velocity.z)
+	assert_true(planar.length() <= float(ch.motor.pcfg["neutralSpeed"]) + 0.25, "steering does not add strafe speed")
+	world.queue_free()
+	await settle(1)
+
 func test_ram_air_parachute_model_is_wired() -> void:
 	assert_true(ResourceLoader.exists("res://assets/models/kotm/KOTM_Parachute.glb"), "Higgsfield parachute GLB ships with the game")
 	var packed := load("res://assets/models/kotm/KOTM_Parachute.glb") as PackedScene
