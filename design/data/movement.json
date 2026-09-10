@@ -21,15 +21,15 @@
     "lethalM": 15
   },
   "parachute": {
-    "forwardSpeed": 17,
-    "forwardDescent": 20,
+    "forwardSpeed": 12,
+    "forwardDescent": 9,
     "neutralSpeed": 9,
-    "neutralDescent": 6.5,
+    "neutralDescent": 6,
     "flareSpeed": 5,
-    "flareDescent": 3.2,
+    "flareDescent": 4,
     "turnRateRad": 1,
-    "horizontalLerp": 2.6,
-    "strafeSpeed": 6,
+    "horizontalAccel": 6,
+    "horizontalLerp": 6,
     "detachHeightM": 1.5
   },
   "camera": {
