@@ -19,6 +19,14 @@ func test_screens_and_customize() -> void:
 	assert_true(editor != null and editor.targets.size() >= 6, "lobby UI modifier finds every editable section")
 	editor.open_editor()
 	assert_true(editor.is_open(), "UI modifier can be opened from the lobby")
+	for screen_name in ["main", "customize", "market", "stats", "settings", "pause", "end"]:
+		editor.set_screen(screen_name)
+		await settle(1)
+		assert_eq(editor.current_screen, screen_name, "UI modifier switches to %s" % screen_name)
+		assert_true(editor.targets.size() > 0, "%s exposes editable regions" % screen_name)
+		assert_true(not editor.capture_layout().is_empty(), "%s has a responsive layout" % screen_name)
+	editor.set_screen("main")
+	await settle(1)
 	var saved_layout := editor.capture_layout()
 	var original_stage_x: float = player_stage.position.x
 	var changed_layout := saved_layout.duplicate(true)

@@ -111,7 +111,11 @@ func _ready() -> void:
 		root.add_child(screens[k])
 	ui_layout_editor = UILayoutEditor.new()
 	root.add_child(ui_layout_editor)
-	ui_layout_editor.setup(screens["main"])
+	ui_layout_editor.setup_screens(screens)
+	ui_layout_editor.screen_changed.connect(func(screen_name: String) -> void:
+		if current != screen_name:
+			show_screen(screen_name)
+	)
 	toast_label = _label("", 18, GOLD, 600)
 	toast_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	toast_label.position = Vector2(-300, 70)
@@ -1047,8 +1051,8 @@ func _build_settings() -> Control:
 	invert_check = _check_row(v, "INVERT MOUSE Y", Settings.invert_y, func(on: bool) -> void: Settings.invert_y = on)
 	fp_check = _check_row(v, "START IN FIRST PERSON", Settings.first_person_default, func(on: bool) -> void: Settings.first_person_default = on)
 	v.add_child(_label("Changes apply immediately and are saved when you go back.", 13, INK_DIM, 400, barlow))
-	var layout_editor_button := _button("OPEN LOBBY UI MODIFIER", 18)
-	layout_editor_button.pressed.connect(func() -> void: show_screen("main"); ui_layout_editor.open_editor())
+	var layout_editor_button := _button("OPEN UI LAYOUT TOOL", 18)
+	layout_editor_button.pressed.connect(func() -> void: ui_layout_editor.set_screen("settings"); ui_layout_editor.open_editor())
 	v.add_child(layout_editor_button)
 	var back := _button("BACK", 16)
 	back.pressed.connect(func() -> void: Settings.save_settings(); show_screen(settings_return))
@@ -1096,8 +1100,8 @@ func refresh_settings() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:
-		if not ui_layout_editor.is_open():
-			show_screen("main")
+		if not ui_layout_editor.is_open() and screens.has(current):
+			ui_layout_editor.set_screen(current)
 		ui_layout_editor.toggle_editor()
 		get_viewport().set_input_as_handled()
 

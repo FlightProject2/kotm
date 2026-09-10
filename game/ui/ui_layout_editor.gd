@@ -1,9 +1,12 @@
 class_name UILayoutEditor
 extends Control
-## In-game lobby layout tool. Drag panels, resize from the bottom-right corner, then save a
-## responsive user preset or copy its JSON for inclusion in a shared build.
+## In-game UI layout tool. Pick any front-end screen, drag its top-level panels, resize them
+## from the bottom-right corner, then save a responsive user preset or copy its JSON for a build.
 
-const SAVE_PATH := "user://kotm_lobby_layout.json"
+signal screen_changed(screen_name: String)
+
+const SAVE_PATH := "user://kotm_ui_layout.json"
+const LEGACY_SAVE_PATH := "user://kotm_lobby_layout.json"
 const TARGET_NAMES := [
 	"MainNavigation",
 	"MatchmakingColumn",
@@ -14,12 +17,18 @@ const TARGET_NAMES := [
 ]
 
 var target_root: Control
+var screen_roots: Dictionary = {}
+var screen_names: Array[String] = []
+var current_screen := "main"
 var targets: Dictionary = {}
 var handles: Dictionary = {}
 var defaults: Dictionary = {}
 var layout_data: Dictionary = {}
+var screen_defaults: Dictionary = {}
+var screen_layouts: Dictionary = {}
 var selected: Control
 var editor_layer: Control
+var screen_selector: OptionButton
 var selector: OptionButton
 var x_spin: SpinBox
 var y_spin: SpinBox
@@ -30,6 +39,7 @@ var visible_check: CheckButton
 var json_edit: TextEdit
 var status: Label
 var _syncing := false
+var _screen_syncing := false
 
 class LayoutHandle extends Control:
 	var target: Control
@@ -98,9 +108,22 @@ func _ready() -> void:
 	_build_inspector()
 
 func setup(root: Control) -> void:
-	target_root = root
+	## Backwards-compatible single-screen setup for tools/tests that only have one root.
+	setup_screens({"main": root})
+
+func setup_screens(roots: Dictionary) -> void:
+	screen_roots = roots.duplicate()
+	screen_names.clear()
+	for key in screen_roots.keys():
+		screen_names.append(String(key))
+	screen_names.sort()
+	if screen_names.has("main"):
+		screen_names.erase("main")
+		screen_names.push_front("main")
+	current_screen = screen_names[0] if not screen_names.is_empty() else "main"
+	target_root = screen_roots.get(current_screen) as Control
 	_collect_targets()
-	if not target_root.resized.is_connected(_on_target_root_resized):
+	if target_root and not target_root.resized.is_connected(_on_target_root_resized):
 		target_root.resized.connect(_on_target_root_resized)
 	call_deferred("_finish_setup")
 
@@ -110,23 +133,71 @@ func _on_target_root_resized() -> void:
 
 func _collect_targets() -> void:
 	targets.clear()
+	if target_root == null:
+		return
+	# Named main-menu regions remain stable for existing presets. Other screens are built in
+	# code, so expose each direct child as a movable design region and give anonymous nodes a
+	# readable, stable name for the saved JSON.
 	for name in TARGET_NAMES:
 		var node := target_root.find_child(name, true, false) as Control
 		if node:
 			targets[name] = node
+	var index := 0
+	for child in target_root.get_children():
+		var node := child as Control
+		if node == null or node == editor_layer:
+			index += 1
+			continue
+		var name := String(node.name)
+		if name.is_empty() or name.begins_with("@"):
+			name = "%s_%s_%02d" % [current_screen.capitalize(), node.get_class(), index]
+			node.name = name
+		if not targets.has(name):
+			targets[name] = node
+		index += 1
 
 func _finish_setup() -> void:
 	await get_tree().process_frame
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	editor_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_collect_targets()
-	defaults = capture_layout()
-	layout_data = defaults.duplicate(true)
 	_load_saved()
+	_prepare_screen(current_screen)
 	_build_handles()
+	_fill_screen_selector()
 	_fill_selector()
 	if not targets.is_empty():
 		select_target(targets.values()[0])
+
+func _prepare_screen(name: String) -> void:
+	if not screen_roots.has(name):
+		return
+	current_screen = name
+	target_root = screen_roots[name] as Control
+	if target_root and not target_root.resized.is_connected(_on_target_root_resized):
+		target_root.resized.connect(_on_target_root_resized)
+	_collect_targets()
+	if not screen_defaults.has(name):
+		screen_defaults[name] = capture_layout().duplicate(true)
+	defaults = screen_defaults[name].duplicate(true)
+	if screen_layouts.has(name):
+		apply_layout(screen_layouts[name], false)
+	else:
+		layout_data = defaults.duplicate(true)
+
+func _fill_screen_selector() -> void:
+	if screen_selector == null:
+		return
+	_screen_syncing = true
+	screen_selector.clear()
+	for name in screen_names:
+		screen_selector.add_item(String(name).replace("_", " ").to_upper())
+		var index := screen_selector.item_count - 1
+		screen_selector.set_item_metadata(index, name)
+	for index in screen_selector.item_count:
+		if String(screen_selector.get_item_metadata(index)) == current_screen:
+			screen_selector.select(index)
+			break
+	_screen_syncing = false
 
 func _build_handles() -> void:
 	for old in handles.values():
@@ -160,12 +231,22 @@ func _build_inspector() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 8)
 	panel.add_child(column)
-	column.add_child(_label("LOBBY UI MODIFIER", 23, Color.WHITE))
-	column.add_child(_label("Drag a box or resize it from the solid corner.", 13, Color("b8b2a8")))
+	column.add_child(_label("UI LAYOUT TOOL", 23, Color.WHITE))
+	column.add_child(_label("Choose a screen, then drag or resize its panels.", 13, Color("b8b2a8")))
+	column.add_child(_label("SCREEN", 12, Color("e6c25a")))
+	screen_selector = OptionButton.new()
+	screen_selector.item_selected.connect(func(index: int) -> void:
+		if _screen_syncing or index < 0 or index >= screen_selector.item_count:
+			return
+		var name := String(screen_selector.get_item_metadata(index))
+		set_screen(name)
+	)
+	column.add_child(screen_selector)
+	column.add_child(_label("REGION", 12, Color("e6c25a")))
 	selector = OptionButton.new()
 	selector.item_selected.connect(func(index: int) -> void:
 		if index >= 0 and index < selector.item_count:
-			select_target(targets.get(selector.get_item_text(index)))
+			select_target(targets.get(selector.get_item_metadata(index)))
 	)
 	column.add_child(selector)
 	x_spin = _number_row(column, "X", -4000, 4000)
@@ -202,7 +283,7 @@ func _build_inspector() -> void:
 	column.add_child(apply)
 	status = _label("F10 closes this tool", 12, Color("e6c25a"))
 	column.add_child(status)
-	var close := _button("CLOSE UI MODIFIER")
+	var close := _button("CLOSE UI LAYOUT TOOL")
 	close.pressed.connect(close_editor)
 	column.add_child(close)
 
@@ -231,13 +312,29 @@ func _number_row(parent: VBoxContainer, title: String, minimum: float, maximum: 
 	return spin
 
 func _fill_selector() -> void:
+	if selector == null:
+		return
 	selector.clear()
-	for name in TARGET_NAMES:
-		if targets.has(name):
-			selector.add_item(name)
+	for name in targets:
+		selector.add_item(String(name))
+		selector.set_item_metadata(selector.item_count - 1, name)
+
+func set_screen(name: String) -> void:
+	if _screen_syncing or not screen_roots.has(name) or name == current_screen:
+		return
+	_prepare_screen(name)
+	_build_handles()
+	_fill_screen_selector()
+	_fill_selector()
+	selected = null
+	if not targets.is_empty():
+		select_target(targets.values()[0])
+	screen_changed.emit(current_screen)
 
 func open_editor() -> void:
 	editor_layer.visible = true
+	_fill_screen_selector()
+	_fill_selector()
 	if selected:
 		select_target(selected)
 
@@ -258,7 +355,7 @@ func select_target(target: Control) -> void:
 		return
 	selected = target
 	for index in selector.item_count:
-		if selector.get_item_text(index) == String(target.name):
+		if String(selector.get_item_metadata(index)) == String(target.name):
 			selector.select(index)
 			break
 	refresh_inspector()
@@ -294,6 +391,7 @@ func commit_target(target: Control) -> void:
 	if target_root == null or target_root.size.x <= 0.0 or target_root.size.y <= 0.0:
 		return
 	layout_data[String(target.name)] = _target_record(target)
+	screen_layouts[current_screen] = layout_data.duplicate(true)
 	status.text = "Unsaved changes"
 	refresh_inspector()
 
@@ -317,7 +415,7 @@ func capture_layout() -> Dictionary:
 		result[name] = _target_record(targets[name])
 	return result
 
-func apply_layout(data: Dictionary) -> void:
+func apply_layout(data: Dictionary, store := true) -> void:
 	if target_root == null:
 		return
 	for name in data:
@@ -335,29 +433,53 @@ func apply_layout(data: Dictionary) -> void:
 		target.scale = Vector2.ONE * scale_value
 		target.visible = bool(record.get("visible", true))
 	layout_data = data.duplicate(true)
+	if store:
+		screen_layouts[current_screen] = layout_data.duplicate(true)
 	refresh_inspector()
 
 func save_layout() -> void:
 	layout_data = capture_layout()
+	screen_layouts[current_screen] = layout_data.duplicate(true)
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
-		file.store_string(JSON.stringify(layout_data, "\t"))
-		status.text = "Saved on this device"
+		file.store_string(JSON.stringify(screen_layouts, "\t"))
+		status.text = "Saved %s layout on this device" % current_screen
 	else:
 		status.text = "Could not save layout"
 
 func _load_saved() -> void:
-	if not FileAccess.file_exists(SAVE_PATH):
+	var path := SAVE_PATH if FileAccess.file_exists(SAVE_PATH) else LEGACY_SAVE_PATH
+	if not FileAccess.file_exists(path):
 		return
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
-	if parsed is Dictionary:
-		apply_layout(parsed)
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not parsed is Dictionary:
+		return
+	# The original lobby-only tool saved one flat region dictionary. Import it as the main
+	# screen automatically so existing user presets keep working after this upgrade.
+	var dict := parsed as Dictionary
+	var looks_flat := false
+	for key in dict:
+		if dict[key] is Dictionary and (dict[key] as Dictionary).has("rect"):
+			looks_flat = true
+			break
+	if looks_flat:
+		screen_layouts["main"] = dict.duplicate(true)
+	else:
+		for key in dict:
+			if dict[key] is Dictionary:
+				screen_layouts[String(key)] = (dict[key] as Dictionary).duplicate(true)
 
 func reset_layout() -> void:
 	apply_layout(defaults)
-	if FileAccess.file_exists(SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
-	status.text = "Restored code defaults"
+	screen_layouts.erase(current_screen)
+	if screen_layouts.is_empty():
+		if FileAccess.file_exists(SAVE_PATH):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+	else:
+		var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+		if file:
+			file.store_string(JSON.stringify(screen_layouts, "\t"))
+	status.text = "Restored %s defaults" % current_screen
 
 func copy_json() -> void:
 	layout_data = capture_layout()

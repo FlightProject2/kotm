@@ -44,7 +44,7 @@ If the editor reports a Vulkan or Forward+ error on your GPU, run with `--render
 
 WASD move, Shift sprint, Space jump, C crouch (knees bend, feet stay planted), right mouse aim
 (hunting rifle scopes), left mouse fire, R reload, F pick up / loot bag / enter and exit a car, 1-6
-hotbar, H bandage, J first aid kit, T first-person toggle, M map, F10 admin/test menu, Esc pause.
+hotbar, H bandage, J first aid kit, T first-person toggle, M map, F10 UI layout tool in the front-end (admin/test menu in a match), Esc pause.
 Under the parachute: W dives (faster descent), S flares, A/D strafe the canopy, mouse steers. In a
 car: W/S throttle and reverse, A/D steer, Space handbrake.
 
